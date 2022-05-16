@@ -57,6 +57,7 @@ const LoginPage = () => {
           }
         />
         <StyledButton
+          // role="button"
           onClick={() => {
             dispatch(
               IS_USING_BACKEND

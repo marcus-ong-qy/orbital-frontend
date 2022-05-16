@@ -6,13 +6,16 @@ import { Routes } from "./routes/Routes";
 import { store } from "./store/store";
 
 import LoadingPage from "./pages/LoadingPage";
+import Theme from "./styles/Theme";
 
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Suspense fallback={<LoadingPage />}>
-          <Routes />
+          <Theme>
+            <Routes />
+          </Theme>
         </Suspense>
       </BrowserRouter>
     </Provider>

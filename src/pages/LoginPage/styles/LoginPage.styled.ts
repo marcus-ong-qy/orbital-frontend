@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { Button, Input } from "antd";
-import { grey } from "../../styles/Colours";
 
 export const StyledLoginPage = styled.div`
   width: 100%;
@@ -43,7 +42,7 @@ export const StyledPasswordInput = styled(Input.Password)`
 export const StyledButton = styled(Button)`
   height: 35px;
   width: 84vw;
-  background: ${grey};
+  background: ${(props) => props.theme.palette.secondary};
   color: black;
   font-weight: bold;
 `;
@@ -61,7 +60,7 @@ const StyledLink = css`
   font-size: 18px;
   cursor: pointer;
   :active {
-    color: ${grey};
+    color: ${(props) => props.theme.palette.common.black};
   }
 `;
 

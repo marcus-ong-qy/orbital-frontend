@@ -1,6 +1,5 @@
 import { Input, Button } from "antd";
 import styled from "styled-components";
-import { grey } from "../../styles/Colours";
 
 export const StyledForgetPasswordPage = styled.div`
   width: 100%;
@@ -26,7 +25,7 @@ export const StyledInput = styled(Input)`
 export const StyledButton = styled(Button)`
   height: 35px;
   width: 84vw;
-  background: ${grey};
+  background: ${(props) => props.theme.palette.secondary};
   color: black;
   font-weight: bold;
 `;
