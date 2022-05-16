@@ -1,10 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from "../../app/hooks";
-import { LoginCredentials } from "../../store/types";
-import { logIn, logInOffline } from "../../store/actions";
-import { IS_USING_BACKEND } from "../../store/reducer";
+import { useAppDispatch } from '../../app/hooks';
+import { LoginCredentials } from '../../store/types';
+import { logIn, logInOffline } from '../../store/actions';
+import { IS_USING_BACKEND } from '../../store/reducer';
 
 import {
   StyledLoginPage,
@@ -16,24 +16,26 @@ import {
   RegisterLink,
   ForgetPwdLink,
   NeighLogo,
-} from "./styles/LoginPage.styled";
+} from './styles/LoginPage.styled';
 
-import neighLogoTransparent from "../../assets/Neigh-logos_transparent.png";
-import { PATHS } from "../../routes/PATHS";
+import neighLogoTransparent from '../../assets/Neigh-logos_transparent.png';
+import { PATHS } from '../../routes/PATHS';
+import { navBarBuffer } from '../../components/navigation/styles/Navbars.styled';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const defaultCredentials: LoginCredentials = {
-    username: "",
-    passwordInput: "",
+    username: '',
+    passwordInput: '',
   };
 
   const [loginCredentials, setLoginCredentials] = useState(defaultCredentials);
 
   return (
     <StyledLoginPage>
+      <div style={{ height: navBarBuffer }} />
       <NeighLogo src={neighLogoTransparent} />
       <LoginForm>
         <StyledInput
@@ -65,23 +67,20 @@ const LoginPage = () => {
                 : logInOffline(loginCredentials)
             );
             navigate(PATHS.MAIN);
-          }}
-        >
+          }}>
           Login
         </StyledButton>
         <LinksDiv>
           <RegisterLink
             onClick={() => {
               navigate(PATHS.REGISTER);
-            }}
-          >
+            }}>
             Register
           </RegisterLink>
           <ForgetPwdLink
             onClick={() => {
               navigate(PATHS.FORGET_PASSWORD);
-            }}
-          >
+            }}>
             Forget Password
           </ForgetPwdLink>
         </LinksDiv>

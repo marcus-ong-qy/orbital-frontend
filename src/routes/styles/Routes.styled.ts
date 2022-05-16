@@ -1,15 +1,23 @@
 import styled, { css } from "styled-components";
 
-export const primaryBackground = css`
+export const background = css`
   height: 100%;
   min-height: 100vh;
-  background-color: {(props) => props.theme.palette.background};
 `;
 
 export const StyledMain = styled.main`
   overflow: scroll;
   padding: 4vh;
-  ${primaryBackground}
+  ${background}
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+export const StyledNavPage = styled.main`
+  overflow: scroll;
+  padding: 4vh;
+  ${background}
   ::-webkit-scrollbar {
     display: none;
   }
