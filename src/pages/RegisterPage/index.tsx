@@ -1,17 +1,24 @@
-import { useNavigate } from "react-router-dom";
-import { PATHS } from "../../routes/PATHS";
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../routes/PATHS';
 import {
+  RegisterDiv,
   StyledRegisterPage,
-  RegisterForm,
-  StyledInput,
-  StyledButton,
-} from "./styles/MainPage.styled";
+  // RegisterForm,
+  // StyledInput,
+  // StyledButton,
+} from './styles/RegisterPage.styled';
+
+const RegisterPage1 = () => {
+  return <RegisterDiv>RegisterPage1</RegisterDiv>;
+};
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   return (
     <StyledRegisterPage>
-      <RegisterForm>
+      <RegisterPage1 />
+      {/* TODO make an InputField Component */}
+      {/* <RegisterForm>
         <h1>Register</h1>
         <StyledInput placeholder="Email" />
         <StyledInput placeholder="Username" />
@@ -21,7 +28,7 @@ const RegisterPage = () => {
         <StyledButton onClick={() => navigate(PATHS.LOGIN)}>
           Register
         </StyledButton>
-      </RegisterForm>
+      </RegisterForm> */}
     </StyledRegisterPage>
   );
 };

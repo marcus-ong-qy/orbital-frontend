@@ -46,8 +46,8 @@ export const SearchDiv = styled.div`
     flex-direction: row;
   }
   .ant-input-search-button {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
   }
   .ant-input {
     width: calc(100% - 26px);

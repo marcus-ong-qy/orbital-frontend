@@ -1,5 +1,6 @@
 import React from 'react';
 import LandingPageNav from '../components/navigation/LandingPageNav';
+import { navBarBuffer } from '../components/navigation/styles/Navbars.styled';
 import { StyledNavPage, StyledMain } from './styles/Routes.styled';
 
 export const RouteWithoutNav = (routeProps: {
@@ -23,6 +24,7 @@ export const RouteWithLandingPageNav = (routeProps: {
   return (
     <StyledNavPage>
       <LandingPageNav title={title} />
+      <div style={{ height: navBarBuffer }} />
       <Component />
     </StyledNavPage>
   );

@@ -32,11 +32,18 @@ export const Routes = () => (
     />
     <Route
       path={PATHS.REGISTER}
-      element={<RouteWithoutNav component={RegisterPage} />}
+      element={
+        <RouteWithLandingPageNav component={RegisterPage} title="Sign Up" />
+      }
     />
     <Route
       path={PATHS.FORGET_PASSWORD}
-      element={<RouteWithoutNav component={ForgetPasswordPage} />}
+      element={
+        <RouteWithLandingPageNav
+          component={ForgetPasswordPage}
+          title="Log In"
+        />
+      }
     />
   </Switch>
 );

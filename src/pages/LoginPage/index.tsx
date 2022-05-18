@@ -7,20 +7,20 @@ import { logIn, logInOffline } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 
 import {
+  LoginDiv,
   StyledLoginPage,
-  LoginForm,
+  // LoginForm,
   StyledInput,
   StyledPasswordInput,
   StyledButton,
-  LinksDiv,
-  RegisterLink,
-  ForgetPwdLink,
-  NeighLogo,
+  // LinksDiv,
+  // RegisterLink,
+  // ForgetPwdLink,
+  // NeighLogo,
 } from './styles/LoginPage.styled';
 
-import neighLogoTransparent from '../../assets/Neigh-logos_transparent.png';
+// import neighLogoTransparent from '../../assets/Neigh-logos_transparent.png';
 import { PATHS } from '../../routes/PATHS';
-import { navBarBuffer } from '../../components/navigation/styles/Navbars.styled';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -35,8 +35,54 @@ const LoginPage = () => {
 
   return (
     <StyledLoginPage>
-      <div style={{ height: navBarBuffer }} />
-      <NeighLogo src={neighLogoTransparent} />
+      <LoginDiv>
+        LOGIN
+        <StyledInput
+          placeholder="Username"
+          value={loginCredentials.username}
+          onChange={(e) =>
+            setLoginCredentials({
+              ...loginCredentials,
+              username: e.target.value,
+            })
+          }
+        />
+        <StyledPasswordInput
+          placeholder="Password"
+          value={loginCredentials.passwordInput}
+          onChange={(e) =>
+            setLoginCredentials({
+              ...loginCredentials,
+              passwordInput: e.target.value,
+            })
+          }
+        />
+        Remember Me
+        <StyledButton
+          // role="button"
+          onClick={() => {
+            dispatch(
+              IS_USING_BACKEND
+                ? logIn(loginCredentials)
+                : logInOffline(loginCredentials)
+            );
+            navigate(PATHS.MAIN);
+          }}>
+          Login
+        </StyledButton>
+        <a onClick={() => navigate(PATHS.FORGET_PASSWORD)}>Forget Password?</a>
+        <u>
+          <b>
+            <h2>or</h2>
+          </b>
+        </u>
+        <span>
+          <b>G</b>&nbsp; Log In With Google
+        </span>
+        New to this site? Sign Up here!
+      </LoginDiv>
+
+      {/* <NeighLogo src={neighLogoTransparent} />
       <LoginForm>
         <StyledInput
           placeholder="Username"
@@ -84,7 +130,7 @@ const LoginPage = () => {
             Forget Password
           </ForgetPwdLink>
         </LinksDiv>
-      </LoginForm>
+      </LoginForm> */}
     </StyledLoginPage>
   );
 };
