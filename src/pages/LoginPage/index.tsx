@@ -36,7 +36,8 @@ const LoginPage = () => {
   return (
     <StyledLoginPage>
       <div style={{ height: navBarBuffer }} />
-      <NeighLogo src={neighLogoTransparent} />
+      <h1>Log In Page</h1>
+      {/* <NeighLogo src={neighLogoTransparent} />
       <LoginForm>
         <StyledInput
           placeholder="Username"
@@ -84,7 +85,7 @@ const LoginPage = () => {
             Forget Password
           </ForgetPwdLink>
         </LinksDiv>
-      </LoginForm>
+      </LoginForm> */}
     </StyledLoginPage>
   );
 };
