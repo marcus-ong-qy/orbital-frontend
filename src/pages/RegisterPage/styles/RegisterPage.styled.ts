@@ -10,32 +10,32 @@ export const StyledRegisterPage = styled.div`
   justify-content: center;
 `;
 
+export const RegisterDivTitle = styled.h1``;
+
 export const RegisterDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
 
-  width: max(408px, 35vw);
-  height: 408px;
+  width: 88.5vw;
+  height: 61vh;
   margin-top: 15vh;
+
+  background: ${(props) => props.theme.palette.common.gray};
+  border: 1px solid ${(props) => props.theme.palette.common.black};
+`;
+
+export const RegisterSubDiv = styled.div``;
+
+export const FullNameSpan = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template: 'a a';
+  grid-gap: 1.5vw;
 `;
 
 // export const RegisterForm = styled.div`
 //   display: flex;
 //   flex-direction: column;
 //   align-items: center;
-// `;
-
-// export const StyledInput = styled(Input)`
-//   height: 35px;
-//   width: 84vw;
-//   margin-bottom: 2vh;
-// `;
-
-// export const StyledButton = styled(Button)`
-//   height: 35px;
-//   width: 84vw;
-//   background: ${(props) => props.theme.palette.secondary};
-//   color: black;
-//   font-weight: bold;
 // `;

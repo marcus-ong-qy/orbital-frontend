@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Button, Input } from 'antd';
+import { fontTypeCss } from '../../../styles/index.styled';
+import { FontType } from '../../../styles/Theme';
 
 export const StyledLoginPage = styled.div`
   width: 100%;
@@ -19,6 +21,12 @@ export const LoginDiv = styled.div`
   margin-top: 15vh;
 `;
 
+export const LoginDivTitle = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
+
+  margin-bottom: 2vh;
+`;
+
 // export const NeighLogo = styled.img`
 //   width: 64vh;
 //   height: 64vh;
@@ -29,33 +37,6 @@ export const LoginDiv = styled.div`
 //   flex-direction: column;
 //   align-items: center;
 // `;
-
-export const StyledInput = styled(Input)`
-  height: 35px;
-  width: 100%;
-  margin-bottom: 3vh;
-`;
-
-export const StyledPasswordInput = styled(Input.Password)`
-  height: 35px;
-  width: 100%;
-  margin-bottom: 4vh;
-  .ant-input {
-    height: 35px;
-    /* width: 72vw; */
-  }
-  .anticon {
-    margin-left: 3vw;
-  }
-`;
-
-export const StyledButton = styled(Button)`
-  height: 35px;
-  width: 100%;
-  background: ${(props) => props.theme.palette.secondary};
-  color: black;
-  font-weight: bold;
-`;
 
 // export const LinksDiv = styled.div`
 //   width: 95%;

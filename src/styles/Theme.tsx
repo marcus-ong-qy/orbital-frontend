@@ -78,11 +78,11 @@ export const theme: ThemeType = {
         height: '1',
       },
       h1: {
-        min: '20px',
+        min: '22px',
         size: '2vw',
-        max: '38px',
-        weight: '300',
-        height: '1',
+        max: '40px',
+        weight: '700',
+        height: '0.7',
       },
       h2: {
         min: '18px',
@@ -99,7 +99,7 @@ export const theme: ThemeType = {
         height: '1',
       },
       h4: {
-        min: '10px',
+        min: '12px',
         size: '1vw',
         max: '18px',
         weight: '300',

@@ -5,14 +5,16 @@ import { useAppDispatch } from '../../app/hooks';
 import { LoginCredentials } from '../../store/types';
 import { logIn, logInOffline } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
+import { PATHS } from '../../routes/PATHS';
+
+import Button from '../../components/Button/Button';
+import { theme } from '../../styles/Theme';
 
 import {
   LoginDiv,
+  LoginDivTitle,
   StyledLoginPage,
   // LoginForm,
-  StyledInput,
-  StyledPasswordInput,
-  StyledButton,
   // LinksDiv,
   // RegisterLink,
   // ForgetPwdLink,
@@ -20,11 +22,16 @@ import {
 } from './styles/LoginPage.styled';
 
 // import neighLogoTransparent from '../../assets/Neigh-logos_transparent.png';
-import { PATHS } from '../../routes/PATHS';
+import {
+  StyledInput,
+  StyledPasswordInput,
+} from '../../components/InputField/styles/InputFields.styled';
+import InputField from '../../components/InputField/InputField';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { h1 } = { ...theme.typography.fontSize };
 
   const defaultCredentials: LoginCredentials = {
     username: '',
@@ -36,16 +43,20 @@ const LoginPage = () => {
   return (
     <StyledLoginPage>
       <LoginDiv>
-        LOGIN
-        <StyledInput
+        <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
+        <InputField
           placeholder="Username"
-          value={loginCredentials.username}
-          onChange={(e) =>
-            setLoginCredentials({
-              ...loginCredentials,
-              username: e.target.value,
-            })
-          }
+          leftLabel="Left Label"
+          rightLabel="Right Label"
+          leftIsError={true}
+          rightIsError={1}
+          // value={loginCredentials.username}
+          // onChange={(e) =>
+          //   setLoginCredentials({
+          //     ...loginCredentials,
+          //     username: e.target.value,
+          //   })
+          // }
         />
         <StyledPasswordInput
           placeholder="Password"
@@ -58,8 +69,8 @@ const LoginPage = () => {
           }
         />
         Remember Me
-        <StyledButton
-          // role="button"
+        <Button
+          label="Login"
           onClick={() => {
             dispatch(
               IS_USING_BACKEND
@@ -67,9 +78,8 @@ const LoginPage = () => {
                 : logInOffline(loginCredentials)
             );
             navigate(PATHS.MAIN);
-          }}>
-          Login
-        </StyledButton>
+          }}
+        />
         <a onClick={() => navigate(PATHS.FORGET_PASSWORD)}>Forget Password?</a>
         <u>
           <b>
