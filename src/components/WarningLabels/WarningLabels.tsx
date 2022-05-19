@@ -1,39 +1,24 @@
 import { theme } from '../../styles/Theme';
 
-import { LabelsSpan, StyledLabel } from './styles/WarningLabels.styled';
+import { LabelsDiv, StyledLabel } from './styles/WarningLabels.styled';
 
 type Props = {
-  leftLabel?: string;
-  rightLabel?: string;
-  leftIsError?: boolean;
-  rightIsError?: boolean;
+  label: string;
+  isError: boolean;
 };
 
-const Label = ({
-  label,
-  float,
-}: {
-  label: string;
-  float: 'left' | 'right';
-}) => {
-  const { h4 } = { ...theme.typography.fontSize };
-  return (
-    <StyledLabel fontType={h4} float={float}>
-      {label}
-    </StyledLabel>
-  );
+// TODO might be a little redundant
+const Label = ({ label }: { label: string }) => {
+  const { labelFont } = { ...theme.typography.fontSize };
+
+  return <StyledLabel fontType={labelFont}>{label}</StyledLabel>;
 };
 
 const WarningLabels = (props: Props) => {
   return (
-    <LabelsSpan>
-      {props.leftIsError && (
-        <Label label={props.leftLabel ?? ''} float="left" />
-      )}
-      {props.rightIsError && (
-        <Label label={props.rightLabel ?? ''} float="right" />
-      )}
-    </LabelsSpan>
+    <LabelsDiv>
+      {props.isError && <Label label={props.label ?? ''} />}
+    </LabelsDiv>
   );
 };
 
