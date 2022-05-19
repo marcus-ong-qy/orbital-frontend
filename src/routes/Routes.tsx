@@ -24,7 +24,7 @@ export const Routes = () => (
   <Switch>
     <Route
       path={PATHS.LOGIN}
-      element={<RouteWithLandingPageNav component={LoginPage} title="Login" />}
+      element={<RouteWithLandingPageNav component={LoginPage} title="Log in" />}
     />
     <Route
       path={PATHS.MAIN}

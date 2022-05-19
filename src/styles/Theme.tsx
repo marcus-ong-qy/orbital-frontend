@@ -15,6 +15,7 @@ export type ThemeType = {
     primary: HexCode;
     secondary: HexCode;
     danger: HexCode;
+    highlight: HexCode;
     background: HexCode;
   };
   typography: {
@@ -26,7 +27,8 @@ export type ThemeType = {
       h1: FontType;
       h2: FontType;
       h3: FontType;
-      h4: FontType;
+      p: FontType;
+      labelFont: FontType;
     };
   };
 };
@@ -51,6 +53,7 @@ export const theme: ThemeType = {
     primary: '#719972',
     secondary: '#816353',
     danger: '#997198',
+    highlight: '#997198',
     background: '#ebe8d7',
   },
   typography: {
@@ -98,10 +101,17 @@ export const theme: ThemeType = {
         weight: '500',
         height: '1',
       },
-      h4: {
-        min: '12px',
+      p: {
+        min: '14px',
         size: '1vw',
         max: '18px',
+        weight: '500',
+        height: '',
+      },
+      labelFont: {
+        min: '14px',
+        size: '14px',
+        max: '14px',
         weight: '300',
         height: 'auto',
       },

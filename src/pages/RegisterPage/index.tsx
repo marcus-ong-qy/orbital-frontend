@@ -1,18 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
-import InputField from '../../components/InputField/InputField';
-import { PATHS } from '../../routes/PATHS';
+import InputField from '../../components/InputFields/InputField';
+import PasswordInputField from '../../components/InputFields/PasswordInputField';
 import {
   FullNameSpan,
   RegisterDiv,
   RegisterDivTitle,
   StyledRegisterPage,
-  // RegisterForm,
 } from './styles/RegisterPage.styled';
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [pageNumber, setPageNumber] = useState<1 | 2>(1);
 
   return (
@@ -25,31 +23,26 @@ const RegisterPage = () => {
             <FullNameSpan>
               <InputField
                 placeholder="First Name"
-                leftLabel="Left Label"
-                leftIsError={true}
+                errorLabel="Label"
+                isError={true}
               />
               <InputField
                 placeholder="Last Name"
-                leftLabel="Left Label"
-                leftIsError={true}
+                errorLabel="Label"
+                isError={true}
               />
             </FullNameSpan>
-            <InputField
-              placeholder="Email"
-              leftLabel="Left Label"
-              leftIsError={true}
-            />
+            <InputField placeholder="Email" errorLabel="Label" isError={true} />
             <InputField
               placeholder="Preferred Username"
-              leftLabel="Left Label"
-              rightLabel="Right Label"
-              leftIsError={true}
-              rightIsError={1}
+              errorLabel="Label"
+              isError={true}
             />
-            <InputField
+            <PasswordInputField
+              type="signup"
               placeholder="Password (min. 8 chars)"
-              leftLabel="Left Label"
-              leftIsError={true}
+              errorLabel="Label"
+              isError={true}
             />
             <Button label="Next" onClick={() => setPageNumber(2)} />
           </>
@@ -58,18 +51,18 @@ const RegisterPage = () => {
           <>
             <InputField
               placeholder="Mobile No. (+65)"
-              leftLabel="Left Label"
-              leftIsError={true}
+              errorLabel="Label"
+              isError={true}
             />
             <InputField
               placeholder="Address"
-              leftLabel="Left Label"
-              leftIsError={true}
+              errorLabel="Label"
+              isError={true}
             />
             <InputField
               placeholder="Postal Code"
-              leftLabel="Left Label"
-              leftIsError={true}
+              errorLabel="Label"
+              isError={true}
             />
             <Button label="Sign Up" onClick={() => setPageNumber(1)} />
           </>
