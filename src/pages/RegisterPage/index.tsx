@@ -31,6 +31,7 @@ const RegisterPage = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     // formState: { errors },
   } = useForm({ mode: 'onSubmit' });
 
@@ -68,14 +69,18 @@ const RegisterPage = () => {
             title="UsernameEmail"
             placeholder="Username/Email"
             register={register}
+            pattern={/.+/}
             required
           />
           <PasswordInputField
-            type="PasswordLogin"
+            title="Password"
+            type="signup"
             placeholder="Password"
             errorLabel="User/Password Invalid!"
             isError={loginAttemptInvalid}
             register={register}
+            setValue={setValue}
+            pattern={/^(?=.*[a-z0-9])(?=.*[!@#$%^&*])[a-z0-9!@#$%^&*]{8,}$/i}
             required
           />
           <Button type="submit" text="Login" />

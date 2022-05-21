@@ -4,17 +4,17 @@ import {
   ActionTypes,
   ACTIONS,
   LoginCredentials,
-} from "./types";
+} from './types';
 
 export const logIn =
   (credentials: LoginCredentials) =>
   (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
-    const url = "https://orbital-mocha.vercel.app/auth/login";
+    const url = 'https://orbital-mocha.vercel.app/auth/login';
     fetch(url, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
       },
       body: JSON.stringify(credentials),
     })
@@ -23,9 +23,16 @@ export const logIn =
         dispatch({
           type: ACTIONS.LOGIN,
           loginCredentials: { ...credentials },
+          loginAttemptInvalid: false,
         });
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        alert(err);
+        dispatch({
+          type: ACTIONS.LOGIN_ATTEMPT_STATUS,
+          loginAttemptInvalid: true,
+        });
+      });
   };
 
 export const logInOffline =
@@ -34,5 +41,6 @@ export const logInOffline =
     dispatch({
       type: ACTIONS.LOGIN,
       loginCredentials: { ...credentials },
+      loginAttemptInvalid: true,
     });
   };

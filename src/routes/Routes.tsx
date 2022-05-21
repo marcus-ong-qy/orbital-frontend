@@ -11,7 +11,10 @@ const MainPage = React.lazy(
   () => import(/* webpackChunckName: "MainPage" */ '../pages/MainPage')
 );
 const RegisterPage = React.lazy(
-  () => import(/* webpackChunckName: "RegisterPage" */ '../pages/RegisterPage')
+  () =>
+    import(
+      /* webpackChunckName: "RegisterPage" */ '../pages/RegisterPage/index'
+    )
 );
 const ForgetPasswordPage = React.lazy(
   () =>

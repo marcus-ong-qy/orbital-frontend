@@ -1,5 +1,5 @@
-import { Action } from "redux";
-import { rootReducer } from "./store";
+import { Action } from 'redux';
+import { rootReducer } from './store';
 
 export type RootState = ReturnType<typeof rootReducer>;
 
@@ -28,7 +28,8 @@ export type LoginCredentials = {
 /** Actions' types */
 
 export enum ACTIONS {
-  LOGIN = "ACTIONS.LOGIN",
+  LOGIN = 'ACTIONS.LOGIN',
+  LOGIN_ATTEMPT_STATUS = 'ACTIONS.LOGIN_ATTEMPT_STATUS',
 }
 
 /** Actions */
@@ -36,6 +37,12 @@ export enum ACTIONS {
 export type LogIn = {
   type: typeof ACTIONS.LOGIN;
   loginCredentials: LoginCredentials;
+  loginAttemptInvalid: boolean;
 };
 
-export type ActionTypes = LogIn;
+export type LoginAttemptStatus = {
+  type: typeof ACTIONS.LOGIN_ATTEMPT_STATUS;
+  loginAttemptInvalid: boolean;
+};
+
+export type ActionTypes = LogIn | LoginAttemptStatus;

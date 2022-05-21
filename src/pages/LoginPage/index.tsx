@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FieldValues, useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '../../app/hooks';
-import { LoginCredentials } from '../../store/types';
+import { LoginCredentials, RootState } from '../../store/types';
 import { logIn, logInOffline } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
@@ -22,10 +23,18 @@ import {
 
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';
+import { useSelector } from 'react-redux';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    // formState: { errors },
+  } = useForm({ mode: 'onSubmit' });
+
   const { h1, p, labelFont } = { ...theme.typography.fontSize };
 
   const defaultCredentials: LoginCredentials = {
@@ -33,30 +42,49 @@ const LoginPage = () => {
     passwordInput: '',
   };
 
-  const [loginCredentials, setLoginCredentials] = useState(defaultCredentials);
+  const { loginAttemptInvalid } = useSelector(
+    (state: RootState) => state.neigh_reducer
+  );
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+    const loginCredentials = {
+      username: data.UsernameEmail.trim(),
+      passwordInput: data.PasswordLogin,
+    };
+
+    dispatch(
+      IS_USING_BACKEND
+        ? logIn(loginCredentials)
+        : logInOffline(loginCredentials)
+    );
+  };
 
   return (
-    <StyledLoginPage>
+    <StyledLoginPage data-testid="login-page">
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
-        <InputField placeholder="Username/Email" />
-        <PasswordInputField
-          type="login"
-          placeholder="Password"
-          errorLabel="User/Password Invalid!"
-          isError={true}
-        />
-        <Button
-          label="Login"
-          onClick={() => {
-            dispatch(
-              IS_USING_BACKEND
-                ? logIn(loginCredentials)
-                : logInOffline(loginCredentials)
-            );
-            navigate(PATHS.MAIN);
-          }}
-        />
+        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+          <InputField
+            title="UsernameEmail"
+            placeholder="Username/Email"
+            register={register}
+            pattern={/.+/}
+            required
+          />
+          <PasswordInputField
+            title="Password"
+            type="login"
+            placeholder="Password"
+            errorLabel="User/Password Invalid!"
+            isError={loginAttemptInvalid}
+            register={register}
+            setValue={setValue}
+            pattern={/.+/i}
+            required
+          />
+          <Button type="submit" text="Login" />
+        </form>
         <ForgetPwdSpan>
           <ForgetPwdLink
             fontType={labelFont}

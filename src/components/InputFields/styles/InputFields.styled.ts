@@ -4,11 +4,10 @@ import { FontType } from '../../../styles/Theme';
 import { fontTypeCss } from '../../../styles/index.styled';
 
 export const InputFieldContainer = styled.div`
-  width: 100%;
   margin: 1.2vh;
 `;
 
-export const StyledInput = styled(Input)`
+export const StyledInput = styled.input`
   height: 35px;
   width: 100%;
 `;
@@ -52,7 +51,7 @@ export const StyledPasswordInput = styled(Input.Password)`
   }
 `;
 
-export const RememberMeSpan = styled.span<{ fontType: FontType }>`
+export const AlwaysLoggedInSpan = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
 `;

@@ -1,17 +1,19 @@
 import { StyledButton } from './styles/Button.styled';
 
 const Button = ({
-  label,
+  text,
   onClick,
   style,
+  type,
 }: {
-  label: string;
+  text: string;
   onClick?: React.MouseEventHandler<HTMLElement>;
   style?: React.CSSProperties;
+  type?: 'button' | 'submit' | 'reset';
 }) => {
   return (
-    <StyledButton onClick={onClick} style={style}>
-      {label}
+    <StyledButton onClick={onClick} style={style} htmlType={type ?? 'button'}>
+      {text}
     </StyledButton>
   );
 };
