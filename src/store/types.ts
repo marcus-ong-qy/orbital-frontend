@@ -25,6 +25,8 @@ export type LoginCredentials = {
   passwordInput: string;
 };
 
+export type LoginStatus = 'initial' | 'invalid' | 'success';
+
 /** Actions' types */
 
 export enum ACTIONS {
@@ -37,12 +39,12 @@ export enum ACTIONS {
 export type LogIn = {
   type: typeof ACTIONS.LOGIN;
   loginCredentials: LoginCredentials;
-  loginAttemptInvalid: boolean;
+  loginAttemptStatus: LoginStatus;
 };
 
 export type LoginAttemptStatus = {
   type: typeof ACTIONS.LOGIN_ATTEMPT_STATUS;
-  loginAttemptInvalid: boolean;
+  loginAttemptStatus: LoginStatus;
 };
 
 export type ActionTypes = LogIn | LoginAttemptStatus;

@@ -1,5 +1,5 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../store/types";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/types';
 
 const MainPage = () => {
   const { loginCredentials } = useSelector(
@@ -8,11 +8,11 @@ const MainPage = () => {
   const { username, passwordInput } = loginCredentials;
 
   return (
-    <>
+    <div data-testid="MarketplaceMain">
       <h1>Main Page</h1>
       <div>Username: {username}</div>
       <div>Password: {passwordInput}</div>
-    </>
+    </div>
   );
 };
 

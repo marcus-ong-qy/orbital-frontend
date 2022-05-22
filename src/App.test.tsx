@@ -1,17 +1,19 @@
 import {
   fireEvent,
-  getByText,
-  queryByText,
   render,
   screen,
   waitFor,
   waitForElementToBeRemoved,
 } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 
 import App from './App';
+import { demoAcc } from './store/actions';
 import { store } from './store/store';
 import { theme } from './styles/Theme';
+
+// TODO replace getByTestId with screen content
 
 const AppWithStore = () => {
   return (
@@ -41,26 +43,8 @@ test('login button has correct text and colour', () => {
   `);
 });
 
-test('invalid login', () => {
-  render(<AppWithStore />);
-  // TODO
-
-  const loginButton = screen.getByRole('button', { name: 'Login' });
-  fireEvent.click(loginButton);
-
-  const warningLabel = screen.getByText('User/Password Invalid!');
-  expect(warningLabel).toBeInTheDocument();
-});
-
-test('valid login', () => {
-  render(<AppWithStore />);
-
-  throw new Error();
-});
-
 // test('caps lock indicator appears', async () => {
 //   render(<App />);
-//   await waitForElementToBeRemoved(() => screen.getByText('Loading...'));
 
 //   const passwordInput = screen.getByPlaceholderText('Password');
 //   fireEvent.select(passwordInput);
@@ -71,3 +55,40 @@ test('valid login', () => {
 //     expect(capsLockIndicator).toBeInTheDocument();
 //   });
 // });
+
+test('invalid login (offline)', async () => {
+  render(<AppWithStore />);
+
+  const loginButton = screen.getByRole('button', { name: 'Login' });
+  const userEmailInput = screen.getByPlaceholderText('Username/Email');
+  const passwordInput = screen.getByPlaceholderText('Password');
+
+  fireEvent.change(userEmailInput, { target: { value: 'blah' } });
+  fireEvent.change(passwordInput, { target: { value: 'blah' } });
+  fireEvent.click(loginButton);
+
+  await waitFor(() => {
+    const warningLabel = screen.getByText('User/Password Invalid!');
+    expect(warningLabel).toBeInTheDocument();
+  });
+});
+
+test('valid login (offline)', async () => {
+  render(<AppWithStore />);
+  const history = createMemoryHistory();
+
+  const loginButton = screen.getByRole('button', { name: 'Login' });
+  const userEmailInput = screen.getByPlaceholderText('Username/Email');
+  const passwordInput = screen.getByPlaceholderText('Password');
+
+  fireEvent.change(userEmailInput, { target: { value: demoAcc.username } });
+  fireEvent.change(passwordInput, {
+    target: { value: demoAcc.passwordInput },
+  });
+  fireEvent.click(loginButton);
+
+  await waitFor(() => {
+    const marketplaceMainPage = screen.getByTestId('MarketplaceMain');
+    expect(marketplaceMainPage).toBeInTheDocument();
+  });
+});

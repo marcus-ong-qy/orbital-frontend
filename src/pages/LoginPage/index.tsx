@@ -1,15 +1,22 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '../../app/hooks';
-import { LoginCredentials, RootState } from '../../store/types';
-import { logIn, logInOffline } from '../../store/actions';
+import { RootState } from '../../store/types';
+import {
+  logIn,
+  logInOffline,
+  setLoginAttemptStatus,
+} from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
 
-import Button from '../../components/Button/Button';
 import { theme } from '../../styles/Theme';
+import Button from '../../components/Button/Button';
+import InputField from '../../components/InputFields/InputField';
+import PasswordInputField from '../../components/InputFields/PasswordInputField';
 
 import {
   ForgetPwdLink,
@@ -21,38 +28,27 @@ import {
   StyledLoginPage,
 } from './styles/LoginPage.styled';
 
-import InputField from '../../components/InputFields/InputField';
-import PasswordInputField from '../../components/InputFields/PasswordInputField';
-import { useSelector } from 'react-redux';
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    // formState: { errors },
-  } = useForm({ mode: 'onSubmit' });
-
-  const { h1, p, labelFont } = { ...theme.typography.fontSize };
-
-  const defaultCredentials: LoginCredentials = {
-    username: '',
-    passwordInput: '',
-  };
-
-  const { loginAttemptInvalid } = useSelector(
+  const { register, handleSubmit, setValue } = useForm({ mode: 'onSubmit' });
+  const { loginAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
+  const { h1, p, labelFont } = { ...theme.typography.fontSize };
+
+  useEffect(() => {
+    if (loginAttemptStatus === 'success') {
+      navigate(PATHS.MAIN);
+      dispatch(setLoginAttemptStatus('initial'));
+    }
+  }, [loginAttemptStatus]);
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
     const loginCredentials = {
       username: data.UsernameEmail.trim(),
-      passwordInput: data.PasswordLogin,
+      passwordInput: data.Password,
     };
-
     dispatch(
       IS_USING_BACKEND
         ? logIn(loginCredentials)
@@ -77,7 +73,7 @@ const LoginPage = () => {
             type="login"
             placeholder="Password"
             errorLabel="User/Password Invalid!"
-            isError={loginAttemptInvalid}
+            isError={loginAttemptStatus === 'invalid'}
             register={register}
             setValue={setValue}
             pattern={/.+/i}

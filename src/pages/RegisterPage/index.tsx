@@ -42,7 +42,7 @@ const RegisterPage = () => {
     passwordInput: '',
   };
 
-  const { loginAttemptInvalid } = useSelector(
+  const { loginAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
 
@@ -77,7 +77,7 @@ const RegisterPage = () => {
             type="signup"
             placeholder="Password"
             errorLabel="User/Password Invalid!"
-            isError={loginAttemptInvalid}
+            isError={loginAttemptStatus === 'invalid'}
             register={register}
             setValue={setValue}
             pattern={/^(?=.*[a-z0-9])(?=.*[!@#$%^&*])[a-z0-9!@#$%^&*]{8,}$/i}
