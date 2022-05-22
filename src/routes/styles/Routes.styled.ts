@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css } from 'styled-components';
 
 export const background = css`
   height: 100%;
@@ -7,7 +7,6 @@ export const background = css`
 
 export const StyledMain = styled.main`
   overflow: scroll;
-  padding: 4vh;
   ${background}
   ::-webkit-scrollbar {
     display: none;
@@ -16,7 +15,6 @@ export const StyledMain = styled.main`
 
 export const StyledNavPage = styled.main`
   overflow: scroll;
-  padding: 4vh;
   ${background}
   ::-webkit-scrollbar {
     display: none;
