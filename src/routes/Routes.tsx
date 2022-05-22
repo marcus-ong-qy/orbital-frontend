@@ -19,6 +19,9 @@ const ForgetPasswordPage = React.lazy(
       /* webpackChunckName: "ForgetPasswordPage" */ '../pages/ForgetPasswordPage'
     )
 );
+const LoadingPage = React.lazy(
+  () => import(/* webpackChunckName: "LoadingPage" */ '../pages/LoadingPage')
+);
 
 export const Routes = () => (
   <Switch>
@@ -37,6 +40,12 @@ export const Routes = () => (
     <Route
       path={PATHS.FORGET_PASSWORD}
       element={<RouteWithoutNav component={ForgetPasswordPage} />}
+    />
+    <Route
+      path="/neigh"
+      element={
+        <RouteWithLandingPageNav component={LoadingPage} title="neigh??" />
+      }
     />
   </Switch>
 );
