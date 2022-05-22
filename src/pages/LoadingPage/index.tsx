@@ -1,5 +1,5 @@
 import {
-  Horse,
+  GallopingHorse,
   LoadingText,
   StyledLoadingDiv,
   StyledLoadingPage,
@@ -12,7 +12,7 @@ const LoadingPage = () => {
     <StyledLoadingPage>
       <StyledLoadingDiv>
         <LoadingText>Loading...</LoadingText>
-        <Horse src={HorseLogo} />
+        <GallopingHorse src={HorseLogo} />
       </StyledLoadingDiv>
     </StyledLoadingPage>
   );

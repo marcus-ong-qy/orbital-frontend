@@ -42,7 +42,7 @@ export const Routes = () => (
       element={<RouteWithoutNav component={ForgetPasswordPage} />}
     />
     <Route
-      path="/neigh"
+      path="/neigh" // easter egg
       element={
         <RouteWithLandingPageNav component={LoadingPage} title="neigh??" />
       }
