@@ -5,13 +5,13 @@ const MainPage = () => {
   const { loginCredentials } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
-  const { username, passwordInput } = loginCredentials;
+  const { email, password } = loginCredentials;
 
   return (
     <div data-testid="MarketplaceMain">
       <h1>Main Page</h1>
-      <div>Username: {username}</div>
-      <div>Password: {passwordInput}</div>
+      <div>Username: {email}</div>
+      <div>Password: {password}</div>
     </div>
   );
 };

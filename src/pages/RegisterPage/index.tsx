@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '../../app/hooks';
-import { LoginCredentials, RootState } from '../../store/types';
+import { Credentials, RootState } from '../../store/types';
 import { logIn, logInOffline } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
@@ -37,9 +37,9 @@ const RegisterPage = () => {
 
   const { h1, p, labelFont } = { ...theme.typography.fontSize };
 
-  const defaultCredentials: LoginCredentials = {
-    username: '',
-    passwordInput: '',
+  const defaultCredentials: Credentials = {
+    email: '',
+    password: '',
   };
 
   const { loginAttemptStatus } = useSelector(
@@ -48,9 +48,9 @@ const RegisterPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     console.log(data);
-    const loginCredentials = {
-      username: data.UsernameEmail.trim(),
-      passwordInput: data.PasswordLogin,
+    const loginCredentials: Credentials = {
+      email: data.email.trim(),
+      password: data.PasswordLogin,
     };
 
     dispatch(

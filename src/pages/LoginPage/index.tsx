@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { useAppDispatch } from '../../app/hooks';
-import { RootState } from '../../store/types';
+import { Credentials, RootState } from '../../store/types';
 import {
   logIn,
   logInOffline,
@@ -45,9 +45,9 @@ const LoginPage = () => {
   }, [loginAttemptStatus]);
 
   const onSubmit = (data: FieldValues) => {
-    const loginCredentials = {
-      username: data.UsernameEmail.trim(),
-      passwordInput: data.Password,
+    const loginCredentials: Credentials = {
+      email: data.Email.trim(),
+      password: data.Password,
     };
     dispatch(
       IS_USING_BACKEND
@@ -62,8 +62,8 @@ const LoginPage = () => {
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
-            title="UsernameEmail"
-            placeholder="Username/Email"
+            title="Email"
+            placeholder="Email"
             register={register}
             pattern={/.+/}
             required
@@ -72,7 +72,7 @@ const LoginPage = () => {
             title="Password"
             type="login"
             placeholder="Password"
-            errorLabel="User/Password Invalid!"
+            errorLabel="Email/Password Invalid!"
             isError={loginAttemptStatus === 'invalid'}
             register={register}
             setValue={setValue}

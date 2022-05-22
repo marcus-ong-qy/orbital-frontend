@@ -8,7 +8,7 @@ import {
 import { Provider } from 'react-redux';
 
 import App from '../App';
-import { demoAcc } from '../store/actions';
+import { demoAcc } from '../firebase-config';
 import { store } from '../store/store';
 import { theme } from '../styles/Theme';
 
@@ -56,33 +56,33 @@ describe('Login Page', () => {
   //   });
   // });
 
-  test('invalid login (offline)', async () => {
+  test('invalid login', async () => {
     render(<AppWithStore />);
 
     const loginButton = screen.getByRole('button', { name: 'Login' });
-    const userEmailInput = screen.getByPlaceholderText('Username/Email');
+    const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
 
-    fireEvent.change(userEmailInput, { target: { value: 'blah' } });
+    fireEvent.change(emailInput, { target: { value: 'blah' } });
     fireEvent.change(passwordInput, { target: { value: 'blah' } });
     fireEvent.click(loginButton);
 
     await waitFor(() => {
-      const warningLabel = screen.getByText('User/Password Invalid!');
+      const warningLabel = screen.getByText('Email/Password Invalid!');
       expect(warningLabel).toBeInTheDocument();
     });
   });
 
-  test('valid login (offline)', async () => {
+  test('valid login', async () => {
     render(<AppWithStore />);
 
     const loginButton = screen.getByRole('button', { name: 'Login' });
-    const userEmailInput = screen.getByPlaceholderText('Username/Email');
+    const emailInput = screen.getByPlaceholderText('Email');
     const passwordInput = screen.getByPlaceholderText('Password');
 
-    fireEvent.change(userEmailInput, { target: { value: demoAcc.username } });
+    fireEvent.change(emailInput, { target: { value: demoAcc.email } });
     fireEvent.change(passwordInput, {
-      target: { value: demoAcc.passwordInput },
+      target: { value: demoAcc.password },
     });
     fireEvent.click(loginButton);
 

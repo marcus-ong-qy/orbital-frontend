@@ -1,50 +1,35 @@
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../firebase';
+import { demoAcc } from '../firebase-config';
 import {
   Dispatch,
-  GetState,
   ActionTypes,
   ACTIONS,
-  LoginCredentials,
+  Credentials,
   LoginStatus,
 } from './types';
 
 export const logIn =
-  (credentials: LoginCredentials) =>
-  (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
-    const url = 'https://orbital-mocha.vercel.app/auth/login';
-    fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-      body: JSON.stringify(credentials),
-    })
-      .then((resp) => resp.json())
-      .then(() => dispatch(setLoginCredentials(credentials)))
-      .catch(() => dispatch(setLoginAttemptStatus('invalid')));
+  (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        credentials.email,
+        credentials.password
+      );
+      dispatch(setLoginCredentials(credentials));
+    } catch (err) {
+      dispatch(setLoginAttemptStatus('invalid'));
+    }
   };
 
-export const demoAcc: LoginCredentials = {
-  username: 'grazinghorse',
-  passwordInput: 'bngo2646!',
-};
-
-export const logInOffline =
-  (credentials: LoginCredentials) =>
-  (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
-    const loginMatch = () => {
-      return (
-        credentials.username === demoAcc.username &&
-        credentials.passwordInput === demoAcc.passwordInput
-      );
-    };
-    loginMatch()
-      ? dispatch(setLoginCredentials(credentials))
-      : dispatch(setLoginAttemptStatus('invalid'));
+export const signUp =
+  (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
+    // TODO
   };
 
 const setLoginCredentials =
-  (credentials: LoginCredentials) => (dispatch: Dispatch<ActionTypes>) => {
+  (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({
       type: ACTIONS.LOGIN,
       loginCredentials: { ...credentials },
@@ -58,4 +43,18 @@ export const setLoginAttemptStatus =
       type: ACTIONS.LOGIN_ATTEMPT_STATUS,
       loginAttemptStatus: status,
     });
+  };
+
+// offline functions
+export const logInOffline =
+  (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
+    const loginMatch = () => {
+      return (
+        credentials.email === demoAcc.email &&
+        credentials.password === demoAcc.password
+      );
+    };
+    loginMatch()
+      ? dispatch(setLoginCredentials(credentials))
+      : dispatch(setLoginAttemptStatus('invalid'));
   };

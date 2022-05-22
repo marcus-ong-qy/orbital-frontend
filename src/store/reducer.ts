@@ -1,13 +1,13 @@
 import { Reducer } from 'redux';
 
-import { ACTIONS, ActionTypes, LoginCredentials, LoginStatus } from './types';
+import { ACTIONS, ActionTypes, Credentials, LoginStatus } from './types';
 
 type BinaryBool = 1 | 0;
-export const IS_USING_BACKEND: BinaryBool = 0;
+export const IS_USING_BACKEND: BinaryBool = 1;
 
-const loginCredentialsDefault: LoginCredentials = {
-  username: '',
-  passwordInput: '',
+const loginCredentialsDefault: Credentials = {
+  email: '',
+  password: '',
 };
 
 const initialState: State = {
@@ -16,7 +16,7 @@ const initialState: State = {
 };
 
 type State = {
-  loginCredentials: LoginCredentials;
+  loginCredentials: Credentials;
   loginAttemptStatus: LoginStatus;
 };
 

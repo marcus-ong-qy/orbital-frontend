@@ -20,9 +20,9 @@ export type GetState = () => RootState;
 
 /** Types */
 
-export type LoginCredentials = {
-  username: string;
-  passwordInput: string;
+export type Credentials = {
+  email: string;
+  password: string;
 };
 
 export type LoginStatus = 'initial' | 'invalid' | 'success';
@@ -38,7 +38,7 @@ export enum ACTIONS {
 
 export type LogIn = {
   type: typeof ACTIONS.LOGIN;
-  loginCredentials: LoginCredentials;
+  loginCredentials: Credentials;
   loginAttemptStatus: LoginStatus;
 };
 
