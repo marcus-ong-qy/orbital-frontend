@@ -10,6 +10,8 @@ export const InputFieldContainer = styled.div`
 export const StyledInput = styled.input`
   height: 35px;
   width: 100%;
+
+  border-radius: 35px;
 `;
 
 export const PasswordSpan = styled.div`
@@ -41,6 +43,7 @@ export const StyledPasswordInput = styled(Input.Password)`
 
   .ant-input {
     height: 35px; 
+    border-radius: 35px;
   }
   .ant-input-suffix {
     display: flex;
