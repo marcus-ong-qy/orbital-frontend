@@ -9,6 +9,7 @@ import {
   logIn,
   logInOffline,
   setLoginAttemptStatus,
+  setSignupAttemptStatus,
 } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
@@ -27,12 +28,15 @@ import {
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled';
+import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { register, handleSubmit, setValue } = useForm({ mode: 'onSubmit' });
-  const { loginAttemptStatus } = useSelector(
+  const { register, handleSubmit, setValue, setError } = useForm({
+    mode: 'onSubmit',
+  });
+  const { loginAttemptStatus, signupAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
   const { h1, p, labelFont } = { ...theme.typography.fontSize };
@@ -41,6 +45,7 @@ const LoginPage = () => {
     if (loginAttemptStatus === 'success') {
       navigate(PATHS.MAIN);
       dispatch(setLoginAttemptStatus('initial'));
+      dispatch(setSignupAttemptStatus('initial'));
     }
   }, [loginAttemptStatus]);
 
@@ -60,12 +65,15 @@ const LoginPage = () => {
     <StyledLoginPage data-testid="login-page">
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
+        <WarningLabels
+          label="Sign Up Successful!"
+          isError={signupAttemptStatus === 'redirect'}
+        />
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             title="Email"
             placeholder="Email"
             register={register}
-            pattern={/.+/}
             required
           />
           <PasswordInputField
@@ -76,7 +84,7 @@ const LoginPage = () => {
             isError={loginAttemptStatus === 'invalid'}
             register={register}
             setValue={setValue}
-            pattern={/.+/i}
+            setError={setError}
             required
           />
           <Button type="submit" text="Login" />

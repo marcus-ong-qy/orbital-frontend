@@ -1,5 +1,10 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore';
+
+import { auth, db } from '../firebase';
 import { demoAcc } from '../firebase-config';
 import {
   Dispatch,
@@ -7,6 +12,7 @@ import {
   ACTIONS,
   Credentials,
   LoginStatus,
+  SignupStatus,
 } from './types';
 
 export const logIn =
@@ -23,9 +29,36 @@ export const logIn =
     }
   };
 
+const readSignupError = (err: any) => {
+  switch (`${err}`) {
+    case 'FirebaseError: Firebase: Error (auth/email-already-in-use).':
+      return 'account-exists';
+    case 'FirebaseError: Firebase: Error (auth/invalid-email).':
+      return 'email-invalid';
+    default:
+      return 'error';
+  }
+};
+
 export const signUp =
   (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
-    // TODO
+    try {
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        credentials.email,
+        credentials.password
+      );
+      const user = res.user;
+      await addDoc(collection(db, 'users'), {
+        uid: user.uid,
+        authProvider: 'local',
+        email: credentials.email,
+      });
+      dispatch(setSignupAttemptStatus('success'));
+    } catch (err) {
+      console.error(err);
+      dispatch(setSignupAttemptStatus(readSignupError(err)));
+    }
   };
 
 const setLoginCredentials =
@@ -42,6 +75,14 @@ export const setLoginAttemptStatus =
     dispatch({
       type: ACTIONS.LOGIN_ATTEMPT_STATUS,
       loginAttemptStatus: status,
+    });
+  };
+
+export const setSignupAttemptStatus =
+  (status: SignupStatus) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: ACTIONS.SIGNUP_ATTEMPT_STATUS,
+      signupAttemptStatus: status,
     });
   };
 

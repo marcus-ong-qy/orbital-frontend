@@ -8,7 +8,7 @@ type Props = {
   errorLabel?: string;
   isError?: boolean;
   register: UseFormRegister<FieldValues>;
-  pattern: RegExp;
+  pattern?: RegExp;
   required?: boolean;
 };
 

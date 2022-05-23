@@ -4,6 +4,8 @@ import { Button } from 'antd';
 export const StyledButton = styled(Button)`
   height: 35px;
   width: 100%;
+  border-radius: 35px;
+
   background: ${(props) => props.theme.palette.secondary};
   color: ${(props) => props.theme.palette.common.gray};
   font-weight: bold;

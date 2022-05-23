@@ -26,12 +26,20 @@ export type Credentials = {
 };
 
 export type LoginStatus = 'initial' | 'invalid' | 'success';
+export type SignupStatus =
+  | 'initial'
+  | 'account-exists'
+  | 'email-invalid'
+  | 'error'
+  | 'redirect'
+  | 'success';
 
 /** Actions' types */
 
 export enum ACTIONS {
   LOGIN = 'ACTIONS.LOGIN',
   LOGIN_ATTEMPT_STATUS = 'ACTIONS.LOGIN_ATTEMPT_STATUS',
+  SIGNUP_ATTEMPT_STATUS = 'ACTIONS.SIGNUP_ATTEMPT_STATUS',
 }
 
 /** Actions */
@@ -47,4 +55,9 @@ export type LoginAttemptStatus = {
   loginAttemptStatus: LoginStatus;
 };
 
-export type ActionTypes = LogIn | LoginAttemptStatus;
+export type SignupAttemptStatus = {
+  type: typeof ACTIONS.SIGNUP_ATTEMPT_STATUS;
+  signupAttemptStatus: SignupStatus;
+};
+
+export type ActionTypes = LogIn | LoginAttemptStatus | SignupAttemptStatus;

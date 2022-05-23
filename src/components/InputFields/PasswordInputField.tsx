@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { UseFormRegister, FieldValues, UseFormSetValue } from 'react-hook-form';
+import {
+  UseFormRegister,
+  FieldValues,
+  UseFormSetValue,
+  UseFormSetError,
+  UseFormClearErrors,
+} from 'react-hook-form';
 import { theme } from '../../styles/Theme';
 import WarningLabels from '../WarningLabels/WarningLabels';
 import {
@@ -19,7 +25,9 @@ type Props = {
   isError: boolean;
   register: UseFormRegister<FieldValues>;
   setValue: UseFormSetValue<FieldValues>;
-  pattern: RegExp;
+  pattern?: RegExp;
+  setError?: UseFormSetError<FieldValues>;
+  clearErrors?: UseFormClearErrors<FieldValues>;
   required?: boolean;
 };
 
@@ -36,11 +44,20 @@ const PasswordInputField = (props: Props) => {
     placeholder,
     errorLabel,
     isError,
-    pattern,
     register,
     setValue,
+    pattern,
+    setError,
+    clearErrors,
     required,
   } = props;
+
+  if (pattern && (!setError || !clearErrors)) {
+    console.error(
+      "PasswordInputField: Both setError and ClearErrors params need to be passed in when 'pattern' param is used!"
+    );
+  }
+
   const { labelFont } = { ...theme.typography.fontSize };
 
   const [isCapsOn, setIsCapsOn] = useState(false);
@@ -50,11 +67,17 @@ const PasswordInputField = (props: Props) => {
     setIsCapsOn(e.getModifierState('CapsLock'));
   };
 
-  // required as react-hook-form setValue does not work with antd input by default
-  const inputOnChange = (e: any) => setValue(title, e.target.value);
+  // explicitely coded as react-hook-form does not work with antd input by default
+  const inputOnChange = (e: any) => {
+    setValue(title, e.target.value);
+    pattern?.test(e.target.value)
+      ? clearErrors!(title)
+      : setError!(title, { type: 'pattern' });
+  };
 
   const checkboxOnChange = () => setRememberPassword(!rememberPassword);
 
+  // TODO implement AlwaysLoggedIn checkbox functionality
   return (
     <InputFieldContainer>
       <PasswordSpan>

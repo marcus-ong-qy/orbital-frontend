@@ -1,29 +1,30 @@
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
+import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
 import { Credentials, RootState } from '../../store/types';
-import { logIn, logInOffline } from '../../store/actions';
+import {
+  setLoginAttemptStatus,
+  setSignupAttemptStatus,
+  signUp,
+} from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
 
 import Button from '../../components/Button/Button';
-import { theme } from '../../styles/Theme';
-
-import {
-  ForgetPwdLink,
-  ForgetPwdSpan,
-  LoginDiv,
-  LoginDivTitle,
-  NewUserSpan,
-  SignUpLink,
-  StyledLoginPage,
-} from './styles/RegisterPage';
-
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';
-import { useSelector } from 'react-redux';
+
+import {
+  SignUpDiv,
+  SignUpDivTitle,
+  SignUpWarningDiv,
+  StyledSignUpPage,
+} from './styles/RegisterPage.styled';
+import { useEffect } from 'react';
+import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -32,8 +33,10 @@ const RegisterPage = () => {
     register,
     handleSubmit,
     setValue,
-    // formState: { errors },
-  } = useForm({ mode: 'onSubmit' });
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm({ mode: 'onChange' });
 
   const { h1, p, labelFont } = { ...theme.typography.fontSize };
 
@@ -42,65 +45,81 @@ const RegisterPage = () => {
     password: '',
   };
 
-  const { loginAttemptStatus } = useSelector(
+  const { signupAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
-    const loginCredentials: Credentials = {
-      email: data.email.trim(),
-      password: data.PasswordLogin,
-    };
+  // const { loginAttemptStatus } = useSelector(
+  //   (state: RootState) => state.neigh_reducer
+  // );
 
-    dispatch(
-      IS_USING_BACKEND
-        ? logIn(loginCredentials)
-        : logInOffline(loginCredentials)
-    );
+  // useEffect(() => {
+  //   console.table(errors);
+  // }, [errors]);
+
+  const onSubmit = (data: FieldValues) => {
+    const signUpCredentials: Credentials = {
+      email: data.Email.trim(),
+      password: data.Password,
+    };
+    IS_USING_BACKEND && dispatch(signUp(signUpCredentials));
   };
 
+  useEffect(() => {
+    if (signupAttemptStatus === 'success') {
+      navigate(PATHS.LOGIN);
+      dispatch(setSignupAttemptStatus('redirect'));
+    }
+  }, [signupAttemptStatus]);
+
+  const signupErrorLabels = {
+    initial: '',
+    'account-exists': 'An account has been created with this email!',
+    'email-invalid': 'Email used is invalid!',
+    error: 'Error when creating account!',
+    redirect: '',
+    success: '',
+  };
+
+  const signupErrorLabel = signupErrorLabels[signupAttemptStatus];
+
   return (
-    <StyledLoginPage data-testid="login-page">
-      <LoginDiv>
-        <LoginDivTitle fontType={h1}>Sign Up actually</LoginDivTitle>
+    <StyledSignUpPage data-testid="register-page">
+      <SignUpDiv>
+        <SignUpDivTitle fontType={h1}>Sign Up</SignUpDivTitle>
+        <SignUpWarningDiv>
+          <WarningLabels
+            label={signupErrorLabel}
+            isError={signupErrorLabel.length !== 0}
+          />
+        </SignUpWarningDiv>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
-            title="UsernameEmail"
-            placeholder="Username/Email"
+            title="Email"
+            placeholder="Email"
+            errorLabel="Please enter a valid email address"
+            isError={errors.Email}
             register={register}
-            pattern={/.+/}
+            pattern={/.+@.+\..+/i}
             required
           />
           <PasswordInputField
             title="Password"
             type="signup"
             placeholder="Password"
-            errorLabel="User/Password Invalid!"
-            isError={loginAttemptStatus === 'invalid'}
+            errorLabel="Must be 8 or more characters and contain alphanumeric/symbols"
+            isError={errors.Password}
             register={register}
             setValue={setValue}
+            setError={setError}
+            clearErrors={clearErrors}
             pattern={/^(?=.*[a-z0-9])(?=.*[!@#$%^&*])[a-z0-9!@#$%^&*]{8,}$/i}
             required
           />
-          <Button type="submit" text="Login" />
+          <Button style={{ marginTop: '3vh' }} type="submit" text="Sign Up" />
         </form>
-        <ForgetPwdSpan>
-          <ForgetPwdLink
-            fontType={labelFont}
-            onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
-            Forget Password?
-          </ForgetPwdLink>
-        </ForgetPwdSpan>
-        <NewUserSpan fontType={p}>
-          New to this site?&nbsp;
-          <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
-            Sign Up
-          </SignUpLink>
-          &nbsp;here!
-        </NewUserSpan>
-      </LoginDiv>
-    </StyledLoginPage>
+      </SignUpDiv>
+    </StyledSignUpPage>
   );
 };
 
