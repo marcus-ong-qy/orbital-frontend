@@ -25,7 +25,8 @@ const LoadingPageNav = ({ title }: { title: string }) => {
 
   return (
     <StyledLandingPageNav>
-      <StyledLogo src={logo} />
+      {/* easter egg */}
+      <StyledLogo src={logo} onClick={() => navigate('/neigh')} />
       <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
       <SearchDiv>
         <NavLinks fontType={navLinkFont}>
