@@ -23,7 +23,7 @@ import firebaseConfig from './firebase-config';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig); // TODO use vercel .env
 const auth = getAuth(app);
 const db = getFirestore(app);
 // const analytics = getAnalytics(app);
@@ -48,17 +48,8 @@ const signInWithGoogle = async () => {
   }
 };
 
-const sendPasswordReset = async (email: string) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert('Password reset link sent!');
-  } catch (err) {
-    console.error(err);
-  }
-};
-
 const logout = () => {
   signOut(auth);
 };
 
-export { auth, db, signInWithGoogle, sendPasswordReset, logout };
+export { auth, db, signInWithGoogle, logout };

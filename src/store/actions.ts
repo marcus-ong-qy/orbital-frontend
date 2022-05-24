@@ -1,6 +1,7 @@
 import {
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -13,6 +14,7 @@ import {
   Credentials,
   LoginStatus,
   SignupStatus,
+  ResetPasswordStatus,
 } from './types';
 
 export const logIn =
@@ -58,6 +60,36 @@ export const signUp =
     } catch (err) {
       console.error(err);
       dispatch(setSignupAttemptStatus(readSignupError(err)));
+    }
+  };
+
+const readResetPasswordError = (err: any) => {
+  switch (`${err}`) {
+    case 'FirebaseError: Firebase: Error (auth/user-not-found).':
+      return 'account-doesnt-exist';
+    case 'FirebaseError: Firebase: Error (auth/invalid-email).':
+      return 'email-invalid';
+    default:
+      return 'error';
+  }
+};
+
+export const sendPasswordReset =
+  (
+    email: string,
+    setResetPasswordAttemptStatus: React.Dispatch<
+      React.SetStateAction<ResetPasswordStatus>
+    >
+  ) =>
+  async () => {
+    // store-less function
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log('neigh');
+      setResetPasswordAttemptStatus('success');
+    } catch (err) {
+      console.error(err);
+      setResetPasswordAttemptStatus(readResetPasswordError(err));
     }
   };
 

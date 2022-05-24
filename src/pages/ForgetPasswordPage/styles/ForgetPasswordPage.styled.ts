@@ -1,5 +1,7 @@
-import { Input, Button } from 'antd';
 import styled from 'styled-components';
+import { Input, Button } from 'antd';
+import { FontType } from '../../../styles/Theme';
+import { fontTypeCss } from '../../../styles/index.styled';
 
 export const StyledForgetPasswordPage = styled.div`
   width: 100%;
@@ -16,22 +18,33 @@ export const ForgetPasswordDiv = styled.div`
   align-items: center;
 
   width: max(589px, 43vw);
-  height: 408px;
+  height: 469px;
   margin-top: 15vh;
+  padding-bottom: 65px;
 
   border-style: solid;
 `;
 
-export const HorseHead = styled.img`
-  width: 64px;
-  height: 64px;
+export const ForgetPasswordTitle = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
+  height: 50px;
+  margin-top: 25px;
+
+  line-height: 1.1;
 `;
 
-// export const ForgetPasswordForm = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   align-items: center;
-// `;
+export const HorseHead = styled.img`
+  width: 194px;
+  height: 194px;
+`;
+
+export const ResetEmailMsg = styled.div<{ fontType: FontType }>`
+  height: 27px;
+`;
+
+export const ForgetPasswordForm = styled.form`
+  width: 82%;
+`;
 
 export const StyledInput = styled(Input)`
   height: 35px;

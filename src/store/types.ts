@@ -34,6 +34,14 @@ export type SignupStatus =
   | 'redirect'
   | 'success';
 
+// not stored in store
+export type ResetPasswordStatus =
+  | 'initial'
+  | 'account-doesnt-exist'
+  | 'email-invalid'
+  | 'error'
+  | 'success';
+
 /** Actions' types */
 
 export enum ACTIONS {

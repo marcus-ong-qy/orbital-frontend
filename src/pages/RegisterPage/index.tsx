@@ -5,11 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form';
 import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
 import { Credentials, RootState } from '../../store/types';
-import {
-  setLoginAttemptStatus,
-  setSignupAttemptStatus,
-  signUp,
-} from '../../store/actions';
+import { setSignupAttemptStatus, signUp } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
 
@@ -38,24 +34,11 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const { h1, p, labelFont } = { ...theme.typography.fontSize };
-
-  const defaultCredentials: Credentials = {
-    email: '',
-    password: '',
-  };
+  const { h1 } = { ...theme.typography.fontSize };
 
   const { signupAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
   );
-
-  // const { loginAttemptStatus } = useSelector(
-  //   (state: RootState) => state.neigh_reducer
-  // );
-
-  // useEffect(() => {
-  //   console.table(errors);
-  // }, [errors]);
 
   const onSubmit = (data: FieldValues) => {
     const signUpCredentials: Credentials = {
