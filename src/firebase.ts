@@ -16,10 +16,10 @@ import {
   addDoc,
 } from 'firebase/firestore';
 
-import firebaseConfig from './firebase-config';
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+
+const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG!);
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
