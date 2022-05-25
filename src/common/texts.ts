@@ -1,3 +1,5 @@
-// TODO abstract hard-coded texts here
+// Static texts and paragraphs
 
-export {};
+// Forget password
+export const RESET_PWD_INSTRUCTIONS =
+  'An email will be sent to you to reset your password';

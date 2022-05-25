@@ -14,10 +14,12 @@ import {
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { Credentials, RootState } from '../../store/types';
 import { PATHS } from '../../routes/PATHS';
+import { LOGIN, SIGNUP } from '../../common/warnings';
 
 import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';
+import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
   ForgetPwdLink,
@@ -28,7 +30,6 @@ import {
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const LoginPage = () => {
       dispatch(setLoginAttemptStatus('initial'));
       dispatch(setSignupAttemptStatus('initial'));
     }
-  }, [loginAttemptStatus]);
+  }, [loginAttemptStatus, dispatch, navigate]);
 
   const onSubmit = (data: FieldValues) => {
     const loginCredentials: Credentials = {
@@ -66,7 +67,7 @@ const LoginPage = () => {
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
         <WarningLabels
-          label="Sign Up Successful!"
+          label={SIGNUP.SUCCESSFUL}
           isError={signupAttemptStatus === 'redirect'}
         />
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -80,7 +81,7 @@ const LoginPage = () => {
             title="Password"
             type="login"
             placeholder="Password"
-            errorLabel="Email/Password Invalid!"
+            errorLabel={LOGIN.INVALID}
             isError={loginAttemptStatus === 'invalid'}
             register={register}
             setValue={setValue}

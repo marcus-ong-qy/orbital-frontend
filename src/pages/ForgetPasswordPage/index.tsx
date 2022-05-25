@@ -6,6 +6,8 @@ import { useAppDispatch } from '../../app/hooks';
 import { sendPasswordReset } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { ResetPasswordStatus } from '../../store/types';
+import { resetPasswordErrorLabels } from '../../common/warnings';
+import { RESET_PWD_INSTRUCTIONS } from '../../common/texts';
 
 import InputField from '../../components/InputFields/InputField';
 import Button from '../../components/Button/Button';
@@ -37,15 +39,6 @@ const ForgetPasswordPage = () => {
       dispatch(sendPasswordReset(email, setResetPasswordAttemptStatus));
   };
 
-  enum resetPasswordErrorLabels {
-    'initial' = '',
-    'account-doesnt-exist' = 'An account has yet to be created with this email!',
-    'email-invalid' = 'Email invalid!',
-    'error' = 'Error sending reset email!',
-    'redirect' = '',
-    'success' = 'Reset Email sent!',
-  };
-
   const resetPasswordErrorLabel =
     resetPasswordErrorLabels[resetPasswordAttemptStatus];
 
@@ -54,9 +47,7 @@ const ForgetPasswordPage = () => {
       <ForgetPasswordDiv>
         <ForgetPasswordTitle fontType={h1}>Forget Password</ForgetPasswordTitle>
         <HorseHead src={confusedHorse} />
-        <ResetEmailMsg fontType={p}>
-          An email will be sent for you to reset your password
-        </ResetEmailMsg>
+        <ResetEmailMsg fontType={p}>{RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
         <ForgetPasswordForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             title="Email"

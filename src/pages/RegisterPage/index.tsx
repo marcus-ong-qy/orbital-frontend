@@ -10,6 +10,7 @@ import { Credentials, RootState } from '../../store/types';
 import { setSignupAttemptStatus, signUp } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
+import { SIGNUP, signupErrorLabels } from '../../common/warnings';
 
 import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
@@ -23,6 +24,7 @@ import {
   StyledSignUpPage,
 } from './styles/RegisterPage.styled';
 
+// TODO make label go away when exit page
 const RegisterPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -54,16 +56,7 @@ const RegisterPage = () => {
       navigate(PATHS.LOGIN);
       dispatch(setSignupAttemptStatus('redirect'));
     }
-  }, [signupAttemptStatus]);
-
-  enum signupErrorLabels {
-    'initial' = '',
-    'account-exists' = 'An account has been created with this email!',
-    'email-invalid' = 'Email used is invalid!',
-    'error' = 'Error when creating account!',
-    'redirect' = '',
-    'success' = '',
-  };
+  }, [signupAttemptStatus, dispatch, navigate]);
 
   const signupErrorLabel = signupErrorLabels[signupAttemptStatus];
 
@@ -81,7 +74,7 @@ const RegisterPage = () => {
           <InputField
             title="Email"
             placeholder="Email"
-            errorLabel="Please enter a valid email address"
+            errorLabel={SIGNUP.EMAIL_INVALID}
             isError={errors.Email}
             register={register}
             pattern={emailRegex}
@@ -91,7 +84,7 @@ const RegisterPage = () => {
             title="Password"
             type="signup"
             placeholder="Password"
-            errorLabel="Must be 8 or more characters and contain alphanumeric/symbols"
+            errorLabel={SIGNUP.PASSWORD_INVALID}
             isError={errors.Password}
             register={register}
             setValue={setValue}
