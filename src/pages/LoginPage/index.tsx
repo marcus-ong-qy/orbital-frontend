@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
+import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
-import { Credentials, RootState } from '../../store/types';
 import {
   logIn,
   logInOffline,
@@ -12,9 +12,9 @@ import {
   setSignupAttemptStatus,
 } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
+import { Credentials, RootState } from '../../store/types';
 import { PATHS } from '../../routes/PATHS';
 
-import { theme } from '../../styles/Theme';
 import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';

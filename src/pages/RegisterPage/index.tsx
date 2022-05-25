@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, useForm } from 'react-hook-form';
 
 import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
+import { emailRegex, passwordRegex } from '../../common/regex';
 import { Credentials, RootState } from '../../store/types';
 import { setSignupAttemptStatus, signUp } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
@@ -12,6 +14,7 @@ import { PATHS } from '../../routes/PATHS';
 import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';
+import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
   SignUpDiv,
@@ -19,8 +22,6 @@ import {
   SignUpWarningDiv,
   StyledSignUpPage,
 } from './styles/RegisterPage.styled';
-import { useEffect } from 'react';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -55,13 +56,13 @@ const RegisterPage = () => {
     }
   }, [signupAttemptStatus]);
 
-  const signupErrorLabels = {
-    initial: '',
-    'account-exists': 'An account has been created with this email!',
-    'email-invalid': 'Email used is invalid!',
-    error: 'Error when creating account!',
-    redirect: '',
-    success: '',
+  enum signupErrorLabels {
+    'initial' = '',
+    'account-exists' = 'An account has been created with this email!',
+    'email-invalid' = 'Email used is invalid!',
+    'error' = 'Error when creating account!',
+    'redirect' = '',
+    'success' = '',
   };
 
   const signupErrorLabel = signupErrorLabels[signupAttemptStatus];
@@ -83,7 +84,7 @@ const RegisterPage = () => {
             errorLabel="Please enter a valid email address"
             isError={errors.Email}
             register={register}
-            pattern={/.+@.+\..+/i}
+            pattern={emailRegex}
             required
           />
           <PasswordInputField
@@ -96,7 +97,7 @@ const RegisterPage = () => {
             setValue={setValue}
             setError={setError}
             clearErrors={clearErrors}
-            pattern={/^(?=.*[a-z0-9])(?=.*[!@#$%^&*])[a-z0-9!@#$%^&*]{8,}$/i}
+            pattern={passwordRegex}
             required
           />
           <Button style={{ marginTop: '3vh' }} type="submit" text="Sign Up" />

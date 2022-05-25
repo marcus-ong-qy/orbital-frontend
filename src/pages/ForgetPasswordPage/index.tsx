@@ -1,13 +1,15 @@
+import { useState } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import { useAppDispatch } from '../../app/hooks';
 import { theme } from '../../styles/Theme';
-import InputField from '../../components/InputFields/InputField';
-import Button from '../../components/Button/Button';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
+import { useAppDispatch } from '../../app/hooks';
 import { sendPasswordReset } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { ResetPasswordStatus } from '../../store/types';
+
+import InputField from '../../components/InputFields/InputField';
+import Button from '../../components/Button/Button';
+import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
   ForgetPasswordDiv,
@@ -19,7 +21,6 @@ import {
 } from './styles/ForgetPasswordPage.styled';
 
 import confusedHorse from '../../assets/Horse-confused.png';
-import { useState } from 'react';
 
 const ForgetPasswordPage = () => {
   const dispatch = useAppDispatch();
@@ -36,13 +37,13 @@ const ForgetPasswordPage = () => {
       dispatch(sendPasswordReset(email, setResetPasswordAttemptStatus));
   };
 
-  const resetPasswordErrorLabels = {
-    initial: '',
-    'account-doesnt-exist': 'An account has yet to be created with this email!',
-    'email-invalid': 'Email invalid!',
-    error: 'Error sending reset email!',
-    redirect: '',
-    success: 'Reset Email sent!',
+  enum resetPasswordErrorLabels {
+    'initial' = '',
+    'account-doesnt-exist' = 'An account has yet to be created with this email!',
+    'email-invalid' = 'Email invalid!',
+    'error' = 'Error sending reset email!',
+    'redirect' = '',
+    'success' = 'Reset Email sent!',
   };
 
   const resetPasswordErrorLabel =

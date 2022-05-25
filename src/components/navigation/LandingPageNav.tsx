@@ -1,4 +1,10 @@
+import { useNavigate } from 'react-router-dom';
 import { Input } from 'antd';
+
+import { theme } from '../../styles/Theme';
+import NavLink from '../NavLinks/NavLink';
+import { PATHS } from '../../routes/PATHS';
+
 import {
   NavbarTitle,
   RightDiv,
@@ -6,13 +12,9 @@ import {
   StyledLandingPageNav,
   StyledLogo,
 } from './styles/Navbars.styled';
+import { NavLinks } from '../NavLinks/styles/NavLinks.styled';
 
 import logo from '../../assets/Neigh-logos_transparent.png';
-import { theme } from '../../styles/Theme';
-import { NavLinks } from '../NavLinks/styles/NavLinks.styled';
-import NavLink from '../NavLinks/NavLink';
-import { PATHS } from '../../routes/PATHS';
-import { useNavigate } from 'react-router-dom';
 
 const LoadingPageNav = ({ title }: { title: string }) => {
   const navigate = useNavigate();
