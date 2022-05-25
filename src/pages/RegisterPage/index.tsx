@@ -99,7 +99,7 @@ const RegisterPage = () => {
         </form>
         <ExistingUserSpan fontType={p}>
           Have an account?&nbsp;
-          <LoginLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
+          <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>
             Log In
           </LoginLink>
           &nbsp;here!
