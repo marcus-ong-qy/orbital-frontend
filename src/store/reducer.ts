@@ -20,12 +20,14 @@ const initialState: State = {
   loginCredentials: loginCredentialsDefault,
   loginAttemptStatus: 'initial',
   signupAttemptStatus: 'initial',
+  alwaysLoggedInChecked: false,
 };
 
 type State = {
   loginCredentials: Credentials;
   loginAttemptStatus: LoginStatus;
   signupAttemptStatus: SignupStatus;
+  alwaysLoggedInChecked: boolean;
 };
 
 export const neigh_reducer: Reducer<State, ActionTypes> = (
@@ -43,6 +45,8 @@ export const neigh_reducer: Reducer<State, ActionTypes> = (
       return { ...state, loginAttemptStatus: action.loginAttemptStatus };
     case ACTIONS.SIGNUP_ATTEMPT_STATUS:
       return { ...state, signupAttemptStatus: action.signupAttemptStatus };
+    case ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
+      return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked };
     default:
       return state;
   }

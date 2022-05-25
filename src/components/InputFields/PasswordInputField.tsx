@@ -6,6 +6,10 @@ import {
   UseFormSetError,
   UseFormClearErrors,
 } from 'react-hook-form';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../app/hooks';
+import { toggleAlwaysLoggedInCheckbox } from '../../store/actions';
+import { RootState } from '../../store/types';
 import { theme } from '../../styles/Theme';
 import WarningLabels from '../WarningLabels/WarningLabels';
 import {
@@ -58,10 +62,14 @@ const PasswordInputField = (props: Props) => {
     );
   }
 
+  const dispatch = useAppDispatch();
+  const { alwaysLoggedInChecked } = useSelector(
+    (state: RootState) => state.neigh_reducer
+  );
+
   const { labelFont } = { ...theme.typography.fontSize };
 
   const [isCapsOn, setIsCapsOn] = useState(false);
-  const [rememberPassword, setRememberPassword] = useState<boolean>(false);
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
     setIsCapsOn(e.getModifierState('CapsLock'));
@@ -75,9 +83,8 @@ const PasswordInputField = (props: Props) => {
       : setError!(title, { type: 'pattern' });
   };
 
-  const checkboxOnChange = () => setRememberPassword(!rememberPassword);
+  const checkboxOnChange = () => dispatch(toggleAlwaysLoggedInCheckbox());
 
-  // TODO implement AlwaysLoggedIn checkbox functionality
   return (
     <InputFieldContainer>
       <PasswordSpan>
@@ -94,7 +101,7 @@ const PasswordInputField = (props: Props) => {
           <AlwaysLoggedInSpan fontType={labelFont}>
             <input
               type="checkbox"
-              checked={rememberPassword}
+              checked={alwaysLoggedInChecked}
               onChange={checkboxOnChange}
             />
             Always Logged In

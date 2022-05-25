@@ -1,6 +1,9 @@
 import {
+  browserLocalPersistence,
+  browserSessionPersistence,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  setPersistence,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
@@ -15,20 +18,31 @@ import {
   LoginStatus,
   SignupStatus,
   ResetPasswordStatus,
+  GetState,
 } from './types';
 
 export const logIn =
-  (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
-    try {
-      await signInWithEmailAndPassword(
-        auth,
-        credentials.email,
-        credentials.password
-      );
-      dispatch(setLoginCredentials(credentials));
-    } catch (err) {
-      dispatch(setLoginAttemptStatus('invalid'));
-    }
+  (credentials: Credentials) =>
+  (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    const { alwaysLoggedInChecked } = getState().neigh_reducer;
+
+    const persistenceType = alwaysLoggedInChecked
+      ? browserLocalPersistence
+      : browserSessionPersistence;
+
+    setPersistence(auth, persistenceType)
+      .then(() => {
+        return signInWithEmailAndPassword(
+          auth,
+          credentials.email,
+          credentials.password
+        );
+      })
+      .then(() => dispatch(setLoginCredentials(credentials)))
+      .catch((error) => {
+        console.error(error);
+        dispatch(setLoginAttemptStatus('invalid'));
+      });
   };
 
 const readSignupError = (err: any) => {
@@ -115,6 +129,15 @@ export const setSignupAttemptStatus =
     dispatch({
       type: ACTIONS.SIGNUP_ATTEMPT_STATUS,
       signupAttemptStatus: status,
+    });
+  };
+
+export const toggleAlwaysLoggedInCheckbox =
+  () => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    const { alwaysLoggedInChecked } = getState().neigh_reducer;
+    dispatch({
+      type: ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX,
+      alwaysLoggedInChecked: !alwaysLoggedInChecked,
     });
   };
 

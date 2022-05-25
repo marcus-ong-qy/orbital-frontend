@@ -46,11 +46,13 @@ export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
 
 export const NewUserSpan = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
+  font-weight: 700;
   margin-top: 5vh;
 `;
 
 export const SignUpLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
+  font-weight: 700;
   color: ${(props) => props.theme.palette.secondary};
   cursor: pointer;
 

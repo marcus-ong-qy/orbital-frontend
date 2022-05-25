@@ -5,7 +5,6 @@ import {
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
-  sendPasswordResetEmail,
   signOut,
 } from 'firebase/auth';
 import {
@@ -23,7 +22,7 @@ import firebaseConfig from './firebase-config';
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig); // TODO use vercel .env
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 // const analytics = getAnalytics(app);

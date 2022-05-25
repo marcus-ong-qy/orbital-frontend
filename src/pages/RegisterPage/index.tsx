@@ -18,6 +18,8 @@ import PasswordInputField from '../../components/InputFields/PasswordInputField'
 import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
+  ExistingUserSpan,
+  LoginLink,
   SignUpDiv,
   SignUpDivTitle,
   SignUpWarningDiv,
@@ -37,7 +39,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' });
 
-  const { h1 } = { ...theme.typography.fontSize };
+  const { h1, p } = { ...theme.typography.fontSize };
 
   const { signupAttemptStatus } = useSelector(
     (state: RootState) => state.neigh_reducer
@@ -93,8 +95,15 @@ const RegisterPage = () => {
             pattern={passwordRegex}
             required
           />
-          <Button style={{ marginTop: '3vh' }} type="submit" text="Sign Up" />
+          <Button style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
         </form>
+        <ExistingUserSpan fontType={p}>
+          Have an account?&nbsp;
+          <LoginLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
+            Log In
+          </LoginLink>
+          &nbsp;here!
+        </ExistingUserSpan>
       </SignUpDiv>
     </StyledSignUpPage>
   );

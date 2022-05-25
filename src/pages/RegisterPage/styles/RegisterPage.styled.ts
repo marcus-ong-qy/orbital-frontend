@@ -31,6 +31,23 @@ export const SignUpDivTitle = styled.div<{ fontType: FontType }>`
 `;
 
 export const SignUpWarningDiv = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   height: 25px;
+`;
+
+export const ExistingUserSpan = styled.span<{ fontType: FontType }>`
+  ${fontTypeCss}
+  margin-top: 5vh;
+  font-weight: 700;
+`;
+
+export const LoginLink = styled.a<{ fontType: FontType }>`
+  ${fontTypeCss}
+  font-weight: 700;
+  color: ${(props) => props.theme.palette.secondary};
+  cursor: pointer;
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight};
+  }
 `;

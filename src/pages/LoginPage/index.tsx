@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { FieldValues, useForm } from 'react-hook-form';
 
-import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
+import { LOGIN, SIGNUP } from '../../common/warnings';
+import { theme } from '../../styles/Theme';
+import { PATHS } from '../../routes/PATHS';
+
 import {
   logIn,
   logInOffline,
@@ -13,8 +16,6 @@ import {
 } from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { Credentials, RootState } from '../../store/types';
-import { PATHS } from '../../routes/PATHS';
-import { LOGIN, SIGNUP } from '../../common/warnings';
 
 import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
