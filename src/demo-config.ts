@@ -1,3 +1,4 @@
+// data for offline testing
 import { Credentials } from './store/types';
 
 export const demoAcc: Credentials = {

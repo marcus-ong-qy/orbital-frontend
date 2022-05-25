@@ -8,7 +8,7 @@ import {
 import { Provider } from 'react-redux';
 
 import App from '../App';
-import { demoAcc } from '../firebase-config';
+import { demoAcc } from '../demo-config';
 import { store } from '../store/store';
 import { theme } from '../styles/Theme';
 

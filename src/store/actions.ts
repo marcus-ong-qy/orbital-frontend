@@ -9,7 +9,7 @@ import {
 import { collection, addDoc } from 'firebase/firestore';
 
 import { auth, db } from '../firebase';
-import { demoAcc } from '../firebase-config';
+import { demoAcc } from '../demo-config';
 import {
   Dispatch,
   ActionTypes,
