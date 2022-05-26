@@ -11,6 +11,7 @@ import { PATHS } from '../../routes/PATHS';
 import {
   logIn,
   logInOffline,
+  logInWithGoogle,
   setLoginAttemptStatus,
   setSignupAttemptStatus,
 } from '../../store/actions';
@@ -25,9 +26,11 @@ import WarningLabels from '../../components/WarningLabels/WarningLabels';
 import {
   ForgetPwdLink,
   ForgetPwdSpan,
+  GoogleButtonStyled,
   LoginDiv,
   LoginDivTitle,
   NewUserSpan,
+  OrSpan,
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled';
@@ -65,6 +68,10 @@ const LoginPage = () => {
     );
   };
 
+  const onGoogleSignIn = () => {
+    IS_USING_BACKEND && dispatch(logInWithGoogle());
+  };
+
   return (
     <StyledLoginPage data-testid="login-page">
       <LoginDiv>
@@ -100,6 +107,8 @@ const LoginPage = () => {
             Forget Password?
           </ForgetPwdLink>
         </ForgetPwdSpan>
+        <OrSpan>or</OrSpan>
+        <GoogleButtonStyled type="light" onClick={onGoogleSignIn} disabled />
         <NewUserSpan fontType={p}>
           New to this site?&nbsp;
           <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>

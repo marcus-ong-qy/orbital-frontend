@@ -5,6 +5,7 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -30,7 +31,7 @@ export const logIn =
       ? browserLocalPersistence
       : browserSessionPersistence;
 
-    setPersistence(auth, persistenceType)
+    setPersistence(auth, persistenceType) // FIXME login doesn't persist
       .then(() => {
         return signInWithEmailAndPassword(
           auth,
@@ -44,6 +45,32 @@ export const logIn =
         dispatch(setLoginAttemptStatus('invalid'));
       });
   };
+
+export const logInWithGoogle =
+  () => async (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    // // TODO not yet implemented
+    // try {
+    //   const res = await signInWithPopup(auth, googleProvider);
+    //   const user = res.user;
+    //   const q = query(collection(db, 'users'), where('uid', '==', user.uid));
+    //   const docs = await getDocs(q);
+    //   if (docs.docs.length === 0) {
+    //     await addDoc(collection(db, 'users'), {
+    //       uid: user.uid,
+    //       name: user.displayName,
+    //       authProvider: 'google',
+    //       email: user.email,
+    //     });
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    // }
+  };
+
+export const logout = () => {
+  // TODO implement
+  signOut(auth);
+};
 
 const readSignupError = (err: any) => {
   switch (`${err}`) {

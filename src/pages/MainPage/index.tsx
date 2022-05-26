@@ -11,7 +11,7 @@ const MainPage = () => {
     <div data-testid="MarketplaceMain">
       <h1>Main Page</h1>
       <div>Username: {email}</div>
-      <div>Password: {password}</div>
+      <div>Password: {password && '***redacted***'}</div>
     </div>
   );
 };

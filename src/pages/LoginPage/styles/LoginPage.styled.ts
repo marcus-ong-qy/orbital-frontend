@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import GoogleButton from 'react-google-button';
 import { fontTypeCss } from '../../../styles/index.styled';
 import { FontType } from '../../../styles/Theme';
 
@@ -44,11 +45,26 @@ export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
   }
 `;
 
+export const OrSpan = styled.div`
+  width: 56px;
+  height: 39px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 22px;
+
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  text-decoration-line: underline;
+`;
+
 export const NewUserSpan = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
-  margin-top: 5vh;
+  margin-top: 24px;
 `;
+
+export const GoogleButtonStyled = styled(GoogleButton)``;
 
 export const SignUpLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
