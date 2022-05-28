@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 import App from '../App'

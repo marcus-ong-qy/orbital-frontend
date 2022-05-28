@@ -101,7 +101,7 @@ const readResetPasswordError = (err: any) => {
 
 export const sendPasswordReset = async (
   email: string,
-  setResetPasswordAttemptStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>
+  setResetPasswordAttemptStatus: React.Dispatch<React.SetStateAction<ResetPasswordStatus>>,
 ) => {
   // no need to dispatch
   try {

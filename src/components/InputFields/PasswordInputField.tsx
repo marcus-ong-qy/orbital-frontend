@@ -54,7 +54,7 @@ const PasswordInputField = (props: Props) => {
 
   if (pattern && (!setError || !clearErrors)) {
     console.error(
-      "PasswordInputField: Both setError and ClearErrors params need to be passed in when 'pattern' param is used!"
+      "PasswordInputField: Both setError and ClearErrors params need to be passed in when 'pattern' param is used!",
     )
   }
 

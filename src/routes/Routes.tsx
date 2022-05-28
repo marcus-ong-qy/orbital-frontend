@@ -5,17 +5,17 @@ import { PATHS } from './PATHS'
 import { RouteWithoutNav, RouteWithLandingPageNav } from './RouteTypes'
 
 const LoginPage = React.lazy(
-  () => import(/* webpackChunckName: "LoginPage" */ '../pages/LoginPage')
+  () => import(/* webpackChunckName: "LoginPage" */ '../pages/LoginPage'),
 )
 const MainPage = React.lazy(() => import(/* webpackChunckName: "MainPage" */ '../pages/MainPage'))
 const RegisterPage = React.lazy(
-  () => import(/* webpackChunckName: "RegisterPage" */ '../pages/SignupPage/index')
+  () => import(/* webpackChunckName: "RegisterPage" */ '../pages/SignupPage/index'),
 )
 const ForgetPasswordPage = React.lazy(
-  () => import(/* webpackChunckName: "ForgetPasswordPage" */ '../pages/ForgetPasswordPage')
+  () => import(/* webpackChunckName: "ForgetPasswordPage" */ '../pages/ForgetPasswordPage'),
 )
 const LoadingPage = React.lazy(
-  () => import(/* webpackChunckName: "LoadingPage" */ '../pages/LoadingPage')
+  () => import(/* webpackChunckName: "LoadingPage" */ '../pages/LoadingPage'),
 )
 
 export const Routes = () => (
