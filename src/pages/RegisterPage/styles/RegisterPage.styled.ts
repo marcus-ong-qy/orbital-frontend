@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import GoogleButton from 'react-google-button';
 import { FontType } from '../../../styles/Theme';
 import { fontTypeCss } from '../../../styles/index.styled';
 
@@ -16,9 +17,9 @@ export const SignUpDiv = styled.div`
   align-items: center;
 
   width: min(673px, 49vw);
-  height: min(469px, 61vh);
-  margin-top: 15vh;
-  padding: 0 min(84px, 6vw);
+  height: 469px;
+  margin: 15vh 0;
+  padding: 0 min(56px, 4vw);
 
   background: ${(props) => props.theme.palette.common.gray};
   border: 1px solid ${(props) => props.theme.palette.common.black};
@@ -28,6 +29,10 @@ export const SignUpDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 
   margin-top: 25px;
+`;
+
+export const SignUpForm = styled.form`
+  width: 100%;
 `;
 
 export const SignUpWarningDiv = styled.div`
@@ -40,6 +45,22 @@ export const ExistingUserSpan = styled.span<{ fontType: FontType }>`
   margin-top: 5vh;
   font-weight: 700;
 `;
+
+export const OrSpan = styled.div`
+  width: 56px;
+  height: 39px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 22px;
+  margin-top: 16px;
+
+  display: flex;
+  align-items: top;
+  justify-content: center;
+  text-decoration-line: underline;
+`;
+
+export const GoogleButtonStyled = styled(GoogleButton)``;
 
 export const LoginLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}

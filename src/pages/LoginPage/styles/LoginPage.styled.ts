@@ -27,6 +27,10 @@ export const LoginDivTitle = styled.div<{ fontType: FontType }>`
   margin-bottom: 2vh;
 `;
 
+export const LoginForm = styled.form`
+  width: 100%;
+`;
+
 export const ForgetPwdSpan = styled.span`
   width: 100%;
   margin-top: 0.5vh;

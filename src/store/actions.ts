@@ -22,6 +22,36 @@ import {
   GetState,
 } from './types';
 
+// export const getUserProfile = () => (dispatch: Dispatch<ActionTypes>) => {
+//   const user = auth.currentUser;
+//   console.log('is the user:', user);
+//   if (user !== null) {
+//     // The user object has basic properties such as display name, email, etc.
+//     const displayName = user.displayName;
+//     const email = user.email;
+//     const photoURL = user.photoURL;
+//     const emailVerified = user.emailVerified;
+
+//     // The user's ID, unique to the Firebase project. Do NOT use
+//     // this value to authenticate with your backend server, if
+//     // you have one. Use User.getToken() instead.
+//     const uid = user.uid;
+
+//     const updatedUserProfile = {
+//       displayName: displayName,
+//       email: email,
+//       photoURL: photoURL,
+//       emailVerified: emailVerified,
+//       uid: uid,
+//     };
+
+//     // dispatch({
+//     //   type: ACTIONS.GET_USER_PROFILE,
+//     //   userProfile: updatedUserProfile,
+//     // });
+//   }
+// };
+
 export const logIn =
   (credentials: Credentials) =>
   (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
@@ -66,11 +96,6 @@ export const logInWithGoogle =
     //   console.error(err);
     // }
   };
-
-export const logout = () => {
-  // TODO implement
-  signOut(auth);
-};
 
 const readSignupError = (err: any) => {
   switch (`${err}`) {

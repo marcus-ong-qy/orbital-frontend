@@ -4,7 +4,7 @@ import { FontType } from '../../../styles/Theme';
 import { fontTypeCss } from '../../../styles/index.styled';
 
 export const InputFieldContainer = styled.div`
-  margin: 1.2vh;
+  margin: 1.2vh 0;
 `;
 
 export const StyledInput = styled.input`
@@ -23,7 +23,7 @@ export const PasswordSpan = styled.div`
 
 export const StyledBigA = styled.div`
   height: 35px;
-  width: 10%;
+  width: 30px;
 
   line-height: 35px;
 
@@ -50,9 +50,7 @@ export const StyledPasswordInput = styled(Input.Password)`
   .ant-input-suffix {
     display: flex;
     align-items: center;
-  }
-  .anticon {
-    margin-left: 3vw;
+    justify-content: center;
   }
 `;
 

@@ -29,6 +29,7 @@ import {
   GoogleButtonStyled,
   LoginDiv,
   LoginDivTitle,
+  LoginForm,
   NewUserSpan,
   OrSpan,
   SignUpLink,
@@ -80,7 +81,7 @@ const LoginPage = () => {
           label={SIGNUP.SUCCESSFUL}
           isError={signupAttemptStatus === 'redirect'}
         />
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             title="Email"
             placeholder="Email"
@@ -99,7 +100,7 @@ const LoginPage = () => {
             required
           />
           <Button type="submit" text="Login" />
-        </form>
+        </LoginForm>
         <ForgetPwdSpan>
           <ForgetPwdLink
             fontType={labelFont}

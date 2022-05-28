@@ -6,10 +6,19 @@ import {
   Credentials,
   LoginStatus,
   SignupStatus,
+  UserProfile,
 } from './types';
 
 type BinaryBool = 1 | 0;
 export const IS_USING_BACKEND: BinaryBool = 1;
+
+export const defaultUserProfile = {
+  displayName: '',
+  email: '',
+  photoURL: '',
+  emailVerified: false,
+  uid: '',
+};
 
 const loginCredentialsDefault: Credentials = {
   email: '',
@@ -17,6 +26,7 @@ const loginCredentialsDefault: Credentials = {
 };
 
 const initialState: State = {
+  userProfile: defaultUserProfile,
   loginCredentials: loginCredentialsDefault,
   loginAttemptStatus: 'initial',
   signupAttemptStatus: 'initial',
@@ -24,7 +34,8 @@ const initialState: State = {
 };
 
 type State = {
-  loginCredentials: Credentials;
+  userProfile: UserProfile; // FIXME may not be needed as well
+  loginCredentials: Credentials; // FIXME may not be needed
   loginAttemptStatus: LoginStatus;
   signupAttemptStatus: SignupStatus;
   alwaysLoggedInChecked: boolean;
@@ -35,6 +46,8 @@ export const neigh_reducer: Reducer<State, ActionTypes> = (
   action
 ) => {
   switch (action.type) {
+    case ACTIONS.GET_USER_PROFILE:
+      return { ...state, userProfile: action.userProfile };
     case ACTIONS.LOGIN:
       return {
         ...state,

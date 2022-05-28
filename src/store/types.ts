@@ -19,6 +19,13 @@ export type Dispatch<CustomActionTypes extends Action> = ThunkDispatch<
 export type GetState = () => RootState;
 
 /** Types */
+export type UserProfile = {
+  displayName: string | null;
+  email: string | null;
+  photoURL: string | null;
+  emailVerified: boolean;
+  uid: string | null;
+};
 
 export type Credentials = {
   email: string;
@@ -45,6 +52,7 @@ export type ResetPasswordStatus =
 /** Actions' types */
 
 export enum ACTIONS {
+  GET_USER_PROFILE = 'ACTIONS.GET_USER_PROFILE',
   LOGIN = 'ACTIONS.LOGIN',
   LOGIN_ATTEMPT_STATUS = 'ACTIONS.LOGIN_ATTEMPT_STATUS',
   SIGNUP_ATTEMPT_STATUS = 'ACTIONS.SIGNUP_ATTEMPT_STATUS',
@@ -52,6 +60,11 @@ export enum ACTIONS {
 }
 
 /** Actions */
+
+export type GetUserProfile = {
+  type: typeof ACTIONS.GET_USER_PROFILE;
+  userProfile: UserProfile;
+};
 
 export type LogIn = {
   type: typeof ACTIONS.LOGIN;
@@ -75,6 +88,7 @@ export type AlwaysLoggedInCheckbox = {
 };
 
 export type ActionTypes =
+  | GetUserProfile
   | LogIn
   | LoginAttemptStatus
   | SignupAttemptStatus

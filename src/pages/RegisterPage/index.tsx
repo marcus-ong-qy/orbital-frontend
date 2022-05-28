@@ -7,7 +7,11 @@ import { theme } from '../../styles/Theme';
 import { useAppDispatch } from '../../app/hooks';
 import { emailRegex, passwordRegex } from '../../common/regex';
 import { Credentials, RootState } from '../../store/types';
-import { setSignupAttemptStatus, signUp } from '../../store/actions';
+import {
+  logInWithGoogle,
+  setSignupAttemptStatus,
+  signUp,
+} from '../../store/actions';
 import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
 import { SIGNUP, signupErrorLabels } from '../../common/warnings';
@@ -19,9 +23,12 @@ import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
   ExistingUserSpan,
+  GoogleButtonStyled,
   LoginLink,
+  OrSpan,
   SignUpDiv,
   SignUpDivTitle,
+  SignUpForm,
   SignUpWarningDiv,
   StyledSignUpPage,
 } from './styles/RegisterPage.styled';
@@ -62,6 +69,10 @@ const RegisterPage = () => {
 
   const signupErrorLabel = signupErrorLabels[signupAttemptStatus];
 
+  const onGoogleSignIn = () => {
+    IS_USING_BACKEND && dispatch(logInWithGoogle());
+  };
+
   return (
     <StyledSignUpPage data-testid="register-page">
       <SignUpDiv>
@@ -72,7 +83,7 @@ const RegisterPage = () => {
             isError={signupErrorLabel.length !== 0}
           />
         </SignUpWarningDiv>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <SignUpForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             title="Email"
             placeholder="Email"
@@ -96,7 +107,9 @@ const RegisterPage = () => {
             required
           />
           <Button style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
-        </form>
+        </SignUpForm>
+        <OrSpan>or</OrSpan>
+        <GoogleButtonStyled type="light" onClick={onGoogleSignIn} disabled />
         <ExistingUserSpan fontType={p}>
           Have an account?&nbsp;
           <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>
