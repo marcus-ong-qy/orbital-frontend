@@ -4,6 +4,10 @@ import { fontTypeCss } from '../../../styles/index.styled';
 
 export const StyledNavLink = styled.span`
   cursor: pointer;
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.light};
+  }
 `;
 
 export const NavLinks = styled.span<{ fontType: FontType; justify?: string }>`

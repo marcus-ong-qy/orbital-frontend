@@ -15,7 +15,11 @@ export type ThemeType = {
     primary: HexCode;
     secondary: HexCode;
     danger: HexCode;
-    highlight: HexCode;
+    highlight: {
+      normal: HexCode;
+      light: HexCode;
+      dark: HexCode;
+    };
     background: HexCode;
   };
   typography: {
@@ -53,7 +57,11 @@ export const theme: ThemeType = {
     primary: '#719972',
     secondary: '#816353',
     danger: '#997198',
-    highlight: '#997198',
+    highlight: {
+      normal: '#997198',
+      light: '#e0d4e0',
+      dark: '#7a5a7a',
+    },
     background: '#ebe8d7',
   },
   typography: {

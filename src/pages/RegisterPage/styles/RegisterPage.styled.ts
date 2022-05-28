@@ -1,14 +1,16 @@
 import styled from 'styled-components';
-import GoogleButton from 'react-google-button';
 import { FontType } from '../../../styles/Theme';
-import { fontTypeCss } from '../../../styles/index.styled';
+import {
+  fontTypeCss,
+  loginPagesCss,
+  loginDivStyleVar,
+  orSpanCss,
+  loginFormsCss,
+} from '../../../styles/index.styled';
+import Button from '../../../components/Button/Button';
 
 export const StyledSignUpPage = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${loginPagesCss}
 `;
 
 export const SignUpDiv = styled.div`
@@ -17,9 +19,9 @@ export const SignUpDiv = styled.div`
   align-items: center;
 
   width: min(673px, 49vw);
-  height: 469px;
-  margin: 15vh 0;
-  padding: 0 min(56px, 4vw);
+  height: auto;
+  margin: ${loginDivStyleVar.margin} 0;
+  padding: ${loginDivStyleVar.padding};
 
   background: ${(props) => props.theme.palette.common.gray};
   border: 1px solid ${(props) => props.theme.palette.common.black};
@@ -27,17 +29,24 @@ export const SignUpDiv = styled.div`
 
 export const SignUpDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
-
-  margin-top: 25px;
 `;
 
 export const SignUpForm = styled.form`
-  width: 100%;
+  ${loginFormsCss}
 `;
 
 export const SignUpWarningDiv = styled.div`
   margin-top: 10px;
   height: 25px;
+`;
+
+export const SignUpButton = styled(Button)`
+  margin-top: 1vh;
+`;
+
+export const OrSpan = styled.div`
+  ${orSpanCss}
+  margin-top: 16px;
 `;
 
 export const ExistingUserSpan = styled.span<{ fontType: FontType }>`
@@ -46,22 +55,6 @@ export const ExistingUserSpan = styled.span<{ fontType: FontType }>`
   font-weight: 700;
 `;
 
-export const OrSpan = styled.div`
-  width: 56px;
-  height: 39px;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 22px;
-  margin-top: 16px;
-
-  display: flex;
-  align-items: top;
-  justify-content: center;
-  text-decoration-line: underline;
-`;
-
-export const GoogleButtonStyled = styled(GoogleButton)``;
-
 export const LoginLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
@@ -69,6 +62,6 @@ export const LoginLink = styled.a<{ fontType: FontType }>`
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.palette.highlight};
+    color: ${(props) => props.theme.palette.highlight.normal};
   }
 `;

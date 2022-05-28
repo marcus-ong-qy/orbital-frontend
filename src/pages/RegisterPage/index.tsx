@@ -23,15 +23,16 @@ import WarningLabels from '../../components/WarningLabels/WarningLabels';
 
 import {
   ExistingUserSpan,
-  GoogleButtonStyled,
   LoginLink,
   OrSpan,
+  SignUpButton,
   SignUpDiv,
   SignUpDivTitle,
   SignUpForm,
   SignUpWarningDiv,
   StyledSignUpPage,
 } from './styles/RegisterPage.styled';
+import GoogleButton from 'react-google-button';
 
 // TODO make label go away when exit page
 const RegisterPage = () => {
@@ -106,10 +107,14 @@ const RegisterPage = () => {
             pattern={passwordRegex}
             required
           />
-          <Button style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
+          <SignUpButton
+            style={{ marginTop: '1vh' }}
+            type="submit"
+            text="Sign Up"
+          />
         </SignUpForm>
         <OrSpan>or</OrSpan>
-        <GoogleButtonStyled type="light" onClick={onGoogleSignIn} disabled />
+        <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
         <ExistingUserSpan fontType={p}>
           Have an account?&nbsp;
           <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>

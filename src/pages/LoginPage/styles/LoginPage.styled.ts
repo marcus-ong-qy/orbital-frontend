@@ -1,14 +1,15 @@
 import styled from 'styled-components';
-import GoogleButton from 'react-google-button';
-import { fontTypeCss } from '../../../styles/index.styled';
+import {
+  fontTypeCss,
+  loginPagesCss,
+  loginDivStyleVar,
+  orSpanCss,
+  loginFormsCss,
+} from '../../../styles/index.styled';
 import { FontType } from '../../../styles/Theme';
 
 export const StyledLoginPage = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  ${loginPagesCss}
 `;
 
 export const LoginDiv = styled.div`
@@ -17,8 +18,8 @@ export const LoginDiv = styled.div`
   align-items: center;
 
   width: max(408px, 35vw);
-  height: 408px;
-  margin-top: 15vh;
+  height: auto;
+  margin-top: ${loginDivStyleVar.margin};
 `;
 
 export const LoginDivTitle = styled.div<{ fontType: FontType }>`
@@ -28,7 +29,7 @@ export const LoginDivTitle = styled.div<{ fontType: FontType }>`
 `;
 
 export const LoginForm = styled.form`
-  width: 100%;
+  ${loginFormsCss}
 `;
 
 export const ForgetPwdSpan = styled.span`
@@ -45,21 +46,12 @@ export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.palette.highlight};
+    color: ${(props) => props.theme.palette.highlight.normal};
   }
 `;
 
 export const OrSpan = styled.div`
-  width: 56px;
-  height: 39px;
-  font-weight: 700;
-  font-size: 24px;
-  line-height: 22px;
-
-  display: flex;
-  align-items: top;
-  justify-content: center;
-  text-decoration-line: underline;
+  ${orSpanCss}
 `;
 
 export const NewUserSpan = styled.span<{ fontType: FontType }>`
@@ -68,8 +60,6 @@ export const NewUserSpan = styled.span<{ fontType: FontType }>`
   margin-top: 24px;
 `;
 
-export const GoogleButtonStyled = styled(GoogleButton)``;
-
 export const SignUpLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
@@ -77,6 +67,6 @@ export const SignUpLink = styled.a<{ fontType: FontType }>`
   cursor: pointer;
 
   :hover {
-    color: ${(props) => props.theme.palette.highlight};
+    color: ${(props) => props.theme.palette.highlight.normal};
   }
 `;

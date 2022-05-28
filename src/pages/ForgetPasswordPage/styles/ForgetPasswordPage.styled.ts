@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import { Input, Button } from 'antd';
 import { FontType } from '../../../styles/Theme';
-import { fontTypeCss } from '../../../styles/index.styled';
+import {
+  fontTypeCss,
+  loginPagesCss,
+  loginDivStyleVar,
+} from '../../../styles/index.styled';
+import Button from '../../../components/Button/Button';
 
 export const StyledForgetPasswordPage = styled.div`
-  width: 100%;
-  height: 80vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  ${loginPagesCss}
 `;
 
 export const ForgetPasswordDiv = styled.div`
@@ -18,17 +17,17 @@ export const ForgetPasswordDiv = styled.div`
   align-items: center;
 
   width: max(589px, 43vw);
-  height: 469px;
-  margin-top: 15vh;
-  padding-bottom: 65px;
+  height: auto;
+  margin: ${loginDivStyleVar.margin};
+  padding: ${loginDivStyleVar.padding};
 
-  border-style: solid;
+  background: ${(props) => props.theme.palette.common.gray};
+  border: 1px solid ${(props) => props.theme.palette.common.black};
 `;
 
 export const ForgetPasswordTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   height: 50px;
-  margin-top: 25px;
 
   line-height: 1.1;
 `;
@@ -43,19 +42,9 @@ export const ResetEmailMsg = styled.div<{ fontType: FontType }>`
 `;
 
 export const ForgetPasswordForm = styled.form`
-  width: 82%;
+  width: 100%;
 `;
 
-export const StyledInput = styled(Input)`
-  height: 35px;
-  width: 100%;
-  margin-bottom: 2vh;
-`;
-
-export const StyledButton = styled(Button)`
-  height: 35px;
-  width: 100%;
-  background: ${(props) => props.theme.palette.secondary};
-  color: black;
-  font-weight: bold;
+export const ResetPasswordButton = styled(Button)`
+  margin-top: 1vh;
 `;

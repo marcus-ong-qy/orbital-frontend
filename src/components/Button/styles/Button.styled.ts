@@ -6,8 +6,14 @@ export const StyledButton = styled(Button)`
   width: 100%;
   border-radius: 35px;
 
+  cursor: pointer;
+
   background: ${(props) => props.theme.palette.secondary};
   color: ${(props) => props.theme.palette.common.gray};
   font-weight: bold;
   font-size: 18px;
+
+  :hover {
+    background: ${(props) => props.theme.palette.highlight.dark};
+  }
 `;

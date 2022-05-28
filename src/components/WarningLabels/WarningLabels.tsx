@@ -1,6 +1,6 @@
 import { theme } from '../../styles/Theme';
 
-import { LabelsDiv, StyledLabel } from './styles/WarningLabels.styled';
+import { StyledLabel } from './styles/WarningLabels.styled';
 
 type Props = {
   label: string;
@@ -15,11 +15,7 @@ const Label = ({ label }: { label: string }) => {
 };
 
 const WarningLabels = (props: Props) => {
-  return (
-    <LabelsDiv>
-      {props.isError && <Label label={props.label ?? ''} />}
-    </LabelsDiv>
-  );
+  return <div>{props.isError && <Label label={props.label ?? ''} />}</div>;
 };
 
 export default WarningLabels;

@@ -11,7 +11,3 @@ export const StyledLabel = styled.div<{
   ${fontTypeCss}
   font-weight: 600;
 `;
-
-export const LabelsDiv = styled.div`
-  height: 22px;
-`;

@@ -26,7 +26,6 @@ import WarningLabels from '../../components/WarningLabels/WarningLabels';
 import {
   ForgetPwdLink,
   ForgetPwdSpan,
-  GoogleButtonStyled,
   LoginDiv,
   LoginDivTitle,
   LoginForm,
@@ -35,6 +34,7 @@ import {
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled';
+import GoogleButton from 'react-google-button';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ const LoginPage = () => {
           </ForgetPwdLink>
         </ForgetPwdSpan>
         <OrSpan>or</OrSpan>
-        <GoogleButtonStyled type="light" onClick={onGoogleSignIn} disabled />
+        <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
         <NewUserSpan fontType={p}>
           New to this site?&nbsp;
           <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>

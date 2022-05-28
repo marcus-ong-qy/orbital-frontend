@@ -19,6 +19,7 @@ import {
   ForgetPasswordTitle,
   HorseHead,
   ResetEmailMsg,
+  ResetPasswordButton,
   StyledForgetPasswordPage,
 } from './styles/ForgetPasswordPage.styled';
 
@@ -58,7 +59,7 @@ const ForgetPasswordPage = () => {
             label={resetPasswordErrorLabel}
             isError={resetPasswordErrorLabel.length !== 0}
           />
-          <Button type="submit" text="Reset Password" />
+          <ResetPasswordButton type="submit" text="Reset Password" />
         </ForgetPasswordForm>
       </ForgetPasswordDiv>
     </StyledForgetPasswordPage>
