@@ -38,6 +38,7 @@ export const logIn =
           credentials.password
         );
       })
+      .then(() => dispatch(setLoginAttemptStatus('success')))
       .catch((error) => {
         console.error(error);
         dispatch(setLoginAttemptStatus('invalid'));
