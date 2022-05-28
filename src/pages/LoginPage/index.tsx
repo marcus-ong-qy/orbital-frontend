@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FieldValues, useForm } from 'react-hook-form'
+import GoogleButton from 'react-google-button'
 
-import { useAppDispatch } from '../../app/hooks';
-import { LOGIN, SIGNUP } from '../../common/warnings';
-import { theme } from '../../styles/Theme';
-import { PATHS } from '../../routes/PATHS';
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { LOGIN, SIGNUP } from '../../common/warnings'
+import { theme } from '../../styles/Theme'
+import { PATHS } from '../../routes/PATHS'
 
 import {
   logIn,
@@ -14,14 +14,14 @@ import {
   logInWithGoogle,
   setLoginAttemptStatus,
   setSignupAttemptStatus,
-} from '../../store/actions';
-import { IS_USING_BACKEND } from '../../store/reducer';
-import { Credentials, RootState } from '../../store/types';
+} from '../../store/actions'
+import { IS_USING_BACKEND } from '../../store/reducer'
+import { Credentials } from '../../store/types'
 
-import Button from '../../components/Button/Button';
-import InputField from '../../components/InputFields/InputField';
-import PasswordInputField from '../../components/InputFields/PasswordInputField';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
+import Button from '../../components/Button/Button'
+import InputField from '../../components/InputFields/InputField'
+import PasswordInputField from '../../components/InputFields/PasswordInputField'
+import WarningLabels from '../../components/WarningLabels/WarningLabels'
 
 import {
   ForgetPwdLink,
@@ -33,59 +33,44 @@ import {
   OrSpan,
   SignUpLink,
   StyledLoginPage,
-} from './styles/LoginPage.styled';
-import GoogleButton from 'react-google-button';
+} from './styles/LoginPage.styled'
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { register, handleSubmit, setValue, setError } = useForm({
     mode: 'onSubmit',
-  });
-  const { loginAttemptStatus, signupAttemptStatus } = useSelector(
-    (state: RootState) => state.neigh_reducer
-  );
-  const { h1, p, labelFont } = { ...theme.typography.fontSize };
+  })
+  const { loginAttemptStatus, signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
   useEffect(() => {
     if (loginAttemptStatus === 'success') {
-      navigate(PATHS.MAIN);
-      dispatch(setLoginAttemptStatus('initial'));
-      dispatch(setSignupAttemptStatus('initial'));
+      navigate(PATHS.MAIN)
+      dispatch(setLoginAttemptStatus('initial'))
+      dispatch(setSignupAttemptStatus('initial'))
     }
-  }, [loginAttemptStatus, dispatch, navigate]);
+  }, [loginAttemptStatus, dispatch, navigate])
 
   const onSubmit = (data: FieldValues) => {
     const loginCredentials: Credentials = {
       email: data.Email.trim(),
       password: data.Password,
-    };
-    dispatch(
-      IS_USING_BACKEND
-        ? logIn(loginCredentials)
-        : logInOffline(loginCredentials)
-    );
-  };
+    }
+    dispatch(IS_USING_BACKEND ? logIn(loginCredentials) : logInOffline(loginCredentials))
+  }
 
   const onGoogleSignIn = () => {
-    IS_USING_BACKEND && dispatch(logInWithGoogle());
-  };
+    IS_USING_BACKEND && dispatch(logInWithGoogle())
+  }
 
   return (
     <StyledLoginPage data-testid="login-page">
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
-        <WarningLabels
-          label={SIGNUP.SUCCESSFUL}
-          isError={signupAttemptStatus === 'redirect'}
-        />
+        <WarningLabels label={SIGNUP.SUCCESSFUL} isError={signupAttemptStatus === 'redirect'} />
         <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputField
-            title="Email"
-            placeholder="Email"
-            register={register}
-            required
-          />
+          <InputField title="Email" placeholder="Email" register={register} required />
           <PasswordInputField
             title="Password"
             type="login"
@@ -100,9 +85,7 @@ const LoginPage = () => {
           <Button type="submit" text="Login" />
         </LoginForm>
         <ForgetPwdSpan>
-          <ForgetPwdLink
-            fontType={labelFont}
-            onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
+          <ForgetPwdLink fontType={labelFont} onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
             Forget Password?
           </ForgetPwdLink>
         </ForgetPwdSpan>
@@ -117,7 +100,7 @@ const LoginPage = () => {
         </NewUserSpan>
       </LoginDiv>
     </StyledLoginPage>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

@@ -1,9 +1,9 @@
-import { useNavigate } from 'react-router-dom';
-import { Input } from 'antd';
+import { useNavigate } from 'react-router-dom'
+import { Input } from 'antd'
 
-import { theme } from '../../styles/Theme';
-import NavLink from '../NavLinks/NavLink';
-import { PATHS } from '../../routes/PATHS';
+import { theme } from '../../styles/Theme'
+import NavLink from '../NavLinks/NavLink'
+import { PATHS } from '../../routes/PATHS'
 
 import {
   NavbarTitle,
@@ -11,19 +11,19 @@ import {
   SearchDiv,
   StyledLandingPageNav,
   StyledLogo,
-} from './styles/Navbars.styled';
-import { NavLinks } from '../NavLinks/styles/NavLinks.styled';
+} from './styles/Navbars.styled'
+import { NavLinks } from '../NavLinks/styles/NavLinks.styled'
 
-import logo from '../../assets/Neigh-logos_transparent.png';
+import logo from '../../assets/Neigh-logos_transparent.png'
 
 const LoadingPageNav = ({ title }: { title: string }) => {
-  const navigate = useNavigate();
-  const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize };
-  const { Search } = Input;
+  const navigate = useNavigate()
+  const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
+  const { Search } = Input
 
   const onSearch = () => {
     // TODO
-  };
+  }
 
   return (
     <StyledLandingPageNav>
@@ -34,10 +34,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
         <NavLinks fontType={navLinkFont}>
           <NavLink text={'Marketplace'} onClick={() => navigate(PATHS.MAIN)} />
           &nbsp;|&nbsp;
-          <NavLink
-            text={'Community'}
-            onClick={() => navigate(PATHS.COMMUNITY)}
-          />
+          <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
         </NavLinks>
         <Search placeholder="Search" onSearch={onSearch} />
       </SearchDiv>
@@ -49,7 +46,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
         </NavLinks>
       </RightDiv>
     </StyledLandingPageNav>
-  );
-};
+  )
+}
 
-export default LoadingPageNav;
+export default LoadingPageNav

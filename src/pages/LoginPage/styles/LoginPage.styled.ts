@@ -1,16 +1,17 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
+import { FontType } from '../../../styles/Theme'
+
 import {
   fontTypeCss,
   styledPageCss,
   loginDivStyleVar,
   orSpanCss,
   loginFormsCss,
-} from '../../../styles/index.styled';
-import { FontType } from '../../../styles/Theme';
+} from '../../../styles/index.styled'
 
 export const StyledLoginPage = styled.div`
   ${styledPageCss}
-`;
+`
 
 export const LoginDiv = styled.div`
   display: flex;
@@ -20,22 +21,22 @@ export const LoginDiv = styled.div`
   width: max(408px, 35vw);
   height: auto;
   margin-top: ${loginDivStyleVar.margin};
-`;
+`
 
 export const LoginDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 
   margin-bottom: 2vh;
-`;
+`
 
 export const LoginForm = styled.form`
   ${loginFormsCss}
-`;
+`
 
 export const ForgetPwdSpan = styled.span`
   width: 100%;
   margin-top: 0.5vh;
-`;
+`
 
 export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
@@ -48,17 +49,17 @@ export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
   :hover {
     color: ${(props) => props.theme.palette.highlight.normal};
   }
-`;
+`
 
 export const OrSpan = styled.div`
   ${orSpanCss}
-`;
+`
 
 export const NewUserSpan = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
   margin-top: 24px;
-`;
+`
 
 export const SignUpLink = styled.a<{ fontType: FontType }>`
   ${fontTypeCss}
@@ -69,4 +70,4 @@ export const SignUpLink = styled.a<{ fontType: FontType }>`
   :hover {
     color: ${(props) => props.theme.palette.highlight.normal};
   }
-`;
+`

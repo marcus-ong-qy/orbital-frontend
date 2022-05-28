@@ -3,9 +3,9 @@ import {
   LoadingText,
   StyledLoadingDiv,
   StyledLoadingPage,
-} from './styles/LoadingPage.styled';
+} from './styles/LoadingPage.styled'
 
-import HorseLogo from '../../assets/Horse-head-transparent.png';
+import HorseLogo from '../../assets/Horse-head-transparent.png'
 
 const LoadingPage = () => {
   return (
@@ -15,7 +15,7 @@ const LoadingPage = () => {
         <GallopingHorse src={HorseLogo} />
       </StyledLoadingDiv>
     </StyledLoadingPage>
-  );
-};
+  )
+}
 
-export default LoadingPage;
+export default LoadingPage

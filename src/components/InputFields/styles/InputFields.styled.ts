@@ -1,11 +1,11 @@
-import styled from 'styled-components';
-import { Input } from 'antd';
-import { FontType } from '../../../styles/Theme';
-import { fontTypeCss } from '../../../styles/index.styled';
+import styled from 'styled-components'
+import { Input } from 'antd'
+import { FontType } from '../../../styles/Theme'
+import { fontTypeCss } from '../../../styles/index.styled'
 
 export const InputFieldContainer = styled.div`
   margin: 1.2vh 0;
-`;
+`
 
 export const StyledInput = styled.input`
   height: 35px;
@@ -13,13 +13,13 @@ export const StyledInput = styled.input`
   padding-left: 12px;
 
   border-radius: 35px;
-`;
+`
 
 export const PasswordSpan = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-`;
+`
 
 export const StyledBigA = styled.div`
   height: 35px;
@@ -33,7 +33,7 @@ export const StyledBigA = styled.div`
   text-align: center;
 
   cursor: default;
-`;
+`
 
 export const StyledPasswordInput = styled(Input.Password)`
   height: 35px;
@@ -52,15 +52,15 @@ export const StyledPasswordInput = styled(Input.Password)`
     align-items: center;
     justify-content: center;
   }
-`;
+`
 
 export const AlwaysLoggedInSpan = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
-`;
+`
 
 export const PasswordLowerSpan = styled.span`
   display: flex;
   justify-content: space-between;
   margin-top: 0.5vh;
-`;
+`

@@ -1,28 +1,26 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { onAuthStateChanged } from 'firebase/auth'
 
-import { PATHS } from '../../routes/PATHS';
-import { auth, getUserProfile, logout } from '../../firebase';
-import { defaultUserProfile } from '../../store/reducer';
-import { ProfileInfo } from '../../store/types';
+import { PATHS } from '../../routes/PATHS'
+import { auth, getUserProfile, logout } from '../../firebase'
+import { defaultUserProfile } from '../../store/reducer'
+import { ProfileInfo } from '../../store/types'
 
 const MainPage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [userProfile, setUserProfile] =
-    useState<ProfileInfo>(defaultUserProfile);
+  const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
 
   // TODO show loading page
   onAuthStateChanged(auth, (user) => {
-    if (user && userProfile === defaultUserProfile)
-      setUserProfile(getUserProfile(user));
-  });
+    if (user && userProfile === defaultUserProfile) setUserProfile(getUserProfile(user))
+  })
 
   const signOutOnClick = () => {
-    logout();
-    navigate(PATHS.LOGIN);
-  };
+    logout()
+    navigate(PATHS.LOGIN)
+  }
 
   return (
     <div data-testid="MarketplaceMain">
@@ -38,7 +36,7 @@ const MainPage = () => {
       </div>
       <button onClick={signOutOnClick}>Sign Out</button>
     </div>
-  );
-};
+  )
+}
 
-export default MainPage;
+export default MainPage

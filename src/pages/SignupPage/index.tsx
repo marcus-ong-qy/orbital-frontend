@@ -1,24 +1,21 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FieldValues, useForm } from 'react-hook-form'
+import GoogleButton from 'react-google-button'
 
-import { theme } from '../../styles/Theme';
-import { useAppDispatch } from '../../app/hooks';
-import { emailRegex, passwordRegex } from '../../common/regex';
-import { Credentials, RootState } from '../../store/types';
-import {
-  logInWithGoogle,
-  setSignupAttemptStatus,
-  signUp,
-} from '../../store/actions';
-import { IS_USING_BACKEND } from '../../store/reducer';
-import { PATHS } from '../../routes/PATHS';
-import { SIGNUP, signupErrorLabels } from '../../common/warnings';
+import { theme } from '../../styles/Theme'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { PATHS } from '../../routes/PATHS'
+import { emailRegex, passwordRegex } from '../../common/regex'
+import { SIGNUP, signupErrorLabels } from '../../common/warnings'
 
-import InputField from '../../components/InputFields/InputField';
-import PasswordInputField from '../../components/InputFields/PasswordInputField';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
+import { logInWithGoogle, setSignupAttemptStatus, signUp } from '../../store/actions'
+import { IS_USING_BACKEND } from '../../store/reducer'
+import { Credentials } from '../../store/types'
+
+import InputField from '../../components/InputFields/InputField'
+import PasswordInputField from '../../components/InputFields/PasswordInputField'
+import WarningLabels from '../../components/WarningLabels/WarningLabels'
 
 import {
   ExistingUserSpan,
@@ -30,13 +27,12 @@ import {
   SignupForm,
   SignupWarningDiv,
   StyledSignupPage,
-} from './styles/SignupPage.styled';
-import GoogleButton from 'react-google-button';
+} from './styles/SignupPage.styled'
 
 // TODO make label go away when exit page
 const RegisterPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const {
     register,
     handleSubmit,
@@ -44,44 +40,37 @@ const RegisterPage = () => {
     setError,
     clearErrors,
     formState: { errors },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onChange' })
 
-  const { h1, p } = { ...theme.typography.fontSize };
+  const { signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { h1, p } = { ...theme.typography.fontSize }
+  const signupErrorLabel = signupErrorLabels[signupAttemptStatus]
 
-  const { signupAttemptStatus } = useSelector(
-    (state: RootState) => state.neigh_reducer
-  );
+  useEffect(() => {
+    if (signupAttemptStatus === 'success') {
+      navigate(PATHS.LOGIN)
+      dispatch(setSignupAttemptStatus('redirect'))
+    }
+  }, [signupAttemptStatus, dispatch, navigate])
 
   const onSubmit = (data: FieldValues) => {
     const signupCredentials: Credentials = {
       email: data.Email.trim(),
       password: data.Password,
-    };
-    IS_USING_BACKEND && dispatch(signUp(signupCredentials));
-  };
-
-  useEffect(() => {
-    if (signupAttemptStatus === 'success') {
-      navigate(PATHS.LOGIN);
-      dispatch(setSignupAttemptStatus('redirect'));
     }
-  }, [signupAttemptStatus, dispatch, navigate]);
-
-  const signupErrorLabel = signupErrorLabels[signupAttemptStatus];
+    IS_USING_BACKEND && dispatch(signUp(signupCredentials))
+  }
 
   const onGoogleSignIn = () => {
-    IS_USING_BACKEND && dispatch(logInWithGoogle());
-  };
+    IS_USING_BACKEND && dispatch(logInWithGoogle())
+  }
 
   return (
     <StyledSignupPage data-testid="register-page">
       <SignupDiv>
         <SignupDivTitle fontType={h1}>Sign Up</SignupDivTitle>
         <SignupWarningDiv>
-          <WarningLabels
-            label={signupErrorLabel}
-            isError={signupErrorLabel.length !== 0}
-          />
+          <WarningLabels label={signupErrorLabel} isError={signupErrorLabel.length !== 0} />
         </SignupWarningDiv>
         <SignupForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
@@ -106,11 +95,7 @@ const RegisterPage = () => {
             pattern={passwordRegex}
             required
           />
-          <SignupButton
-            style={{ marginTop: '1vh' }}
-            type="submit"
-            text="Sign Up"
-          />
+          <SignupButton style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
         </SignupForm>
         <OrSpan>or</OrSpan>
         <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
@@ -123,7 +108,7 @@ const RegisterPage = () => {
         </ExistingUserSpan>
       </SignupDiv>
     </StyledSignupPage>
-  );
-};
+  )
+}
 
-export default RegisterPage;
+export default RegisterPage

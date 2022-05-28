@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 
-import { theme } from '../../styles/Theme';
-import { useAppDispatch } from '../../app/hooks';
-import { sendPasswordReset } from '../../store/actions';
-import { IS_USING_BACKEND } from '../../store/reducer';
-import { ResetPasswordStatus } from '../../store/types';
-import { resetPasswordErrorLabels } from '../../common/warnings';
-import { RESET_PWD_INSTRUCTIONS } from '../../common/texts';
+import { theme } from '../../styles/Theme'
+import { sendPasswordReset } from '../../store/actions'
+import { IS_USING_BACKEND } from '../../store/reducer'
+import { ResetPasswordStatus } from '../../store/types'
+import { resetPasswordErrorLabels } from '../../common/warnings'
+import { RESET_PWD_INSTRUCTIONS } from '../../common/texts'
 
-import InputField from '../../components/InputFields/InputField';
-import Button from '../../components/Button/Button';
-import WarningLabels from '../../components/WarningLabels/WarningLabels';
+import InputField from '../../components/InputFields/InputField'
+import WarningLabels from '../../components/WarningLabels/WarningLabels'
 
 import {
   ForgetPasswordDiv,
@@ -21,27 +19,23 @@ import {
   ResetEmailMsg,
   ResetPasswordButton,
   StyledForgetPasswordPage,
-} from './styles/ForgetPasswordPage.styled';
+} from './styles/ForgetPasswordPage.styled'
 
-import confusedHorse from '../../assets/Horse-confused.png';
+import confusedHorse from '../../assets/Horse-confused.png'
 
 const ForgetPasswordPage = () => {
-  const dispatch = useAppDispatch();
-  const { register, handleSubmit } = useForm();
-
-  const { h1, p } = { ...theme.typography.fontSize };
+  const { register, handleSubmit } = useForm()
+  const { h1, p } = { ...theme.typography.fontSize }
 
   const [resetPasswordAttemptStatus, setResetPasswordAttemptStatus] =
-    useState<ResetPasswordStatus>('initial');
+    useState<ResetPasswordStatus>('initial')
+
+  const resetPasswordErrorLabel = resetPasswordErrorLabels[resetPasswordAttemptStatus]
 
   const onSubmit = (data: FieldValues) => {
-    const email = data.Email.trim();
-    IS_USING_BACKEND &&
-      dispatch(sendPasswordReset(email, setResetPasswordAttemptStatus));
-  };
-
-  const resetPasswordErrorLabel =
-    resetPasswordErrorLabels[resetPasswordAttemptStatus];
+    const email = data.Email.trim()
+    IS_USING_BACKEND && sendPasswordReset(email, setResetPasswordAttemptStatus)
+  }
 
   return (
     <StyledForgetPasswordPage>
@@ -50,11 +44,7 @@ const ForgetPasswordPage = () => {
         <HorseHead src={confusedHorse} />
         <ResetEmailMsg fontType={p}>{RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
         <ForgetPasswordForm onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputField
-            title="Email"
-            placeholder="Email Address"
-            register={register}
-          />
+          <InputField title="Email" placeholder="Email Address" register={register} />
           <WarningLabels
             label={resetPasswordErrorLabel}
             isError={resetPasswordErrorLabel.length !== 0}
@@ -63,7 +53,7 @@ const ForgetPasswordPage = () => {
         </ForgetPasswordForm>
       </ForgetPasswordDiv>
     </StyledForgetPasswordPage>
-  );
-};
+  )
+}
 
-export default ForgetPasswordPage;
+export default ForgetPasswordPage

@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useState } from 'react'
 import {
   UseFormRegister,
   FieldValues,
   UseFormSetValue,
   UseFormSetError,
   UseFormClearErrors,
-} from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '../../app/hooks';
-import { toggleAlwaysLoggedInCheckbox } from '../../store/actions';
-import { RootState } from '../../store/types';
-import { theme } from '../../styles/Theme';
-import WarningLabels from '../WarningLabels/WarningLabels';
+} from 'react-hook-form'
+
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { theme } from '../../styles/Theme'
+import { toggleAlwaysLoggedInCheckbox } from '../../store/actions'
+import WarningLabels from '../WarningLabels/WarningLabels'
+
 import {
   AlwaysLoggedInSpan,
   InputFieldContainer,
@@ -19,27 +19,23 @@ import {
   PasswordSpan,
   StyledBigA,
   StyledPasswordInput,
-} from './styles/InputFields.styled';
+} from './styles/InputFields.styled'
 
 type Props = {
-  title: string;
-  type: 'login' | 'signup';
-  placeholder: string;
-  errorLabel: string;
-  isError: boolean;
-  register: UseFormRegister<FieldValues>;
-  setValue: UseFormSetValue<FieldValues>;
-  pattern?: RegExp;
-  setError?: UseFormSetError<FieldValues>;
-  clearErrors?: UseFormClearErrors<FieldValues>;
-  required?: boolean;
-};
+  title: string
+  type: 'login' | 'signup'
+  placeholder: string
+  errorLabel: string
+  isError: boolean
+  register: UseFormRegister<FieldValues>
+  setValue: UseFormSetValue<FieldValues>
+  pattern?: RegExp
+  setError?: UseFormSetError<FieldValues>
+  clearErrors?: UseFormClearErrors<FieldValues>
+  required?: boolean
+}
 
-const defaultProps = {
-  required: false,
-};
-
-const CapsLockIndicator = () => <StyledBigA data-testid="BigA">A</StyledBigA>;
+const CapsLockIndicator = () => <StyledBigA data-testid="BigA">A</StyledBigA>
 
 const PasswordInputField = (props: Props) => {
   const {
@@ -54,36 +50,32 @@ const PasswordInputField = (props: Props) => {
     setError,
     clearErrors,
     required,
-  } = props;
+  } = props
 
   if (pattern && (!setError || !clearErrors)) {
     console.error(
       "PasswordInputField: Both setError and ClearErrors params need to be passed in when 'pattern' param is used!"
-    );
+    )
   }
 
-  const dispatch = useAppDispatch();
-  const { alwaysLoggedInChecked } = useSelector(
-    (state: RootState) => state.neigh_reducer
-  );
+  const dispatch = useAppDispatch()
+  const { alwaysLoggedInChecked } = useAppSelector((state) => state.neigh_reducer)
 
-  const { labelFont } = { ...theme.typography.fontSize };
+  const { labelFont } = { ...theme.typography.fontSize }
 
-  const [isCapsOn, setIsCapsOn] = useState(false);
+  const [isCapsOn, setIsCapsOn] = useState(false)
 
   const onKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    setIsCapsOn(e.getModifierState('CapsLock'));
-  };
+    setIsCapsOn(e.getModifierState('CapsLock'))
+  }
 
   // explicitely coded as react-hook-form does not work with antd input by default
   const inputOnChange = (e: any) => {
-    setValue(title, e.target.value);
-    pattern?.test(e.target.value)
-      ? clearErrors!(title)
-      : setError!(title, { type: 'pattern' });
-  };
+    setValue(title, e.target.value)
+    pattern?.test(e.target.value) ? clearErrors!(title) : setError!(title, { type: 'pattern' })
+  }
 
-  const checkboxOnChange = () => dispatch(toggleAlwaysLoggedInCheckbox());
+  const checkboxOnChange = () => dispatch(toggleAlwaysLoggedInCheckbox())
 
   return (
     <InputFieldContainer>
@@ -99,20 +91,14 @@ const PasswordInputField = (props: Props) => {
       <PasswordLowerSpan>
         {type === 'login' && (
           <AlwaysLoggedInSpan fontType={labelFont}>
-            <input
-              type="checkbox"
-              checked={alwaysLoggedInChecked}
-              onChange={checkboxOnChange}
-            />
+            <input type="checkbox" checked={alwaysLoggedInChecked} onChange={checkboxOnChange} />
             Always Logged In
           </AlwaysLoggedInSpan>
         )}
         <WarningLabels label={errorLabel} isError={isError} />
       </PasswordLowerSpan>
     </InputFieldContainer>
-  );
-};
+  )
+}
 
-PasswordInputField.defaultProps = defaultProps;
-
-export default PasswordInputField;
+export default PasswordInputField

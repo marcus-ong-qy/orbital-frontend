@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Button } from 'antd';
+import styled from 'styled-components'
+import { Button } from 'antd'
 
 export const StyledButton = styled(Button)`
   height: 35px;
@@ -16,4 +16,4 @@ export const StyledButton = styled(Button)`
   :hover {
     background: ${(props) => props.theme.palette.highlight.dark};
   }
-`;
+`

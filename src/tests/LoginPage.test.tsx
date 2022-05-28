@@ -4,13 +4,13 @@ import {
   screen,
   waitFor,
   waitForElementToBeRemoved,
-} from '@testing-library/react';
-import { Provider } from 'react-redux';
+} from '@testing-library/react'
+import { Provider } from 'react-redux'
 
-import App from '../App';
-import { demoAcc } from '../demo-config';
-import { store } from '../store/store';
-import { theme } from '../styles/Theme';
+import App from '../App'
+import { demoAcc } from '../demo-config'
+import { store } from '../store/store'
+import { theme } from '../styles/Theme'
 
 // TODO replace getByTestId with screen content
 
@@ -19,29 +19,29 @@ const AppWithStore = () => {
     <Provider store={store}>
       <App />
     </Provider>
-  );
-};
+  )
+}
 
 // Login Page
 describe('Login Page', () => {
   test('login page loads', async () => {
-    render(<App />);
-    await waitForElementToBeRemoved(() => screen.getByText('Loading...'));
+    render(<App />)
+    await waitForElementToBeRemoved(() => screen.getByText('Loading...'))
 
-    const loginPage = screen.getByTestId('login-page');
-    expect(loginPage).toBeInTheDocument();
-  });
+    const loginPage = screen.getByTestId('login-page')
+    expect(loginPage).toBeInTheDocument()
+  })
 
   test('login button has correct text and colour', () => {
-    render(<App />);
+    render(<App />)
 
-    const loginButton = screen.getByRole('button', { name: 'Login' });
+    const loginButton = screen.getByRole('button', { name: 'Login' })
 
     expect(loginButton).toHaveStyle(`
       color: ${theme.palette.common.gray};
       background-color: ${theme.palette.secondary};
-    `);
-  });
+    `)
+  })
 
   // test('caps lock indicator appears', async () => {
   //   render(<App />);
@@ -57,38 +57,38 @@ describe('Login Page', () => {
   // });
 
   test('invalid login', async () => {
-    render(<AppWithStore />);
+    render(<AppWithStore />)
 
-    const loginButton = screen.getByRole('button', { name: 'Login' });
-    const emailInput = screen.getByPlaceholderText('Email');
-    const passwordInput = screen.getByPlaceholderText('Password');
+    const loginButton = screen.getByRole('button', { name: 'Login' })
+    const emailInput = screen.getByPlaceholderText('Email')
+    const passwordInput = screen.getByPlaceholderText('Password')
 
-    fireEvent.change(emailInput, { target: { value: 'blah' } });
-    fireEvent.change(passwordInput, { target: { value: 'blah' } });
-    fireEvent.click(loginButton);
+    fireEvent.change(emailInput, { target: { value: 'blah' } })
+    fireEvent.change(passwordInput, { target: { value: 'blah' } })
+    fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText('Email/Password Invalid!');
-      expect(warningLabel).toBeInTheDocument();
-    });
-  });
+      const warningLabel = screen.getByText('Email/Password Invalid!')
+      expect(warningLabel).toBeInTheDocument()
+    })
+  })
 
   test('valid login', async () => {
-    render(<AppWithStore />);
+    render(<AppWithStore />)
 
-    const loginButton = screen.getByRole('button', { name: 'Login' });
-    const emailInput = screen.getByPlaceholderText('Email');
-    const passwordInput = screen.getByPlaceholderText('Password');
+    const loginButton = screen.getByRole('button', { name: 'Login' })
+    const emailInput = screen.getByPlaceholderText('Email')
+    const passwordInput = screen.getByPlaceholderText('Password')
 
-    fireEvent.change(emailInput, { target: { value: demoAcc.email } });
+    fireEvent.change(emailInput, { target: { value: demoAcc.email } })
     fireEvent.change(passwordInput, {
       target: { value: demoAcc.password },
-    });
-    fireEvent.click(loginButton);
+    })
+    fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const marketplaceMainPage = screen.getByTestId('MarketplaceMain');
-      expect(marketplaceMainPage).toBeInTheDocument();
-    });
-  });
-});
+      const marketplaceMainPage = screen.getByTestId('MarketplaceMain')
+      expect(marketplaceMainPage).toBeInTheDocument()
+    })
+  })
+})

@@ -1,49 +1,49 @@
-import React from 'react';
-import { ThemeProvider } from 'styled-components';
+import React from 'react'
+import { ThemeProvider } from 'styled-components'
 
-type HexCode = `#${string}`;
+type HexCode = `#${string}`
 
 export type ThemeType = {
   palette: {
     common: {
-      black: HexCode;
-      white: HexCode;
-      darkgray: HexCode;
-      gray: HexCode;
-      lightgray: HexCode;
-    };
-    primary: HexCode;
-    secondary: HexCode;
-    danger: HexCode;
+      black: HexCode
+      white: HexCode
+      darkgray: HexCode
+      gray: HexCode
+      lightgray: HexCode
+    }
+    primary: HexCode
+    secondary: HexCode
+    danger: HexCode
     highlight: {
-      normal: HexCode;
-      light: HexCode;
-      dark: HexCode;
-    };
-    background: HexCode;
-  };
+      normal: HexCode
+      light: HexCode
+      dark: HexCode
+    }
+    background: HexCode
+  }
   typography: {
-    main: string;
+    main: string
     fontSize: {
-      body: FontType;
-      navTitleFont: FontType;
-      navLinkFont: FontType;
-      h1: FontType;
-      h2: FontType;
-      h3: FontType;
-      p: FontType;
-      labelFont: FontType;
-    };
-  };
-};
+      body: FontType
+      navTitleFont: FontType
+      navLinkFont: FontType
+      h1: FontType
+      h2: FontType
+      h3: FontType
+      p: FontType
+      labelFont: FontType
+    }
+  }
+}
 
 export type FontType = {
-  min: string;
-  size: string;
-  max: string;
-  weight: string;
-  height: string;
-};
+  min: string
+  size: string
+  max: string
+  weight: string
+  height: string
+}
 
 export const theme: ThemeType = {
   palette: {
@@ -125,10 +125,10 @@ export const theme: ThemeType = {
       },
     },
   },
-};
-
-function Theme({ children }: { children: React.ReactNode }) {
-  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
 }
 
-export default Theme;
+function Theme({ children }: { children: React.ReactNode }) {
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+}
+
+export default Theme

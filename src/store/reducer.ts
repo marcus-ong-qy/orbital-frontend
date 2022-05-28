@@ -1,16 +1,9 @@
-import { Reducer } from 'redux';
+import { Reducer } from 'redux'
 
-import {
-  ACTIONS,
-  ActionTypes,
-  Credentials,
-  LoginStatus,
-  SignupStatus,
-  ProfileInfo,
-} from './types';
+import { ACTIONS, ActionTypes, Credentials, LoginStatus, SignupStatus } from './types'
 
-type BinaryBool = 1 | 0;
-export const IS_USING_BACKEND: BinaryBool = 1;
+type BinaryBool = 1 | 0
+export const IS_USING_BACKEND: BinaryBool = 1
 
 export const defaultUserProfile = {
   displayName: '',
@@ -18,12 +11,12 @@ export const defaultUserProfile = {
   photoURL: '',
   emailVerified: false,
   uid: '',
-};
+}
 
 const loginCredentialsDefault: Credentials = {
   email: '',
   password: '',
-};
+}
 
 const initialState: State = {
   loginAttemptStatus: 'initial',
@@ -31,35 +24,32 @@ const initialState: State = {
   alwaysLoggedInChecked: false,
 
   loginCredentialsOffline: loginCredentialsDefault,
-};
+}
 
 type State = {
-  loginAttemptStatus: LoginStatus;
-  signupAttemptStatus: SignupStatus;
-  alwaysLoggedInChecked: boolean;
+  loginAttemptStatus: LoginStatus
+  signupAttemptStatus: SignupStatus
+  alwaysLoggedInChecked: boolean
 
   // for offline testing
-  loginCredentialsOffline: Credentials;
-};
+  loginCredentialsOffline: Credentials
+}
 
-export const neigh_reducer: Reducer<State, ActionTypes> = (
-  state = initialState,
-  action
-) => {
+export const neigh_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.LOGIN_OFFLINE:
       return {
         ...state,
         loginCredentialsOffline: action.loginCredentialsOffline,
         loginAttemptStatus: action.loginAttemptStatus,
-      };
+      }
     case ACTIONS.LOGIN_ATTEMPT_STATUS:
-      return { ...state, loginAttemptStatus: action.loginAttemptStatus };
+      return { ...state, loginAttemptStatus: action.loginAttemptStatus }
     case ACTIONS.SIGNUP_ATTEMPT_STATUS:
-      return { ...state, signupAttemptStatus: action.signupAttemptStatus };
+      return { ...state, signupAttemptStatus: action.signupAttemptStatus }
     case ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
-      return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked };
+      return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
     default:
-      return state;
+      return state
   }
-};
+}
