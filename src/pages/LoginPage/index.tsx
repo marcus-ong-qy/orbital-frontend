@@ -36,8 +36,6 @@ import {
   StyledLoginPage,
 } from './styles/LoginPage.styled';
 
-// TODO after logging in show loading page??
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

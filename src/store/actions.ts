@@ -5,7 +5,6 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
-  signOut,
 } from 'firebase/auth';
 import { collection, addDoc } from 'firebase/firestore';
 
@@ -22,36 +21,6 @@ import {
   GetState,
 } from './types';
 
-// export const getUserProfile = () => (dispatch: Dispatch<ActionTypes>) => {
-//   const user = auth.currentUser;
-//   console.log('is the user:', user);
-//   if (user !== null) {
-//     // The user object has basic properties such as display name, email, etc.
-//     const displayName = user.displayName;
-//     const email = user.email;
-//     const photoURL = user.photoURL;
-//     const emailVerified = user.emailVerified;
-
-//     // The user's ID, unique to the Firebase project. Do NOT use
-//     // this value to authenticate with your backend server, if
-//     // you have one. Use User.getToken() instead.
-//     const uid = user.uid;
-
-//     const updatedUserProfile = {
-//       displayName: displayName,
-//       email: email,
-//       photoURL: photoURL,
-//       emailVerified: emailVerified,
-//       uid: uid,
-//     };
-
-//     // dispatch({
-//     //   type: ACTIONS.GET_USER_PROFILE,
-//     //   userProfile: updatedUserProfile,
-//     // });
-//   }
-// };
-
 export const logIn =
   (credentials: Credentials) =>
   (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
@@ -61,7 +30,7 @@ export const logIn =
       ? browserLocalPersistence
       : browserSessionPersistence;
 
-    setPersistence(auth, persistenceType) // FIXME login doesn't persist
+    setPersistence(auth, persistenceType)
       .then(() => {
         return signInWithEmailAndPassword(
           auth,
@@ -69,7 +38,6 @@ export const logIn =
           credentials.password
         );
       })
-      .then(() => dispatch(setLoginCredentials(credentials)))
       .catch((error) => {
         console.error(error);
         dispatch(setLoginAttemptStatus('invalid'));
@@ -159,15 +127,6 @@ export const sendPasswordReset =
     }
   };
 
-const setLoginCredentials =
-  (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
-    dispatch({
-      type: ACTIONS.LOGIN,
-      loginCredentials: { ...credentials },
-      loginAttemptStatus: 'success',
-    });
-  };
-
 export const setLoginAttemptStatus =
   (status: LoginStatus) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({
@@ -193,7 +152,16 @@ export const toggleAlwaysLoggedInCheckbox =
     });
   };
 
-// offline functions
+// offline functions for offline testing
+const setLoginCredentials =
+  (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: ACTIONS.LOGIN_OFFLINE,
+      loginCredentialsOffline: { ...credentials },
+      loginAttemptStatus: 'success',
+    });
+  };
+
 export const logInOffline =
   (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
     const loginMatch = () => {

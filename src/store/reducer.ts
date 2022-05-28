@@ -6,7 +6,7 @@ import {
   Credentials,
   LoginStatus,
   SignupStatus,
-  UserProfile,
+  ProfileInfo,
 } from './types';
 
 type BinaryBool = 1 | 0;
@@ -26,19 +26,20 @@ const loginCredentialsDefault: Credentials = {
 };
 
 const initialState: State = {
-  userProfile: defaultUserProfile,
-  loginCredentials: loginCredentialsDefault,
   loginAttemptStatus: 'initial',
   signupAttemptStatus: 'initial',
   alwaysLoggedInChecked: false,
+
+  loginCredentialsOffline: loginCredentialsDefault,
 };
 
 type State = {
-  userProfile: UserProfile; // FIXME may not be needed as well
-  loginCredentials: Credentials; // FIXME may not be needed
   loginAttemptStatus: LoginStatus;
   signupAttemptStatus: SignupStatus;
   alwaysLoggedInChecked: boolean;
+
+  // for offline testing
+  loginCredentialsOffline: Credentials;
 };
 
 export const neigh_reducer: Reducer<State, ActionTypes> = (
@@ -46,12 +47,10 @@ export const neigh_reducer: Reducer<State, ActionTypes> = (
   action
 ) => {
   switch (action.type) {
-    case ACTIONS.GET_USER_PROFILE:
-      return { ...state, userProfile: action.userProfile };
-    case ACTIONS.LOGIN:
+    case ACTIONS.LOGIN_OFFLINE:
       return {
         ...state,
-        loginCredentials: action.loginCredentials,
+        loginCredentialsOffline: action.loginCredentialsOffline,
         loginAttemptStatus: action.loginAttemptStatus,
       };
     case ACTIONS.LOGIN_ATTEMPT_STATUS:

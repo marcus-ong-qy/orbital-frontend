@@ -5,14 +5,15 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { PATHS } from '../../routes/PATHS';
 import { auth, getUserProfile, logout } from '../../firebase';
 import { defaultUserProfile } from '../../store/reducer';
-import { UserProfile } from '../../store/types';
+import { ProfileInfo } from '../../store/types';
 
 const MainPage = () => {
   const navigate = useNavigate();
 
   const [userProfile, setUserProfile] =
-    useState<UserProfile>(defaultUserProfile);
+    useState<ProfileInfo>(defaultUserProfile);
 
+  // TODO show loading page
   onAuthStateChanged(auth, (user) => {
     if (user && userProfile === defaultUserProfile)
       setUserProfile(getUserProfile(user));
