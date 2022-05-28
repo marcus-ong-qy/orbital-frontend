@@ -3,7 +3,7 @@ import {
   LoadingText,
   StyledLoadingDiv,
   StyledLoadingPage,
-} from './styles/MainPage.styled';
+} from './styles/LoadingPage.styled';
 
 import HorseLogo from '../../assets/Horse-head-transparent.png';
 

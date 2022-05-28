@@ -1,18 +1,14 @@
 import styled, { keyframes } from 'styled-components';
+import { styledPageCss } from '../../../styles/index.styled';
 
 export const StyledLoadingPage = styled.div`
-  width: 100vw;
-  height: 100vh;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  ${styledPageCss}
 `;
 
 export const StyledLoadingDiv = styled.div`
   width: 447px;
   height: 259px;
+  margin-top: 15vh;
 
   display: flex;
   flex-direction: column;

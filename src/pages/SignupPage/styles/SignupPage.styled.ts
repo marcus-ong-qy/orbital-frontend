@@ -2,18 +2,18 @@ import styled from 'styled-components';
 import { FontType } from '../../../styles/Theme';
 import {
   fontTypeCss,
-  loginPagesCss,
+  styledPageCss,
   loginDivStyleVar,
   orSpanCss,
   loginFormsCss,
 } from '../../../styles/index.styled';
 import Button from '../../../components/Button/Button';
 
-export const StyledSignUpPage = styled.div`
-  ${loginPagesCss}
+export const StyledSignupPage = styled.div`
+  ${styledPageCss}
 `;
 
-export const SignUpDiv = styled.div`
+export const SignupDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,20 +27,20 @@ export const SignUpDiv = styled.div`
   border: 1px solid ${(props) => props.theme.palette.common.black};
 `;
 
-export const SignUpDivTitle = styled.div<{ fontType: FontType }>`
+export const SignupDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 `;
 
-export const SignUpForm = styled.form`
+export const SignupForm = styled.form`
   ${loginFormsCss}
 `;
 
-export const SignUpWarningDiv = styled.div`
+export const SignupWarningDiv = styled.div`
   margin-top: 10px;
   height: 25px;
 `;
 
-export const SignUpButton = styled(Button)`
+export const SignupButton = styled(Button)`
   margin-top: 1vh;
 `;
 

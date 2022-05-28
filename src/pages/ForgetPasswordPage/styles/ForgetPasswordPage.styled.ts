@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import { FontType } from '../../../styles/Theme';
 import {
   fontTypeCss,
-  loginPagesCss,
+  styledPageCss,
   loginDivStyleVar,
 } from '../../../styles/index.styled';
 import Button from '../../../components/Button/Button';
 
 export const StyledForgetPasswordPage = styled.div`
-  ${loginPagesCss}
+  ${styledPageCss}
 `;
 
 export const ForgetPasswordDiv = styled.div`

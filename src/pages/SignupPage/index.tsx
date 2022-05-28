@@ -16,7 +16,6 @@ import { IS_USING_BACKEND } from '../../store/reducer';
 import { PATHS } from '../../routes/PATHS';
 import { SIGNUP, signupErrorLabels } from '../../common/warnings';
 
-import Button from '../../components/Button/Button';
 import InputField from '../../components/InputFields/InputField';
 import PasswordInputField from '../../components/InputFields/PasswordInputField';
 import WarningLabels from '../../components/WarningLabels/WarningLabels';
@@ -25,13 +24,13 @@ import {
   ExistingUserSpan,
   LoginLink,
   OrSpan,
-  SignUpButton,
-  SignUpDiv,
-  SignUpDivTitle,
-  SignUpForm,
-  SignUpWarningDiv,
-  StyledSignUpPage,
-} from './styles/RegisterPage.styled';
+  SignupButton,
+  SignupDiv,
+  SignupDivTitle,
+  SignupForm,
+  SignupWarningDiv,
+  StyledSignupPage,
+} from './styles/SignupPage.styled';
 import GoogleButton from 'react-google-button';
 
 // TODO make label go away when exit page
@@ -54,11 +53,11 @@ const RegisterPage = () => {
   );
 
   const onSubmit = (data: FieldValues) => {
-    const signUpCredentials: Credentials = {
+    const signupCredentials: Credentials = {
       email: data.Email.trim(),
       password: data.Password,
     };
-    IS_USING_BACKEND && dispatch(signUp(signUpCredentials));
+    IS_USING_BACKEND && dispatch(signUp(signupCredentials));
   };
 
   useEffect(() => {
@@ -75,16 +74,16 @@ const RegisterPage = () => {
   };
 
   return (
-    <StyledSignUpPage data-testid="register-page">
-      <SignUpDiv>
-        <SignUpDivTitle fontType={h1}>Sign Up</SignUpDivTitle>
-        <SignUpWarningDiv>
+    <StyledSignupPage data-testid="register-page">
+      <SignupDiv>
+        <SignupDivTitle fontType={h1}>Sign Up</SignupDivTitle>
+        <SignupWarningDiv>
           <WarningLabels
             label={signupErrorLabel}
             isError={signupErrorLabel.length !== 0}
           />
-        </SignUpWarningDiv>
-        <SignUpForm onSubmit={handleSubmit(onSubmit)} noValidate>
+        </SignupWarningDiv>
+        <SignupForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField
             title="Email"
             placeholder="Email"
@@ -107,12 +106,12 @@ const RegisterPage = () => {
             pattern={passwordRegex}
             required
           />
-          <SignUpButton
+          <SignupButton
             style={{ marginTop: '1vh' }}
             type="submit"
             text="Sign Up"
           />
-        </SignUpForm>
+        </SignupForm>
         <OrSpan>or</OrSpan>
         <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
         <ExistingUserSpan fontType={p}>
@@ -122,8 +121,8 @@ const RegisterPage = () => {
           </LoginLink>
           &nbsp;here!
         </ExistingUserSpan>
-      </SignUpDiv>
-    </StyledSignUpPage>
+      </SignupDiv>
+    </StyledSignupPage>
   );
 };
 

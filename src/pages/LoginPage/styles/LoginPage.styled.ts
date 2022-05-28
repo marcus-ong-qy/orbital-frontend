@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {
   fontTypeCss,
-  loginPagesCss,
+  styledPageCss,
   loginDivStyleVar,
   orSpanCss,
   loginFormsCss,
@@ -9,7 +9,7 @@ import {
 import { FontType } from '../../../styles/Theme';
 
 export const StyledLoginPage = styled.div`
-  ${loginPagesCss}
+  ${styledPageCss}
 `;
 
 export const LoginDiv = styled.div`

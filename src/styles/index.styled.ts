@@ -9,19 +9,20 @@ export const fontTypeCss = css<{ fontType: FontType }>`
   line-height: ${({ fontType }) => fontType.height};
 `;
 
-// Login and Sign Up pages
-export const loginDivStyleVar = {
-  margin: '12vh',
-  padding: '32px min(56px, 4vw)',
-};
-
-export const loginPagesCss = css`
+export const styledPageCss = css`
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 `;
+
+// Login and Sign Up pages
+export const loginDivStyleVar = {
+  margin: '12vh',
+  padding: '32px min(56px, 4vw)',
+};
 
 export const loginFormsCss = css`
   width: 100%;
