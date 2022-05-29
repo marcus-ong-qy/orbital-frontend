@@ -3,17 +3,13 @@
 National University of Singapore CP2106 (Orbital) Project - _Summer 2022_
 by Team _Bored James_
 
-Project [https://docs.google.com/document/d/15vRmp3wTtgiqj6ANLc9oFJSJmXEN42hKuZZc7HTKFNw/edit#heading=h.h7spmjwsqyh9](README)
-Project [https://user-images.githubusercontent.com/88195289/168090730-9eea1f24-b5e7-45fe-a258-c5816be559d2.png](Poster)
-Project [https://www.youtube.com/watch?v=fcVpDDmMN8A](Video)
+Project [README](https://docs.google.com/document/d/15vRmp3wTtgiqj6ANLc9oFJSJmXEN42hKuZZc7HTKFNw/edit#heading=h.h7spmjwsqyh9)
+Project [Poster](https://user-images.githubusercontent.com/88195289/168090730-9eea1f24-b5e7-45fe-a258-c5816be559d2.png)
+Project [Video](https://www.youtube.com/watch?v=fcVpDDmMN8A)
 
 # Milestone 1
+- [Video](https://user-images.githubusercontent.com/75428027/170867279-d4a6b8a7-b2f1-46f7-bafe-568d1986cc96.mp4)
 - Implemented Authentication Pages
-
-Video: 
-https://user-images.githubusercontent.com/75428027/170867279-d4a6b8a7-b2f1-46f7-bafe-568d1986cc96.mp4
-
-
 
 
 # Getting Started with Create React App
