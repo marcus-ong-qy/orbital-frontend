@@ -1,7 +1,9 @@
 # Neigh - Trade, Rent, Connect! 🐴
 
 National University of Singapore CP2106 (Orbital) Project - _Summer 2022_\
-by Team _Bored James_
+by Team _Bored James_\
+\
+This is the repository for the web app of our project
 
 - Project [README](https://docs.google.com/document/d/15vRmp3wTtgiqj6ANLc9oFJSJmXEN42hKuZZc7HTKFNw/edit#heading=h.h7spmjwsqyh9)
 - Project [Poster](https://user-images.githubusercontent.com/88195289/168090730-9eea1f24-b5e7-45fe-a258-c5816be559d2.png)
