@@ -3,5 +3,5 @@ import { Credentials } from './store/types'
 
 export const demoAcc: Credentials = {
   email: 'marcus.ong.qy@gmail.com',
-  password: 'password1',
+  password: 'password1!',
 }

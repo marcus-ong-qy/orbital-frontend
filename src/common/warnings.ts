@@ -1,4 +1,5 @@
 // Warning labels texts
+// TODO standardise casing
 
 // Login
 export enum LOGIN {

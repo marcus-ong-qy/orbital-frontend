@@ -65,7 +65,7 @@ const LoginPage = () => {
   }
 
   return (
-    <StyledLoginPage data-testid="login-page">
+    <StyledLoginPage>
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
         <WarningLabels label={SIGNUP.SUCCESSFUL} isError={signupAttemptStatus === 'redirect'} />
