@@ -1,7 +1,7 @@
 
             Fonts used: Quicksand-Bold 
 
-            Colors used: F7BF4F,271801  
+            Colors used: 719972,271801  
 
             Icon url: https://thenounproject.com/term/horse/262419  
         
