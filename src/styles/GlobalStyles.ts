@@ -1,5 +1,5 @@
-import { createGlobalStyle } from 'styled-components';
-import { ThemeType } from './Theme';
+import { createGlobalStyle } from 'styled-components'
+import { ThemeType } from './Theme'
 
 export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   * {
@@ -19,4 +19,4 @@ export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
   }
-`;
+`

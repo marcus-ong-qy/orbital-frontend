@@ -1,9 +1,8 @@
-import styled from "styled-components";
+// For ease of creating new pages, just copy enire folder and rename accordingly
 
-export const StyledMainPage = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+import styled from 'styled-components'
+import { styledPageCss } from '../../../styles/index.styled'
+
+export const StyledCopyPage = styled.div`
+  ${styledPageCss}
+`

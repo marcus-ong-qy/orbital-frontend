@@ -1,93 +1,106 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FieldValues, useForm } from 'react-hook-form'
+import GoogleButton from 'react-google-button'
 
-import { useAppDispatch } from '../../app/hooks';
-import { LoginCredentials } from '../../store/types';
-import { logIn, logInOffline } from '../../store/actions';
-import { IS_USING_BACKEND } from '../../store/reducer';
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { LOGIN, SIGNUP } from '../../common/warnings'
+import { theme } from '../../styles/Theme'
+import { PATHS } from '../../routes/PATHS'
 
 import {
-  StyledLoginPage,
-  LoginForm,
-  StyledInput,
-  StyledPasswordInput,
-  StyledButton,
-  LinksDiv,
-  RegisterLink,
-  ForgetPwdLink,
-  NeighLogo,
-} from './styles/LoginPage.styled';
+  logIn,
+  logInOffline,
+  logInWithGoogle,
+  setLoginAttemptStatus,
+  setSignupAttemptStatus,
+} from '../../store/actions'
+import { IS_USING_BACKEND } from '../../store/reducer'
+import { Credentials } from '../../store/types'
 
-import neighLogoTransparent from '../../assets/Neigh-logos_transparent.png';
-import { PATHS } from '../../routes/PATHS';
-import { navBarBuffer } from '../../components/navigation/styles/Navbars.styled';
+import Button from '../../components/Button/Button'
+import InputField from '../../components/InputFields/InputField'
+import PasswordInputField from '../../components/InputFields/PasswordInputField'
+import WarningLabels from '../../components/WarningLabels/WarningLabels'
+
+import {
+  ForgetPwdLink,
+  ForgetPwdSpan,
+  LoginDiv,
+  LoginDivTitle,
+  LoginForm,
+  NewUserSpan,
+  OrSpan,
+  SignUpLink,
+  StyledLoginPage,
+} from './styles/LoginPage.styled'
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const { register, handleSubmit, setValue, setError } = useForm({
+    mode: 'onSubmit',
+  })
+  const { loginAttemptStatus, signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
-  const defaultCredentials: LoginCredentials = {
-    username: '',
-    passwordInput: '',
-  };
+  useEffect(() => {
+    if (loginAttemptStatus === 'success') {
+      navigate(PATHS.MAIN)
+      dispatch(setLoginAttemptStatus('initial'))
+      dispatch(setSignupAttemptStatus('initial'))
+    }
+  }, [loginAttemptStatus, dispatch, navigate])
 
-  const [loginCredentials, setLoginCredentials] = useState(defaultCredentials);
+  const onSubmit = (data: FieldValues) => {
+    const loginCredentials: Credentials = {
+      email: data.Email.trim(),
+      password: data.Password,
+    }
+    dispatch(IS_USING_BACKEND ? logIn(loginCredentials) : logInOffline(loginCredentials))
+  }
+
+  const onGoogleSignIn = () => {
+    IS_USING_BACKEND && dispatch(logInWithGoogle())
+  }
 
   return (
     <StyledLoginPage>
-      <div style={{ height: navBarBuffer }} />
-      <h1>Log In Page</h1>
-      {/* <NeighLogo src={neighLogoTransparent} />
-      <LoginForm>
-        <StyledInput
-          placeholder="Username"
-          value={loginCredentials.username}
-          onChange={(e) =>
-            setLoginCredentials({
-              ...loginCredentials,
-              username: e.target.value,
-            })
-          }
-        />
-        <StyledPasswordInput
-          placeholder="Password"
-          value={loginCredentials.passwordInput}
-          onChange={(e) =>
-            setLoginCredentials({
-              ...loginCredentials,
-              passwordInput: e.target.value,
-            })
-          }
-        />
-        <StyledButton
-          // role="button"
-          onClick={() => {
-            dispatch(
-              IS_USING_BACKEND
-                ? logIn(loginCredentials)
-                : logInOffline(loginCredentials)
-            );
-            navigate(PATHS.MAIN);
-          }}>
-          Login
-        </StyledButton>
-        <LinksDiv>
-          <RegisterLink
-            onClick={() => {
-              navigate(PATHS.REGISTER);
-            }}>
-            Register
-          </RegisterLink>
-          <ForgetPwdLink
-            onClick={() => {
-              navigate(PATHS.FORGET_PASSWORD);
-            }}>
-            Forget Password
+      <LoginDiv>
+        <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
+        <WarningLabels label={SIGNUP.SUCCESSFUL} isError={signupAttemptStatus === 'redirect'} />
+        <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
+          <InputField title="Email" placeholder="Email" register={register} required />
+          <PasswordInputField
+            title="Password"
+            type="login"
+            placeholder="Password"
+            errorLabel={LOGIN.INVALID}
+            isError={loginAttemptStatus === 'invalid'}
+            register={register}
+            setValue={setValue}
+            setError={setError}
+            required
+          />
+          <Button type="submit" text="Login" />
+        </LoginForm>
+        <ForgetPwdSpan>
+          <ForgetPwdLink fontType={labelFont} onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
+            Forget Password?
           </ForgetPwdLink>
-        </LinksDiv>
-      </LoginForm> */}
+        </ForgetPwdSpan>
+        <OrSpan>or</OrSpan>
+        <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
+        <NewUserSpan fontType={p}>
+          New to this site?&nbsp;
+          <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
+            Sign Up
+          </SignUpLink>
+          &nbsp;here!
+        </NewUserSpan>
+      </LoginDiv>
     </StyledLoginPage>
-  );
-};
+  )
+}
 
-export default LoginPage;
+export default LoginPage

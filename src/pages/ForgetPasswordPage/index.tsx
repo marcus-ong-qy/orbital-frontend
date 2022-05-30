@@ -1,26 +1,59 @@
-import { useNavigate } from "react-router-dom";
-import { PATHS } from "../../routes/PATHS";
+import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
+
+import { theme } from '../../styles/Theme'
+import { sendPasswordReset } from '../../store/actions'
+import { IS_USING_BACKEND } from '../../store/reducer'
+import { ResetPasswordStatus } from '../../store/types'
+import { resetPasswordErrorLabels } from '../../common/warnings'
+import { RESET_PWD_INSTRUCTIONS } from '../../common/texts'
+
+import InputField from '../../components/InputFields/InputField'
+import WarningLabels from '../../components/WarningLabels/WarningLabels'
+
 import {
+  ForgetPasswordDiv,
   ForgetPasswordForm,
-  StyledButton,
+  ForgetPasswordTitle,
+  HorseHead,
+  ResetEmailMsg,
+  ResetPasswordButton,
   StyledForgetPasswordPage,
-  StyledInput,
-} from "./styles/MainPage.styled";
+} from './styles/ForgetPasswordPage.styled'
+
+import confusedHorse from '../../assets/Horse-confused.png'
 
 const ForgetPasswordPage = () => {
-  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm()
+  const { h1, p } = { ...theme.typography.fontSize }
+
+  const [resetPasswordAttemptStatus, setResetPasswordAttemptStatus] =
+    useState<ResetPasswordStatus>('initial')
+
+  const resetPasswordErrorLabel = resetPasswordErrorLabels[resetPasswordAttemptStatus]
+
+  const onSubmit = (data: FieldValues) => {
+    const email = data.Email.trim()
+    IS_USING_BACKEND && sendPasswordReset(email, setResetPasswordAttemptStatus)
+  }
 
   return (
     <StyledForgetPasswordPage>
-      <ForgetPasswordForm>
-        <h1>Forget Password</h1>
-        <StyledInput placeholder="Email" />
-        <StyledButton onClick={() => navigate(PATHS.LOGIN)}>
-          Reset Password
-        </StyledButton>
-      </ForgetPasswordForm>
+      <ForgetPasswordDiv>
+        <ForgetPasswordTitle fontType={h1}>Forget Password</ForgetPasswordTitle>
+        <HorseHead src={confusedHorse} />
+        <ResetEmailMsg fontType={p}>{RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
+        <ForgetPasswordForm onSubmit={handleSubmit(onSubmit)} noValidate>
+          <InputField title="Email" placeholder="Email Address" register={register} />
+          <WarningLabels
+            label={resetPasswordErrorLabel}
+            isError={resetPasswordErrorLabel.length !== 0}
+          />
+          <ResetPasswordButton type="submit" text="Reset Password" />
+        </ForgetPasswordForm>
+      </ForgetPasswordDiv>
     </StyledForgetPasswordPage>
-  );
-};
+  )
+}
 
-export default ForgetPasswordPage;
+export default ForgetPasswordPage

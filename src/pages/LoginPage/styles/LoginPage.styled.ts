@@ -1,77 +1,73 @@
-import styled, { css } from 'styled-components';
-import { Button, Input } from 'antd';
+import styled from 'styled-components'
+import { FontType } from '../../../styles/Theme'
+
+import {
+  fontTypeCss,
+  styledPageCss,
+  loginDivStyleVar,
+  orSpanCss,
+  loginFormsCss,
+} from '../../../styles/index.styled'
 
 export const StyledLoginPage = styled.div`
+  ${styledPageCss}
+`
+
+export const LoginDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: max(408px, 35vw);
+  height: auto;
+  margin-top: ${loginDivStyleVar.margin};
+`
+
+export const LoginDivTitle = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
+
+  margin-bottom: 2vh;
+`
+
+export const LoginForm = styled.form`
+  ${loginFormsCss}
+`
+
+export const ForgetPwdSpan = styled.span`
   width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
+  margin-top: 0.5vh;
+`
 
-export const NeighLogo = styled.img`
-  width: 64vh;
-  height: 64vh;
-`;
+export const ForgetPwdLink = styled.a<{ fontType: FontType }>`
+  ${fontTypeCss}
+  float: right;
+  margin-right: 1vw;
 
-export const LoginForm = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-export const StyledInput = styled(Input)`
-  height: 35px;
-  width: 84vw;
-  margin-bottom: 3vh;
-`;
-
-export const StyledPasswordInput = styled(Input.Password)`
-  height: 35px;
-  width: 84vw;
-  margin-bottom: 4vh;
-  .ant-input {
-    height: 35px;
-    width: 72vw;
-  }
-  .anticon {
-    margin-left: 3vw;
-  }
-`;
-
-export const StyledButton = styled(Button)`
-  height: 35px;
-  width: 84vw;
-  background: ${(props) => props.theme.palette.secondary};
-  color: black;
-  font-weight: bold;
-`;
-
-export const LinksDiv = styled.div`
-  width: 95%;
-  margin-top: 15.5vh;
-  display: flex;
-  flex-direction: row;
-`;
-
-const StyledLink = css`
-  color: black;
-  font-weight: bold;
-  font-size: 18px;
+  font-weight: 700;
   cursor: pointer;
-  :active {
-    color: ${(props) => props.theme.palette.common.black};
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.normal};
   }
-`;
+`
 
-export const RegisterLink = styled.a`
-  ${StyledLink}
-  margin-top: auto;
-`;
+export const OrSpan = styled.div`
+  ${orSpanCss}
+`
 
-export const ForgetPwdLink = styled.a`
-  ${StyledLink}
-  width: 21vw;
-  margin-left: auto;
-  text-align: right;
-`;
+export const NewUserSpan = styled.span<{ fontType: FontType }>`
+  ${fontTypeCss}
+  font-weight: 700;
+  margin-top: 24px;
+`
+
+export const SignUpLink = styled.a<{ fontType: FontType }>`
+  ${fontTypeCss}
+  font-weight: 700;
+  color: ${(props) => props.theme.palette.secondary};
+  cursor: pointer;
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.normal};
+  }
+`

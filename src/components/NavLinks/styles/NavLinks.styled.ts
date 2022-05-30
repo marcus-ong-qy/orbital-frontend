@@ -1,10 +1,14 @@
-import styled from 'styled-components';
-import { FontType } from '../../../styles/Theme';
-import { fontTypeCss } from '../../../styles/index.styled';
+import styled from 'styled-components'
+import { FontType } from '../../../styles/Theme'
+import { fontTypeCss } from '../../../styles/index.styled'
 
 export const StyledNavLink = styled.span`
   cursor: pointer;
-`;
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.light};
+  }
+`
 
 export const NavLinks = styled.span<{ fontType: FontType; justify?: string }>`
   ${fontTypeCss}
@@ -15,4 +19,4 @@ export const NavLinks = styled.span<{ fontType: FontType; justify?: string }>`
 
   color: ${(props) => props.theme.palette.common.white};
   cursor: default;
-`;
+`
