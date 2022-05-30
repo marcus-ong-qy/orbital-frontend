@@ -12,7 +12,7 @@ import { demoAcc } from '../demo-config'
 import { store } from '../store/store'
 import { theme } from '../styles/Theme'
 
-import { signupErrorLabels } from '../common/warnings'
+import { LOGIN, SIGNUP, signupErrorLabels } from '../common/warnings'
 
 const AppWithStore = () => {
   return (
@@ -24,7 +24,7 @@ const AppWithStore = () => {
 
 // Login Page
 describe('Authentication Pages', () => {
-  test('login page loads', async () => {
+  test('login - page loads', async () => {
     render(<App />)
     await waitForElementToBeRemoved(() => screen.getByText('Loading...'))
 
@@ -32,7 +32,7 @@ describe('Authentication Pages', () => {
     expect(loginButton).toBeInTheDocument()
   })
 
-  test('login button has correct text and colour', () => {
+  test('login - login button has correct text and colour', () => {
     render(<App />)
 
     const loginButton = screen.getByRole('button', { name: 'Login' })
@@ -43,7 +43,7 @@ describe('Authentication Pages', () => {
     `)
   })
 
-  test('invalid login', async () => {
+  test('login - invalid user', async () => {
     render(<AppWithStore />)
 
     const loginButton = screen.getByRole('button', { name: 'Login' })
@@ -51,16 +51,33 @@ describe('Authentication Pages', () => {
     const passwordInput = screen.getByPlaceholderText('Password')
 
     fireEvent.change(emailInput, { target: { value: 'blah' } })
-    fireEvent.change(passwordInput, { target: { value: 'blah' } })
+    fireEvent.change(passwordInput, { target: { value: 'blah1234!' } })
     fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText('Email/Password Invalid!')
+      const warningLabel = screen.getByText(LOGIN.INVALID)
       expect(warningLabel).toBeInTheDocument()
     })
   })
 
-  test('valid login', async () => {
+  test('login - invalid password', async () => {
+    render(<AppWithStore />)
+
+    const loginButton = screen.getByRole('button', { name: 'Login' })
+    const emailInput = screen.getByPlaceholderText('Email')
+    const passwordInput = screen.getByPlaceholderText('Password')
+
+    fireEvent.change(emailInput, { target: { value: demoAcc.email } })
+    fireEvent.change(passwordInput, { target: { value: `${demoAcc.password}blah` } })
+    fireEvent.click(loginButton)
+
+    await waitFor(() => {
+      const warningLabel = screen.getByText(LOGIN.INVALID)
+      expect(warningLabel).toBeInTheDocument()
+    })
+  })
+
+  test('login - valid', async () => {
     render(<AppWithStore />)
 
     const loginButton = screen.getByRole('button', { name: 'Login' })
@@ -79,7 +96,7 @@ describe('Authentication Pages', () => {
     })
   })
 
-  test('valid sign out', async () => {
+  test('sign out - valid', async () => {
     render(<AppWithStore />)
 
     const signoutButton = screen.getByRole('button', { name: 'Sign Out' })
@@ -131,6 +148,36 @@ describe('Authentication Pages', () => {
     await waitFor(() => {
       const accountExistsLabel = screen.getByText(signupErrorLabels['account-exists'])
       expect(accountExistsLabel).toBeInTheDocument()
+    })
+  })
+
+  test('sign up - password requires symbols error', async () => {
+    render(<AppWithStore />)
+
+    const passwordInput = screen.getByPlaceholderText('Password')
+
+    fireEvent.change(passwordInput, {
+      target: { value: 'password1' },
+    })
+
+    await waitFor(() => {
+      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      expect(passwordInvalidWarning).toBeInTheDocument()
+    })
+  })
+
+  test('sign up - password minimum length error', async () => {
+    render(<AppWithStore />)
+
+    const passwordInput = screen.getByPlaceholderText('Password')
+
+    fireEvent.change(passwordInput, {
+      target: { value: 'pwd1!' },
+    })
+
+    await waitFor(() => {
+      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      expect(passwordInvalidWarning).toBeInTheDocument()
     })
   })
 })
