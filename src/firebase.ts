@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics';
-import { GoogleAuthProvider, getAuth, User, signOut } from 'firebase/auth'
+import { GoogleAuthProvider, getAuth, User } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 import { ProfileInfo } from './store/types'
 
@@ -46,12 +46,4 @@ const getUserProfile = (user: User): ProfileInfo => {
   return updatedUserProfile
 }
 
-const logout = async () => {
-  try {
-    signOut(auth)
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-export { auth, db, googleProvider, getUserProfile, logout }
+export { auth, db, googleProvider, getUserProfile }

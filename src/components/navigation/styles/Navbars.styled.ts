@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Input } from 'antd'
 import { FontType } from '../../../styles/Theme'
 import { fontTypeCss } from '../../../styles/index.styled'
 
@@ -31,7 +32,45 @@ export const NavbarTitle = styled.div<{ fontType: FontType }>`
 `
 
 export const SearchDiv = styled.div`
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+`
+
+export const SearchBar = styled(Input.Search)`
   width: 50vw;
+
+  .ant-input-search,
+  .ant-input-group {
+    width: 100%;
+    margin-top: 1.9vh;
+    display: flex;
+    flex-direction: row;
+  }
+  .ant-input-search-button {
+    width: 28px;
+    height: 28px;
+  }
+  .ant-input {
+    width: calc(100% - 26px);
+  }
+`
+
+export const ShoppingCartDiv = styled.span`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`
+
+export const ShoppingCart = styled.img`
+  height: 33px;
+  width: 44px;
+`
+
+export const BodyDiv = styled.div`
+  width: 100%;
   height: 100%;
 
   display: flex;
@@ -40,7 +79,7 @@ export const SearchDiv = styled.div`
 
   .ant-input-search,
   .ant-input-group {
-    width: 100%;
+    width: 50vw;
     margin-top: 1.9vh;
     display: flex;
     flex-direction: row;

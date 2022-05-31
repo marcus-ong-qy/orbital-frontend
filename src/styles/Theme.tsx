@@ -75,7 +75,7 @@ export const theme: ThemeType = {
         height: '',
       },
       navTitleFont: {
-        min: '23px',
+        min: '21px',
         size: '2.3vw',
         max: '44px',
         weight: '700',

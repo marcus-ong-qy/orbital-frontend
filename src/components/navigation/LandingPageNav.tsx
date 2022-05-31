@@ -1,11 +1,17 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Input } from 'antd'
+import { Input } from 'antd' // TODO make search bar a component
+import { onAuthStateChanged } from 'firebase/auth'
 
+import { auth, getUserProfile } from '../../firebase'
 import { theme } from '../../styles/Theme'
-import NavLink from '../NavLinks/NavLink'
 import { PATHS } from '../../routes/PATHS'
+import { defaultUserProfile } from '../../store/reducer'
+import { ProfileInfo } from '../../store/types'
+import NavLink from '../NavLinks/NavLink'
 
 import {
+  BodyDiv,
   NavbarTitle,
   RightDiv,
   SearchDiv,
@@ -21,29 +27,49 @@ const LoadingPageNav = ({ title }: { title: string }) => {
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
   const { Search } = Input
 
+  const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user && !isLoggedIn) {
+        setUserProfile(getUserProfile(user))
+        setIsLoggedIn(true)
+      } else if (!user) {
+        setUserProfile(defaultUserProfile)
+        setIsLoggedIn(false)
+      }
+    })
+  })
   const onSearch = () => {
     // TODO
   }
 
   return (
     <StyledLandingPageNav>
-      {/* easter egg */}
-      <StyledLogo src={logo} onClick={() => navigate('/neigh')} />
+      <StyledLogo src={logo} onClick={() => navigate('/neigh') /* easter egg */} />
       <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
-      <SearchDiv>
+      <BodyDiv>
         <NavLinks fontType={navLinkFont}>
           <NavLink text={'Marketplace'} onClick={() => navigate(PATHS.MAIN)} />
           &nbsp;|&nbsp;
           <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
         </NavLinks>
-        <Search placeholder="Search" onSearch={onSearch} />
-      </SearchDiv>
+        <SearchDiv>
+          <Search placeholder="Search" onSearch={onSearch} />
+        </SearchDiv>
+      </BodyDiv>
       <RightDiv>
-        <NavLinks fontType={navLinkFont} justify="center">
-          <NavLink text={'Log In'} onClick={() => navigate(PATHS.LOGIN)} />
-          &nbsp;|&nbsp;
-          <NavLink text={'Sign Up'} onClick={() => navigate(PATHS.REGISTER)} />
-        </NavLinks>
+        {isLoggedIn ? (
+          <NavLinks fontType={navLinkFont} justify="left">
+            <NavLink text={userProfile.email!} onClick={() => navigate(PATHS.REGISTER)} />
+          </NavLinks>
+        ) : (
+          <NavLinks fontType={navLinkFont} justify="center">
+            <NavLink text="Log In" onClick={() => navigate(PATHS.LOGIN)} />
+            &nbsp;|&nbsp;
+            <NavLink text="Sign Up" onClick={() => navigate(PATHS.REGISTER)} />
+          </NavLinks>
+        )}
       </RightDiv>
     </StyledLandingPageNav>
   )

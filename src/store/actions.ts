@@ -5,6 +5,7 @@ import {
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
+  signOut,
 } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
 
@@ -110,6 +111,15 @@ export const sendPasswordReset = async (
   } catch (err) {
     console.error(err)
     setResetPasswordAttemptStatus(readResetPasswordError(err))
+  }
+}
+
+export const logout = async () => {
+  // no need to dispatch
+  try {
+    signOut(auth)
+  } catch (error) {
+    console.error(error)
   }
 }
 

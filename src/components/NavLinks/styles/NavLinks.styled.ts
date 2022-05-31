@@ -20,3 +20,12 @@ export const NavLinks = styled.span<{ fontType: FontType; justify?: string }>`
   color: ${(props) => props.theme.palette.common.white};
   cursor: default;
 `
+
+export const LinkGroupSpan = styled.span<{ width?: string; margin?: string }>`
+  display: flex;
+  justify-content: center;
+  overflow: left;
+
+  width: ${(props) => props.width ?? 'auto'};
+  margin: ${(props) => props.margin ?? '0'};
+`

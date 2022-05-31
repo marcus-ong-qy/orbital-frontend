@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { PATHS } from '../../routes/PATHS'
-import { auth, getUserProfile, logout } from '../../firebase'
+import { auth, getUserProfile } from '../../firebase'
+import { logout } from '../../store/actions'
 import { defaultUserProfile } from '../../store/reducer'
 import { ProfileInfo } from '../../store/types'
 
@@ -13,9 +14,12 @@ const MainPage = () => {
   const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
 
   // TODO show loading page
-  onAuthStateChanged(auth, (user) => {
-    if (user && userProfile === defaultUserProfile) setUserProfile(getUserProfile(user))
-  })
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user && userProfile === defaultUserProfile) setUserProfile(getUserProfile(user))
+      console.log('ya is change')
+    })
+  }, [])
 
   const signOutOnClick = () => {
     logout()
