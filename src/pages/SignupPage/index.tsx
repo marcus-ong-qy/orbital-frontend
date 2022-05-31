@@ -51,7 +51,7 @@ const RegisterPage = () => {
       navigate(PATHS.LOGIN)
       dispatch(setSignupAttemptStatus('redirect'))
     }
-  }, [signupAttemptStatus, dispatch, navigate])
+  })
 
   const onSubmit = (data: FieldValues) => {
     const signupCredentials: Credentials = {

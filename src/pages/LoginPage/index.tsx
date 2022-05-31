@@ -50,7 +50,7 @@ const LoginPage = () => {
       dispatch(setLoginAttemptStatus('initial'))
       dispatch(setSignupAttemptStatus('initial'))
     }
-  }, [loginAttemptStatus, dispatch, navigate])
+  })
 
   const onSubmit = (data: FieldValues) => {
     const loginCredentials: Credentials = {
