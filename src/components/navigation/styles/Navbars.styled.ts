@@ -69,8 +69,8 @@ export const ShoppingCart = styled.img`
   width: 44px;
 `
 
-export const BodyDiv = styled.div`
-  width: 100%;
+export const BodyDiv = styled.div<{ width?: string }>`
+  width: ${(props) => props.width ?? ''};
   height: 100%;
 
   display: flex;

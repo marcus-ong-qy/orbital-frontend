@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Input } from 'antd' // TODO make search bar a component
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { auth, getUserProfile } from '../../firebase'
@@ -13,7 +12,6 @@ import NavLink from '../NavLinks/NavLink'
 import {
   BodyDiv,
   NavbarTitle,
-  RightDiv,
   SearchBar,
   SearchDiv,
   ShoppingCart,
@@ -53,7 +51,7 @@ const MarketplaceNavbar = ({ title }: { title: string }) => {
     <StyledLandingPageNav>
       <StyledLogo src={horseLogo} onClick={() => navigate('/neigh') /* easter egg */} />
       <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
-      <BodyDiv>
+      <BodyDiv width="100%">
         <NavLinks fontType={navLinkFont} justify="space-between">
           <LinkGroupSpan>
             <NavLink text="Community" onClick={() => navigate(PATHS.COMMUNITY)} />

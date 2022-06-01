@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Input } from 'antd' // TODO make search bar a component
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { auth, getUserProfile } from '../../firebase'
@@ -14,6 +13,7 @@ import {
   BodyDiv,
   NavbarTitle,
   RightDiv,
+  SearchBar,
   SearchDiv,
   StyledLandingPageNav,
   StyledLogo,
@@ -25,7 +25,6 @@ import logo from '../../assets/Neigh-logos_transparent.png'
 const LoadingPageNav = ({ title }: { title: string }) => {
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
-  const { Search } = Input
 
   const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -55,12 +54,12 @@ const LoadingPageNav = ({ title }: { title: string }) => {
           <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
         </NavLinks>
         <SearchDiv>
-          <Search placeholder="Search" onSearch={onSearch} />
+          <SearchBar placeholder="Search" onSearch={onSearch} />
         </SearchDiv>
       </BodyDiv>
       <RightDiv>
         {isLoggedIn ? (
-          <NavLinks fontType={navLinkFont} justify="left">
+          <NavLinks fontType={navLinkFont} justify="center">
             <NavLink text={userProfile.email!} onClick={() => navigate(PATHS.REGISTER)} />
           </NavLinks>
         ) : (
