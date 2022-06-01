@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 import { theme } from '../../styles/Theme'
 import { logout } from '../../store/actions'
@@ -14,6 +15,7 @@ import {
 } from './styles/NavLinks.styled'
 
 import defaultAvatar from '../../assets/default_avatar.png'
+import { PATHS } from '../../routes/PATHS'
 
 const UsernameHover = ({
   userProfile,
@@ -22,11 +24,12 @@ const UsernameHover = ({
   userProfile: ProfileInfo
   hideAvatar?: boolean
 }) => {
+  const navigate = useNavigate()
   const [showDropdown, setShowDropdown] = useState(false)
   const { h3 } = { ...theme.typography.fontSize }
 
   const myAccOnClick = () => {
-    // TODO
+    navigate(PATHS.USER_PROFILE)
   }
 
   const logoutOnClick = () => {

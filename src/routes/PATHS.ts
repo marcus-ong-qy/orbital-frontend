@@ -5,4 +5,5 @@ export enum PATHS {
   COMMUNITY = '/community',
   REGISTER = '/register',
   FORGET_PASSWORD = '/forget',
+  USER_PROFILE = '/user', // TODO add user id
 }
