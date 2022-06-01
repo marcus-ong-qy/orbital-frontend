@@ -29,3 +29,29 @@ export const LinkGroupSpan = styled.span<{ width?: string; margin?: string }>`
   width: ${(props) => props.width ?? 'auto'};
   margin: ${(props) => props.margin ?? '0'};
 `
+
+export const UsernameDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const UsernameSpan = styled.span`
+  display: flex;
+`
+
+export const DisplayPic = styled.img`
+  height: 21px;
+  width: 21px;
+`
+
+export const DropdownDiv = styled.div`
+  position: absolute;
+  top: 36px;
+
+  width: 112px;
+  height: 76px;
+
+  background: ${(props) => props.theme.palette.common.gray.normal};
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`

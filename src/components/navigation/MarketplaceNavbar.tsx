@@ -23,6 +23,7 @@ import { LinkGroupSpan, NavLinks } from '../NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
 import shoppingCartLogo from '../../assets/shopping-cart.png'
+import UsernameHover from '../NavLinks/UsernameHover'
 
 const MarketplaceNavbar = ({ title }: { title: string }) => {
   const navigate = useNavigate()
@@ -61,13 +62,15 @@ const MarketplaceNavbar = ({ title }: { title: string }) => {
             <NavLink text="Rent" onClick={() => {}} />
           </LinkGroupSpan>
           {isLoggedIn ? (
-            <LinkGroupSpan width="25vw" margin="0 5vw 0 0">
-              <NavLink text="Notifications" onClick={() => {}} />
-              &nbsp;|&nbsp;
-              <NavLink text="Settings" onClick={() => {}} />
-              &nbsp;|&nbsp;
-              <NavLink text={userProfile.email!} onClick={() => navigate(PATHS.REGISTER)} />
-            </LinkGroupSpan>
+            <>
+              <LinkGroupSpan width="25vw" margin="0 5vw 0 0">
+                <NavLink text="Notifications" onClick={() => {}} />
+                &nbsp;|&nbsp;
+                <NavLink text="Settings" onClick={() => {}} />
+                &nbsp;|&nbsp;
+                <UsernameHover userProfile={userProfile} />
+              </LinkGroupSpan>
+            </>
           ) : (
             <LinkGroupSpan width="25vw">
               <NavLink text="Log In" onClick={() => navigate(PATHS.LOGIN)} />

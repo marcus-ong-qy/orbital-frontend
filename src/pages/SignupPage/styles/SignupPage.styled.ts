@@ -24,7 +24,7 @@ export const SignupDiv = styled.div`
   margin: ${loginDivStyleVar.margin} 0;
   padding: ${loginDivStyleVar.padding};
 
-  background: ${(props) => props.theme.palette.common.gray};
+  background: ${(props) => props.theme.palette.common.gray.normal};
   border: 1px solid ${(props) => props.theme.palette.common.black};
 `
 

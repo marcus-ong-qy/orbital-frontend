@@ -8,9 +8,14 @@ export type ThemeType = {
     common: {
       black: HexCode
       white: HexCode
-      darkgray: HexCode
-      gray: HexCode
-      lightgray: HexCode
+      gray: {
+        dark: HexCode
+        normal: HexCode
+        light: HexCode
+      }
+      // darkgray: HexCode
+      // gray: HexCode
+      // lightgray: HexCode
     }
     primary: HexCode
     secondary: HexCode
@@ -50,9 +55,14 @@ export const theme: ThemeType = {
     common: {
       black: '#000',
       white: '#fff',
-      darkgray: '#717a99',
-      gray: '#e5e5e5',
-      lightgray: '#c4c4c4',
+      gray: {
+        dark: '#717a99',
+        normal: '#e5e5e5',
+        light: '#c4c4c4',
+      },
+      // darkgray: '#717a99',
+      // gray: '#e5e5e5',
+      // lightgray: '#c4c4c4',
     },
     primary: '#719972',
     secondary: '#816353',
