@@ -67,6 +67,12 @@ export const ShoppingCartDiv = styled.span`
 export const ShoppingCart = styled.img`
   height: 33px;
   width: 44px;
+
+  cursor: pointer;
+
+  :hover {
+    opacity: 0.7;
+  }
 `
 
 export const BodyDiv = styled.div<{ width?: string }>`

@@ -13,9 +13,6 @@ export type ThemeType = {
         normal: HexCode
         light: HexCode
       }
-      // darkgray: HexCode
-      // gray: HexCode
-      // lightgray: HexCode
     }
     primary: HexCode
     secondary: HexCode
@@ -60,9 +57,6 @@ export const theme: ThemeType = {
         normal: '#e5e5e5',
         light: '#c4c4c4',
       },
-      // darkgray: '#717a99',
-      // gray: '#e5e5e5',
-      // lightgray: '#c4c4c4',
     },
     primary: '#719972',
     secondary: '#816353',
@@ -139,6 +133,12 @@ export const theme: ThemeType = {
 
 function Theme({ children }: { children: React.ReactNode }) {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>
+}
+
+export const getClamp = (fontType: FontType) => {
+  const { min, size, max } = fontType
+
+  return `clamp(${min}, ${size}, ${max})`
 }
 
 export default Theme

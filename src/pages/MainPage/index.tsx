@@ -17,9 +17,8 @@ const MainPage = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && userProfile === defaultUserProfile) setUserProfile(getUserProfile(user))
-      console.log('ya is change')
     })
-  }, [])
+  })
 
   const signOutOnClick = () => {
     logout()

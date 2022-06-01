@@ -7,7 +7,9 @@ import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 import { defaultUserProfile } from '../../store/reducer'
 import { ProfileInfo } from '../../store/types'
+
 import NavLink from '../NavLinks/NavLink'
+import UsernameHover from '../NavLinks/UsernameHover'
 
 import {
   BodyDiv,
@@ -28,6 +30,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
 
   const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
@@ -39,6 +42,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       }
     })
   })
+
   const onSearch = () => {
     // TODO
   }
@@ -60,7 +64,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       <RightDiv>
         {isLoggedIn ? (
           <NavLinks fontType={navLinkFont} justify="center">
-            <NavLink text={userProfile.email!} onClick={() => navigate(PATHS.REGISTER)} />
+            <UsernameHover userProfile={userProfile} />
           </NavLinks>
         ) : (
           <NavLinks fontType={navLinkFont} justify="center">

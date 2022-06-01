@@ -1,6 +1,12 @@
 import { useState } from 'react'
+
+import { theme } from '../../styles/Theme'
+import { logout } from '../../store/actions'
+import { ProfileInfo } from '../../store/types'
+
 import {
   DisplayPic,
+  DropdownButtons,
   DropdownDiv,
   StyledNavLink,
   UsernameDiv,
@@ -8,30 +14,48 @@ import {
 } from './styles/NavLinks.styled'
 
 import defaultAvatar from '../../assets/default_avatar.png'
-import { ProfileInfo } from '../../store/types'
 
 const UsernameHover = ({
-  // text,
   userProfile,
+  hideAvatar,
 }: {
-  // text: string
   userProfile: ProfileInfo
-  // onMouseEnter: React.MouseEventHandler<HTMLSpanElement>
+  hideAvatar?: boolean
 }) => {
   const [showDropdown, setShowDropdown] = useState(false)
+  const { h3 } = { ...theme.typography.fontSize }
+
+  const myAccOnClick = () => {
+    // TODO
+  }
+
+  const logoutOnClick = () => {
+    logout()
+    window.location.reload()
+  }
 
   return (
     <UsernameDiv>
       <UsernameSpan>
-        <DisplayPic src={userProfile.photoURL ?? defaultAvatar} alt="don't have" />
-        <StyledNavLink onMouseEnter={() => setShowDropdown(true)}>
+        {!hideAvatar && <DisplayPic src={userProfile.photoURL ?? defaultAvatar} alt="don't have" />}
+        <StyledNavLink
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
           {userProfile.displayName ?? userProfile.email}
         </StyledNavLink>
       </UsernameSpan>
       {showDropdown && (
-        <DropdownDiv>
-          <div>My Account</div>
-          <div>Logout</div>
+        <DropdownDiv
+          onMouseEnter={() => setShowDropdown(true)}
+          onMouseLeave={() => setShowDropdown(false)}
+        >
+          <DropdownButtons fontType={h3} onClick={myAccOnClick}>
+            My Account
+          </DropdownButtons>
+          <DropdownButtons fontType={h3} onClick={logoutOnClick}>
+            Logout
+          </DropdownButtons>
         </DropdownDiv>
       )}
     </UsernameDiv>

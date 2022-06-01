@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FontType } from '../../../styles/Theme'
+import { FontType, getClamp } from '../../../styles/Theme'
 import { fontTypeCss } from '../../../styles/index.styled'
 
 export const StyledNavLink = styled.span`
@@ -31,6 +31,7 @@ export const LinkGroupSpan = styled.span<{ width?: string; margin?: string }>`
 `
 
 export const UsernameDiv = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -38,20 +39,47 @@ export const UsernameDiv = styled.div`
 
 export const UsernameSpan = styled.span`
   display: flex;
+
+  :hover {
+    text-decoration: underline;
+  }
 `
 
 export const DisplayPic = styled.img`
   height: 21px;
   width: 21px;
+
+  margin-right: 0.3vw;
 `
 
 export const DropdownDiv = styled.div`
   position: absolute;
-  top: 36px;
+  top: ${(props) => getClamp(props.theme.typography.fontSize.navLinkFont)};
 
-  width: 112px;
+  width: 8vw;
   height: 76px;
+
+  display: grid;
 
   background: ${(props) => props.theme.palette.common.gray.normal};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+`
+
+export const DropdownButtons = styled.div<{ fontType: FontType; justify?: string }>`
+  ${fontTypeCss}
+  font-weight: 700;
+
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: ${(props) => props.theme.palette.common.black};
+
+  cursor: pointer;
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.dark};
+  }
 `
