@@ -48,8 +48,9 @@ const RegisterPage = () => {
 
   useEffect(() => {
     if (signupAttemptStatus === 'success') {
-      navigate(PATHS.LOGIN)
-      dispatch(setSignupAttemptStatus('redirect'))
+      navigate(PATHS.MAIN)
+      // dispatch(setSignupAttemptStatus('redirect')) // TODO no need cos redirect to mainpage instead, no need 'redirect' status as well
+      dispatch(setSignupAttemptStatus('initial'))
     }
   })
 
@@ -66,7 +67,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <StyledSignupPage data-testid="register-page">
+    <StyledSignupPage>
       <SignupDiv>
         <SignupDivTitle fontType={h1}>Sign Up</SignupDivTitle>
         <SignupWarningDiv>
