@@ -4,7 +4,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import GoogleButton from 'react-google-button'
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { LOGIN } from '../../common/warnings'
+import { LOGIN_WARNINGS } from '../../common/warnings'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 
@@ -38,9 +38,9 @@ const LoginPage = () => {
   const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
   useEffect(() => {
-    if (loginAttemptStatus === 'success') {
+    if (loginAttemptStatus === 'SUCCESS') {
       navigate(PATHS.MAIN)
-      dispatch(setLoginAttemptStatus('initial'))
+      dispatch(setLoginAttemptStatus('INITIAL'))
     }
   })
 
@@ -66,8 +66,8 @@ const LoginPage = () => {
             title="Password"
             type="login"
             placeholder="Password"
-            errorLabel={LOGIN.INVALID}
-            isError={loginAttemptStatus === 'invalid'}
+            errorLabel={LOGIN_WARNINGS.INVALID}
+            isError={loginAttemptStatus === 'INVALID'}
             register={register}
             setValue={setValue}
             setError={setError}

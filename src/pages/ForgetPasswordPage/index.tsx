@@ -5,7 +5,7 @@ import { theme } from '../../styles/Theme'
 import { sendPasswordReset } from '../../store/actions'
 import { IS_USING_BACKEND } from '../../store/reducer'
 import { ResetPasswordStatus } from '../../store/types'
-import { resetPasswordErrorLabels } from '../../common/warnings'
+import { RESET_PASSWORD_ERROR_LABELS } from '../../common/warnings'
 import { RESET_PWD_INSTRUCTIONS } from '../../common/texts'
 
 import InputField from '../../components/InputFields/InputField'
@@ -28,9 +28,9 @@ const ForgetPasswordPage = () => {
   const { h1, p } = { ...theme.typography.fontSize }
 
   const [resetPasswordAttemptStatus, setResetPasswordAttemptStatus] =
-    useState<ResetPasswordStatus>('initial')
+    useState<ResetPasswordStatus>('INITIAL')
 
-  const resetPasswordErrorLabel = resetPasswordErrorLabels[resetPasswordAttemptStatus]
+  const resetPasswordErrorLabel = RESET_PASSWORD_ERROR_LABELS[resetPasswordAttemptStatus]
 
   const onSubmit = (data: FieldValues) => {
     const email = data.Email.trim()

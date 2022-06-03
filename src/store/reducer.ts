@@ -19,8 +19,8 @@ const loginCredentialsDefault: Credentials = {
 }
 
 const initialState: State = {
-  loginAttemptStatus: 'initial',
-  signupAttemptStatus: 'initial',
+  loginAttemptStatus: 'INITIAL',
+  signupAttemptStatus: 'INITIAL',
   alwaysLoggedInChecked: false,
 
   loginCredentialsOffline: loginCredentialsDefault,
