@@ -49,10 +49,9 @@ const RegisterPage = () => {
   useEffect(() => {
     if (signupAttemptStatus === 'success') {
       navigate(PATHS.MAIN)
-      // dispatch(setSignupAttemptStatus('redirect')) // TODO no need cos redirect to mainpage instead, no need 'redirect' status as well
       dispatch(setSignupAttemptStatus('initial'))
     }
-  })
+  }, [signupAttemptStatus, dispatch, navigate])
 
   const onSubmit = (data: FieldValues) => {
     const signupCredentials: Credentials = {

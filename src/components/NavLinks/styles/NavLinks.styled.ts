@@ -74,6 +74,7 @@ export const DropdownButtons = styled.div<{ fontType: FontType; justify?: string
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 
   color: ${(props) => props.theme.palette.common.black};
 

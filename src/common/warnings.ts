@@ -8,7 +8,6 @@ export enum LOGIN {
 
 // Sign up
 export enum SIGNUP {
-  SUCCESSFUL = 'Sign Up Successful!',
   EMAIL_INVALID = 'Please enter a valid email address',
   PASSWORD_INVALID = 'Must be 8 or more characters and contain a mix of alphanumeric and symbols',
 }

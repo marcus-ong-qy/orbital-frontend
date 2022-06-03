@@ -32,7 +32,7 @@ export type SignupStatus =
   | 'account-exists'
   | 'email-invalid'
   | 'error'
-  | 'redirect'
+  // | 'redirect'
   | 'success'
 
 // not stored in store

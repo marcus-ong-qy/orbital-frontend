@@ -32,17 +32,6 @@ describe('Authentication Pages', () => {
     expect(loginButton).toBeInTheDocument()
   })
 
-  test('login - login button has correct text and colour', () => {
-    render(<App />)
-
-    const loginButton = screen.getByRole('button', { name: 'Login' })
-
-    expect(loginButton).toHaveStyle(`
-      color: ${theme.palette.common.gray};
-      background-color: ${theme.palette.secondary};
-    `)
-  })
-
   test('login - invalid user', async () => {
     render(<AppWithStore />)
 
