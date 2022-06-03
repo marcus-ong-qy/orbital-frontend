@@ -56,7 +56,7 @@ export const DropdownDiv = styled.div`
   position: absolute;
   top: ${(props) => getClamp(props.theme.typography.fontSize.navLinkFont)};
 
-  width: 8vw;
+  width: max(8vw, 112px);
   height: 76px;
 
   display: grid;

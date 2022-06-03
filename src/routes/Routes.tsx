@@ -5,7 +5,7 @@ import { PATHS } from './PATHS'
 import {
   // RouteWithoutNav,
   RouteWithLandingPageNav,
-  RouteWithMarketplaceNav,
+  RouteWithNavbar,
 } from './RouteTypes'
 
 const LoginPage = React.lazy(
@@ -33,7 +33,9 @@ export const Routes = () => (
     />
     <Route
       path={PATHS.MAIN}
-      element={<RouteWithMarketplaceNav component={MainPage} title="Marketplace" />}
+      element={
+        <RouteWithNavbar navbarType="marketplace" component={MainPage} title="Marketplace" />
+      }
     />
     <Route
       path={PATHS.REGISTER}

@@ -25,7 +25,13 @@ import horseLogo from '../../assets/Neigh-logos_transparent.png'
 import shoppingCartLogo from '../../assets/shopping-cart.png'
 import UsernameHover from '../NavLinks/UsernameHover'
 
-const MarketplaceNavbar = ({ title }: { title: string }) => {
+const Navbar = ({
+  title,
+  type, // TODO create a type for community
+}: {
+  title: string
+  type: 'marketplace' | 'community'
+}) => {
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
 
@@ -90,4 +96,4 @@ const MarketplaceNavbar = ({ title }: { title: string }) => {
   )
 }
 
-export default MarketplaceNavbar
+export default Navbar
