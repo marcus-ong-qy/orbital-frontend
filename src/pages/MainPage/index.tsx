@@ -14,13 +14,12 @@ const MainPage = () => {
   const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  // TODO show loading page
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
         setUserProfile(getUserProfile(user))
         setIsLoggedIn(true)
-      } else if (!user) {
+      } else if (!user && isLoggedIn) {
         setUserProfile(defaultUserProfile)
         setIsLoggedIn(false)
       }

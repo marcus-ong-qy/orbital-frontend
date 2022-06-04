@@ -45,13 +45,6 @@ export const UsernameSpan = styled.span`
   }
 `
 
-export const DisplayPic = styled.img`
-  height: 21px;
-  width: 21px;
-
-  margin-right: 0.3vw;
-`
-
 export const DropdownDiv = styled.div`
   position: absolute;
   top: ${(props) => getClamp(props.theme.typography.fontSize.navLinkFont)};

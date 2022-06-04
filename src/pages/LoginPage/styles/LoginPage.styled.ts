@@ -4,9 +4,9 @@ import { FontType } from '../../../styles/Theme'
 import {
   fontTypeCss,
   styledPageCss,
-  loginDivStyleVar,
   orSpanCss,
-  loginFormsCss,
+  authFormsCss,
+  authDivStyleCss,
 } from '../../../styles/index.styled'
 
 export const StyledLoginPage = styled.div`
@@ -14,13 +14,7 @@ export const StyledLoginPage = styled.div`
 `
 
 export const LoginDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: max(408px, 35vw);
-  height: auto;
-  margin-top: ${loginDivStyleVar.margin};
+  ${authDivStyleCss}
 `
 
 export const LoginDivTitle = styled.div<{ fontType: FontType }>`
@@ -30,7 +24,7 @@ export const LoginDivTitle = styled.div<{ fontType: FontType }>`
 `
 
 export const LoginForm = styled.form`
-  ${loginFormsCss}
+  ${authFormsCss}
 `
 
 export const ForgetPwdSpan = styled.span`

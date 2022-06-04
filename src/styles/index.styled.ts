@@ -18,12 +18,18 @@ export const styledPageCss = css`
 `
 
 // Login and Sign Up pages
-export const loginDivStyleVar = {
-  margin: '12vh',
-  padding: '32px min(56px, 4vw)',
-}
 
-export const loginFormsCss = css`
+export const authDivStyleCss = css`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: max(408px, 35vw);
+  height: auto;
+  margin-top: 12vh;
+`
+
+export const authFormsCss = css`
   width: 100%;
 `
 

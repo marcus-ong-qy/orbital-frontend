@@ -29,6 +29,8 @@ export const NavbarTitle = styled.div<{ fontType: FontType }>`
   width: 14.5vw;
   margin-right: 2vw;
   text-align: center;
+
+  color: ${(props) => props.theme.palette.common.white};
 `
 
 export const SearchDiv = styled.div`

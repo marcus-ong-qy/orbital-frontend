@@ -25,29 +25,36 @@ const UserProfilePage = React.lazy(
   () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/UserProfilePage'),
 )
 
+enum TITLE {
+  LOGIN = 'Log In',
+  SIGNUP = 'Sign Up',
+  MARKETPLACE = 'Marketplace',
+  SETTINGS = 'Settings',
+}
+
 export const Routes = () => (
   <Switch>
     <Route
       path={PATHS.LOGIN}
-      element={<RouteWithLandingPageNav component={LoginPage} title="Log in" />}
+      element={<RouteWithLandingPageNav component={LoginPage} title={TITLE.LOGIN} />}
     />
     <Route
       path={PATHS.MAIN}
       element={
-        <RouteWithNavbar navbarType="marketplace" component={MainPage} title="Marketplace" />
+        <RouteWithNavbar navbarType="marketplace" component={MainPage} title={TITLE.MARKETPLACE} />
       }
     />
     <Route
       path={PATHS.REGISTER}
-      element={<RouteWithLandingPageNav component={RegisterPage} title="Sign Up" />}
+      element={<RouteWithLandingPageNav component={RegisterPage} title={TITLE.SIGNUP} />}
     />
     <Route
       path={PATHS.FORGET_PASSWORD}
-      element={<RouteWithLandingPageNav component={ForgetPasswordPage} title="Log In" />}
+      element={<RouteWithLandingPageNav component={ForgetPasswordPage} title={TITLE.LOGIN} />}
     />
     <Route
       path={PATHS.USER_PROFILE}
-      element={<RouteWithLandingPageNav component={UserProfilePage} title="Settings" />}
+      element={<RouteWithLandingPageNav component={UserProfilePage} title={TITLE.SETTINGS} />}
     />
     <Route
       path="/neigh" // easter egg

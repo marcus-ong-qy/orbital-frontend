@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { theme } from '../../styles/Theme'
+import { PATHS } from '../../routes/PATHS'
 import { logout } from '../../store/actions'
 import { ProfileInfo } from '../../store/types'
 
 import {
-  DisplayPic,
   DropdownButtons,
   DropdownDiv,
   StyledNavLink,
@@ -14,16 +14,7 @@ import {
   UsernameSpan,
 } from './styles/NavLinks.styled'
 
-import defaultAvatar from '../../assets/default_avatar.png'
-import { PATHS } from '../../routes/PATHS'
-
-const UsernameHover = ({
-  userProfile,
-  hideAvatar,
-}: {
-  userProfile: ProfileInfo
-  hideAvatar?: boolean
-}) => {
+const UsernameHover = ({ userProfile }: { userProfile: ProfileInfo }) => {
   const navigate = useNavigate()
   const [showDropdown, setShowDropdown] = useState(false)
   const { h3 } = { ...theme.typography.fontSize }
@@ -40,8 +31,8 @@ const UsernameHover = ({
   return (
     <UsernameDiv>
       <UsernameSpan>
-        {!hideAvatar && <DisplayPic src={userProfile.photoURL ?? defaultAvatar} alt="don't have" />}
         <StyledNavLink
+          data-testid="navbar-username"
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
         >

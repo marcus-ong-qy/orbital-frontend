@@ -44,7 +44,7 @@ const ForgetPasswordPage = () => {
         <HorseHead src={confusedHorse} />
         <ResetEmailMsg fontType={p}>{RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
         <ForgetPasswordForm onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputField title="Email" placeholder="Email Address" register={register} />
+          <InputField title="Email" placeholder="Email" register={register} />
           <WarningLabels
             label={resetPasswordErrorLabel}
             isError={resetPasswordErrorLabel.length !== 0}

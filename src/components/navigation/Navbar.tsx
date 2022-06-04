@@ -43,7 +43,7 @@ const Navbar = ({
       if (user && !isLoggedIn) {
         setUserProfile(getUserProfile(user))
         setIsLoggedIn(true)
-      } else if (!user) {
+      } else if (!user && isLoggedIn) {
         setUserProfile(defaultUserProfile)
         setIsLoggedIn(false)
       }

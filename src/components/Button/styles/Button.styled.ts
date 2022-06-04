@@ -9,7 +9,7 @@ export const StyledButton = styled(Button)`
   cursor: pointer;
 
   background: ${(props) => props.theme.palette.secondary};
-  color: ${(props) => props.theme.palette.common.gray};
+  color: ${(props) => props.theme.palette.common.black};
   font-weight: bold;
   font-size: 18px;
 

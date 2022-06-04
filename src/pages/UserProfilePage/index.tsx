@@ -17,7 +17,7 @@ const UserProfilePage = () => {
     })
   })
   return (
-    <StyledUserProfilePage>
+    <StyledUserProfilePage data-testid="user-profile-page">
       <h1>User Profile Page</h1>
       <div>Name: {userProfile.displayName}</div>
       <div>
