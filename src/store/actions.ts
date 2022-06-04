@@ -77,11 +77,11 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
   try {
     const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
     const user = res.user
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      authProvider: 'local',
-      email: credentials.email,
-    })
+    // await addDoc(collection(db, 'users'), {
+    //   uid: user.uid,
+    //   authProvider: 'local',
+    //   email: credentials.email,
+    // })
     dispatch(setSignupAttemptStatus('SUCCESS'))
   } catch (err) {
     console.error(err)
