@@ -7,9 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { collection, addDoc } from 'firebase/firestore'
 
-import { auth, db } from '../firebase'
+import { auth } from '../firebase'
 import { demoAcc } from '../demo-config'
 import {
   Dispatch,
@@ -75,8 +74,9 @@ const readSignupError = (err: any) => {
 
 export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
-    const user = res.user
+    // const res =
+    await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
+    // const user = res.user
     // await addDoc(collection(db, 'users'), {
     //   uid: user.uid,
     //   authProvider: 'local',
