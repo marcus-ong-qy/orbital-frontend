@@ -10,9 +10,8 @@ import { Provider } from 'react-redux'
 import App from '../App'
 import { demoAcc } from '../demo-config'
 import { store } from '../store/store'
-import { theme } from '../styles/Theme'
 
-import { LOGIN, SIGNUP, signupErrorLabels } from '../common/warnings'
+import { LOGIN_WARNINGS, SIGNUP_WARNINGS, SIGNUP_ERROR_LABELS } from '../common/warnings'
 
 const AppWithStore = () => {
   return (
@@ -32,17 +31,6 @@ describe('Authentication Pages', () => {
     expect(loginButton).toBeInTheDocument()
   })
 
-  test('login - login button has correct text and colour', () => {
-    render(<App />)
-
-    const loginButton = screen.getByRole('button', { name: 'Login' })
-
-    expect(loginButton).toHaveStyle(`
-      color: ${theme.palette.common.gray};
-      background-color: ${theme.palette.secondary};
-    `)
-  })
-
   test('login - invalid user', async () => {
     render(<AppWithStore />)
 
@@ -55,7 +43,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText(LOGIN.INVALID)
+      const warningLabel = screen.getByText(LOGIN_WARNINGS.INVALID)
       expect(warningLabel).toBeInTheDocument()
     })
   })
@@ -72,7 +60,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText(LOGIN.INVALID)
+      const warningLabel = screen.getByText(LOGIN_WARNINGS.INVALID)
       expect(warningLabel).toBeInTheDocument()
     })
   })
@@ -127,7 +115,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(signupButton)
 
     await waitFor(() => {
-      const emailErrorLabel = screen.getByText(signupErrorLabels['email-invalid'])
+      const emailErrorLabel = screen.getByText(SIGNUP_ERROR_LABELS['EMAIL_INVALID'])
       expect(emailErrorLabel).toBeInTheDocument()
     })
   })
@@ -146,7 +134,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(signupButton)
 
     await waitFor(() => {
-      const accountExistsLabel = screen.getByText(signupErrorLabels['account-exists'])
+      const accountExistsLabel = screen.getByText(SIGNUP_ERROR_LABELS['ACCOUNT_EXISTS'])
       expect(accountExistsLabel).toBeInTheDocument()
     })
   })
@@ -161,7 +149,7 @@ describe('Authentication Pages', () => {
     })
 
     await waitFor(() => {
-      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      const passwordInvalidWarning = screen.getByText(SIGNUP_WARNINGS.PASSWORD_INVALID)
       expect(passwordInvalidWarning).toBeInTheDocument()
     })
   })
@@ -176,7 +164,7 @@ describe('Authentication Pages', () => {
     })
 
     await waitFor(() => {
-      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      const passwordInvalidWarning = screen.getByText(SIGNUP_WARNINGS.PASSWORD_INVALID)
       expect(passwordInvalidWarning).toBeInTheDocument()
     })
   })

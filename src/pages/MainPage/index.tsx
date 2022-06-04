@@ -12,13 +12,24 @@ const MainPage = () => {
   const navigate = useNavigate()
 
   const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   // TODO show loading page
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user && userProfile === defaultUserProfile) setUserProfile(getUserProfile(user))
+      if (user && !isLoggedIn) {
+        setUserProfile(getUserProfile(user))
+        setIsLoggedIn(true)
+      } else if (!user) {
+        setUserProfile(defaultUserProfile)
+        setIsLoggedIn(false)
+      }
     })
   })
+
+  const loginOnClick = () => {
+    navigate(PATHS.LOGIN)
+  }
 
   const signOutOnClick = () => {
     logout()
@@ -26,18 +37,28 @@ const MainPage = () => {
   }
 
   return (
-    <div data-testid="MarketplaceMain">
+    <div
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      data-testid="MarketplaceMain"
+    >
       <h1>Main Page</h1>
-      <div>Name: {userProfile.displayName}</div>
-      <div>
-        Email: {userProfile.email}&nbsp;
-        {userProfile.emailVerified && '(Verified)'}
-      </div>
-      <div>
-        <div>Photo:</div>
-        <img src={userProfile.photoURL!} alt="don't have" />
-      </div>
-      <button onClick={signOutOnClick}>Sign Out</button>
+      {isLoggedIn ? (
+        <>
+          <h2>User logged in!</h2>
+          <h2>
+            Email: {userProfile.email}&nbsp;
+            {userProfile.emailVerified && '(Verified)'}
+          </h2>
+          <br />
+          <button onClick={signOutOnClick}>Sign Out</button>
+        </>
+      ) : (
+        <>
+          <h2>User not logged in</h2>
+          <br />
+          <button onClick={loginOnClick}>Log In</button>
+        </>
+      )}
     </div>
   )
 }

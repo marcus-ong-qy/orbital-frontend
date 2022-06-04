@@ -56,7 +56,7 @@ export const DropdownDiv = styled.div`
   position: absolute;
   top: ${(props) => getClamp(props.theme.typography.fontSize.navLinkFont)};
 
-  width: 8vw;
+  width: max(8vw, 112px);
   height: 76px;
 
   display: grid;
@@ -74,6 +74,7 @@ export const DropdownButtons = styled.div<{ fontType: FontType; justify?: string
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 
   color: ${(props) => props.theme.palette.common.black};
 

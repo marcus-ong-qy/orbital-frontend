@@ -4,24 +4,17 @@ import { FieldValues, useForm } from 'react-hook-form'
 import GoogleButton from 'react-google-button'
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { LOGIN, SIGNUP } from '../../common/warnings'
+import { LOGIN_WARNINGS } from '../../common/warnings'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 
-import {
-  logIn,
-  logInOffline,
-  logInWithGoogle,
-  setLoginAttemptStatus,
-  setSignupAttemptStatus,
-} from '../../store/actions'
+import { logIn, logInOffline, logInWithGoogle, setLoginAttemptStatus } from '../../store/actions'
 import { IS_USING_BACKEND } from '../../store/reducer'
 import { Credentials } from '../../store/types'
 
 import Button from '../../components/Button/Button'
 import InputField from '../../components/InputFields/InputField'
 import PasswordInputField from '../../components/InputFields/PasswordInputField'
-import WarningLabels from '../../components/WarningLabels/WarningLabels'
 
 import {
   ForgetPwdLink,
@@ -41,14 +34,13 @@ const LoginPage = () => {
   const { register, handleSubmit, setValue, setError } = useForm({
     mode: 'onSubmit',
   })
-  const { loginAttemptStatus, signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { loginAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
   const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
   useEffect(() => {
-    if (loginAttemptStatus === 'success') {
+    if (loginAttemptStatus === 'SUCCESS') {
       navigate(PATHS.MAIN)
-      dispatch(setLoginAttemptStatus('initial'))
-      dispatch(setSignupAttemptStatus('initial'))
+      dispatch(setLoginAttemptStatus('INITIAL'))
     }
   })
 
@@ -68,15 +60,14 @@ const LoginPage = () => {
     <StyledLoginPage>
       <LoginDiv>
         <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
-        <WarningLabels label={SIGNUP.SUCCESSFUL} isError={signupAttemptStatus === 'redirect'} />
         <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField title="Email" placeholder="Email" register={register} required />
           <PasswordInputField
             title="Password"
             type="login"
             placeholder="Password"
-            errorLabel={LOGIN.INVALID}
-            isError={loginAttemptStatus === 'invalid'}
+            errorLabel={LOGIN_WARNINGS.INVALID}
+            isError={loginAttemptStatus === 'INVALID'}
             register={register}
             setValue={setValue}
             setError={setError}

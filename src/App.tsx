@@ -13,12 +13,12 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Suspense fallback={<LoadingPage />}>
-          <Theme>
-            <GlobalStyle />
+        <Theme>
+          <GlobalStyle />
+          <Suspense fallback={<LoadingPage />}>
             <Routes />
-          </Theme>
-        </Suspense>
+          </Suspense>
+        </Theme>
       </BrowserRouter>
     </Provider>
   )

@@ -7,7 +7,7 @@ import { theme } from '../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { PATHS } from '../../routes/PATHS'
 import { emailRegex, passwordRegex } from '../../common/regex'
-import { SIGNUP, signupErrorLabels } from '../../common/warnings'
+import { SIGNUP_WARNINGS, SIGNUP_ERROR_LABELS } from '../../common/warnings'
 
 import { logInWithGoogle, setSignupAttemptStatus, signUp } from '../../store/actions'
 import { IS_USING_BACKEND } from '../../store/reducer'
@@ -44,15 +44,14 @@ const RegisterPage = () => {
 
   const { signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
   const { h1, p } = { ...theme.typography.fontSize }
-  const signupErrorLabel = signupErrorLabels[signupAttemptStatus]
+  const signupErrorLabel = SIGNUP_ERROR_LABELS[signupAttemptStatus]
 
   useEffect(() => {
-    if (signupAttemptStatus === 'success') {
+    if (signupAttemptStatus === 'SUCCESS') {
       navigate(PATHS.MAIN)
-      // dispatch(setSignupAttemptStatus('redirect')) // TODO no need cos redirect to mainpage instead, no need 'redirect' status as well
-      dispatch(setSignupAttemptStatus('initial'))
+      dispatch(setSignupAttemptStatus('INITIAL'))
     }
-  })
+  }, [signupAttemptStatus, dispatch, navigate])
 
   const onSubmit = (data: FieldValues) => {
     const signupCredentials: Credentials = {
@@ -77,7 +76,7 @@ const RegisterPage = () => {
           <InputField
             title="Email"
             placeholder="Email"
-            errorLabel={SIGNUP.EMAIL_INVALID}
+            errorLabel={SIGNUP_WARNINGS.EMAIL_INVALID}
             isError={errors.Email}
             register={register}
             pattern={emailRegex}
@@ -87,7 +86,7 @@ const RegisterPage = () => {
             title="Password"
             type="signup"
             placeholder="Password"
-            errorLabel={SIGNUP.PASSWORD_INVALID}
+            errorLabel={SIGNUP_WARNINGS.PASSWORD_INVALID}
             isError={errors.Password}
             register={register}
             setValue={setValue}

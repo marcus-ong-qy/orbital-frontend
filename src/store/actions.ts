@@ -7,9 +7,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { collection, addDoc } from 'firebase/firestore'
 
-import { auth, db } from '../firebase'
+import { auth } from '../firebase'
 import { demoAcc } from '../demo-config'
 import {
   Dispatch,
@@ -34,10 +33,10 @@ export const logIn =
       .then(() => {
         return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
       })
-      .then(() => dispatch(setLoginAttemptStatus('success')))
+      .then(() => dispatch(setLoginAttemptStatus('SUCCESS')))
       .catch((error) => {
         console.error(error)
-        dispatch(setLoginAttemptStatus('invalid'))
+        dispatch(setLoginAttemptStatus('INVALID'))
       })
   }
 
@@ -65,24 +64,25 @@ export const logInWithGoogle =
 const readSignupError = (err: any) => {
   switch (`${err}`) {
     case 'FirebaseError: Firebase: Error (auth/email-already-in-use).':
-      return 'account-exists'
+      return 'ACCOUNT_EXISTS'
     case 'FirebaseError: Firebase: Error (auth/invalid-email).':
-      return 'email-invalid'
+      return 'EMAIL_INVALID'
     default:
-      return 'error'
+      return 'ERROR'
   }
 }
 
 export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
-    const user = res.user
-    await addDoc(collection(db, 'users'), {
-      uid: user.uid,
-      authProvider: 'local',
-      email: credentials.email,
-    })
-    dispatch(setSignupAttemptStatus('success'))
+    // const res =
+    await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
+    // const user = res.user
+    // await addDoc(collection(db, 'users'), {
+    //   uid: user.uid,
+    //   authProvider: 'local',
+    //   email: credentials.email,
+    // })
+    dispatch(setSignupAttemptStatus('SUCCESS'))
   } catch (err) {
     console.error(err)
     dispatch(setSignupAttemptStatus(readSignupError(err)))
@@ -92,11 +92,11 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
 const readResetPasswordError = (err: any) => {
   switch (`${err}`) {
     case 'FirebaseError: Firebase: Error (auth/user-not-found).':
-      return 'account-doesnt-exist'
+      return 'ACCOUNT_DOESNT_EXIST'
     case 'FirebaseError: Firebase: Error (auth/invalid-email).':
-      return 'email-invalid'
+      return 'EMAIL_INVALID'
     default:
-      return 'error'
+      return 'ERROR'
   }
 }
 
@@ -107,7 +107,7 @@ export const sendPasswordReset = async (
   // no need to dispatch
   try {
     await sendPasswordResetEmail(auth, email)
-    setResetPasswordAttemptStatus('success')
+    setResetPasswordAttemptStatus('SUCCESS')
   } catch (err) {
     console.error(err)
     setResetPasswordAttemptStatus(readResetPasswordError(err))
@@ -152,7 +152,7 @@ const setLoginCredentials = (credentials: Credentials) => (dispatch: Dispatch<Ac
   dispatch({
     type: ACTIONS.LOGIN_OFFLINE,
     loginCredentialsOffline: { ...credentials },
-    loginAttemptStatus: 'success',
+    loginAttemptStatus: 'SUCCESS',
   })
 }
 
@@ -162,5 +162,5 @@ export const logInOffline = (credentials: Credentials) => (dispatch: Dispatch<Ac
   }
   loginMatch()
     ? dispatch(setLoginCredentials(credentials))
-    : dispatch(setLoginAttemptStatus('invalid'))
+    : dispatch(setLoginAttemptStatus('INVALID'))
 }

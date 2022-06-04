@@ -26,22 +26,22 @@ export type Credentials = {
   password: string
 }
 
-export type LoginStatus = 'initial' | 'invalid' | 'success'
+export type LoginStatus = 'INITIAL' | 'INVALID' | 'SUCCESS'
 export type SignupStatus =
-  | 'initial'
-  | 'account-exists'
-  | 'email-invalid'
-  | 'error'
-  | 'redirect'
-  | 'success'
+  | 'INITIAL'
+  | 'ACCOUNT_EXISTS'
+  | 'EMAIL_INVALID'
+  | 'ERROR'
+  // | 'redirect'
+  | 'SUCCESS'
 
 // not stored in store
 export type ResetPasswordStatus =
-  | 'initial'
-  | 'account-doesnt-exist'
-  | 'email-invalid'
-  | 'error'
-  | 'success'
+  | 'INITIAL'
+  | 'ACCOUNT_DOESNT_EXIST'
+  | 'EMAIL_INVALID'
+  | 'ERROR'
+  | 'SUCCESS'
 
 /** Actions' types */
 
