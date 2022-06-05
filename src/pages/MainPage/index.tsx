@@ -3,24 +3,26 @@ import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { PATHS } from '../../routes/PATHS'
-import { auth, getUserProfile } from '../../firebase'
+import { auth, getUserFirebaseProfile } from '../../firebase'
 import { logout } from '../../store/authentication/actions'
-import { defaultUserProfile } from '../../store/authentication/reducer'
-import { ProfileInfo } from '../../store/authentication/types'
+import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
+import { FirebaseProfile } from '../../store/authentication/types'
 
 const MainPage = () => {
   const navigate = useNavigate()
 
-  const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
+  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
+    defaultUserFirebaseProfile,
+  )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
-        setUserProfile(getUserProfile(user))
+        setUserFirebaseProfile(getUserFirebaseProfile(user))
         setIsLoggedIn(true)
       } else if (!user && isLoggedIn) {
-        setUserProfile(defaultUserProfile)
+        setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)
       }
     })
@@ -45,8 +47,8 @@ const MainPage = () => {
         <>
           <h2>User logged in!</h2>
           <h2>
-            Email: {userProfile.email}&nbsp;
-            {userProfile.emailVerified && '(Verified)'}
+            Email: {userFirebaseProfile.email}&nbsp;
+            {userFirebaseProfile.emailVerified && '(Verified)'}
           </h2>
           <br />
           <button onClick={signOutOnClick}>Sign Out</button>

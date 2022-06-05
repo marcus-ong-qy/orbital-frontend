@@ -19,7 +19,9 @@ import {
   LoginStatus,
   SignupStatus,
   ResetPasswordStatus,
+  UserData,
 } from './types'
+import { defaultUserData } from './reducer'
 
 export const logIn =
   (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
@@ -72,17 +74,30 @@ const readSignupError = (err: any) => {
   }
 }
 
+// TODO put to types
+
 export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
   try {
-    // const res =
-    await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
-    // const user = res.user
-    // await addDoc(collection(db, 'users'), {
-    //   uid: user.uid,
-    //   authProvider: 'local',
-    //   email: credentials.email,
-    // })
-    dispatch(setSignupAttemptStatus('SUCCESS'))
+    const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
+    const user = res.user
+
+    const userData: UserData = {
+      ...defaultUserData,
+      firebaseUID: user.uid,
+    }
+
+    fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/addUser', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((resp) => {
+        resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
+      })
+      .catch((err) => console.error(err))
   } catch (err) {
     console.error(err)
     dispatch(setSignupAttemptStatus(readSignupError(err)))

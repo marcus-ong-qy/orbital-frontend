@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
-import { auth, getUserProfile } from '../../firebase'
+import { auth, getUserFirebaseProfile } from '../../firebase'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
-import { defaultUserProfile } from '../../store/authentication/reducer'
-import { ProfileInfo } from '../../store/authentication/types'
+import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
+import { FirebaseProfile } from '../../store/authentication/types'
 
 import NavLink from '../NavLinks/NavLink'
 import UsernameHover from '../NavLinks/UsernameHover'
@@ -28,16 +28,18 @@ const LoadingPageNav = ({ title }: { title: string }) => {
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
 
-  const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
+  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
+    defaultUserFirebaseProfile,
+  )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
-        setUserProfile(getUserProfile(user))
+        setUserFirebaseProfile(getUserFirebaseProfile(user))
         setIsLoggedIn(true)
       } else if (!user && isLoggedIn) {
-        setUserProfile(defaultUserProfile)
+        setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)
       }
     })
@@ -64,7 +66,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       <RightDiv>
         {isLoggedIn ? (
           <NavLinks fontType={navLinkFont} justify="center">
-            <UsernameHover userProfile={userProfile} />
+            <UsernameHover userFirebaseProfile={userFirebaseProfile} />
           </NavLinks>
         ) : (
           <NavLinks fontType={navLinkFont} justify="center">

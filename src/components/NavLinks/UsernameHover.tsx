@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 import { logout } from '../../store/authentication/actions'
-import { ProfileInfo } from '../../store/authentication/types'
+import { FirebaseProfile } from '../../store/authentication/types'
 
 import {
   DropdownButtons,
@@ -14,7 +14,7 @@ import {
   UsernameSpan,
 } from './styles/NavLinks.styled'
 
-const UsernameHover = ({ userProfile }: { userProfile: ProfileInfo }) => {
+const UsernameHover = ({ userFirebaseProfile }: { userFirebaseProfile: FirebaseProfile }) => {
   const navigate = useNavigate()
   const [showDropdown, setShowDropdown] = useState(false)
   const { h3 } = { ...theme.typography.fontSize }
@@ -36,7 +36,7 @@ const UsernameHover = ({ userProfile }: { userProfile: ProfileInfo }) => {
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
         >
-          {userProfile.displayName ?? userProfile.email}
+          {userFirebaseProfile.email}
         </StyledNavLink>
       </UsernameSpan>
       {showDropdown && (

@@ -1,10 +1,19 @@
 /** Types */
-export type ProfileInfo = {
-  displayName: string | null
+export type FirebaseProfile = {
   email: string | null
-  photoURL: string | null
   emailVerified: boolean
   uid: string | null
+}
+
+export type UserData = {
+  name: string
+  username: string
+  phone: string
+  postal: string
+  address: string
+  gender: string
+  dob: number
+  firebaseUID: string
 }
 
 export type Credentials = {

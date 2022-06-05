@@ -1,17 +1,34 @@
 import { Reducer } from 'redux'
 
-import { AUTH_ACTIONS, ActionTypes, Credentials, LoginStatus, SignupStatus } from './types'
+import {
+  AUTH_ACTIONS,
+  ActionTypes,
+  Credentials,
+  LoginStatus,
+  SignupStatus,
+  UserData,
+  FirebaseProfile,
+} from './types'
 
 // TODO remove IS_USING_BACKEND, and relook some state values are not needed
 type BinaryBool = 1 | 0
 export const IS_USING_BACKEND: BinaryBool = 1
 
-export const defaultUserProfile = {
-  displayName: '',
+export const defaultUserFirebaseProfile: FirebaseProfile = {
   email: '',
-  photoURL: '',
   emailVerified: false,
   uid: '',
+}
+
+export const defaultUserData: UserData = {
+  name: '',
+  username: '',
+  phone: '',
+  postal: '',
+  address: '',
+  gender: '',
+  dob: 0,
+  firebaseUID: '',
 }
 
 const loginCredentialsDefault: Credentials = {

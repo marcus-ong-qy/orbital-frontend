@@ -3,7 +3,7 @@ import { initializeApp } from 'firebase/app'
 // import { getAnalytics } from 'firebase/analytics';
 import { GoogleAuthProvider, getAuth, User } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
-import { ProfileInfo } from './store/authentication/types'
+import { FirebaseProfile } from './store/authentication/types'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -20,7 +20,7 @@ const googleProvider = new GoogleAuthProvider()
 
 // User management functions https://firebase.google.com/docs/auth/web/manage-users
 
-const getUserProfile = (user: User): ProfileInfo => {
+const getUserFirebaseProfile = (user: User): FirebaseProfile => {
   // User is signed in, see docs for a list of available properties
   // https://firebase.google.com/docs/reference/js/firebase.User
 
@@ -46,4 +46,4 @@ const getUserProfile = (user: User): ProfileInfo => {
   return updatedUserProfile
 }
 
-export { auth, db, googleProvider, getUserProfile }
+export { auth, db, googleProvider, getUserFirebaseProfile }
