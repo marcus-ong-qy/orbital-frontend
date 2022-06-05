@@ -16,7 +16,7 @@ export const StyledLandingPageNav = styled.div`
   height: ${navBarBuffer};
   width: 100vw;
 
-  background-color: ${(props) => props.theme.palette.primary};
+  background: ${(props) => props.theme.palette.primary};
 `
 
 export const StyledLogo = styled.img`
@@ -60,12 +60,12 @@ export const SearchBar = styled(Input.Search)`
     height: 35px;
     border-radius: 35px;
     border-width: 2px;
-    background-color: ${(props) => props.theme.palette.common.gray.normal};
+    background: ${(props) => props.theme.palette.common.gray.normal};
 
     cursor: pointer;
 
     :hover {
-      background-color: ${(props) => props.theme.palette.highlight.normal};
+      background: ${(props) => props.theme.palette.highlight.normal};
     }
   }
   .ant-input {

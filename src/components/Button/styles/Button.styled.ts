@@ -12,6 +12,10 @@ export const StyledButton = styled(Button)`
   font-weight: bold;
   font-size: 18px;
 
+  span {
+    color: ${(props) => props.theme.palette.common.white};
+  }
+
   :hover {
     background: ${(props) => props.theme.palette.highlight.dark};
   }

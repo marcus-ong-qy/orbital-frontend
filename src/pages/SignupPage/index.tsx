@@ -9,9 +9,9 @@ import { PATHS } from '../../routes/PATHS'
 import { emailRegex, passwordRegex } from '../../common/regex'
 import { SIGNUP_WARNINGS, SIGNUP_ERROR_LABELS } from '../../common/warnings'
 
-import { logInWithGoogle, setSignupAttemptStatus, signUp } from '../../store/actions'
-import { IS_USING_BACKEND } from '../../store/reducer'
-import { Credentials } from '../../store/types'
+import { logInWithGoogle, setSignupAttemptStatus, signUp } from '../../store/authentication/actions'
+import { IS_USING_BACKEND } from '../../store/authentication/reducer'
+import { Credentials } from '../../store/authentication/types'
 
 import InputField from '../../components/InputFields/InputField'
 import PasswordInputField from '../../components/InputFields/PasswordInputField'
@@ -42,7 +42,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' })
 
-  const { signupAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { signupAttemptStatus } = useAppSelector((state) => state.auth_reducer)
   const { h1, p } = { ...theme.typography.fontSize }
   const signupErrorLabel = SIGNUP_ERROR_LABELS[signupAttemptStatus]
 

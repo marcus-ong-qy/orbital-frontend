@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { auth, getUserProfile } from '../../firebase'
-import { defaultUserProfile } from '../../store/reducer'
-import { ProfileInfo } from '../../store/types'
+import { defaultUserProfile } from '../../store/authentication/reducer'
+import { ProfileInfo } from '../../store/authentication/types'
 
 import { StyledUserProfilePage } from './styles/UserProfilePage.styled'
 

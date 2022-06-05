@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
-import { logout } from '../../store/actions'
-import { ProfileInfo } from '../../store/types'
+import { logout } from '../../store/authentication/actions'
+import { ProfileInfo } from '../../store/authentication/types'
 
 import {
   DropdownButtons,

@@ -1,7 +1,8 @@
 import { Reducer } from 'redux'
 
-import { ACTIONS, ActionTypes, Credentials, LoginStatus, SignupStatus } from './types'
+import { AUTH_ACTIONS, ActionTypes, Credentials, LoginStatus, SignupStatus } from './types'
 
+// TODO remove IS_USING_BACKEND, and relook some state values are not needed
 type BinaryBool = 1 | 0
 export const IS_USING_BACKEND: BinaryBool = 1
 
@@ -35,19 +36,19 @@ type State = {
   loginCredentialsOffline: Credentials
 }
 
-export const neigh_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
+export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
   switch (action.type) {
-    case ACTIONS.LOGIN_OFFLINE:
+    case AUTH_ACTIONS.LOGIN_OFFLINE:
       return {
         ...state,
         loginCredentialsOffline: action.loginCredentialsOffline,
         loginAttemptStatus: action.loginAttemptStatus,
       }
-    case ACTIONS.LOGIN_ATTEMPT_STATUS:
+    case AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS:
       return { ...state, loginAttemptStatus: action.loginAttemptStatus }
-    case ACTIONS.SIGNUP_ATTEMPT_STATUS:
+    case AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS:
       return { ...state, signupAttemptStatus: action.signupAttemptStatus }
-    case ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
+    case AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
       return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
     default:
       return state

@@ -51,7 +51,7 @@ export const theme: ThemeType = {
   palette: {
     common: {
       black: '#271801',
-      white: '#fafafa',
+      white: '#fdfdfb',
       gray: {
         dark: '#717a99',
         normal: '#e5e5e5',

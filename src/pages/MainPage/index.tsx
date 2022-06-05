@@ -4,9 +4,9 @@ import { onAuthStateChanged } from 'firebase/auth'
 
 import { PATHS } from '../../routes/PATHS'
 import { auth, getUserProfile } from '../../firebase'
-import { logout } from '../../store/actions'
-import { defaultUserProfile } from '../../store/reducer'
-import { ProfileInfo } from '../../store/types'
+import { logout } from '../../store/authentication/actions'
+import { defaultUserProfile } from '../../store/authentication/reducer'
+import { ProfileInfo } from '../../store/authentication/types'
 
 const MainPage = () => {
   const navigate = useNavigate()

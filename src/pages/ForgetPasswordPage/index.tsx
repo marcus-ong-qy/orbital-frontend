@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 
 import { theme } from '../../styles/Theme'
-import { sendPasswordReset } from '../../store/actions'
-import { IS_USING_BACKEND } from '../../store/reducer'
-import { ResetPasswordStatus } from '../../store/types'
+import { sendPasswordReset } from '../../store/authentication/actions'
+import { IS_USING_BACKEND } from '../../store/authentication/reducer'
+import { ResetPasswordStatus } from '../../store/authentication/types'
 import { RESET_PASSWORD_ERROR_LABELS } from '../../common/warnings'
 import { RESET_PWD_INSTRUCTIONS } from '../../common/texts'
 

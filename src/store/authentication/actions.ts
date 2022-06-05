@@ -8,22 +8,22 @@ import {
   signOut,
 } from 'firebase/auth'
 
-import { auth } from '../firebase'
-import { demoAcc } from '../demo-config'
+import { auth } from '../../firebase'
+import { demoAcc } from '../../demo-config'
+
+import { Dispatch, GetState } from '../types'
 import {
-  Dispatch,
   ActionTypes,
-  ACTIONS,
+  AUTH_ACTIONS,
   Credentials,
   LoginStatus,
   SignupStatus,
   ResetPasswordStatus,
-  GetState,
 } from './types'
 
 export const logIn =
   (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
-    const { alwaysLoggedInChecked } = getState().neigh_reducer
+    const { alwaysLoggedInChecked } = getState().auth_reducer
 
     const persistenceType = alwaysLoggedInChecked
       ? browserLocalPersistence
@@ -125,7 +125,7 @@ export const logout = async () => {
 
 export const setLoginAttemptStatus = (status: LoginStatus) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
-    type: ACTIONS.LOGIN_ATTEMPT_STATUS,
+    type: AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS,
     loginAttemptStatus: status,
   })
 }
@@ -133,16 +133,16 @@ export const setLoginAttemptStatus = (status: LoginStatus) => (dispatch: Dispatc
 export const setSignupAttemptStatus =
   (status: SignupStatus) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({
-      type: ACTIONS.SIGNUP_ATTEMPT_STATUS,
+      type: AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS,
       signupAttemptStatus: status,
     })
   }
 
 export const toggleAlwaysLoggedInCheckbox =
   () => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
-    const { alwaysLoggedInChecked } = getState().neigh_reducer
+    const { alwaysLoggedInChecked } = getState().auth_reducer
     dispatch({
-      type: ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX,
+      type: AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX,
       alwaysLoggedInChecked: !alwaysLoggedInChecked,
     })
   }
@@ -150,7 +150,7 @@ export const toggleAlwaysLoggedInCheckbox =
 // offline functions for offline testing
 const setLoginCredentials = (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
-    type: ACTIONS.LOGIN_OFFLINE,
+    type: AUTH_ACTIONS.LOGIN_OFFLINE,
     loginCredentialsOffline: { ...credentials },
     loginAttemptStatus: 'SUCCESS',
   })

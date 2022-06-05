@@ -8,9 +8,14 @@ import { LOGIN_WARNINGS } from '../../common/warnings'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 
-import { logIn, logInOffline, logInWithGoogle, setLoginAttemptStatus } from '../../store/actions'
-import { IS_USING_BACKEND } from '../../store/reducer'
-import { Credentials } from '../../store/types'
+import {
+  logIn,
+  logInOffline,
+  logInWithGoogle,
+  setLoginAttemptStatus,
+} from '../../store/authentication/actions'
+import { IS_USING_BACKEND } from '../../store/authentication/reducer'
+import { Credentials } from '../../store/authentication/types'
 
 import Button from '../../components/Button/Button'
 import InputField from '../../components/InputFields/InputField'
@@ -34,7 +39,7 @@ const LoginPage = () => {
   const { register, handleSubmit, setValue, setError } = useForm({
     mode: 'onSubmit',
   })
-  const { loginAttemptStatus } = useAppSelector((state) => state.neigh_reducer)
+  const { loginAttemptStatus } = useAppSelector((state) => state.auth_reducer)
   const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
   useEffect(() => {

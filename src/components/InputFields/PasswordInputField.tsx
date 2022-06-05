@@ -9,7 +9,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { theme } from '../../styles/Theme'
-import { toggleAlwaysLoggedInCheckbox } from '../../store/actions'
+import { toggleAlwaysLoggedInCheckbox } from '../../store/authentication/actions'
 import WarningLabels from '../WarningLabels/WarningLabels'
 
 import {
@@ -59,7 +59,7 @@ const PasswordInputField = (props: Props) => {
   }
 
   const dispatch = useAppDispatch()
-  const { alwaysLoggedInChecked } = useAppSelector((state) => state.neigh_reducer)
+  const { alwaysLoggedInChecked } = useAppSelector((state) => state.auth_reducer)
 
   const { labelFont } = { ...theme.typography.fontSize }
 
