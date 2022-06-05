@@ -16,12 +16,30 @@ export const StyledInput = styled.input`
 `
 
 export const PasswordSpan = styled.div`
-  width: 100%;
+  position: relative;
   display: flex;
   justify-content: space-between;
+  width: 100%;
+
+  .ant-input {
+    width: 100%;
+  }
+  .ant-input-password {
+    position: relative;
+    display: flex;
+  }
+
+  .ant-input-suffix {
+    position: absolute;
+    height: 100%;
+    right: 12px;
+  }
 `
 
 export const StyledBigA = styled.div`
+  position: absolute;
+  right: 28px;
+
   height: 35px;
   width: 30px;
 
