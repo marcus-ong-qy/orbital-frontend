@@ -44,19 +44,35 @@ export const SearchDiv = styled.div`
 export const SearchBar = styled(Input.Search)`
   width: 50vw;
 
-  .ant-input-search,
-  .ant-input-group {
+  .ant-input-search {
     width: 100%;
     margin-top: 1.9vh;
-    display: flex;
-    flex-direction: row;
+  }
+  .ant-input-group {
+    position: relative;
+  }
+  .ant-input-group-addon {
+    position: absolute;
+    right: 26px;
   }
   .ant-input-search-button {
-    width: 28px;
-    height: 28px;
+    width: 35px !important;
+    height: 35px !important;
+    border-radius: 35px;
+    border-width: 2px;
+    background-color: ${(props) => props.theme.palette.common.gray.normal};
+
+    cursor: pointer;
+
+    :hover {
+      background-color: ${(props) => props.theme.palette.highlight.normal};
+    }
   }
   .ant-input {
+    height: 35px;
     width: calc(100% - 26px);
+    padding-left: 12px;
+    border-radius: 28px;
   }
 `
 

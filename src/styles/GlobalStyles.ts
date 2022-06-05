@@ -4,6 +4,7 @@ import { ThemeType } from './Theme'
 export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
   * {
       box-sizing: border-box;
+      color: ${(props) => props.theme.palette.common.black};
   }
 
   body {

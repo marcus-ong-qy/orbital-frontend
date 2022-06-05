@@ -3,6 +3,7 @@ import { FontType, getClamp } from '../../../styles/Theme'
 import { fontTypeCss } from '../../../styles/index.styled'
 
 export const StyledNavLink = styled.span`
+  color: ${(props) => props.theme.palette.common.white};
   cursor: pointer;
 
   :hover {
@@ -28,6 +29,9 @@ export const LinkGroupSpan = styled.span<{ width?: string; margin?: string }>`
 
   width: ${(props) => props.width ?? 'auto'};
   margin: ${(props) => props.margin ?? '0'};
+
+  color: ${(props) => props.theme.palette.common.white};
+  cursor: default;
 `
 
 export const UsernameDiv = styled.div`
@@ -68,8 +72,6 @@ export const DropdownButtons = styled.div<{ fontType: FontType; justify?: string
   align-items: center;
   justify-content: center;
   text-align: center;
-
-  color: ${(props) => props.theme.palette.common.black};
 
   cursor: pointer;
 

@@ -50,8 +50,8 @@ export type FontType = {
 export const theme: ThemeType = {
   palette: {
     common: {
-      black: '#000',
-      white: '#fff',
+      black: '#271801',
+      white: '#fafafa',
       gray: {
         dark: '#717a99',
         normal: '#e5e5e5',
@@ -62,7 +62,7 @@ export const theme: ThemeType = {
     secondary: '#816353',
     danger: '#997198',
     highlight: {
-      normal: '#997198',
+      normal: '#b89cb7',
       light: '#e0d4e0',
       dark: '#7a5a7a',
     },
