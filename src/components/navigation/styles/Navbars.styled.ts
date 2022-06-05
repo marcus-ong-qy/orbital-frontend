@@ -44,20 +44,20 @@ export const SearchDiv = styled.div`
 export const SearchBar = styled(Input.Search)`
   width: 50vw;
 
-  .ant-input-search {
-    width: 100%;
-    margin-top: 1.9vh;
-  }
   .ant-input-group {
     position: relative;
+    display: flex;
+
+    width: 50vw;
+    margin-top: 1.9vh;
   }
   .ant-input-group-addon {
     position: absolute;
     right: 26px;
   }
   .ant-input-search-button {
-    width: 35px !important;
-    height: 35px !important;
+    width: 35px;
+    height: 35px;
     border-radius: 35px;
     border-width: 2px;
     background-color: ${(props) => props.theme.palette.common.gray.normal};
@@ -100,21 +100,6 @@ export const BodyDiv = styled.div<{ width?: string }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  .ant-input-search,
-  .ant-input-group {
-    width: 50vw;
-    margin-top: 1.9vh;
-    display: flex;
-    flex-direction: row;
-  }
-  .ant-input-search-button {
-    width: 28px;
-    height: 28px;
-  }
-  .ant-input {
-    width: calc(100% - 26px);
-  }
 `
 
 export const RightDiv = styled.div`
