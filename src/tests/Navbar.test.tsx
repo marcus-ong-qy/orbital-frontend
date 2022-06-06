@@ -8,6 +8,8 @@ describe('Navigation Bar', () => {
     render(<AppWithStore />)
 
     await waitFor(() => {
+      const loginLink = screen.getByText('Log In')
+      fireEvent.click(loginLink)
       login()
     })
 

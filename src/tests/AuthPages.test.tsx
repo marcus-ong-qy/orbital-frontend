@@ -11,10 +11,13 @@ import { AppWithStore, login } from './GlobalTestFunctions'
 
 // Login Page
 describe('Authentication Pages', () => {
-  test('login - page loads', async () => {
+  test('login - go to login page', async () => {
     render(<AppWithStore />)
 
     await waitFor(() => {
+      const loginLink = screen.getByText('Log In')
+      fireEvent.click(loginLink)
+
       const loginButton = screen.getByRole('button', { name: 'Login' })
       expect(loginButton).toBeInTheDocument()
     })
