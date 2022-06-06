@@ -57,7 +57,7 @@ const MainPage = () => {
         <>
           <h2>User not logged in</h2>
           <br />
-          <button onClick={loginOnClick}>Log In</button>
+          <button onClick={loginOnClick}>Go To Login Page</button>
         </>
       )}
     </div>

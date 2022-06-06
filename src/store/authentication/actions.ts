@@ -6,6 +6,7 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
+  User,
 } from 'firebase/auth'
 
 import { auth } from '../../firebase'
@@ -77,6 +78,7 @@ const readSignupError = (err: any) => {
 // TODO put to types
 
 export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
+  // TODO wj doing changes
   try {
     const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
     const user = res.user
@@ -86,7 +88,7 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
       firebaseUID: user.uid,
     }
 
-    fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/addUser', {
+    fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user', {
       method: 'POST',
       mode: 'cors',
       headers: {
@@ -102,6 +104,25 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     console.error(err)
     dispatch(setSignupAttemptStatus(readSignupError(err)))
   }
+}
+
+export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
+  const firebaseUID = user.uid
+
+  fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user?user=${firebaseUID}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((resp) => resp.json())
+    .then((res) => {
+      const userData: UserData = res.data
+      // dispatch(setUserData(userData)) // TODO
+      // return userData
+    })
+    .catch((err) => console.error(err))
 }
 
 const readResetPasswordError = (err: any) => {
