@@ -1,5 +1,5 @@
-import styled, { keyframes } from 'styled-components'
-import { styledPageCss } from '../../../styles/index.styled'
+import styled from 'styled-components'
+import { gallopAnimation, styledPageCss } from '../../../styles/index.styled'
 
 export const StyledLoadingPage = styled.div`
   ${styledPageCss}
@@ -20,28 +20,11 @@ export const LoadingText = styled.div`
   font-size: 48px;
 `
 
-const gallopAnimation = keyframes`
-  0% {
-    transform: rotate(0) translateX(0) translateY(0);
-  }
-  25% {
-    transform: rotate(-10deg) translateX(-20px) translateY(10px) ;
-  }
-  50% {
-    transform: rotate(0) translateX(0) translateY(0);
-  }
-  75% {
-    transform: rotate(25deg) translateX(20px) translateY(-10px);
-  }
-  100% {
-    transform: rotate(0) translateX(0) translateY(0);
-  }
-`
-
 export const GallopingHorse = styled.img`
   width: 194px;
   height: 194px;
   margin-top: 15px;
+
   animation-name: ${gallopAnimation};
   animation-duration: 0.5s;
   animation-iteration-count: infinite;

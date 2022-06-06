@@ -19,6 +19,7 @@ export type ThemeType = {
     danger: HexCode
     highlight: {
       normal: HexCode
+      regular: HexCode
       light: HexCode
       dark: HexCode
     }
@@ -63,6 +64,7 @@ export const theme: ThemeType = {
     danger: '#997198',
     highlight: {
       normal: '#b89cb7',
+      regular: '#997198',
       light: '#e0d4e0',
       dark: '#7a5a7a',
     },

@@ -2,14 +2,71 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
-import { PATHS } from '../../routes/PATHS'
+import { GREETINGS } from '../../common/texts'
 import { auth, getUserFirebaseProfile } from '../../firebase'
+import { theme } from '../../styles/Theme'
+import { PATHS } from '../../routes/PATHS'
+
 import { logout } from '../../store/authentication/actions'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
 
+import ItemDisplay from '../../components/ItemDisplay/ItemDisplay'
+
+import {
+  CarouselDiv,
+  CategoriesDiv,
+  CategoriesTitle,
+  FeaturedDiv,
+  FeaturedTitle,
+  GreetingsDiv,
+  GreetingsSpan,
+  GreetingsUsernameSpan,
+  HorseHead,
+  ItemsContainer,
+  ListingsDiv,
+  ListingsTitle,
+  StyledMainPage,
+} from './styles/MainPage.styled'
+
+import horseHead from '../../assets/Horse-head-transparent.png'
+
+const demoItems: {
+  title: string
+  price: number
+  type: 'sale' | 'rent'
+}[] = [
+  {
+    title: 'CATAN - Trade Build Settle [Brand New] [Limited Edition] [blablabla]',
+    price: 26.46,
+    type: 'sale',
+  },
+  {
+    title: 'CATAN - Trade Build Settle',
+    price: 264.6,
+    type: 'rent',
+  },
+  {
+    title: 'CATAN',
+    price: 2646,
+    type: 'sale',
+  },
+  {
+    title: 'CAT',
+    price: 2.646,
+    type: 'rent',
+  },
+  {
+    title: 'C',
+    price: 0.2646,
+    type: 'sale',
+  },
+]
+
 const MainPage = () => {
   const navigate = useNavigate()
+
+  const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
@@ -38,29 +95,41 @@ const MainPage = () => {
   }
 
   return (
-    <div
-      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
-      data-testid="MarketplaceMain"
-    >
-      <h1>Main Page</h1>
-      {isLoggedIn ? (
-        <>
-          <h2>User logged in!</h2>
-          <h2>
-            Email: {userFirebaseProfile.email}&nbsp;
-            {userFirebaseProfile.emailVerified && '(Verified)'}
-          </h2>
-          <br />
-          <button onClick={signOutOnClick}>Sign Out</button>
-        </>
-      ) : (
-        <>
-          <h2>User not logged in</h2>
-          <br />
-          <button onClick={loginOnClick}>Go To Login Page</button>
-        </>
-      )}
-    </div>
+    <StyledMainPage data-testid="MarketplaceMain">
+      <GreetingsDiv fontType={navTitleFont}>
+        <HorseHead src={horseHead} />
+        <GreetingsSpan>
+          {`${GREETINGS}, `}
+          {isLoggedIn ? (
+            <GreetingsUsernameSpan>{userFirebaseProfile.email}</GreetingsUsernameSpan>
+          ) : (
+            'stranger'
+          )}
+          !
+        </GreetingsSpan>
+      </GreetingsDiv>
+
+      <CarouselDiv>
+        <h1>Carousel Under Construction</h1>
+      </CarouselDiv>
+
+      <FeaturedDiv>
+        <FeaturedTitle fontType={h1}>Featured</FeaturedTitle>
+        <ItemsContainer>
+          {demoItems.map((item) => {
+            return <ItemDisplay title={item.title} price={item.price} type={item.type} />
+          })}
+        </ItemsContainer>
+      </FeaturedDiv>
+
+      <CategoriesDiv>
+        <CategoriesTitle fontType={h1}>Categories</CategoriesTitle>
+      </CategoriesDiv>
+
+      <ListingsDiv>
+        <ListingsTitle fontType={h1}>Listings</ListingsTitle>
+      </ListingsDiv>
+    </StyledMainPage>
   )
 }
 
