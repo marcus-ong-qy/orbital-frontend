@@ -34,7 +34,10 @@ const MainPage = React.lazy(
   () => import(/* webpackChunckName: "MainPage" */ '../pages/Marketplace/MainPage'),
 )
 const ItemPage = React.lazy(
-  () => import(/* webpackChunckName: "ItemPage" */ '../pages/Authentication/ItemPage'),
+  () => import(/* webpackChunckName: "ItemPage" */ '../pages/Marketplace/ItemPage'),
+)
+const ChatPage = React.lazy(
+  () => import(/* webpackChunckName: "ChatPage" */ '../pages/Marketplace/ChatPage'),
 )
 
 enum TITLE {
@@ -79,6 +82,12 @@ export const Routes = () => (
       path={PATHS.ITEM_ID}
       element={
         <RouteWithNavbar navbarType="marketplace" component={ItemPage} title={TITLE.MARKETPLACE} />
+      }
+    />
+    <Route
+      path={PATHS.CHAT}
+      element={
+        <RouteWithNavbar navbarType="marketplace" component={ChatPage} title={TITLE.MARKETPLACE} />
       }
     />
   </Switch>

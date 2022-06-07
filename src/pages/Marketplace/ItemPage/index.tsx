@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom'
 import { theme } from '../../../styles/Theme'
+import { PATHS } from '../../../routes/PATHS'
+
 import {
   DealButton,
   DealInfoDiv,
@@ -20,7 +23,12 @@ import {
 import catanSet from '../../../assets/catan-set.jpg'
 
 const ItemPage = () => {
+  const navigate = useNavigate()
   const { h2, p } = { ...theme.typography.fontSize }
+
+  const dealOnClick = () => {
+    navigate(PATHS.CHAT)
+  }
   return (
     <StyledItemPage>
       <ItemShowcaseDiv>
@@ -56,7 +64,7 @@ const ItemPage = () => {
           </TagsSpan>
         </TagsDiv>
         <OwnerSpan></OwnerSpan>
-        <DealButton text="Deal Now" />
+        <DealButton text="Deal Now" onClick={dealOnClick} />
       </InfoDiv>
     </StyledItemPage>
   )

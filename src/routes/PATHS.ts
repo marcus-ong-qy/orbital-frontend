@@ -10,4 +10,5 @@ export enum PATHS {
   MAIN = '/',
   ITEM = '/item',
   ITEM_ID = '/item/:itemId',
+  CHAT = '/chat',
 }
