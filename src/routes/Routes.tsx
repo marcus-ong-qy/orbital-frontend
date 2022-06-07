@@ -8,10 +8,10 @@ import {
   RouteWithNavbar,
 } from './RouteTypes'
 
+// Authentication
 const LoginPage = React.lazy(
   () => import(/* webpackChunckName: "LoginPage" */ '../pages/LoginPage'),
 )
-const MainPage = React.lazy(() => import(/* webpackChunckName: "MainPage" */ '../pages/MainPage'))
 const RegisterPage = React.lazy(
   () => import(/* webpackChunckName: "RegisterPage" */ '../pages/SignupPage'),
 )
@@ -25,6 +25,10 @@ const UserProfilePage = React.lazy(
   () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/UserProfilePage'),
 )
 
+//Marketplace
+const MainPage = React.lazy(() => import(/* webpackChunckName: "MainPage" */ '../pages/MainPage'))
+const ItemPage = React.lazy(() => import(/* webpackChunckName: "ItemPage" */ '../pages/ItemPage'))
+
 enum TITLE {
   LOGIN = 'Log In',
   SIGNUP = 'Sign Up',
@@ -34,15 +38,10 @@ enum TITLE {
 
 export const Routes = () => (
   <Switch>
+    {/* Authentication */}
     <Route
       path={PATHS.LOGIN}
       element={<RouteWithLandingPageNav component={LoginPage} title={TITLE.LOGIN} />}
-    />
-    <Route
-      path={PATHS.MAIN}
-      element={
-        <RouteWithNavbar navbarType="marketplace" component={MainPage} title={TITLE.MARKETPLACE} />
-      }
     />
     <Route
       path={PATHS.REGISTER}
@@ -59,6 +58,20 @@ export const Routes = () => (
     <Route
       path="/neigh" // easter egg
       element={<RouteWithLandingPageNav component={LoadingPage} title="neigh??" />}
+    />
+
+    {/* Marketplace */}
+    <Route
+      path={PATHS.MAIN}
+      element={
+        <RouteWithNavbar navbarType="marketplace" component={MainPage} title={TITLE.MARKETPLACE} />
+      }
+    />
+    <Route
+      path={PATHS.ITEM_ID}
+      element={
+        <RouteWithNavbar navbarType="marketplace" component={ItemPage} title={TITLE.MARKETPLACE} />
+      }
     />
   </Switch>
 )
