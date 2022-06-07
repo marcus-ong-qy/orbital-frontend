@@ -1,37 +1,36 @@
-import { theme } from '../../styles/Theme'
+import { useNavigate } from 'react-router-dom'
+import { PATHS } from '../../routes/PATHS'
+
 import {
   ItemBottomDiv,
   ItemDisplayDiv,
   ItemName,
   ItemPic,
   PriceTag,
-  TypeIndicatorDiv,
 } from './styles/ItemDisplay.styled'
 
 import catanSet from '../../assets/catan-set.jpg'
 
-type Props = {
+export type Item = {
+  id: string
   title: string
   price: number
-
   type: 'sale' | 'rent'
 }
 
-const TypeIndicator = ({ type }: { type: 'sale' | 'rent' }) => {
-  const text = type.charAt(0).toUpperCase() + type.slice(1)
+const ItemDisplay = ({ item }: { item: Item }) => {
+  const navigate = useNavigate()
 
-  return <TypeIndicatorDiv type={type}>{text}</TypeIndicatorDiv>
-}
+  const onClick = () => {
+    navigate(`${PATHS.ITEM}/${item.id}`)
+  }
 
-const ItemDisplay = (props: Props) => {
-  const { h1 } = { ...theme.typography.fontSize }
   return (
-    <ItemDisplayDiv>
+    <ItemDisplayDiv id={item.id} onClick={onClick}>
       <ItemPic src={catanSet} />
-      <ItemName>{props.title}</ItemName>
+      <ItemName>{item.title}</ItemName>
       <ItemBottomDiv>
-        <PriceTag>{`$${props.price.toFixed(2)}`}</PriceTag>
-        <TypeIndicator type={props.type} />
+        <PriceTag>${item.price.toFixed(2)}</PriceTag>
       </ItemBottomDiv>
     </ItemDisplayDiv>
   )

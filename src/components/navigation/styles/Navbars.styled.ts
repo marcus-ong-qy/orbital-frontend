@@ -12,11 +12,13 @@ export const StyledLandingPageNav = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  z-index: 999;
 
   height: ${navBarBuffer};
   width: 100vw;
 
   background: ${(props) => props.theme.palette.primary};
+  box-shadow: 0 1px 5px ${(props) => props.theme.palette.common.gray.light};
 `
 
 export const StyledLogo = styled.img`

@@ -7,11 +7,25 @@ export const ItemDisplayDiv = styled.div`
   flex-direction: column;
   height: 379px;
   width: 210px;
+
+  margin: 34px;
+  border-radius: 20px;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  :hover {
+    box-shadow: 1px 2px ${(props) => props.theme.palette.common.gray.light};
+    transition: all 0.1s ease-out;
+    transform: scale(1.05) translateY(-10px);
+  }
 `
 
 export const ItemPic = styled.img`
-  width: 210px;
+  width: 100%;
   height: 279px;
+
+  object-fit: contain;
 `
 
 export const ItemName = styled.div`
@@ -38,6 +52,7 @@ export const ItemBottomDiv = styled.div`
 `
 
 export const PriceTag = styled.div`
+  width: 100%;
   font-weight: 800;
   font-size: 26px;
   line-height: 48px;
@@ -45,21 +60,21 @@ export const PriceTag = styled.div`
   color: ${(props) => props.theme.palette.highlight.regular};
 `
 
-export const TypeIndicatorDiv = styled.div<{ type: 'sale' | 'rent' }>`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
+// export const TypeIndicatorDiv = styled.div<{ type: 'sale' | 'rent' }>`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: center;
 
-  font-weight: 800;
-  font-size: 26px;
-  line-height: 48px;
+//   font-weight: 800;
+//   font-size: 26px;
+//   line-height: 48px;
 
-  width: 92px;
-  height: 51px;
-  border-radius: 51px;
+//   width: 92px;
+//   height: 51px;
+//   border-radius: 51px;
 
-  color: ${(props) => props.theme.palette.common.white};
-  background: ${(props) =>
-    props.type === 'sale' ? props.theme.palette.primary : props.theme.palette.secondary};
-`
+//   color: ${(props) => props.theme.palette.common.white};
+//   background: ${(props) =>
+//     props.type === 'sale' ? props.theme.palette.primary : props.theme.palette.secondary};
+// `

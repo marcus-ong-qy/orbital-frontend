@@ -11,7 +11,7 @@ import { logout } from '../../store/authentication/actions'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
 
-import ItemDisplay from '../../components/ItemDisplay/ItemDisplay'
+import ItemDisplay, { Item } from '../../components/ItemDisplay/ItemDisplay'
 
 import {
   CarouselDiv,
@@ -31,32 +31,96 @@ import {
 
 import horseHead from '../../assets/Horse-head-transparent.png'
 
-const demoItems: {
-  title: string
-  price: number
-  type: 'sale' | 'rent'
-}[] = [
+const demoShowcase: Item[] = [
   {
+    id: '2646',
     title: 'CATAN - Trade Build Settle [Brand New] [Limited Edition] [blablabla]',
     price: 26.46,
     type: 'sale',
   },
   {
+    id: '2647',
     title: 'CATAN - Trade Build Settle',
     price: 264.6,
     type: 'rent',
   },
   {
+    id: '2648',
     title: 'CATAN',
     price: 2646,
     type: 'sale',
   },
   {
+    id: '2649',
     title: 'CAT',
     price: 2.646,
     type: 'rent',
   },
   {
+    id: '2650',
+    title: 'C',
+    price: 0.2646,
+    type: 'sale',
+  },
+]
+
+const demoItems: Item[] = [
+  {
+    id: '2646',
+    title: 'CATAN - Trade Build Settle [Brand New] [Limited Edition] [blablabla]',
+    price: 26.46,
+    type: 'sale',
+  },
+  {
+    id: '2647',
+    title: 'CATAN - Trade Build Settle',
+    price: 264.6,
+    type: 'rent',
+  },
+  {
+    id: '2648',
+    title: 'CATAN',
+    price: 2646,
+    type: 'sale',
+  },
+  {
+    id: '2649',
+    title: 'CAT',
+    price: 2.646,
+    type: 'rent',
+  },
+  {
+    id: '2650',
+    title: 'C',
+    price: 0.2646,
+    type: 'sale',
+  },
+  {
+    id: '2656',
+    title: 'CATAN - Trade Build Settle [Brand New] [Limited Edition] [blablabla]',
+    price: 26.46,
+    type: 'sale',
+  },
+  {
+    id: '2657',
+    title: 'CATAN - Trade Build Settle',
+    price: 264.6,
+    type: 'rent',
+  },
+  {
+    id: '2658',
+    title: 'CATAN',
+    price: 2646,
+    type: 'sale',
+  },
+  {
+    id: '2659',
+    title: 'CAT',
+    price: 2.646,
+    type: 'rent',
+  },
+  {
+    id: '2660',
     title: 'C',
     price: 0.2646,
     type: 'sale',
@@ -115,9 +179,11 @@ const MainPage = () => {
 
       <FeaturedDiv>
         <FeaturedTitle fontType={h1}>Featured</FeaturedTitle>
-        <ItemsContainer>
-          {demoItems.map((item) => {
-            return <ItemDisplay title={item.title} price={item.price} type={item.type} />
+        <ItemsContainer
+          style={{ height: '658px', width: 'auto', overflowX: 'scroll', overflowY: 'hidden' }}
+        >
+          {demoShowcase.map((item) => {
+            return <ItemDisplay item={item} />
           })}
         </ItemsContainer>
       </FeaturedDiv>
@@ -128,6 +194,11 @@ const MainPage = () => {
 
       <ListingsDiv>
         <ListingsTitle fontType={h1}>Listings</ListingsTitle>
+        <ItemsContainer>
+          {demoItems.map((item) => {
+            return <ItemDisplay item={item} />
+          })}
+        </ItemsContainer>
       </ListingsDiv>
     </StyledMainPage>
   )

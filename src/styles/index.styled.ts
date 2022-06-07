@@ -21,8 +21,7 @@ export const styledPageCss = css`
 `
 
 export const borderedGreyDivCss = css`
-  border-style: solid;
-  border-width: 1px;
+  border: 1px solid ${(props) => props.theme.palette.common.black};
   background: ${(props) => props.theme.palette.common.gray.normal};
 `
 

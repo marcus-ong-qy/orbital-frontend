@@ -1,11 +1,11 @@
 import styled from 'styled-components'
+import { FontType } from '../../../styles/Theme'
 import {
   fontTypeCss,
   gallopAnimation,
   borderedGreyDivCss,
   styledPageCss,
 } from '../../../styles/index.styled'
-import { FontType } from '../../../styles/Theme'
 
 export const StyledMainPage = styled.div`
   ${styledPageCss}
@@ -75,9 +75,14 @@ export const FeaturedDiv = styled.div`
 `
 
 export const ItemsContainer = styled.div`
+  /* display: flex;
+  flex-direction: row; */
+  /* align-items: center; */
+
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  /* margin: 0 42.5px; */
 `
 
 export const CategoriesTitle = styled.div<{ fontType: FontType }>`
