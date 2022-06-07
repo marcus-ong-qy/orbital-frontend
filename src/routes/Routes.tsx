@@ -10,24 +10,32 @@ import {
 
 // Authentication
 const LoginPage = React.lazy(
-  () => import(/* webpackChunckName: "LoginPage" */ '../pages/LoginPage'),
+  () => import(/* webpackChunckName: "LoginPage" */ '../pages/Authentication/LoginPage'),
 )
 const RegisterPage = React.lazy(
-  () => import(/* webpackChunckName: "RegisterPage" */ '../pages/SignupPage'),
+  () => import(/* webpackChunckName: "RegisterPage" */ '../pages/Authentication/SignupPage'),
 )
 const ForgetPasswordPage = React.lazy(
-  () => import(/* webpackChunckName: "ForgetPasswordPage" */ '../pages/ForgetPasswordPage'),
+  () =>
+    import(
+      /* webpackChunckName: "ForgetPasswordPage" */ '../pages/Authentication/ForgetPasswordPage'
+    ),
 )
 const LoadingPage = React.lazy(
-  () => import(/* webpackChunckName: "LoadingPage" */ '../pages/LoadingPage'),
+  () => import(/* webpackChunckName: "LoadingPage" */ '../pages/Miscellaneous/LoadingPage'),
 )
 const UserProfilePage = React.lazy(
-  () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/UserProfilePage'),
+  () =>
+    import(/* webpackChunckName: "UserProfilePage" */ '../pages/Authentication/UserProfilePage'),
 )
 
 //Marketplace
-const MainPage = React.lazy(() => import(/* webpackChunckName: "MainPage" */ '../pages/MainPage'))
-const ItemPage = React.lazy(() => import(/* webpackChunckName: "ItemPage" */ '../pages/ItemPage'))
+const MainPage = React.lazy(
+  () => import(/* webpackChunckName: "MainPage" */ '../pages/Marketplace/MainPage'),
+)
+const ItemPage = React.lazy(
+  () => import(/* webpackChunckName: "ItemPage" */ '../pages/Authentication/ItemPage'),
+)
 
 enum TITLE {
   LOGIN = 'Log In',

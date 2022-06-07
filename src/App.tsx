@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { Routes } from './routes/Routes'
 import { store } from './store/store'
 
-import LoadingPage from './pages/LoadingPage'
+import LoadingPage from './pages/Miscellaneous/LoadingPage'
 import Theme from './styles/Theme'
 import { GlobalStyle } from './styles/GlobalStyles'
 

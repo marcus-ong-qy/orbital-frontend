@@ -8,8 +8,8 @@ import { PATHS } from '../../routes/PATHS'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
 
-import NavLink from '../NavLinks/NavLink'
-import UsernameHover from '../NavLinks/UsernameHover'
+import NavLink from './NavLinks/NavLink'
+import UsernameHover from './NavLinks/UsernameHover'
 
 import {
   BodyDiv,
@@ -20,7 +20,7 @@ import {
   StyledLandingPageNav,
   StyledLogo,
 } from './styles/Navbars.styled'
-import { NavLinks } from '../NavLinks/styles/NavLinks.styled'
+import { NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import logo from '../../assets/Neigh-logos_transparent.png'
 

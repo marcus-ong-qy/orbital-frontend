@@ -7,7 +7,7 @@ import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
-import NavLink from '../NavLinks/NavLink'
+import NavLink from './NavLinks/NavLink'
 
 import {
   BodyDiv,
@@ -19,11 +19,11 @@ import {
   StyledLandingPageNav,
   StyledLogo,
 } from './styles/Navbars.styled'
-import { LinkGroupSpan, NavLinks } from '../NavLinks/styles/NavLinks.styled'
+import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
 import shoppingCartLogo from '../../assets/shopping-cart.png'
-import UsernameHover from '../NavLinks/UsernameHover'
+import UsernameHover from './NavLinks/UsernameHover'
 
 const Navbar = ({
   title,
