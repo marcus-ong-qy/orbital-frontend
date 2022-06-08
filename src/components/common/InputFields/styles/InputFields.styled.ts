@@ -57,11 +57,8 @@ export const StyledPasswordInput = styled(Input.Password)`
   height: 35px;
   width: 100%;
 
-  display: grid;
-  grid-template-columns 9fr 1fr;
-
   .ant-input {
-    height: 35px; 
+    height: 35px;
     border-radius: 35px;
     padding-left: 12px;
   }

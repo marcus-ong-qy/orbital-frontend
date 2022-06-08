@@ -10,7 +10,7 @@ export const StyledItemPage = styled.div`
   display: flex;
   flex-direction: row;
 
-  margin-top: 28px;
+  padding-top: 28px;
 `
 
 export const ItemShowcaseDiv = styled.div`
