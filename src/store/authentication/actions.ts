@@ -9,7 +9,7 @@ import {
   User,
 } from 'firebase/auth'
 
-import { auth } from '../../firebase'
+import { auth, setRealtimeDatabase } from '../../firebase'
 import { demoAcc } from '../../demo-config'
 
 import { Dispatch, GetState } from '../types'
@@ -21,6 +21,7 @@ import {
   SignupStatus,
   ResetPasswordStatus,
   UserData,
+  RealtimeUserData,
 } from './types'
 import { defaultUserData } from './reducer'
 
@@ -83,10 +84,19 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
     const user = res.user
 
-    const userData: UserData = {
+    const initUserData: UserData = {
       ...defaultUserData,
       firebaseUID: user.uid,
     }
+
+    const initRealtimeData: RealtimeUserData = {
+      displayName: '',
+      email: credentials.email,
+      groups: [],
+      uid: user.uid,
+    }
+
+    await setRealtimeDatabase(initRealtimeData)
 
     fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user', {
       method: 'POST',
@@ -94,7 +104,7 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(userData),
+      body: JSON.stringify(initUserData),
     })
       .then((resp) => {
         resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))

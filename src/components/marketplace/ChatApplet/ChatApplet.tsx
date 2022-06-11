@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { auth } from '../../../firebase'
+import { useEffect, useRef, useState } from 'react'
+import { auth, database } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import ChatMessage from '../ChatMessage/ChatMessage'
 
@@ -23,6 +23,10 @@ import catanSet from '../../../assets/catan-set.jpg'
 import defaultAvatar from '../../../assets/default_avatar.png'
 import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
+import { ChatMetadata, Message } from '../../../store/marketplace/types'
+import { FirebaseProfile } from '../../../store/authentication/types'
+import { useAppSelector } from '../../../app/hooks'
+import { onValue, ref } from 'firebase/database'
 
 export type Item = {
   id: string
@@ -31,81 +35,97 @@ export type Item = {
   type: 'sale' | 'rent'
 }
 
-const ChatApplet = () =>
-  // { item }: { item: Item }
-  {
-    const dummy = useRef()
-    // const messagesRef = firestore.collection('messages')
-    // const query = messagesRef.orderBy('createdAt').limit(25)
+const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
+  const dummy = useRef()
+  // const messagesRef = firestore.collection('messages')
+  // const query = messagesRef.orderBy('createdAt').limit(25)
 
-    const { h1, h2, h3 } = { ...theme.typography.fontSize }
+  const { h1, h2, h3 } = { ...theme.typography.fontSize }
 
-    const [messages] = [
-      [
-        {
-          key: 'string',
-          text: 'string',
-          uid: 'string',
-          profilePic: '',
-        },
-        {
-          key: 'string2',
-          text: 'stringstring',
-          uid: 'stringstring',
-          profilePic: '',
-        },
-      ],
-    ]
-    // const [messages] = useCollectionData(query, { idField: 'id' })
+  const { chatData } = useAppSelector((state) => state.marketplace_reducer)
 
-    const [formValue, setFormValue] = useState('')
+  const isCreator = chatData.createdBy === user.uid
+  const receipient = isCreator ? chatData.receipient : chatData.createdBy
 
-    const sendMessage = async (e: any) => {
-      e.preventDefault()
+  const [messages, setMessages] = useState<Message[] | null>(null)
 
-      const { uid, photoURL } = auth.currentUser! // You must be sign in to access here!
+  useEffect(() => {
+    const chatUUID = chatData.id
+    const userChatsUIDRef = ref(database, 'messages/' + chatUUID)
 
-      // await messagesRef.add({
-      //   text: formValue,
-      //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      //   uid,
-      //   photoURL,
-      // })
+    onValue(userChatsUIDRef, (snapshot) => {
+      const data: Record<string, Message> = snapshot.val()
+      const newMessages = Object.values(data).sort((msg1, msg2) => msg2.sentAt - msg1.sentAt)
+      setMessages(newMessages)
+    })
+  })
 
-      setFormValue('')
-      // dummy.current.scrollIntoView({ behavior: 'smooth' })
-    }
+  // const mockmessages: Message[] = [
+  //   {
+  //     id: '2646',
+  //     messageText: 'hello',
+  //     sentAt: Date.now(),
+  //     sentBy: 'Kh45xlC3RPQm0501LB7NihUSEwu1',
+  //   },
+  //   {
+  //     id: '2647',
+  //     messageText: 'neigh?',
+  //     sentAt: Date.now(),
+  //     sentBy: 'wu1wu1wu1wu1wu1wu1wu1wu1',
+  //   },
+  // ]
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormValue(e.target.value)
-    }
+  // const [messages] = useCollectionData(query, { idField: 'id' })
 
-    return (
-      <ChatAppletDiv>
-        <ChatAppletHeaderDiv>
-          <ProfilePic src={defaultAvatar} />
-          <ReceipientUsername fontType={h1}>ReceipientUsername</ReceipientUsername>
-        </ChatAppletHeaderDiv>
-        <ChatProductBannerDiv>
-          <ProductTitle fontType={h2}>Catan bla</ProductTitle>
-          <ProductInfo fontType={h3}>Buy for $2646</ProductInfo>
-        </ChatProductBannerDiv>
-        <ChatMessagesDiv>
-          {messages && messages.map((msg) => <ChatMessage message={msg} />)}
+  const [formValue, setFormValue] = useState('')
 
-          {/* <span ref={dummy}/> */}
-        </ChatMessagesDiv>
+  const sendMessage = async (e: any) => {
+    e.preventDefault()
 
-        <MessageForm onSubmit={sendMessage}>
-          <MessageInput value={formValue} onChange={onChange} placeholder={'Write a message to'} />
-          <PictureIcon src={picIcon} />
+    const { uid, photoURL } = auth.currentUser! // You must be sign in to access here!
 
-          <SendButton type="submit" disabled={!formValue}>
-            <SendIcon src={sendIcon} />
-          </SendButton>
-        </MessageForm>
-      </ChatAppletDiv>
-    )
+    // await messagesRef.add({
+    //   text: formValue,
+    //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    //   uid,
+    //   photoURL,
+    // })
+
+    setFormValue('')
+    // dummy.current.scrollIntoView({ behavior: 'smooth' })
   }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValue(e.target.value)
+  }
+
+  return (
+    <ChatAppletDiv>
+      <ChatAppletHeaderDiv>
+        <ProfilePic src={defaultAvatar} />
+        <ReceipientUsername fontType={h1}>ReceipientUsername</ReceipientUsername>
+      </ChatAppletHeaderDiv>
+      <ChatProductBannerDiv>
+        <ProductTitle fontType={h2}>{chatData.itemListing}</ProductTitle>
+        <ProductInfo fontType={h3}>Buy for $2646</ProductInfo>
+      </ChatProductBannerDiv>
+      <ChatMessagesDiv>
+        {messages?.map((msg) => (
+          <ChatMessage message={msg} />
+        ))}
+        {/* <span ref={dummy}/> */}
+      </ChatMessagesDiv>
+
+      <MessageForm onSubmit={sendMessage}>
+        <MessageInput value={formValue} onChange={onChange} placeholder={'Write a message to'} />
+        <PictureIcon src={picIcon} />
+
+        <SendButton type="submit" disabled={!formValue}>
+          <SendIcon src={sendIcon} />
+        </SendButton>
+      </MessageForm>
+    </ChatAppletDiv>
+  )
+}
 
 export default ChatApplet

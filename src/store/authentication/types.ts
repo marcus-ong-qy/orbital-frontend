@@ -5,6 +5,13 @@ export type FirebaseProfile = {
   uid: string | null
 }
 
+export type RealtimeUserData = {
+  displayName: string
+  email: string
+  groups: string[]
+  uid: string
+}
+
 export type UserData = {
   name: string
   username: string
