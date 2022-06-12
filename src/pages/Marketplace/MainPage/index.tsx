@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
-import { GREETINGS } from '../../../common/texts'
+import { TEXTS } from '../../../common/texts'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
@@ -163,7 +163,7 @@ const MainPage = () => {
       <GreetingsDiv fontType={navTitleFont}>
         <HorseHead src={horseHead} />
         <GreetingsSpan>
-          {`${GREETINGS}, `}
+          {`${TEXTS.GREETINGS}, `}
           {isLoggedIn ? (
             <GreetingsUsernameSpan>{userFirebaseProfile.email}</GreetingsUsernameSpan>
           ) : (

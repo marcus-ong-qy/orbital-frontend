@@ -1,8 +1,10 @@
 import { auth } from '../../../firebase'
-import { ChatBubble, ChatMessageDiv, ProfilePic } from './styles/ChatMessage.styled'
+import { Message } from '../../../store/marketplace/types'
+
+import { ProfilePic } from '../../../styles/index.styled'
+import { ChatBubble, ChatMessageDiv } from './styles/ChatMessage.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
-import { Message } from '../../../store/marketplace/types'
 
 const ChatMessage = ({ message }: { message: Message }) => {
   const { id, messageText, sentAt, sentBy } = message
@@ -14,11 +16,11 @@ const ChatMessage = ({ message }: { message: Message }) => {
       {messageType === 'sent' ? (
         <>
           <ChatBubble messageType={messageType}>{messageText}</ChatBubble>
-          <ProfilePic src={defaultAvatar} />
+          <ProfilePic src={defaultAvatar} diameter="35px" round />
         </>
       ) : (
         <>
-          <ProfilePic src={defaultAvatar} />
+          <ProfilePic src={defaultAvatar} diameter="35px" round />
           <ChatBubble messageType={messageType}>{messageText}</ChatBubble>
         </>
       )}

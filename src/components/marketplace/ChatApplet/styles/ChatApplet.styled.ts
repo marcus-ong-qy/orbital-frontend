@@ -13,12 +13,6 @@ export const ChatAppletHeaderDiv = styled.div`
   height: 86px;
 `
 
-export const ProfilePic = styled.img`
-  width: 55px;
-  height: 55px;
-  border-radius: 50%;
-`
-
 export const ChatProductBannerDiv = styled.div`
   width: 100%;
   height: 88px;

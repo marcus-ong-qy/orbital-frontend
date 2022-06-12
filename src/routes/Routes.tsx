@@ -39,6 +39,9 @@ const ItemPage = React.lazy(
 const ChatPage = React.lazy(
   () => import(/* webpackChunckName: "ChatPage" */ '../pages/Marketplace/ChatPage'),
 )
+const DealPage = React.lazy(
+  () => import(/* webpackChunckName: "DealPage" */ '../pages/Marketplace/DealPage'),
+)
 
 enum TITLE {
   LOGIN = 'Log In',
@@ -88,6 +91,12 @@ export const Routes = () => (
       path={PATHS.CHAT}
       element={
         <RouteWithNavbar navbarType="marketplace" component={ChatPage} title={TITLE.MARKETPLACE} />
+      }
+    />
+    <Route
+      path={PATHS.DEAL_ID}
+      element={
+        <RouteWithNavbar navbarType="marketplace" component={DealPage} title={TITLE.MARKETPLACE} />
       }
     />
   </Switch>

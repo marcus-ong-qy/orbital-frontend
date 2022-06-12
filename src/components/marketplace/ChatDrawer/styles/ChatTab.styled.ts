@@ -22,12 +22,6 @@ export const ChatTabDiv = styled.div`
   }
 `
 
-export const ProfilePic = styled.img`
-  width: 78px;
-  height: 78px;
-  border-radius: 50%;
-`
-
 export const ChatInfoDiv = styled.div`
   width: 100%;
   height: 100%;

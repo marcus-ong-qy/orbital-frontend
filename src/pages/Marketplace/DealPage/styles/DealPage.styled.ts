@@ -3,9 +3,10 @@
 import styled from 'styled-components'
 import { FontType } from '../../../../styles/Theme'
 import Button from '../../../../components/common/Button/Button'
+
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
-export const StyledItemPage = styled.div`
+export const StyledDealPage = styled.div`
   ${styledPageCss}
   display: flex;
   flex-direction: row;
@@ -60,16 +61,30 @@ export const InfoDiv = styled.div`
   margin-left: 41px;
 `
 
-export const ItemName = styled.div<{ fontType: FontType }>`
-  ${fontTypeCss}
+export const DealSummaryCard = styled.div`
+  ${borderedGreyDivCss}
+  width: 100%;
+  height: 306px;
 `
 
-export const PriceTag = styled.div<{ fontType: FontType }>`
-  ${fontTypeCss}
-  color: ${(props) => props.theme.palette.highlight.regular};
+// export const ItemName = styled.div<{ fontType: FontType }>`
+//   ${fontTypeCss}
+// `
+
+// export const PriceTag = styled.div<{ fontType: FontType }>`
+//   ${fontTypeCss}
+//   color: ${(props) => props.theme.palette.highlight.regular};
+// `
+
+// export const DescriptionDiv = styled.div``
+
+export const InfoRowDiv = styled.div``
+
+export const InfoRowTitle = styled.span`
+  font-weight: 700;
 `
 
-export const DescriptionDiv = styled.div``
+export const InfoRowValue = styled.span``
 
 export const Subheader = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
@@ -79,39 +94,11 @@ export const DealInfoDiv = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 `
 
-export const ItemConditionSpan = styled.span``
-
-export const TagsDiv = styled.div``
-
-export const TagsSpan = styled.span`
-  display: flex;
-  flex-direction: row;
-`
-
-export const TagDiv = styled.div<{ fontType: FontType }>`
-  ${fontTypeCss}
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  width: auto;
-  height: 26px;
-  margin-right: 8px;
-  padding: 0 10px;
-
-  background: ${(props) => props.theme.palette.primary};
-  border: 1px solid ${(props) => props.theme.palette.common.black};
-  border-radius: 20px;
-  color: ${(props) => props.theme.palette.common.white};
-
-  cursor: pointer;
-`
-
 export const ChatButton = styled(Button)`
   border-radius: 0;
 `
 
 export const DealButton = styled(Button)`
+  background: ${(props) => props.theme.palette.primary};
   border-radius: 0;
 `

@@ -13,12 +13,6 @@ export const ChatMessageDiv = styled.div<{ messageType: 'sent' | 'received' }>`
   padding: 0 32px;
 `
 
-export const ProfilePic = styled.img`
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-`
-
 export const ChatBubble = styled.div<{ messageType: 'sent' | 'received' }>`
   width: auto;
   height: 100%;

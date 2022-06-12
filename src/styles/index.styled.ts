@@ -1,4 +1,4 @@
-import { css, keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { FontType } from './Theme'
 
 // Global style variables
@@ -43,7 +43,13 @@ export const gallopAnimation = keyframes`
   }
 `
 
-// Login and Sign Up pages
+export const ProfilePic = styled.img<{ diameter: string; round?: boolean }>`
+  width: ${(props) => props.diameter};
+  height: ${(props) => props.diameter};
+  border-radius: ${(props) => props.round && '50%'};
+`
+
+// Authentication pages
 
 export const authDivStyleCss = css`
   display: flex;

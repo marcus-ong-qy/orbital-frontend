@@ -6,7 +6,7 @@ import { sendPasswordReset } from '../../../store/authentication/actions'
 import { IS_USING_BACKEND } from '../../../store/authentication/reducer'
 import { ResetPasswordStatus } from '../../../store/authentication/types'
 import { RESET_PASSWORD_ERROR_LABELS } from '../../../common/warnings'
-import { RESET_PWD_INSTRUCTIONS } from '../../../common/texts'
+import { TEXTS } from '../../../common/texts'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import WarningLabels from '../../../components/common/WarningLabels/WarningLabels'
@@ -42,7 +42,7 @@ const ForgetPasswordPage = () => {
       <ForgetPasswordDiv>
         <ForgetPasswordTitle fontType={h1}>Forget Password</ForgetPasswordTitle>
         <HorseHead src={confusedHorse} />
-        <ResetEmailMsg fontType={p}>{RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
+        <ResetEmailMsg fontType={p}>{TEXTS.RESET_PWD_INSTRUCTIONS}</ResetEmailMsg>
         <ForgetPasswordForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <InputField title="Email" placeholder="Email" register={register} />
           <WarningLabels

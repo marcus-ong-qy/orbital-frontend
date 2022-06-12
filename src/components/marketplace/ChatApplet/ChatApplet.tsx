@@ -13,7 +13,6 @@ import {
   PictureIcon,
   ProductInfo,
   ProductTitle,
-  ProfilePic,
   ReceipientUsername,
   SendButton,
   SendIcon,
@@ -27,6 +26,7 @@ import { ChatMetadata, Message } from '../../../store/marketplace/types'
 import { FirebaseProfile } from '../../../store/authentication/types'
 import { useAppSelector } from '../../../app/hooks'
 import { onValue, ref, set } from 'firebase/database'
+import { ProfilePic } from '../../../styles/index.styled'
 
 export type Item = {
   id: string
@@ -110,7 +110,7 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
   return (
     <ChatAppletDiv>
       <ChatAppletHeaderDiv>
-        <ProfilePic src={defaultAvatar} />
+        <ProfilePic src={defaultAvatar} diameter="55px" round />
         <ReceipientUsername fontType={h1}>{receipientUID}</ReceipientUsername>
       </ChatAppletHeaderDiv>
       <ChatProductBannerDiv>
