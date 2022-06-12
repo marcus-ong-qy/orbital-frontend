@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { auth, getUserFirebaseProfile } from '../../firebase'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
+
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
+import { setNewListing } from '../../store/marketplace/actions'
+
 import NavLink from './NavLinks/NavLink'
+import UsernameHover from './NavLinks/UsernameHover'
 
 import {
   BodyDiv,
@@ -23,7 +28,6 @@ import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
 import shoppingCartLogo from '../../assets/shopping-cart.png'
-import UsernameHover from './NavLinks/UsernameHover'
 
 const Navbar = ({
   title,
@@ -33,7 +37,10 @@ const Navbar = ({
   type: 'marketplace' | 'community'
 }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
+
+  const { newListing } = useAppSelector((state) => state.marketplace_reducer)
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
@@ -56,6 +63,16 @@ const Navbar = ({
     // TODO
   }
 
+  const sellOnClick = () => {
+    navigate(PATHS.UPLOAD_LISTING)
+    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Sell' }))
+  }
+
+  const rentOnClick = () => {
+    navigate(PATHS.UPLOAD_LISTING)
+    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
+  }
+
   return (
     <StyledLandingPageNav>
       <StyledLogo src={horseLogo} onClick={() => navigate('/neigh') /* easter egg */} />
@@ -65,9 +82,9 @@ const Navbar = ({
           <LinkGroupSpan>
             <NavLink text="Community" onClick={() => navigate(PATHS.COMMUNITY)} />
             &nbsp;|&nbsp;
-            <NavLink text="Trade" onClick={() => {}} />
+            <NavLink text="Sell" onClick={sellOnClick} />
             &nbsp;|&nbsp;
-            <NavLink text="Rent" onClick={() => {}} />
+            <NavLink text="Rent" onClick={rentOnClick} />
           </LinkGroupSpan>
           {isLoggedIn ? (
             <>

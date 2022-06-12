@@ -31,11 +31,24 @@ export type ItemListing = {
   timeCreated: number
 }
 
+export type ItemListingPost = {
+  createdBy: string
+  name: string
+  price: number
+  description: string
+  typeOfTransaction: 'Rent' | 'Sell'
+  deliveryInformation: string
+  // durationOfRent: number
+  tags: string[]
+  imageURL: string
+}
+
 /** Actions' types */
 
 export enum MARKETPLACE_ACTIONS {
   SET_SELECTED_CHAT_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA',
   SET_ALL_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_LISTINGS',
+  CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
 }
 
 /** Actions */
@@ -50,4 +63,9 @@ type SetAllListings = {
   allListings: ItemListing[]
 }
 
-export type ActionTypes = SelectedChatData | SetAllListings
+type UploadListing = {
+  type: typeof MARKETPLACE_ACTIONS.CREATE_NEW_LISTING
+  newListing: ItemListingPost
+}
+
+export type ActionTypes = SelectedChatData | SetAllListings | UploadListing

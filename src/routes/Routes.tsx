@@ -42,6 +42,10 @@ const ChatPage = React.lazy(
 const DealPage = React.lazy(
   () => import(/* webpackChunckName: "DealPage" */ '../pages/Marketplace/DealPage'),
 )
+const UploadListingPage = React.lazy(
+  () =>
+    import(/* webpackChunckName: "UploadListingPage" */ '../pages/Marketplace/UploadListingPage'),
+)
 
 enum TITLE {
   LOGIN = 'Log In',
@@ -97,6 +101,16 @@ export const Routes = () => (
       path={PATHS.DEAL_ID}
       element={
         <RouteWithNavbar navbarType="marketplace" component={DealPage} title={TITLE.MARKETPLACE} />
+      }
+    />
+    <Route
+      path={PATHS.UPLOAD_LISTING}
+      element={
+        <RouteWithNavbar
+          navbarType="marketplace"
+          component={UploadListingPage}
+          title={TITLE.MARKETPLACE}
+        />
       }
     />
   </Switch>

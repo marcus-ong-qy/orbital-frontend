@@ -1,5 +1,11 @@
 import { Dispatch } from 'react'
-import { ActionTypes, ChatMetadata, ItemListing, MARKETPLACE_ACTIONS } from './types'
+import {
+  ActionTypes,
+  ChatMetadata,
+  ItemListing,
+  ItemListingPost,
+  MARKETPLACE_ACTIONS,
+} from './types'
 
 export const setSelectedChatData =
   (selectedChatData: ChatMetadata) => (dispatch: Dispatch<ActionTypes>) => {
@@ -26,4 +32,11 @@ export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
       })
     })
     .catch((err) => console.error(err))
+}
+
+export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: MARKETPLACE_ACTIONS.CREATE_NEW_LISTING,
+    newListing: newListing,
+  })
 }

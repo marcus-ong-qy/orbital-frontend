@@ -13,4 +13,5 @@ export enum PATHS {
   DEAL = '/item/deal',
   DEAL_ID = 'item/deal/:itemId',
   CHAT = '/chat',
+  UPLOAD_LISTING = '/list',
 }
