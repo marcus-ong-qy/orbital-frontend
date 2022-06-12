@@ -1,5 +1,5 @@
 import { Dispatch } from 'react'
-import { ActionTypes, ChatMetadata, MARKETPLACE_ACTIONS } from './types'
+import { ActionTypes, ChatMetadata, ItemListing, MARKETPLACE_ACTIONS } from './types'
 
 export const setSelectedChatData =
   (selectedChatData: ChatMetadata) => (dispatch: Dispatch<ActionTypes>) => {
@@ -8,3 +8,22 @@ export const setSelectedChatData =
       selectedChatData: selectedChatData,
     })
   }
+
+export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
+  fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/home', {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((resp) => resp.json())
+    .then((res) => {
+      const allListings: ItemListing[] = res
+      dispatch({
+        type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
+        allListings: allListings,
+      })
+    })
+    .catch((err) => console.error(err))
+}
