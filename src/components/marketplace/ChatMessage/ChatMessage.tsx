@@ -10,7 +10,7 @@ const ChatMessage = ({ message }: { message: Message }) => {
   const messageType = sentBy === auth.currentUser?.uid ? 'sent' : 'received'
 
   return (
-    <ChatMessageDiv id={id} messageType={messageType}>
+    <ChatMessageDiv key={id} messageType={messageType}>
       {messageType === 'sent' ? (
         <>
           <ChatBubble messageType={messageType}>{messageText}</ChatBubble>

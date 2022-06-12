@@ -17,14 +17,14 @@ export type Message = {
 /** Actions' types */
 
 export enum MARKETPLACE_ACTIONS {
-  SET_CHAT_METADATA = 'MARKETPLACE_ACTIONS.SET_CHAT_METADATA',
+  SET_SELECTED_CHAT_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA',
 }
 
 /** Actions */
 
-type SetChatMetadata = {
-  type: typeof MARKETPLACE_ACTIONS.SET_CHAT_METADATA
-  chatData: ChatMetadata
+type SelectedChatData = {
+  type: typeof MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA
+  selectedChatData: ChatMetadata
 }
 
-export type ActionTypes = SetChatMetadata
+export type ActionTypes = SelectedChatData

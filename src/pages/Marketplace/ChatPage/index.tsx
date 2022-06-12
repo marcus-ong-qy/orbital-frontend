@@ -39,12 +39,11 @@ const ChatPage = () => {
     const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
 
     onValue(userChatsUIDRef, (snapshot) => {
-      const data: Record<number, string> = snapshot.val()
-      const newUserChatsUID = []
-      for (let i = 0; i < Object.keys(data).length; i++) newUserChatsUID.push(data[i])
+      const data: string[] = snapshot.val()
+      const newUserChatsUID = data
       setUserChatsUID(newUserChatsUID)
     })
-  })
+  }, [userFirebaseProfile.uid])
 
   return (
     <StyledChatPage>

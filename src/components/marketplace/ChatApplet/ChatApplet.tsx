@@ -26,7 +26,7 @@ import sendIcon from '../../../assets/send.svg'
 import { ChatMetadata, Message } from '../../../store/marketplace/types'
 import { FirebaseProfile } from '../../../store/authentication/types'
 import { useAppSelector } from '../../../app/hooks'
-import { onValue, ref } from 'firebase/database'
+import { onValue, ref, set } from 'firebase/database'
 
 export type Item = {
   id: string
@@ -42,25 +42,28 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
 
   const { h1, h2, h3 } = { ...theme.typography.fontSize }
 
-  const { chatData } = useAppSelector((state) => state.marketplace_reducer)
+  const { selectedChatData } = useAppSelector((state) => state.marketplace_reducer)
 
-  const isCreator = chatData.createdBy === user.uid
-  const receipient = isCreator ? chatData.receipient : chatData.createdBy
+  const isCreator = selectedChatData.createdBy === user.uid
+  const receipientUID = isCreator ? selectedChatData.receipient : selectedChatData.createdBy
 
   const [messages, setMessages] = useState<Message[] | null>(null)
+  const [formValue, setFormValue] = useState('')
 
   useEffect(() => {
-    const chatUUID = chatData.id
-    const userChatsUIDRef = ref(database, 'messages/' + chatUUID)
+    const chatUUID = selectedChatData.id
+    if (chatUUID) {
+      const messagesRef = ref(database, 'messages/' + chatUUID)
 
-    onValue(userChatsUIDRef, (snapshot) => {
-      const data: Record<string, Message> = snapshot.val()
-      const newMessages = Object.values(data).sort((msg1, msg2) => msg2.sentAt - msg1.sentAt)
-      setMessages(newMessages)
-    })
-  })
+      onValue(messagesRef, (snapshot) => {
+        const data: Record<string, Message> = snapshot.val()
+        const newMessages = Object.values(data).sort((msg1, msg2) => msg1.sentAt - msg2.sentAt)
+        setMessages(newMessages)
+      })
+    }
+  }, [selectedChatData.id])
 
-  // const mockmessages: Message[] = [
+  // setMessages([
   //   {
   //     id: '2646',
   //     messageText: 'hello',
@@ -73,23 +76,28 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
   //     sentAt: Date.now(),
   //     sentBy: 'wu1wu1wu1wu1wu1wu1wu1wu1',
   //   },
-  // ]
+  // ])
 
   // const [messages] = useCollectionData(query, { idField: 'id' })
-
-  const [formValue, setFormValue] = useState('')
 
   const sendMessage = async (e: any) => {
     e.preventDefault()
 
+    const chatUUID = selectedChatData.id
     const { uid, photoURL } = auth.currentUser! // You must be sign in to access here!
 
-    // await messagesRef.add({
-    //   text: formValue,
-    //   createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    //   uid,
-    //   photoURL,
-    // })
+    const messageUUID = crypto.randomUUID()
+    const newMessage: Message = {
+      id: messageUUID,
+      messageText: formValue,
+      sentAt: Date.now(),
+      sentBy: uid,
+    }
+    const messagesRef = ref(database, `messages/${chatUUID}/${messageUUID}`)
+    const recentMessageRef = ref(database, `chats/${chatUUID}/recentMessage`)
+
+    set(messagesRef, newMessage)
+    set(recentMessageRef, newMessage)
 
     setFormValue('')
     // dummy.current.scrollIntoView({ behavior: 'smooth' })
@@ -103,10 +111,10 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
     <ChatAppletDiv>
       <ChatAppletHeaderDiv>
         <ProfilePic src={defaultAvatar} />
-        <ReceipientUsername fontType={h1}>ReceipientUsername</ReceipientUsername>
+        <ReceipientUsername fontType={h1}>{receipientUID}</ReceipientUsername>
       </ChatAppletHeaderDiv>
       <ChatProductBannerDiv>
-        <ProductTitle fontType={h2}>{chatData.itemListing}</ProductTitle>
+        <ProductTitle fontType={h2}>{selectedChatData.itemListing}</ProductTitle>
         <ProductInfo fontType={h3}>Buy for $2646</ProductInfo>
       </ChatProductBannerDiv>
       <ChatMessagesDiv>

@@ -6,8 +6,6 @@ import { GoogleAuthProvider, getAuth, User } from 'firebase/auth'
 import { getDatabase, ref, set } from 'firebase/database'
 import { FirebaseProfile, RealtimeUserData } from './store/authentication/types'
 
-import { randomUUID } from 'crypto'
-
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -33,7 +31,7 @@ const setRealtimeDatabase = async (data: RealtimeUserData) => {
 }
 
 const createChat = async (currentUserUID: string, targetUserUID: string) => {
-  const chatUUID = randomUUID()
+  const chatUUID = crypto.randomUUID()
 
   await set(ref(database, 'chats/' + chatUUID), {
     createdAt: Date.now(),
@@ -47,7 +45,7 @@ const createChat = async (currentUserUID: string, targetUserUID: string) => {
 }
 
 const sendMessage = (message: string, senderUID: string, chatUUID: string) => {
-  const messageUUID = randomUUID()
+  const messageUUID = crypto.randomUUID()
 
   return new Promise(() =>
     set(ref(database, `messages/${chatUUID}/${messageUUID}`), {

@@ -14,13 +14,20 @@ import {
 
 import catanSet from '../../../assets/catan-set.jpg'
 import defaultAvatar from '../../../assets/default_avatar.png'
-import { database } from '../../../firebase'
+import { auth, database } from '../../../firebase'
 import { ChatMetadata } from '../../../store/marketplace/types'
+import { setSelectedChatData } from '../../../store/marketplace/actions'
+import { useAppDispatch } from '../../../app/hooks'
 
 const ChatTab = ({ chatUID }: { chatUID: string }) => {
+  const dispatch = useAppDispatch()
   const { h3, p } = { ...theme.typography.fontSize }
 
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
+
+  const user = auth.currentUser!
+  const isCreator = chatMetadata?.createdBy === user.uid
+  const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
 
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
@@ -29,13 +36,17 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
       const newChatMetadata: ChatMetadata = snapshot.val()
       setChatMetadata(newChatMetadata)
     })
-  })
+  }, [chatUID])
+
+  const onClick = () => {
+    chatMetadata && dispatch(setSelectedChatData(chatMetadata))
+  }
 
   return (
-    <ChatTabDiv id={chatUID}>
+    <ChatTabDiv key={chatUID} onClick={onClick}>
       <ProfilePic src={defaultAvatar} />
       <ChatInfoDiv>
-        <ChatUsername fontType={h3}>{chatMetadata?.receipient}</ChatUsername>
+        <ChatUsername fontType={h3}>{receipientUID}</ChatUsername>
         <ChatPreview fontType={p}>{chatMetadata?.recentMessage?.messageText}</ChatPreview>
         <ItemInfo fontType={h3}>{chatMetadata?.itemListing}</ItemInfo>
       </ChatInfoDiv>

@@ -62,7 +62,15 @@ export const MessageInput = styled.input`
   padding-left: 12px;
 `
 
-export const SendButton = styled.button``
+export const SendButton = styled.button`
+  cursor: pointer;
+
+  :hover {
+    box-shadow: 1px 2px ${(props) => props.theme.palette.common.gray.light};
+    transition: all 0.1s ease-out;
+    transform: scale(1.05);
+  }
+`
 
 export const PictureIcon = styled.img`
   width: 26px;

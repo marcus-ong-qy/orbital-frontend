@@ -1,24 +1,26 @@
 import { Reducer } from 'redux'
 
-import { ActionTypes, ChatMetadata } from './types'
+import { ActionTypes, ChatMetadata, MARKETPLACE_ACTIONS } from './types'
 
 const initialState: State = {
-  chatData: {
-    id: 'string',
-    createdAt: Date.now(),
-    createdBy: 'Kh45xlC3RPQm0501LB7NihUSEwu1',
-    receipient: 'wu1wu1wu1wu1wu1wu1wu1wu1wu1',
+  selectedChatData: {
+    id: '',
+    createdAt: 0,
+    createdBy: '',
+    receipient: '',
     itemListing: '',
     recentMessage: null,
   },
 }
 
 type State = {
-  chatData: ChatMetadata
+  selectedChatData: ChatMetadata
 }
 
 export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
   switch (action.type) {
+    case MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA:
+      return { ...state, selectedChatData: action.selectedChatData }
     default:
       return state
   }

@@ -12,6 +12,14 @@ export const ChatTabDiv = styled.div`
   width: 100%;
   height: 112px;
   padding: 17px 21px;
+
+  cursor: pointer;
+
+  :hover {
+    box-shadow: 1px 2px ${(props) => props.theme.palette.common.gray.light};
+    transition: all 0.1s ease-out;
+    transform: scale(1.05) translateY(-10px);
+  }
 `
 
 export const ProfilePic = styled.img`
