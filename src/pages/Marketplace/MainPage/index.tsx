@@ -45,15 +45,9 @@ const MainPage = () => {
   )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [allItems, setAllItems] = useState<ItemListing[]>([])
-
   useEffect(() => {
     dispatch(getListings())
   }, [])
-
-  useEffect(() => {
-    setAllItems(allListings)
-  }, [allListings])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -91,7 +85,7 @@ const MainPage = () => {
         <ItemsContainer
           style={{ height: '658px', width: 'auto', overflowX: 'scroll', overflowY: 'hidden' }}
         >
-          {allItems?.map((item) => {
+          {allListings?.map((item) => {
             return <ItemDisplay item={item} />
           })}
         </ItemsContainer>
@@ -104,7 +98,7 @@ const MainPage = () => {
       <ListingsDiv>
         <ListingsTitle fontType={h1}>Listings</ListingsTitle>
         <ItemsContainer>
-          {allItems?.map((item) => {
+          {allListings?.map((item) => {
             return <ItemDisplay item={item} />
           })}
         </ItemsContainer>

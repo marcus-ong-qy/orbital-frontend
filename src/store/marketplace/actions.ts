@@ -19,7 +19,7 @@ export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
   })
     .then((resp) => resp.json())
     .then((res) => {
-      const allListings: ItemListing[] = res
+      const allListings: ItemListing[] = res.message
       dispatch({
         type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
         allListings: allListings,
