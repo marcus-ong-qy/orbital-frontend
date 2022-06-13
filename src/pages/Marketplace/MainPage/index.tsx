@@ -85,8 +85,8 @@ const MainPage = () => {
         <ItemsContainer
           style={{ height: '658px', width: 'auto', overflowX: 'scroll', overflowY: 'hidden' }}
         >
-          {allListings?.map((item) => {
-            return <ItemDisplay item={item} />
+          {allListings?.map((item, index) => {
+            return <ItemDisplay key={index} item={item} />
           })}
         </ItemsContainer>
       </FeaturedDiv>
@@ -98,8 +98,8 @@ const MainPage = () => {
       <ListingsDiv>
         <ListingsTitle fontType={h1}>Listings</ListingsTitle>
         <ItemsContainer>
-          {allListings?.map((item) => {
-            return <ItemDisplay item={item} />
+          {allListings?.map((item, index) => {
+            return <ItemDisplay key={index} item={item} />
           })}
         </ItemsContainer>
       </ListingsDiv>

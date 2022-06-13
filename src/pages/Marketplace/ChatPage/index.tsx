@@ -49,8 +49,8 @@ const ChatPage = () => {
     <StyledChatPage>
       <ChatsDrawerDiv>
         <ChatsDrawerHeader>Chats</ChatsDrawerHeader>
-        {userChatsUID?.map((chatUID) => {
-          return <ChatTab chatUID={chatUID} />
+        {userChatsUID?.map((chatUID, index) => {
+          return <ChatTab key={index} chatUID={chatUID} />
         })}
       </ChatsDrawerDiv>
       <ChatInterfaceDiv>

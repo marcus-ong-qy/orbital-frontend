@@ -93,8 +93,8 @@ const ItemPage = () => {
         <TagsDiv>
           <Subheader fontType={h2}>Tags</Subheader>
           <TagsSpan>
-            {tags.map((tag) => (
-              <Tag label={tag} />
+            {tags.map((tag, index) => (
+              <Tag key={index} label={tag} />
             ))}
           </TagsSpan>
         </TagsDiv>

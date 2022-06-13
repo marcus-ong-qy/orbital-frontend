@@ -118,8 +118,8 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
         <ProductInfo fontType={h3}>Buy for $2646</ProductInfo>
       </ChatProductBannerDiv>
       <ChatMessagesDiv>
-        {messages?.map((msg) => (
-          <ChatMessage message={msg} />
+        {messages?.map((msg, index) => (
+          <ChatMessage key={index} message={msg} />
         ))}
         {/* <span ref={dummy}/> */}
       </ChatMessagesDiv>
