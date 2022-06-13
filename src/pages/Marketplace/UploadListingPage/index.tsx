@@ -1,4 +1,19 @@
+import { FieldValues, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
+
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { auth, getUserFirebaseProfile } from '../../../firebase'
+import { theme } from '../../../styles/Theme'
+
+import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
+import { FirebaseProfile } from '../../../store/authentication/types'
+import { setNewListing } from '../../../store/marketplace/actions'
+import { ItemListingPost } from '../../../store/marketplace/types'
+
+import InputField from '../../../components/common/InputFields/InputField'
+import Dropdown from '../../../components/common/Dropdown/Dropdown'
+
 import {
   EntryDiv,
   PostForm,
@@ -17,12 +32,6 @@ import {
 } from './styles/UploadListingPage.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import { FieldValues, useForm } from 'react-hook-form'
-import { useState } from 'react'
-import { theme } from '../../../styles/Theme'
-import InputField from '../../../components/common/InputFields/InputField'
-import { ItemListingPost } from '../../../store/marketplace/types'
-import { setNewListing } from '../../../store/marketplace/actions'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
@@ -43,17 +52,34 @@ const UploadListingPage = () => {
 
   const [listingType, setListingType] = useState<'Rent' | 'Sell'>(typeOfTransaction)
 
+  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
+    defaultUserFirebaseProfile,
+  )
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user && !isLoggedIn) {
+        setUserFirebaseProfile(getUserFirebaseProfile(user))
+        setIsLoggedIn(true)
+      } else if (!user && isLoggedIn) {
+        setUserFirebaseProfile(defaultUserFirebaseProfile)
+        setIsLoggedIn(false)
+      }
+    })
+  })
+
   const uploadPicture = () => {}
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {
-      createdBy: '',
-      name: data.ItemName,
+      createdBy: userFirebaseProfile.uid ?? '',
+      name: data.ItemName.trim(),
       price: data.Price,
-      description: data.ProductDescription,
+      description: data.ProductDescription.trim(),
       typeOfTransaction: listingType,
-      deliveryInformation: data.DealInformation,
-      tags: data.Tags.split(','),
+      deliveryInformation: data.DealInformation.trim(),
+      tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       imageURL: '',
     }
     dispatch(setNewListing(newListing))
@@ -75,18 +101,16 @@ const UploadListingPage = () => {
           <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
             <EntryDiv type="input">
               <EntryName fontType={p}> Listing Type&nbsp;</EntryName>
-              <TypeSelection
+              <Dropdown
+                title="ListingType"
                 placeholder="Listing Type"
+                options={['Rent', 'Sell']}
+                register={register}
                 value={listingType}
-                {...register('ListingType', { required: true })}
                 onChange={(e) => {
-                  setValue('ListingType', e.target.value)
                   setListingType(e.target.value as 'Rent' | 'Sell')
                 }}
-              >
-                <option value="Rent">Rent</option>
-                <option value="Sell">Sell</option>
-              </TypeSelection>
+              />
             </EntryDiv>
             <EntryDiv type="input">
               <EntryName fontType={p}>Item Name&nbsp;</EntryName>
