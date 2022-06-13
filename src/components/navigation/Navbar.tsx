@@ -76,7 +76,9 @@ const Navbar = ({
   return (
     <StyledLandingPageNav>
       <StyledLogo src={horseLogo} onClick={() => navigate('/neigh') /* easter egg */} />
-      <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
+      <NavbarTitle fontType={navTitleFont} onClick={() => navigate(PATHS.MAIN)}>
+        {title}
+      </NavbarTitle>
       <BodyDiv width="100%">
         <NavLinks fontType={navLinkFont} justify="space-between">
           <LinkGroupSpan>

@@ -33,6 +33,8 @@ export const NavbarTitle = styled.div<{ fontType: FontType }>`
   text-align: center;
 
   color: ${(props) => props.theme.palette.common.white};
+
+  cursor: pointer;
 `
 
 export const SearchDiv = styled.div`
