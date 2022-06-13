@@ -5,6 +5,7 @@ import { InputFieldContainer, StyledInput } from './styles/InputFields.styled'
 type Props = {
   title: string
   placeholder: string
+  type?: string
   errorLabel?: string
   isError?: boolean
   register: UseFormRegister<FieldValues>
@@ -17,10 +18,11 @@ const defaultProps = {
 }
 
 const InputField = (props: Props) => {
-  const { title, placeholder, errorLabel, isError, register, pattern, required } = props
+  const { title, placeholder, type, errorLabel, isError, register, pattern, required } = props
   return (
     <InputFieldContainer>
       <StyledInput
+        type={type ?? 'text'}
         placeholder={placeholder}
         {...register(title, { required: required, pattern: pattern })}
       />

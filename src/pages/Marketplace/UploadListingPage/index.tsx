@@ -17,10 +17,12 @@ import {
 } from './styles/UploadListingPage.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import { useForm } from 'react-hook-form'
+import { FieldValues, useForm } from 'react-hook-form'
 import { useState } from 'react'
 import { theme } from '../../../styles/Theme'
 import InputField from '../../../components/common/InputFields/InputField'
+import { ItemListingPost } from '../../../store/marketplace/types'
+import { setNewListing } from '../../../store/marketplace/actions'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
@@ -43,7 +45,20 @@ const UploadListingPage = () => {
 
   const uploadPicture = () => {}
 
-  const onSubmit = () => {}
+  const onSubmit = (data: FieldValues) => {
+    const newListing: ItemListingPost = {
+      createdBy: '',
+      name: data.ItemName,
+      price: data.Price,
+      description: data.ProductDescription,
+      typeOfTransaction: listingType,
+      deliveryInformation: data.DealInformation,
+      tags: data.Tags.split(','),
+      imageURL: '',
+    }
+    dispatch(setNewListing(newListing))
+    console.table(newListing)
+  }
 
   return (
     <StyledUploadListingPage>
@@ -63,9 +78,9 @@ const UploadListingPage = () => {
               <TypeSelection
                 placeholder="Listing Type"
                 value={listingType}
-                {...register('listing-type', { required: true })}
+                {...register('ListingType', { required: true })}
                 onChange={(e) => {
-                  setValue('listing-type', e.target.value)
+                  setValue('ListingType', e.target.value)
                   setListingType(e.target.value as 'Rent' | 'Sell')
                 }}
               >
@@ -75,32 +90,39 @@ const UploadListingPage = () => {
             </EntryDiv>
             <EntryDiv type="input">
               <EntryName fontType={p}>Item Name&nbsp;</EntryName>
-              <InputField title="item-name" placeholder="Item Name" register={register} />
+              <InputField title="ItemName" placeholder="Item Name" register={register} />
             </EntryDiv>
             <EntryDiv type="input">
               <EntryName fontType={p}>
                 Price <b>SG$</b> {listingType === 'Rent' && '/day'}
               </EntryName>
-              <InputField title="price" placeholder="Price" register={register} />
+              <InputField
+                title="Price"
+                type="number"
+                placeholder="Enter Price (in SGD)"
+                register={register}
+              />
             </EntryDiv>
             <EntryDiv type="textarea">
               <EntryName fontType={p}>Product Description&nbsp;</EntryName>
               <EntryArea
+                title="ProductDescription"
                 placeholder="Description of your Product"
-                {...register('product-description', { required: true })}
+                {...register('ProductDescription', { required: true })}
               />
             </EntryDiv>
             <EntryDiv type="textarea">
               <EntryName fontType={p}>Deal Information&nbsp;</EntryName>
               <EntryArea
+                title="DealInformation"
                 placeholder="Include details such as Delivery and Payment methods"
-                {...register('deal-information', { required: true })}
+                {...register('DealInformation', { required: true })}
               />
             </EntryDiv>
             <EntryDiv type="input">
               <EntryName fontType={p}>Tags </EntryName>
               <InputField
-                title="tags"
+                title="Tags"
                 placeholder="Seperate keywords with commas (,)"
                 register={register}
               />
