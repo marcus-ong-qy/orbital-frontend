@@ -1,6 +1,7 @@
 import styled from 'styled-components'
-import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 import { FontType } from '../../../../styles/Theme'
+
+import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
 export const StyledSettingsPage = styled.div`
   ${styledPageCss}
@@ -20,11 +21,21 @@ export const MenuSubDiv = styled.div``
 
 export const MenuSubtitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
+  height: 23px;
   font-weight: 700;
 `
 
 export const MenuHyperlink = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
+  height: 23px;
+
+  color: ${(props) => props.theme.palette.common.black};
+
+  :hover {
+    color: ${(props) => props.theme.palette.highlight.dark};
+  }
+
+  cursor: pointer;
 `
 
 export const ContentDiv = styled.div`

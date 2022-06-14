@@ -24,8 +24,13 @@ const ForgetPasswordPage = React.lazy(
 const LoadingPage = React.lazy(
   () => import(/* webpackChunckName: "LoadingPage" */ '../pages/Miscellaneous/LoadingPage'),
 )
+
+// Settings
 const UserProfilePage = React.lazy(
   () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/Settings/UserProfilePage'),
+)
+const UserListingsPage = React.lazy(
+  () => import(/* webpackChunckName: "UserListingsPage" */ '../pages/Settings/UserListingsPage'),
 )
 
 //Marketplace
@@ -69,12 +74,18 @@ export const Routes = () => (
       element={<RouteWithLandingPageNav component={ForgetPasswordPage} title={TITLE.LOGIN} />}
     />
     <Route
+      path="/neigh" // easter egg
+      element={<RouteWithLandingPageNav component={LoadingPage} title="neigh??" />}
+    />
+
+    {/* Settings */}
+    <Route
       path={PATHS.USER_PROFILE}
       element={<RouteWithLandingPageNav component={UserProfilePage} title={TITLE.SETTINGS} />}
     />
     <Route
-      path="/neigh" // easter egg
-      element={<RouteWithLandingPageNav component={LoadingPage} title="neigh??" />}
+      path={PATHS.USER_LISTINGS}
+      element={<RouteWithLandingPageNav component={UserListingsPage} title={TITLE.SETTINGS} />}
     />
 
     {/* Marketplace */}
