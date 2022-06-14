@@ -25,8 +25,7 @@ const LoadingPage = React.lazy(
   () => import(/* webpackChunckName: "LoadingPage" */ '../pages/Miscellaneous/LoadingPage'),
 )
 const UserProfilePage = React.lazy(
-  () =>
-    import(/* webpackChunckName: "UserProfilePage" */ '../pages/Authentication/UserProfilePage'),
+  () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/Settings/UserProfilePage'),
 )
 
 //Marketplace
