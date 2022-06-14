@@ -1,17 +1,20 @@
 export enum PATHS {
   // AUTENTICATION
-  LOGIN = '/login',
-  COMMUNITY = '/community',
-  REGISTER = '/register',
-  FORGET_PASSWORD = '/forget',
-  USER_PROFILE = '/user', // TODO add user id
+  LOGIN = '/auth/login',
+  COMMUNITY = '/auth/community',
+  REGISTER = '/auth/register',
+  FORGET_PASSWORD = '/auth/forget',
+
+  // SETTINGS
+  USER_PROFILE = '/settings/user', // TODO add user id
+  USER_LISTINGS = '/settings/my-listings',
 
   //MARKETPLACE
-  MAIN = '/',
-  ITEM = '/item',
-  ITEM_ID = '/item/:itemId',
-  DEAL = '/item/deal',
-  DEAL_ID = 'item/deal/:itemId',
-  CHAT = '/chat',
-  UPLOAD_LISTING = '/list',
+  MAIN = '/marketplace',
+  ITEM = '/marketplace/item',
+  ITEM_ID = '/marketplace/item/:itemId',
+  DEAL = '/marketplace/item/deal',
+  DEAL_ID = '/marketplaceitem/deal/:itemId',
+  CHAT = '/marketplace/chat',
+  UPLOAD_LISTING = '/marketplace/list',
 }
