@@ -4,8 +4,7 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-
-import { StyledUserProfilePage } from './styles/UserProfilePage.styled'
+import SettingsPageWrapper from '../SettingsPageWrapper'
 
 const UserProfilePage = () => {
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
@@ -19,8 +18,9 @@ const UserProfilePage = () => {
         setUserFirebaseProfile(getUserFirebaseProfile(user))
     })
   })
+
   return (
-    <StyledUserProfilePage data-testid="user-profile-page">
+    <SettingsPageWrapper>
       <h1>User Profile Page</h1>
       <div>Name: </div>
       <div>
@@ -31,7 +31,7 @@ const UserProfilePage = () => {
         <div>Photo:</div>
         <img src={''} alt="don't have" />
       </div>
-    </StyledUserProfilePage>
+    </SettingsPageWrapper>
   )
 }
 
