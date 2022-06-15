@@ -48,6 +48,7 @@ export type ItemListingPost = {
 export enum MARKETPLACE_ACTIONS {
   SET_SELECTED_CHAT_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA',
   SET_ALL_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_LISTINGS',
+  SET_ALL_USER_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS',
   CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
 }
 
@@ -57,10 +58,14 @@ type SelectedChatData = {
   type: typeof MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA
   selectedChatData: ChatMetadata
 }
-
 type SetAllListings = {
   type: typeof MARKETPLACE_ACTIONS.SET_ALL_LISTINGS
   allListings: ItemListing[]
+}
+
+type SetAllUserListings = {
+  type: typeof MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS
+  allUserListings: ItemListing[]
 }
 
 type UploadListing = {
@@ -68,4 +73,4 @@ type UploadListing = {
   newListing: ItemListingPost
 }
 
-export type ActionTypes = SelectedChatData | SetAllListings | UploadListing
+export type ActionTypes = SelectedChatData | SetAllListings | SetAllUserListings | UploadListing

@@ -40,3 +40,22 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
     newListing: newListing,
   })
 }
+
+export const getUserListings = (userUID: string) => (dispatch: Dispatch<ActionTypes>) => {
+  fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/history?user=${userUID}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((resp) => resp.json())
+    .then((res) => {
+      const allUserListings: ItemListing[] = res.message
+      dispatch({
+        type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
+        allUserListings: allUserListings,
+      })
+    })
+    .catch((err) => console.error(err))
+}

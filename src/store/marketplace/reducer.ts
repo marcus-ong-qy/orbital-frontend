@@ -30,12 +30,14 @@ const initialState: State = {
     recentMessage: null,
   },
   allListings: [],
+  allUserListings: [],
   newListing: defaultListingPost,
 }
 
 type State = {
   selectedChatData: ChatMetadata
   allListings: ItemListing[]
+  allUserListings: ItemListing[]
   newListing: ItemListingPost
 }
 
@@ -45,6 +47,8 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
       return { ...state, selectedChatData: action.selectedChatData }
     case MARKETPLACE_ACTIONS.SET_ALL_LISTINGS:
       return { ...state, allListings: action.allListings }
+    case MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS:
+      return { ...state, allUserListings: action.allUserListings }
     case MARKETPLACE_ACTIONS.CREATE_NEW_LISTING:
       return { ...state, newListing: action.newListing }
     default:
