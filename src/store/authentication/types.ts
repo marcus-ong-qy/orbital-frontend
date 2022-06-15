@@ -46,6 +46,7 @@ export enum AUTH_ACTIONS {
   LOGIN_ATTEMPT_STATUS = 'AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS',
   SIGNUP_ATTEMPT_STATUS = 'AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS',
   ALWAYS_LOGGED_IN_CHECKBOX = 'AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX',
+  SET_USER_DATA = 'AUTH_ACTIONS.SET_USER_DATA',
 }
 
 /** Actions */
@@ -71,8 +72,14 @@ type AlwaysLoggedInCheckbox = {
   alwaysLoggedInChecked: boolean
 }
 
+type SetUserData = {
+  type: typeof AUTH_ACTIONS.SET_USER_DATA
+  userData: UserData
+}
+
 export type ActionTypes =
   | LogInOffline
   | LoginAttemptStatus
   | SignupAttemptStatus
   | AlwaysLoggedInCheckbox
+  | SetUserData

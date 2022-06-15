@@ -23,8 +23,12 @@ const SettingsPageWrapper = ({ children }: { children: JSX.Element[] }) => {
           <MenuSubtitle fontType={h1} onClick={() => navigate(PATHS.USER_PROFILE)}>
             My Account
           </MenuSubtitle>
-          <MenuHyperlink fontType={p}>My Profile</MenuHyperlink>
-          <MenuHyperlink fontType={p}>Edit Profile</MenuHyperlink>
+          <MenuHyperlink fontType={p} onClick={() => navigate(PATHS.USER_PROFILE)}>
+            My Profile
+          </MenuHyperlink>
+          <MenuHyperlink fontType={p} onClick={() => navigate(PATHS.EDIT_USER_PROFILE)}>
+            Edit Profile
+          </MenuHyperlink>
         </MenuSubDiv>
         <MenuSubDiv>
           <MenuSubtitle fontType={h1}>Marketplace</MenuSubtitle>

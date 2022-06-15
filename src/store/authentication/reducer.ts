@@ -40,6 +40,7 @@ const initialState: State = {
   loginAttemptStatus: 'INITIAL',
   signupAttemptStatus: 'INITIAL',
   alwaysLoggedInChecked: false,
+  userData: defaultUserData,
 
   loginCredentialsOffline: loginCredentialsDefault,
 }
@@ -48,6 +49,7 @@ type State = {
   loginAttemptStatus: LoginStatus
   signupAttemptStatus: SignupStatus
   alwaysLoggedInChecked: boolean
+  userData: UserData
 
   // for offline testing
   loginCredentialsOffline: Credentials
@@ -67,6 +69,8 @@ export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, 
       return { ...state, signupAttemptStatus: action.signupAttemptStatus }
     case AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
       return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
+    case AUTH_ACTIONS.SET_USER_DATA:
+      return { ...state, userData: action.userData }
     default:
       return state
   }

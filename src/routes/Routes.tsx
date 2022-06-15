@@ -29,6 +29,10 @@ const LoadingPage = React.lazy(
 const UserProfilePage = React.lazy(
   () => import(/* webpackChunckName: "UserProfilePage" */ '../pages/Settings/UserProfilePage'),
 )
+const EditUserProfilePage = React.lazy(
+  () =>
+    import(/* webpackChunckName: "EditUserProfilePage" */ '../pages/Settings/EditUserProfilePage'),
+)
 const UserListingsPage = React.lazy(
   () => import(/* webpackChunckName: "UserListingsPage" */ '../pages/Settings/UserListingsPage'),
 )
@@ -82,6 +86,10 @@ export const Routes = () => (
     <Route
       path={PATHS.USER_PROFILE}
       element={<RouteWithLandingPageNav component={UserProfilePage} title={TITLE.SETTINGS} />}
+    />
+    <Route
+      path={PATHS.EDIT_USER_PROFILE}
+      element={<RouteWithLandingPageNav component={EditUserProfilePage} title={TITLE.SETTINGS} />}
     />
     <Route
       path={PATHS.USER_LISTINGS}

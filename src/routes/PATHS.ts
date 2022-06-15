@@ -7,6 +7,7 @@ export enum PATHS {
 
   // SETTINGS
   USER_PROFILE = '/settings/user', // TODO add user id
+  EDIT_USER_PROFILE = '/settings/user/edit',
   USER_LISTINGS = '/settings/my-listings',
 
   //MARKETPLACE

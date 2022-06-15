@@ -6,6 +6,8 @@ type Props = {
   title: string
   placeholder: string
   type?: string
+  value?: any
+  onChange?: React.ChangeEventHandler<HTMLInputElement>
   errorLabel?: string
   isError?: boolean
   register: UseFormRegister<FieldValues>
@@ -24,7 +26,9 @@ const InputField = (props: Props) => {
       <StyledInput
         type={type ?? 'text'}
         placeholder={placeholder}
+        value={props.value}
         {...register(title, { required: required, pattern: pattern })}
+        onChange={props.onChange}
       />
       {errorLabel && <WarningLabels label={errorLabel} isError={isError ?? false} />}
     </InputFieldContainer>

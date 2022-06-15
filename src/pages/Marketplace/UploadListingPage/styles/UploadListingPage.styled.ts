@@ -1,7 +1,8 @@
 import styled, { css } from 'styled-components'
-import Button from '../../../../components/common/Button/Button'
-import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 import { FontType } from '../../../../styles/Theme'
+import Button from '../../../../components/common/Button/Button'
+
+import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
 export const StyledUploadListingPage = styled.div`
   ${styledPageCss}

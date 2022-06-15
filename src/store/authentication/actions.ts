@@ -116,6 +116,13 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
   }
 }
 
+const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: AUTH_ACTIONS.SET_USER_DATA,
+    userData: userData,
+  })
+}
+
 export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
   const firebaseUID = user.uid
 
@@ -126,11 +133,27 @@ export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes
       'Content-Type': 'application/json',
     },
   })
-    .then((resp) => resp.json())
+    .then((resp) => {
+      return resp.json()
+    })
     .then((res) => {
-      const userData: UserData = res.data
-      // dispatch(setUserData(userData)) // TODO
-      // return userData
+      const userData: UserData = res.message
+      dispatch(setUserData(userData))
+    })
+    .catch((err) => console.error(err))
+}
+
+export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
+  fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
+    method: 'PUT',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newUserData),
+  })
+    .then((resp) => {
+      resp.status === 200 && dispatch(setUserData(newUserData))
     })
     .catch((err) => console.error(err))
 }
