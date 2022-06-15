@@ -10,7 +10,7 @@ export enum PATHS {
   USER_LISTINGS = '/settings/my-listings',
 
   //MARKETPLACE
-  MAIN = '/marketplace',
+  MAIN = '/',
   ITEM = '/marketplace/item',
   ITEM_ID = '/marketplace/item/:itemId',
   DEAL = '/marketplace/item/deal',
