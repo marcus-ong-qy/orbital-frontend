@@ -14,7 +14,13 @@ import {
   UsernameSpan,
 } from './styles/NavLinks.styled'
 
-const UsernameHover = ({ userFirebaseProfile }: { userFirebaseProfile: FirebaseProfile }) => {
+const UsernameHover = ({
+  userFirebaseProfile,
+  maxWidth,
+}: {
+  userFirebaseProfile: FirebaseProfile
+  maxWidth: string
+}) => {
   const navigate = useNavigate()
   const [showDropdown, setShowDropdown] = useState(false)
   const { h3 } = { ...theme.typography.fontSize }
@@ -33,6 +39,7 @@ const UsernameHover = ({ userFirebaseProfile }: { userFirebaseProfile: FirebaseP
       <UsernameSpan>
         <StyledUsernameHover
           data-testid="navbar-username"
+          maxWidth={maxWidth}
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
         >

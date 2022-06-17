@@ -95,7 +95,7 @@ const Navbar = ({
                 &nbsp;|&nbsp;
                 <NavLink text="Settings" onClick={() => {}} />
                 &nbsp;|&nbsp;
-                <UsernameHover userFirebaseProfile={userFirebaseProfile} />
+                <UsernameHover maxWidth="10vw" userFirebaseProfile={userFirebaseProfile} />
               </LinkGroupSpan>
             </>
           ) : (

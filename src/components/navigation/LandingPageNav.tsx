@@ -66,7 +66,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       <RightDiv>
         {isLoggedIn ? (
           <NavLinks fontType={navLinkFont} justify="center">
-            <UsernameHover userFirebaseProfile={userFirebaseProfile} />
+            <UsernameHover maxWidth="16vw" userFirebaseProfile={userFirebaseProfile} />
           </NavLinks>
         ) : (
           <NavLinks fontType={navLinkFont} justify="center">
