@@ -1,5 +1,7 @@
 import styled from 'styled-components'
 import { Button } from 'antd'
+import { fontTypeCss } from '../../../../styles/index.styled'
+import { FontType } from '../../../../styles/Theme'
 
 export const StyledButton = styled(Button)`
   height: 35px;
