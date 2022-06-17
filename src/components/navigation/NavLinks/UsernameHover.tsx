@@ -9,7 +9,7 @@ import { FirebaseProfile } from '../../../store/authentication/types'
 import {
   DropdownButtons,
   DropdownDiv,
-  StyledNavLink,
+  StyledUsernameHover,
   UsernameDiv,
   UsernameSpan,
 } from './styles/NavLinks.styled'
@@ -31,13 +31,13 @@ const UsernameHover = ({ userFirebaseProfile }: { userFirebaseProfile: FirebaseP
   return (
     <UsernameDiv>
       <UsernameSpan>
-        <StyledNavLink
+        <StyledUsernameHover
           data-testid="navbar-username"
           onMouseEnter={() => setShowDropdown(true)}
           onMouseLeave={() => setShowDropdown(false)}
         >
           {userFirebaseProfile.email}
-        </StyledNavLink>
+        </StyledUsernameHover>
       </UsernameSpan>
       {showDropdown && (
         <DropdownDiv

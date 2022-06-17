@@ -11,6 +11,14 @@ export const StyledNavLink = styled.span`
   }
 `
 
+export const StyledUsernameHover = styled(StyledNavLink)`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 21px;
+  max-width: 10vw;
+`
+
 export const NavLinks = styled.span<{ fontType: FontType; justify?: string }>`
   ${fontTypeCss}
   display: flex;
