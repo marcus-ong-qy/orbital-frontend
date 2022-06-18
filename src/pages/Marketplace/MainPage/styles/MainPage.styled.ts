@@ -52,7 +52,7 @@ export const CarouselDiv = styled.div`
   ${borderedGreyDivCss}
 `
 
-export const FeaturedTitle = styled.div<{ fontType: FontType }>`
+export const Title = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   display: flex;
   flex-direction: row;
@@ -62,12 +62,7 @@ export const FeaturedTitle = styled.div<{ fontType: FontType }>`
 `
 
 export const FeaturedDiv = styled.div`
-  /* display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center; */
-
-  height: 492px;
+  height: 100%;
   width: 100%;
   margin-bottom: 45px;
 
@@ -75,23 +70,20 @@ export const FeaturedDiv = styled.div`
 `
 
 export const ItemsContainer = styled.div`
-  /* display: flex;
-  flex-direction: row; */
-  /* align-items: center; */
-
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  /* margin: 0 42.5px; */
-`
-
-export const CategoriesTitle = styled.div<{ fontType: FontType }>`
-  ${fontTypeCss}
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 
-  margin: 22px;
+  height: 100%;
+`
+
+export const FeaturedItemsContainer = styled(ItemsContainer)`
+  /* height: 658px; */
+  width: auto;
+  /* overflow-x: scroll;
+  overflow-y: hidden; */
 `
 
 export const CategoriesDiv = styled.div`
@@ -105,15 +97,6 @@ export const CategoriesDiv = styled.div`
   margin-bottom: 45px;
 
   ${borderedGreyDivCss}
-`
-
-export const ListingsTitle = styled.div<{ fontType: FontType }>`
-  ${fontTypeCss}
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
-  margin: 22px;
 `
 
 export const ListingsDiv = styled.div`

@@ -9,15 +9,17 @@ export const ItemDisplayDiv = styled.div`
   width: 210px;
 
   margin: 34px;
-  border-radius: 20px;
+  border-radius: 6px;
   overflow: hidden;
+
+  background: ${(props) => props.theme.palette.common.white};
+  box-shadow: 0 5px 20px ${(props) => props.theme.palette.common.gray.light};
 
   cursor: pointer;
 
   :hover {
-    box-shadow: 1px 2px ${(props) => props.theme.palette.common.gray.light};
     transition: all 0.1s ease-out;
-    transform: scale(1.05) translateY(-10px);
+    transform: scale(1.02) translateY(-6px);
   }
 `
 
@@ -25,17 +27,18 @@ export const ItemPic = styled.img`
   width: 100%;
   height: 279px;
 
-  object-fit: contain;
+  object-fit: cover;
 `
 
-export const ItemName = styled.div`
+export const ItemName = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
   width: 100%;
   height: 41px;
-  margin: 4px;
+  margin: 6px;
 
-  font-weight: 500;
-  font-size: 20px;
-  line-height: 20px;
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 30px;
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -48,16 +51,27 @@ export const ItemBottomDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-around;
+  justify-content: flex-start;
 `
 
 export const PriceTag = styled.div`
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 48px;
+  margin: 6px;
+  margin-right: 0;
+
+  color: ${(props) => props.theme.palette.highlight.regular};
+`
+
+export const PriceTagSuffix = styled.div`
   width: 100%;
   font-weight: 800;
   font-size: 26px;
   line-height: 48px;
+  margin: 6px;
 
-  color: ${(props) => props.theme.palette.highlight.regular};
+  color: ${(props) => props.theme.palette.primary};
 `
 
 // export const TypeIndicatorDiv = styled.div<{ type: 'sale' | 'rent' }>`

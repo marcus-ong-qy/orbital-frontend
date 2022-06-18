@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { TEXTS } from '../../../common/texts'
@@ -10,30 +9,27 @@ import { theme } from '../../../styles/Theme'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
 import { getListings } from '../../../store/marketplace/actions'
-import { ItemListing } from '../../../store/marketplace/types'
 
 import ItemDisplay from '../../../components/marketplace/ItemDisplay/ItemDisplay'
 
 import {
   CarouselDiv,
   CategoriesDiv,
-  CategoriesTitle,
   FeaturedDiv,
-  FeaturedTitle,
+  FeaturedItemsContainer,
   GreetingsDiv,
   GreetingsSpan,
   GreetingsUsernameSpan,
   HorseHead,
   ItemsContainer,
   ListingsDiv,
-  ListingsTitle,
   StyledMainPage,
+  Title,
 } from './styles/MainPage.styled'
 
 import horseHead from '../../../assets/Horse-head-transparent.png'
 
 const MainPage = () => {
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
@@ -45,9 +41,30 @@ const MainPage = () => {
   )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // For testing
+  const multipliedListings = [
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+    ...allListings,
+  ]
+
   useEffect(() => {
     dispatch(getListings())
-  }, [])
+  })
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -81,24 +98,22 @@ const MainPage = () => {
       </CarouselDiv>
 
       <FeaturedDiv>
-        <FeaturedTitle fontType={h1}>Featured</FeaturedTitle>
-        <ItemsContainer
-          style={{ height: '658px', width: 'auto', overflowX: 'scroll', overflowY: 'hidden' }}
-        >
-          {allListings?.map((item, index) => {
+        <Title fontType={h1}>Featured</Title>
+        <FeaturedItemsContainer>
+          {multipliedListings?.map((item, index) => {
             return <ItemDisplay key={index} item={item} />
           })}
-        </ItemsContainer>
+        </FeaturedItemsContainer>
       </FeaturedDiv>
 
       <CategoriesDiv>
-        <CategoriesTitle fontType={h1}>Categories</CategoriesTitle>
+        <Title fontType={h1}>Categories</Title>
       </CategoriesDiv>
 
       <ListingsDiv>
-        <ListingsTitle fontType={h1}>Listings</ListingsTitle>
+        <Title fontType={h1}>Listings</Title>
         <ItemsContainer>
-          {allListings?.map((item, index) => {
+          {multipliedListings?.map((item, index) => {
             return <ItemDisplay key={index} item={item} />
           })}
         </ItemsContainer>
