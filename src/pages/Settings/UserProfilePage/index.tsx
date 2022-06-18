@@ -6,6 +6,7 @@ import { PATHS } from '../../../routes/PATHS'
 import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import unixToFullDate from '../../../common/unixToFullDate'
 
 import { getUserData } from '../../../store/authentication/actions'
 import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
@@ -81,9 +82,7 @@ const UserProfilePage = () => {
           </EntryDiv>
           <EntryDiv>
             <EntryName fontType={p}>Date of Birth</EntryName>
-            <EntryValue fontType={p}>
-              {`${new Date(userDataHook.dob).toLocaleDateString()}`}
-            </EntryValue>
+            <EntryValue fontType={p}>{unixToFullDate(userDataHook.dob)}</EntryValue>
           </EntryDiv>
           <EntryDiv>
             <EntryName fontType={p}>Email</EntryName>
