@@ -3,7 +3,7 @@ import Button from '../../../../components/common/Button/Button'
 import { FontType } from '../../../../styles/Theme'
 import { fontTypeCss } from '../../../../styles/index.styled'
 
-export const UploadListingDiv = styled.div`
+export const EditUserProfileDiv = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;

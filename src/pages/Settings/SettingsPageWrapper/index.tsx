@@ -11,7 +11,7 @@ import {
   StyledSettingsPage,
 } from './styles/SettingsPageWrapper.styled'
 
-const SettingsPageWrapper = ({ children }: { children: JSX.Element[] }) => {
+const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Element }) => {
   const navigate = useNavigate()
   const { h1, h3 } = { ...theme.typography.fontSize }
 

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { onAuthStateChanged } from 'firebase/auth'
 
+import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
@@ -20,7 +22,7 @@ import {
   PictureDiv,
   PictureButton,
   PostButton,
-  UploadListingDiv,
+  EditUserProfileDiv,
   TitleDiv,
 } from './styles/EditUserProfilePage.styled'
 import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
@@ -28,6 +30,7 @@ import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 import defaultPic from '../../../assets/picture.png'
 
 const EditUserProfilePage = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const {
     register,
@@ -83,12 +86,13 @@ const EditUserProfilePage = () => {
     }
     dispatch(editUserData(newUserData))
     console.table(newUserData)
+    navigate(PATHS.USER_PROFILE)
   }
 
   return (
     <SettingsPageWrapper>
       <TitleDiv fontType={navTitleFont}>Edit My Profile</TitleDiv>
-      <UploadListingDiv>
+      <EditUserProfileDiv>
         <ProfileForm onSubmit={handleSubmit(onSubmit)} noValidate>
           <EntryDiv type="input">
             <EntryName fontType={p}>Username&nbsp;</EntryName>
@@ -189,7 +193,7 @@ const EditUserProfilePage = () => {
           <ItemPicture src={defaultPic} />
           <PictureButton text="Upload Picture" onClick={uploadPicture} />
         </PictureDiv>
-      </UploadListingDiv>
+      </EditUserProfileDiv>
     </SettingsPageWrapper>
   )
 }
