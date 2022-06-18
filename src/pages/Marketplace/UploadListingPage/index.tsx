@@ -28,26 +28,16 @@ import {
   TitleDiv,
   EntryName,
   EntryArea,
-  TypeSelection,
 } from './styles/UploadListingPage.styled'
 
 import defaultPic from '../../../assets/picture.png'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-    clearErrors,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' })
+  const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
   const { newListing } = useAppSelector((state) => state.marketplace_reducer)
-  const { name, price, description, typeOfTransaction, deliveryInformation, tags, imageURL } = {
-    ...newListing,
-  }
+  const { typeOfTransaction } = { ...newListing }
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
   const [listingType, setListingType] = useState<'Rent' | 'Sell'>(typeOfTransaction)

@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { FontType } from '../../../../styles/Theme'
 import Button from '../../../../components/common/Button/Button'
 
@@ -33,20 +33,28 @@ export const LeftDiv = styled.div`
 `
 
 export const ItemPicture = styled.img`
-  width: 262px;
-  height: 262px;
+  width: 20vw;
+  height: 20vw;
+
+  margin: 19px 2vw 11px;
 `
 
 export const PictureButton = styled(Button)`
-  height: 35px;
-  width: 100%;
-  border-radius: 35px;
+  // TODO doesn't work
 
-  cursor: pointer;
+  /* button {
+    height: 35px;
+    width: 100%;
+    border-radius: 35px;
 
-  background: ${(props) => props.theme.palette.primary};
-  font-weight: bold;
-  font-size: 18px;
+    margin: 0 2vw;
+
+    cursor: pointer;
+
+    background: ${(props) => props.theme.palette.primary};
+    font-weight: bold;
+    font-size: 18px;
+  }
 
   span {
     color: ${(props) => props.theme.palette.common.white};
@@ -54,7 +62,7 @@ export const PictureButton = styled(Button)`
 
   :hover {
     background: ${(props) => props.theme.palette.highlight.dark};
-  }
+  } */
 `
 
 export const RightDiv = styled.div`
@@ -65,7 +73,9 @@ export const RightDiv = styled.div`
   margin-left: 2.5vw;
 `
 
-export const PostForm = styled.form``
+export const PostForm = styled.form`
+  margin: 22px 6vw 32px;
+`
 
 export const EntryDiv = styled.div<{ type: 'input' | 'textarea' }>`
   display: grid;
@@ -75,6 +85,14 @@ export const EntryDiv = styled.div<{ type: 'input' | 'textarea' }>`
   width: 100%;
   height: ${(props) => (props.type === 'input' ? '26px' : '106px')};
   margin-bottom: 11px;
+
+  div {
+    margin: 0;
+  }
+
+  input {
+    height: ${(props) => (props.type === 'input' ? '26px' : '106px')};
+  }
 `
 
 export const EntryArea = styled.textarea`
@@ -85,16 +103,16 @@ export const EntryArea = styled.textarea`
 
 export const EntryName = styled.span<{ fontType: FontType }>`
   ${fontTypeCss}
-  text-align: right;
-`
+  /* display: flex; */
 
-export const TypeSelection = styled.select`
-  height: 26px;
-  width: 112px;
+  text-align: right;
+  line-height: 26px;
 `
 
 export const PostButton = styled(Button)`
-  height: 35px;
+  // TODO doesn't work
+
+  /* height: 35px;
   width: 100%;
   border-radius: 35px;
 
@@ -110,5 +128,5 @@ export const PostButton = styled(Button)`
 
   :hover {
     background: ${(props) => props.theme.palette.highlight.dark};
-  }
+  } */
 `
