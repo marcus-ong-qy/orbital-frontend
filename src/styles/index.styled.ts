@@ -110,4 +110,5 @@ export const EntryName = styled.span<{ fontType: FontType }>`
 
   text-align: right;
   line-height: 26px;
+  white-space: nowrap;
 `

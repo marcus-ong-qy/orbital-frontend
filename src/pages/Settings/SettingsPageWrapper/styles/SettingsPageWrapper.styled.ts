@@ -16,6 +16,7 @@ export const SettingsMenuDiv = styled.div`
 
   width: 24vw;
   height: 100%;
+  padding: 18px 4vw 0 2.5vw;
 `
 
 export const MenuSubDiv = styled.div``
@@ -23,12 +24,18 @@ export const MenuSubDiv = styled.div``
 export const MenuSubtitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   height: 23px;
+  margin: 1.2rem 0 0.3rem;
   font-weight: 700;
+  white-space: nowrap;
 `
 
 export const MenuHyperlink = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   height: 23px;
+  margin-left: 1.5vw;
+
+  font-weight: 300;
+  white-space: nowrap;
 
   color: ${(props) => props.theme.palette.common.black};
 

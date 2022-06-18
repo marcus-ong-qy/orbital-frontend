@@ -43,7 +43,7 @@ const UserProfilePage = () => {
   })
 
   return (
-    <SettingsPageWrapper>
+    <SettingsPageWrapper data-testid="user-profile-page">
       <h1>My Profile</h1>
       <div>Name: {userDataHook.name}</div>
       <div>Username: {userDataHook.username}</div>

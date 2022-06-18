@@ -38,20 +38,25 @@ const UserListingsPage = () => {
   return (
     <SettingsPageWrapper>
       <UserListingTitle fontType={navTitleFont}>User Listings Page</UserListingTitle>
-      <UserListingsDiv>
-        {allUserListings.map((listing, index) => {
-          return (
-            <UserListing
-              key={index}
-              title={listing.name}
-              type={listing.typeOfTransaction}
-              available={listing.available}
-              price={listing.price}
-              pictureURL={listing.imageURL}
-            />
-          )
-        })}
-      </UserListingsDiv>
+      {allUserListings ? (
+        <UserListingsDiv>
+          {allUserListings.map((listing, index) => {
+            return (
+              <UserListing
+                key={index}
+                title={listing.name}
+                type={listing.typeOfTransaction}
+                available={listing.available}
+                price={listing.price}
+                pictureURL={listing.imageURL}
+              />
+            )
+          })}
+        </UserListingsDiv>
+      ) : (
+        // TODO doesn't work
+        <h1>No Listings Found</h1>
+      )}
     </SettingsPageWrapper>
   )
 }
