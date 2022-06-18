@@ -86,6 +86,7 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
 
     const initUserData: UserData = {
       ...defaultUserData,
+      username: user.email ?? '',
       firebaseUID: user.uid,
     }
 
