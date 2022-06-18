@@ -15,7 +15,6 @@ import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
 
 import {
-  EntryDiv,
   PostForm,
   ItemPicture,
   LeftDiv,
@@ -26,9 +25,8 @@ import {
   UploadListingDiv,
   TitleHighlight,
   TitleDiv,
-  EntryName,
-  EntryArea,
 } from './styles/UploadListingPage.styled'
+import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
 

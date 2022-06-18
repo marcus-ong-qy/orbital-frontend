@@ -77,3 +77,37 @@ export const orSpanCss = css`
   justify-content: center;
   text-decoration-line: underline;
 `
+
+// Forms
+
+export const EntryDiv = styled.div<{ type: 'input' | 'textarea' }>`
+  display: grid;
+  grid-template-columns: 2.5fr 7.5fr;
+  grid-gap: 12px;
+
+  width: 100%;
+  height: ${(props) => (props.type === 'input' ? '26px' : '106px')};
+  margin-bottom: 11px;
+
+  div {
+    margin: 0;
+  }
+
+  input {
+    height: ${(props) => (props.type === 'input' ? '26px' : '106px')};
+  }
+`
+
+export const EntryArea = styled.textarea`
+  height: 106px;
+  border-radius: 16px;
+  padding: 8px 0 0 12px;
+`
+
+export const EntryName = styled.span<{ fontType: FontType }>`
+  ${fontTypeCss}
+  /* display: flex; */
+
+  text-align: right;
+  line-height: 26px;
+`

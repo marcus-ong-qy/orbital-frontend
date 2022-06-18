@@ -15,7 +15,6 @@ import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
 
 import {
-  EntryDiv,
   ProfileForm,
   ItemPicture,
   PictureDiv,
@@ -23,9 +22,8 @@ import {
   PostButton,
   UploadListingDiv,
   TitleDiv,
-  EntryName,
-  EntryArea,
 } from './styles/EditUserProfilePage.styled'
+import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
 

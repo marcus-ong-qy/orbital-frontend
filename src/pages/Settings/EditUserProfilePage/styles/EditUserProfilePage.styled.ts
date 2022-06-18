@@ -1,43 +1,24 @@
 import styled from 'styled-components'
 import Button from '../../../../components/common/Button/Button'
-import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 import { FontType } from '../../../../styles/Theme'
+import { fontTypeCss } from '../../../../styles/index.styled'
 
 export const UploadListingDiv = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 40px;
 `
 
 export const TitleDiv = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   width: 100%;
-  margin: 25px 0;
+  margin: 25px 0 25px 3vw;
 `
 
 export const ProfileForm = styled.form`
   width: 37vw;
   height: 100%;
-`
-
-export const EntryDiv = styled.div<{ type: 'input' | 'textarea' }>`
-  display: grid;
-  grid-template-columns: 2.5fr 7.5fr;
-  grid-gap: 12px;
-
-  width: 100%;
-  height: ${(props) => (props.type === 'input' ? '26px' : '106px')};
-  margin-bottom: 11px;
-`
-
-export const EntryArea = styled.textarea`
-  height: 106px;
-  border-radius: 16px;
-  padding: 8px 0 0 12px;
-`
-
-export const EntryName = styled.span<{ fontType: FontType }>`
-  ${fontTypeCss}
-  text-align: right;
 `
 
 export const PostButton = styled(Button)`
@@ -66,8 +47,8 @@ export const PictureDiv = styled.div`
 `
 
 export const ItemPicture = styled.img`
-  width: 262px;
-  height: 262px;
+  width: 19vw;
+  height: 19vw;
 `
 
 export const PictureButton = styled(Button)`

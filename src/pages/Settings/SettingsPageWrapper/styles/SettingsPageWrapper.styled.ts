@@ -6,6 +6,7 @@ import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styl
 export const StyledSettingsPage = styled.div`
   ${styledPageCss}
   flex-direction: row;
+  height: 515px;
 
   margin-top: 53px;
 `
@@ -14,7 +15,7 @@ export const SettingsMenuDiv = styled.div`
   ${borderedGreyDivCss}
 
   width: 24vw;
-  height: 485px;
+  height: 100%;
 `
 
 export const MenuSubDiv = styled.div``
@@ -42,6 +43,6 @@ export const ContentDiv = styled.div`
   ${borderedGreyDivCss}
 
   width: 66vw;
-  height: 485px;
+  height: 100%;
   margin-left: 2.5vw;
 `
