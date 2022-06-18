@@ -50,6 +50,7 @@ const LoginPage = () => {
   })
 
   const onSubmit = (data: FieldValues) => {
+    console.log('sumbit')
     const loginCredentials: Credentials = {
       email: data.Email.trim(),
       password: data.Password,
