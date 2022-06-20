@@ -7,27 +7,42 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { getUserListings } from '../../../store/marketplace/actions'
+import { getUserListings, search } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
 import {
   NoListingsLabel,
-  SearchesDiv,
+  SearchDiv,
   SearchListingsDiv,
+  SearchTagsDiv,
   SearchTitle,
-  StyledUploadListingPage,
+  StyledSearchPage,
 } from './styles/SearchPage.styled'
+import { useParams } from 'react-router-dom'
 
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
+  const params = useParams<{ searchText: string }>()
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
   )
 
-  const { searchText, searchTags, allSearchListings } = useAppSelector(
-    (state) => state.marketplace_reducer,
-  )
+  const { searchTags, allSearchListings } = useAppSelector((state) => state.marketplace_reducer)
+
+  const manyListingsForTest = [
+    ...allSearchListings,
+    ...allSearchListings,
+    ...allSearchListings,
+    ...allSearchListings,
+    ...allSearchListings,
+    ...allSearchListings,
+    ...allSearchListings,
+  ]
+
+  useEffect(() => {
+    dispatch(search(params.searchText ?? '', []))
+  }, [])
 
   // TODO show loading page
   useEffect(() => {
@@ -42,12 +57,14 @@ const UserListingsPage = () => {
   }, [userFirebaseProfile, dispatch])
 
   return (
-    <StyledUploadListingPage>
-      <SearchesDiv>
-        <SearchTitle fontType={navTitleFont}>Search results for '{searchText}'</SearchTitle>
+    <StyledSearchPage>
+      <SearchDiv>
+        <SearchTitle fontType={navTitleFont}>Search results for '{params.searchText}'</SearchTitle>
+        <SearchTagsDiv>Tags</SearchTagsDiv>
+
         {allSearchListings.length ? (
           <SearchListingsDiv>
-            {allSearchListings.map((listing, index) => {
+            {manyListingsForTest.map((listing, index) => {
               return (
                 <HorizontalListingBar
                   key={index}
@@ -63,8 +80,8 @@ const UserListingsPage = () => {
         ) : (
           <NoListingsLabel fontType={h1}>No Listings Found</NoListingsLabel>
         )}
-      </SearchesDiv>
-    </StyledUploadListingPage>
+      </SearchDiv>
+    </StyledSearchPage>
   )
 }
 

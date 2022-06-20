@@ -10,12 +10,12 @@ import { FirebaseProfile } from '../../store/authentication/types'
 
 import NavLink from './NavLinks/NavLink'
 import UsernameHover from './NavLinks/UsernameHover'
+import SearchBar from './Searchbar/Searchbar'
 
 import {
   BodyDiv,
   NavbarTitle,
   RightDiv,
-  SearchBar,
   SearchDiv,
   StyledLandingPageNav,
   StyledLogo,
@@ -45,10 +45,6 @@ const LoadingPageNav = ({ title }: { title: string }) => {
     })
   })
 
-  const onSearch = () => {
-    // TODO
-  }
-
   return (
     <StyledLandingPageNav>
       <StyledLogo src={logo} onClick={() => navigate('/neigh') /* easter egg */} />
@@ -60,7 +56,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
           <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
         </NavLinks>
         <SearchDiv>
-          <SearchBar placeholder="Search" onSearch={onSearch} />
+          <SearchBar />
         </SearchDiv>
       </BodyDiv>
       <RightDiv>

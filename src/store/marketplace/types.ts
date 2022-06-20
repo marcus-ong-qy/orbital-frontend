@@ -49,6 +49,7 @@ export enum MARKETPLACE_ACTIONS {
   SET_SELECTED_CHAT_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA',
   SET_ALL_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_LISTINGS',
   SET_ALL_USER_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS',
+  SEARCH = 'MARKETPLACE_ACTIONS.SEARCH',
   CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
 }
 
@@ -63,6 +64,13 @@ type SetAllListings = {
   allListings: ItemListing[]
 }
 
+type Search = {
+  type: typeof MARKETPLACE_ACTIONS.SEARCH
+  // searchText: string
+  searchTags: string[]
+  allSearchListings: ItemListing[]
+}
+
 type SetAllUserListings = {
   type: typeof MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS
   allUserListings: ItemListing[]
@@ -73,4 +81,9 @@ type UploadListing = {
   newListing: ItemListingPost
 }
 
-export type ActionTypes = SelectedChatData | SetAllListings | SetAllUserListings | UploadListing
+export type ActionTypes =
+  | SelectedChatData
+  | SetAllListings
+  | Search
+  | SetAllUserListings
+  | UploadListing

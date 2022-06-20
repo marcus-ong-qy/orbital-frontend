@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { Input } from 'antd'
+import { AutoComplete, Input } from 'antd'
 import { FontType } from '../../../styles/Theme'
 import { fontTypeCss } from '../../../styles/index.styled'
 
@@ -43,41 +43,6 @@ export const SearchDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-`
-
-export const SearchBar = styled(Input.Search)`
-  width: 50vw;
-
-  .ant-input-group {
-    position: relative;
-    display: flex;
-
-    width: 50vw;
-    margin-top: 1.9vh;
-  }
-  .ant-input-group-addon {
-    position: absolute;
-    right: 26px;
-  }
-  .ant-input-search-button {
-    width: 35px;
-    height: 35px;
-    border-radius: 35px;
-    border-width: 2px;
-    background: ${(props) => props.theme.palette.common.gray.normal};
-
-    cursor: pointer;
-
-    :hover {
-      background: ${(props) => props.theme.palette.highlight.normal};
-    }
-  }
-  .ant-input {
-    height: 35px;
-    width: calc(100% - 26px);
-    padding-left: 12px;
-    border-radius: 28px;
-  }
 `
 
 export const ShoppingCartDiv = styled.span`

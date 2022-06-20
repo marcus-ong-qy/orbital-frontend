@@ -113,7 +113,7 @@ export const Routes = () => (
       }
     />
     <Route
-      path={PATHS.SEARCH}
+      path={PATHS.SEARCH_ID}
       element={
         <RouteWithNavbar
           navbarType="marketplace"

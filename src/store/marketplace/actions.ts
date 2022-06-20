@@ -41,6 +41,47 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
   })
 }
 
+// export const setSearch =
+//   (
+//     // searchText: string,
+//     searchTags: string[], allSearchListings: ItemListing[]) =>
+//   (dispatch: Dispatch<ActionTypes>) => {
+//     dispatch({
+//       type: MARKETPLACE_ACTIONS.SEARCH,
+//       // searchText: searchText,
+//       searchTags: searchTags,
+//       allSearchListings: allSearchListings,
+//     })
+//   }
+
+// TODO searchTags not yet implemented
+export const search =
+  (searchText: string, searchTags: string[]) => (dispatch: Dispatch<ActionTypes>) => {
+    fetch(
+      `https://asia-southeast1-orbital2-4105d.cloudfunctions.net/marketplace?search=${searchText}`,
+      {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+      .then((resp) => resp.status === 200 && resp.json())
+      .then((res) => {
+        const searchListings: ItemListing[] = res.message
+        dispatch({
+          type: MARKETPLACE_ACTIONS.SEARCH,
+          // searchText: searchText,
+          searchTags: searchTags,
+          allSearchListings: searchListings ?? [],
+        })
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+  }
+
 export const getUserListings = (userUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/history?user=${userUID}`, {
     method: 'GET',

@@ -13,11 +13,11 @@ import { setNewListing } from '../../store/marketplace/actions'
 
 import NavLink from './NavLinks/NavLink'
 import UsernameHover from './NavLinks/UsernameHover'
+import SearchBar from './Searchbar/Searchbar'
 
 import {
   BodyDiv,
   NavbarTitle,
-  SearchBar,
   SearchDiv,
   ShoppingCart,
   ShoppingCartDiv,
@@ -58,10 +58,6 @@ const Navbar = ({
       }
     })
   })
-
-  const onSearch = () => {
-    // TODO
-  }
 
   const sellOnClick = () => {
     navigate(PATHS.UPLOAD_LISTING)
@@ -107,7 +103,7 @@ const Navbar = ({
           )}
         </NavLinks>
         <SearchDiv>
-          <SearchBar placeholder="Search" onSearch={onSearch} />
+          <SearchBar />
           <ShoppingCartDiv>
             <ShoppingCart src={shoppingCartLogo} />
           </ShoppingCartDiv>
