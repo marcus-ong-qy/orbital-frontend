@@ -12,6 +12,8 @@ export enum PATHS {
 
   //MARKETPLACE
   MAIN = '/',
+  SEARCH = '/marketplace/search',
+  SEARCH_ID = '/marketplace/search/:searchText',
   ITEM = '/marketplace/item',
   ITEM_ID = '/marketplace/item/:itemId',
   DEAL = '/marketplace/item/deal',
