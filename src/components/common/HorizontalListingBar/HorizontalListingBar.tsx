@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react'
 import { theme } from '../../../styles/Theme'
 
 import {
-  UserListingDiv,
+  ListingBarDiv,
   ListingInfoDiv,
   ListingTitle,
   ListingStatusDiv,
   StatusLabel,
   PriceTag,
   ItemPic,
-} from './styles/UserListing.styled'
+} from './styles/HorizontalListingBar.styled'
 
 import catanSet from '../../../assets/catan-set.jpg'
 
@@ -22,9 +22,9 @@ type Props = {
   pictureURL: string
 }
 
-const UserListing = (props: Props) => {
+const HorizontalListingBar = (props: Props) => {
   const { title, type, available, price, pictureURL } = { ...props }
-  const { h2, p } = { ...theme.typography.fontSize }
+  const { h2 } = { ...theme.typography.fontSize }
 
   const [statusText, setStatusText] = useState('')
 
@@ -37,7 +37,7 @@ const UserListing = (props: Props) => {
   }, [])
 
   return (
-    <UserListingDiv>
+    <ListingBarDiv>
       <ListingInfoDiv>
         <ListingTitle fontType={h2}>{title}</ListingTitle>
         <ListingStatusDiv>
@@ -51,8 +51,8 @@ const UserListing = (props: Props) => {
         </ListingStatusDiv>
       </ListingInfoDiv>
       <ItemPic src={catanSet} />
-    </UserListingDiv>
+    </ListingBarDiv>
   )
 }
 
-export default UserListing
+export default HorizontalListingBar

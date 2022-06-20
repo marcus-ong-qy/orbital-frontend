@@ -3,7 +3,7 @@ import { FontType } from '../../../../styles/Theme'
 
 import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 
-export const UserListingDiv = styled.div`
+export const ListingBarDiv = styled.div`
   ${borderedGreyDivCss}
   display: flex;
   flex-direction: row;

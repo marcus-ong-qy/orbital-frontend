@@ -10,7 +10,7 @@ import { FirebaseProfile } from '../../../store/authentication/types'
 import { getUserListings } from '../../../store/marketplace/actions'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'
-import UserListing from '../../../components/settings/UserListing/UserListing'
+import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
 
 import {
   NoListingsLabel,
@@ -46,7 +46,7 @@ const UserListingsPage = () => {
         <UserListingsDiv>
           {allUserListings.map((listing, index) => {
             return (
-              <UserListing
+              <HorizontalListingBar
                 key={index}
                 title={listing.name}
                 type={listing.typeOfTransaction}
