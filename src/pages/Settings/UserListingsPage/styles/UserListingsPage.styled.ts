@@ -19,3 +19,9 @@ export const UserListingsDiv = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
 `
+
+export const NoListingsLabel = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
+  margin-left: 41px;
+  color: ${(props) => props.theme.palette.danger};
+`

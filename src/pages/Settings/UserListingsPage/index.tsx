@@ -12,11 +12,15 @@ import { getUserListings } from '../../../store/marketplace/actions'
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import UserListing from '../../../components/settings/UserListing/UserListing'
 
-import { UserListingsDiv, UserListingTitle } from './styles/UserListingsPage.styled'
+import {
+  NoListingsLabel,
+  UserListingsDiv,
+  UserListingTitle,
+} from './styles/UserListingsPage.styled'
 
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()
-  const { navTitleFont } = { ...theme.typography.fontSize }
+  const { navTitleFont, h1 } = { ...theme.typography.fontSize }
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
   )
@@ -38,7 +42,7 @@ const UserListingsPage = () => {
   return (
     <SettingsPageWrapper>
       <UserListingTitle fontType={navTitleFont}>User Listings Page</UserListingTitle>
-      {allUserListings ? (
+      {allUserListings.length ? (
         <UserListingsDiv>
           {allUserListings.map((listing, index) => {
             return (
@@ -54,8 +58,7 @@ const UserListingsPage = () => {
           })}
         </UserListingsDiv>
       ) : (
-        // TODO doesn't work
-        <h1>No Listings Found</h1>
+        <NoListingsLabel fontType={h1}>No Listings Found</NoListingsLabel>
       )}
     </SettingsPageWrapper>
   )
