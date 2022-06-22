@@ -1,10 +1,9 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app'
-// import { getAnalytics } from 'firebase/analytics';
 import { GoogleAuthProvider, getAuth, User } from 'firebase/auth'
-// import { getFirestore } from 'firebase/firestore'
 import { getDatabase, ref, set } from 'firebase/database'
 import { FirebaseProfile, RealtimeUserData } from './store/authentication/types'
+import { getFunctions } from 'firebase/functions'
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -14,8 +13,7 @@ const firebaseConfig = JSON.parse(process.env.REACT_APP_FIREBASE_CONFIG!)
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
-// const db = getFirestore(app)
-// const analytics = getAnalytics(app);
+const functions = getFunctions(app)
 
 // Get a reference to the database service
 const database = getDatabase(app)
@@ -104,4 +102,4 @@ const getUserFirebaseProfile = (user: User): FirebaseProfile => {
   return updatedUserProfile
 }
 
-export { auth, database, setRealtimeDatabase, googleProvider, getUserFirebaseProfile }
+export { auth, database, setRealtimeDatabase, googleProvider, getUserFirebaseProfile, functions }
