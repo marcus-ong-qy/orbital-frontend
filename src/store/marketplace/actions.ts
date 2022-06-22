@@ -1,4 +1,6 @@
 import { Dispatch } from 'react'
+import { functions } from '../../../src/firebase'
+import { httpsCallable } from 'firebase/functions'
 import {
   ActionTypes,
   ChatMetadata,
@@ -15,23 +17,25 @@ export const setSelectedChatData =
     })
   }
 
-export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
-  fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/home', {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((resp) => resp.json())
-    .then((res) => {
-      const allListings: ItemListing[] = res.message
-      dispatch({
-        type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
-        allListings: allListings,
-      })
+export const getListings = () => async (dispatch: Dispatch<ActionTypes>) => {
+  try {
+    const getHomepageListings = httpsCallable(functions, 'getHomepageListings')
+    const result = (await getHomepageListings()) as any
+    const success = result.success as Boolean
+    if (!success) {
+      // Do some shit to handle failure on the backend
+      console.log(result)
+      return
+    }
+    console.log(result)
+    const allListings: ItemListing[] = result.message
+    dispatch({
+      type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
+      allListings: allListings,
     })
-    .catch((err) => console.error(err))
+  } catch (e) {
+    console.log('The error is ', e as Error)
+  }
 }
 
 export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
@@ -40,19 +44,6 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
     newListing: newListing,
   })
 }
-
-// export const setSearch =
-//   (
-//     // searchText: string,
-//     searchTags: string[], allSearchListings: ItemListing[]) =>
-//   (dispatch: Dispatch<ActionTypes>) => {
-//     dispatch({
-//       type: MARKETPLACE_ACTIONS.SEARCH,
-//       // searchText: searchText,
-//       searchTags: searchTags,
-//       allSearchListings: allSearchListings,
-//     })
-//   }
 
 // TODO searchTags not yet implemented
 export const search =
