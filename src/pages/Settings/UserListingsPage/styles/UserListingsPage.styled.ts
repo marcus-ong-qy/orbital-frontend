@@ -9,7 +9,10 @@ export const UserListingTitle = styled.div<{ fontType: FontType }>`
   align-items: center;
 
   height: 68px;
-  margin-left: 41px;
+  padding-left: 41px;
+  line-height: 68px;
+
+  border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
 `
 
 export const UserListingsDiv = styled.div`
@@ -22,6 +25,10 @@ export const UserListingsDiv = styled.div`
 
 export const NoListingsLabel = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
-  margin-left: 41px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+
+  margin-top: 41px;
   color: ${(props) => props.theme.palette.danger};
 `

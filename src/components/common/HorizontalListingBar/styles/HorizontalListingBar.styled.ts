@@ -4,14 +4,16 @@ import { FontType } from '../../../../styles/Theme'
 import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 
 export const ListingBarDiv = styled.div`
-  ${borderedGreyDivCss}
   display: flex;
   flex-direction: row;
 
   width: 100%;
   height: 112px;
 
+  border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
+
   :hover {
+    ${borderedGreyDivCss}
     box-shadow: 1px 2px ${(props) => props.theme.palette.common.gray.light};
     transition: all 0.1s ease-out;
     transform: scale(1.01) translateY(-1px);
