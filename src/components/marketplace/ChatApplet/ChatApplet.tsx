@@ -1,7 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
+import { onValue, ref, set } from 'firebase/database'
+
+import { useAppSelector } from '../../../app/hooks'
 import { auth, database } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import ChatMessage from '../ChatMessage/ChatMessage'
+
+import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
+import { FirebaseProfile } from '../../../store/authentication/types'
 
 import {
   ChatAppletDiv,
@@ -10,23 +16,22 @@ import {
   ChatProductBannerDiv,
   MessageForm,
   MessageInput,
+  PerDayHighlight,
   PictureIcon,
+  PriceHighlight,
   ProductInfo,
+  ProductPic,
   ProductTitle,
   ReceipientUsername,
   SendButton,
   SendIcon,
 } from './styles/ChatApplet.styled'
+import { ProfilePic } from '../../../styles/index.styled'
 
 import catanSet from '../../../assets/catan-set.jpg'
 import defaultAvatar from '../../../assets/default_avatar.png'
 import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
-import { ChatMetadata, Message } from '../../../store/marketplace/types'
-import { FirebaseProfile } from '../../../store/authentication/types'
-import { useAppSelector } from '../../../app/hooks'
-import { onValue, ref, set } from 'firebase/database'
-import { ProfilePic } from '../../../styles/index.styled'
 
 export type Item = {
   id: string
@@ -80,6 +85,33 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
 
   // const [messages] = useCollectionData(query, { idField: 'id' })
 
+  const [itemListing, setItemListing] = useState<ItemListing | null>(null)
+
+  const getItemListing = (itemId: string) => {
+    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item?id=${itemId}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((resp) => resp.json())
+      .then((res) => {
+        const info: ItemListing = res.message
+        setItemListing(info)
+      })
+      .catch((err) => console.error(err))
+  }
+
+  useEffect(() => {
+    // getItemListing(params.itemId!) // TODO
+  }, [])
+
+  useEffect(() => {
+    const messageDiv = document.getElementById('chat-message-div')
+    if (messageDiv) messageDiv.scrollTop = messageDiv.scrollHeight
+  })
+
   const sendMessage = async (e: any) => {
     e.preventDefault()
 
@@ -111,13 +143,26 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
     <ChatAppletDiv>
       <ChatAppletHeaderDiv>
         <ProfilePic src={defaultAvatar} diameter="55px" round />
-        <ReceipientUsername fontType={h1}>{receipientUID}</ReceipientUsername>
+        <ReceipientUsername fontType={h1}>{'{receipientUID}'}</ReceipientUsername>
       </ChatAppletHeaderDiv>
-      <ChatProductBannerDiv>
-        <ProductTitle fontType={h2}>{selectedChatData.itemListing}</ProductTitle>
-        <ProductInfo fontType={h3}>Buy for $2646</ProductInfo>
-      </ChatProductBannerDiv>
-      <ChatMessagesDiv>
+
+      {'itemListing' && (
+        <ChatProductBannerDiv>
+          <div>
+            <ProductTitle fontType={h2}>{'{selectedChatData.itemListing}'}</ProductTitle>
+            <ProductInfo fontType={h3}>
+              {'{itemListing.typeOfTransaction}'} for{' '}
+              <PriceHighlight>${'{itemListing.price}'}</PriceHighlight>
+              {"itemListing.typeOfTransaction === 'Rent'" && (
+                <PerDayHighlight>/day</PerDayHighlight>
+              )}
+            </ProductInfo>
+          </div>
+          <ProductPic src={catanSet} />
+        </ChatProductBannerDiv>
+      )}
+
+      <ChatMessagesDiv id="chat-message-div">
         {messages?.map((msg, index) => (
           <ChatMessage key={index} message={msg} />
         ))}
@@ -127,7 +172,6 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
       <MessageForm onSubmit={sendMessage}>
         <MessageInput value={formValue} onChange={onChange} placeholder={'Write a message to'} />
         <PictureIcon src={picIcon} />
-
         <SendButton type="submit" disabled={!formValue}>
           <SendIcon src={sendIcon} />
         </SendButton>

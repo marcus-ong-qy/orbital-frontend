@@ -64,7 +64,7 @@ const MainPage = () => {
 
   useEffect(() => {
     dispatch(getListings())
-  })
+  }, [])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {

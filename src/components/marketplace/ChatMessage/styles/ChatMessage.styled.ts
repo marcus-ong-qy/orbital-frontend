@@ -14,6 +14,9 @@ export const ChatMessageDiv = styled.div<{ messageType: 'sent' | 'received' }>`
 `
 
 export const ChatBubble = styled.div<{ messageType: 'sent' | 'received' }>`
+  display: flex;
+  align-items: center;
+
   width: auto;
   height: 100%;
   padding: 0 10px;
@@ -21,7 +24,7 @@ export const ChatBubble = styled.div<{ messageType: 'sent' | 'received' }>`
   background: ${(props) =>
     props.messageType === 'sent'
       ? props.theme.palette.primary
-      : props.theme.palette.common.gray.normal}
+      : props.theme.palette.common.gray.light};
   border: 1px solid ${(props) => props.theme.palette.common.gray.light};
   border-radius: 20px;
 `

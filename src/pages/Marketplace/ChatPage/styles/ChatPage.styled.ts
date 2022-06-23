@@ -1,5 +1,6 @@
 import styled from 'styled-components'
-import { borderedGreyDivCss, styledPageCss } from '../../../../styles/index.styled'
+import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
+import { FontType } from '../../../../styles/Theme'
 
 export const StyledChatPage = styled.div`
   ${styledPageCss}
@@ -14,18 +15,24 @@ export const ChatsDrawerDiv = styled.div`
   ${borderedGreyDivCss}
 
   width: 30vw;
-  height: 66vw;
+  height: 530px;
 `
 
-export const ChatsDrawerHeader = styled.div`
-  width: 100%;
+export const ChatsDrawerHeader = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
   height: 62px;
+  padding-left: 2.5vw;
+
+  font-weight: 700;
+  line-height: 62px;
+
+  border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
 `
 
 export const ChatInterfaceDiv = styled.div`
   ${borderedGreyDivCss}
 
   width: 54vw;
-  height: 66vw;
+  height: 530px;
   margin-left: 4.5vw;
 `

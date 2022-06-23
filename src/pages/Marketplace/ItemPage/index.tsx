@@ -5,6 +5,7 @@ import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
 // import { getItemInfo } from '../../../store/marketplace/actions'
 import { ItemListing } from '../../../store/marketplace/types'
+import { UserData } from '../../../store/authentication/types'
 
 import Button from '../../../components/common/Button/Button'
 
@@ -38,7 +39,6 @@ import defaultAvatar from '../../../assets/default_avatar.png'
 import catanSet from '../../../assets/catan-set.jpg'
 import saleBannerPic from '../../../assets/trade.png'
 import rentBannerPic from '../../../assets/rent.png'
-import { UserData } from '../../../store/authentication/types'
 
 // TODO create collapsible for tags
 // TODO allow Button to have custom fonts and stylings
@@ -173,7 +173,7 @@ const ItemPage = () => {
             <TagsDiv>
               <Subheader fontType={h2}>Tags</Subheader>
               <TagsContainer>
-                {itemInfo.tags.map((tag, index) => (
+                {itemInfo.tags?.map((tag, index) => (
                   <Tag key={index} label={tag} />
                 ))}
               </TagsContainer>

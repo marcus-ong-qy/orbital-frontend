@@ -44,7 +44,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
 
   return (
     <ChatTabDiv key={chatUID} onClick={onClick}>
-      <ProfilePic src={defaultAvatar} diameter="78px" round />
+      <ProfilePic src={defaultAvatar} diameter="clamp(30px, 6vw, 78px)" round />
       <ChatInfoDiv>
         <ChatUsername fontType={h3}>{receipientUID}</ChatUsername>
         <ChatPreview fontType={p}>{chatMetadata?.recentMessage?.messageText}</ChatPreview>

@@ -21,14 +21,15 @@ export const getListings = () => async (dispatch: Dispatch<ActionTypes>) => {
   try {
     const getHomepageListings = httpsCallable(functions, 'getHomepageListings')
     const result = (await getHomepageListings()) as any
-    const success = result.success as Boolean
+    const success = result.data.success as Boolean
     if (!success) {
       // Do some shit to handle failure on the backend
       console.log(result)
+      console.log("don't success")
       return
     }
     console.log(result)
-    const allListings: ItemListing[] = result.message
+    const allListings: ItemListing[] = result.data.message
     dispatch({
       type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
       allListings: allListings,

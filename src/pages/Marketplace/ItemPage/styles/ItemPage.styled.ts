@@ -1,5 +1,3 @@
-// For ease of creating new pages, just copy enire folder and rename accordingly
-
 import styled from 'styled-components'
 import { FontType } from '../../../../styles/Theme'
 import Button from '../../../../components/common/Button/Button'

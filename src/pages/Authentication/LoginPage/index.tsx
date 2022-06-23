@@ -36,7 +36,7 @@ import {
 const LoginPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, setValue, setError } = useForm({
+  const { register, handleSubmit, setValue, setError, formState } = useForm({
     mode: 'onSubmit',
   })
   const { loginAttemptStatus } = useAppSelector((state) => state.auth_reducer)
@@ -61,6 +61,10 @@ const LoginPage = () => {
   const onGoogleSignIn = () => {
     IS_USING_BACKEND && dispatch(logInWithGoogle())
   }
+
+  useEffect(() => {
+    console.log(formState.errors)
+  }, [formState])
 
   return (
     <StyledLoginPage>
