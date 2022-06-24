@@ -9,7 +9,7 @@ import {
 } from './types'
 
 const defaultListingPost: ItemListingPost = {
-  createdBy: '',
+  firebaseUID: '',
   name: '',
   price: 0,
   description: '',

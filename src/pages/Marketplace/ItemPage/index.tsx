@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
+import formatPrice from '../../../common/formatPrice'
 // import { getItemInfo } from '../../../store/marketplace/actions'
 import { ItemListing } from '../../../store/marketplace/types'
 import { UserData } from '../../../store/authentication/types'
@@ -119,11 +120,12 @@ const ItemPage = () => {
   }, [])
 
   useEffect(() => {
+    console.log(itemInfo)
     itemInfo?.currentOwner && getOwnerData(itemInfo.currentOwner)
   }, [itemInfo])
 
   const chatOnClick = () => {
-    navigate(`${PATHS.CHAT}`)
+    navigate(`${PATHS.CHAT}/${ownerInfo?.firebaseUID}`)
   }
 
   const dealOnClick = () => {
@@ -160,7 +162,7 @@ const ItemPage = () => {
 
           <InfoDiv>
             <ItemName fontType={h2}>{itemInfo.name}</ItemName>
-            <PriceTag fontType={h1}>$26.46</PriceTag>
+            <PriceTag fontType={h1}>${formatPrice(itemInfo.price)}</PriceTag>
             <DescriptionDiv fontType={p}>{itemInfo.description}</DescriptionDiv>
             <DealInfoDiv fontType={p}>
               <Subheader fontType={h2}>Deal Information</Subheader>

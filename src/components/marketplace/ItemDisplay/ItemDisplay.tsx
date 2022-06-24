@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { PATHS } from '../../../routes/PATHS'
+import formatPrice from '../../../common/formatPrice'
 import { theme } from '../../../styles/Theme'
 import { ItemListing } from '../../../store/marketplace/types'
 
@@ -35,7 +36,7 @@ const ItemDisplay = ({ item }: { item: ItemListing }) => {
       <ItemPic src={item.imageURL ?? catanSet} />
       <ItemName fontType={h2}>{item.name}</ItemName>
       <ItemBottomDiv>
-        <PriceTag>${item.price.toFixed(2)}</PriceTag>
+        <PriceTag>${formatPrice(item.price)}</PriceTag>
         {item.typeOfTransaction === 'Rent' && <PriceTagSuffix>/day</PriceTagSuffix>}
       </ItemBottomDiv>
     </ItemDisplayDiv>

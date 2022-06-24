@@ -32,7 +32,7 @@ export type ItemListing = {
 }
 
 export type ItemListingPost = {
-  createdBy: string
+  firebaseUID: string
   name: string
   price: number
   description: string

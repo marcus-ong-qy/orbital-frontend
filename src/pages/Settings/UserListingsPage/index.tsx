@@ -36,7 +36,7 @@ const UserListingsPage = () => {
   })
 
   useEffect(() => {
-    dispatch(getUserListings(userFirebaseProfile.uid!))
+    dispatch(getUserListings())
   }, [userFirebaseProfile, dispatch])
 
   return (

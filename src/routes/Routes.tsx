@@ -123,7 +123,7 @@ export const Routes = () => (
       }
     />
     <Route
-      path={PATHS.CHAT}
+      path={PATHS.CHAT_ID}
       element={
         <RouteWithNavbar navbarType="marketplace" component={ChatPage} title={TITLE.MARKETPLACE} />
       }

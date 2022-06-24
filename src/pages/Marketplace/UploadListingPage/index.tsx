@@ -8,7 +8,7 @@ import { theme } from '../../../styles/Theme'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { setNewListing } from '../../../store/marketplace/actions'
+import { postNewListing, setNewListing } from '../../../store/marketplace/actions'
 import { ItemListingPost } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
@@ -61,7 +61,7 @@ const UploadListingPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {
-      createdBy: userFirebaseProfile.uid ?? '',
+      firebaseUID: userFirebaseProfile.uid ?? '',
       name: data.ItemName.trim(),
       price: data.Price,
       description: data.ProductDescription.trim(),
@@ -70,7 +70,7 @@ const UploadListingPage = () => {
       tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       imageURL: '',
     }
-    dispatch(setNewListing(newListing))
+    dispatch(postNewListing(newListing))
     console.table(newListing)
   }
 
@@ -95,9 +95,7 @@ const UploadListingPage = () => {
                 options={['Rent', 'Sell']}
                 register={register}
                 value={listingType}
-                onChange={(e) => {
-                  setListingType(e.target.value as 'Rent' | 'Sell')
-                }}
+                onChange={(e) => setListingType(e.target.value as 'Rent' | 'Sell')}
               />
             </EntryDiv>
             <EntryDiv type="input">
