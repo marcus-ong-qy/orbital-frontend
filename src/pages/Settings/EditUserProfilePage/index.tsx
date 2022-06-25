@@ -69,7 +69,7 @@ const EditUserProfilePage = () => {
         setIsLoggedIn(false)
       }
     })
-  })
+  }, [dispatch, isLoggedIn])
 
   const uploadPicture = () => {}
 

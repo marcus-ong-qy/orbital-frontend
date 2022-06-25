@@ -25,9 +25,17 @@ import {
 } from './types'
 import { defaultUserData } from './reducer'
 
+export const setIsLoading = (isLoading: boolean) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: AUTH_ACTIONS.SET_LOADING,
+    isLoading: isLoading,
+  })
+}
+
 export const logIn =
   (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
     const { alwaysLoggedInChecked } = getState().auth_reducer
+    dispatch(setIsLoading(true))
 
     const persistenceType = alwaysLoggedInChecked
       ? browserLocalPersistence
@@ -37,10 +45,14 @@ export const logIn =
       .then(() => {
         return signInWithEmailAndPassword(auth, credentials.email, credentials.password)
       })
-      .then(() => dispatch(setLoginAttemptStatus('SUCCESS')))
+      .then(() => {
+        dispatch(setLoginAttemptStatus('SUCCESS'))
+        dispatch(setIsLoading(false))
+      })
       .catch((error) => {
         console.error(error)
         dispatch(setLoginAttemptStatus('INVALID'))
+        dispatch(setIsLoading(false))
       })
   }
 
@@ -80,6 +92,7 @@ const readSignupError = (err: any) => {
 
 export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<ActionTypes>) => {
   // TODO wj doing changes
+  dispatch(setIsLoading(true))
   try {
     const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
     const user = res.user
@@ -109,11 +122,13 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     })
       .then((resp) => {
         resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
+        dispatch(setIsLoading(false))
       })
       .catch((err) => console.error(err))
   } catch (err) {
     console.error(err)
     dispatch(setSignupAttemptStatus(readSignupError(err)))
+    dispatch(setIsLoading(false))
   }
 }
 
@@ -125,6 +140,7 @@ const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) =>
 }
 
 export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true))
   const firebaseUID = user.uid
 
   fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user?user=${firebaseUID}`, {
@@ -140,11 +156,16 @@ export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes
     .then((res) => {
       const userData: UserData = res.message
       dispatch(setUserData(userData))
+      dispatch(setIsLoading(false))
     })
-    .catch((err) => console.error(err))
+    .catch((err) => {
+      console.error(err)
+      dispatch(setIsLoading(false))
+    })
 }
 
 export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true))
   fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
     method: 'PUT',
     mode: 'cors',
@@ -155,8 +176,12 @@ export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch
   })
     .then((resp) => {
       resp.status === 200 && dispatch(setUserData(newUserData))
+      dispatch(setIsLoading(false))
     })
-    .catch((err) => console.error(err))
+    .catch((err) => {
+      console.error(err)
+      dispatch(setIsLoading(false))
+    })
 }
 
 const readResetPasswordError = (err: any) => {

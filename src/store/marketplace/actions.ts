@@ -8,6 +8,7 @@ import {
   ItemListingPost,
   MARKETPLACE_ACTIONS,
 } from './types'
+import { setIsLoading } from '../authentication/actions'
 
 export const setSelectedChatData =
   (selectedChatData: ChatMetadata) => (dispatch: Dispatch<ActionTypes>) => {
@@ -18,6 +19,7 @@ export const setSelectedChatData =
   }
 
 export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true) as any)
   fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/home', {
     method: 'GET',
     mode: 'cors',
@@ -33,11 +35,16 @@ export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
         type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
         allListings: allListings,
       })
+      dispatch(setIsLoading(false) as any)
     })
-    .catch((err) => console.error(err))
+    .catch((err) => {
+      console.error(err)
+      dispatch(setIsLoading(false) as any)
+    })
 }
 
 export const getListings_new = () => async (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true) as any)
   try {
     const getHomepageListings = httpsCallable(functions, 'getHomepageListings')
     const result = (await getHomepageListings()) as any
@@ -54,8 +61,10 @@ export const getListings_new = () => async (dispatch: Dispatch<ActionTypes>) => 
       type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
       allListings: allListings,
     })
+    dispatch(setIsLoading(false) as any)
   } catch (e) {
     console.log('The error is ', e as Error)
+    dispatch(setIsLoading(false) as any)
   }
 }
 
@@ -68,6 +77,7 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
 
 export const postNewListing =
   (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch(setIsLoading(true) as any)
     fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item`, {
       method: 'POST',
       mode: 'cors',
@@ -83,16 +93,18 @@ export const postNewListing =
           type: MARKETPLACE_ACTIONS.CREATE_NEW_LISTING,
           newListing: newListing,
         })
+        dispatch(setIsLoading(false) as any)
       })
       .catch((err) => {
         console.error(err)
+        dispatch(setIsLoading(false) as any)
       })
   }
 
 // TODO searchTags not yet implemented
 export const search =
   (searchText: string, searchTags: string[]) => async (dispatch: Dispatch<ActionTypes>) => {
-    console.log('searching')
+    dispatch(setIsLoading(true) as any)
     try {
       const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
       const result = (await filterAndSearch({
@@ -114,13 +126,15 @@ export const search =
         searchTags: searchTags,
         allSearchListings: searchListings ?? [],
       })
+      dispatch(setIsLoading(false) as any)
     } catch (e) {
       console.log('The error is ', e as Error)
+      dispatch(setIsLoading(false) as any)
     }
   }
 
 export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => {
-  console.log('getting user listings')
+  dispatch(setIsLoading(true) as any)
   try {
     const getUserListings = httpsCallable(functions, 'getUserListings')
     const result = (await getUserListings()) as any
@@ -137,7 +151,9 @@ export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => 
       type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
       allUserListings: allUserListings,
     })
+    dispatch(setIsLoading(false) as any)
   } catch (e) {
     console.log('The error is ', e as Error)
+    dispatch(setIsLoading(false) as any)
   }
 }

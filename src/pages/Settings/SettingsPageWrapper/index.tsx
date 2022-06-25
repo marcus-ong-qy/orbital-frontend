@@ -1,6 +1,9 @@
 import { useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { theme } from '../../../styles/Theme'
+
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   ContentDiv,
@@ -14,30 +17,35 @@ import {
 const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Element }) => {
   const navigate = useNavigate()
   const { h1, h3 } = { ...theme.typography.fontSize }
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
 
   // TODO set a isLoading cos some pages take time to load, which seems like the link not responsive
   return (
     <StyledSettingsPage>
-      <SettingsMenuDiv>
-        <MenuSubDiv>
-          <MenuSubtitle fontType={h1}>My Account</MenuSubtitle>
-          <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_PROFILE)}>
-            My Profile
-          </MenuHyperlink>
-          <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.EDIT_USER_PROFILE)}>
-            Edit Profile
-          </MenuHyperlink>
-        </MenuSubDiv>
-        <MenuSubDiv>
-          <MenuSubtitle fontType={h1}>Marketplace</MenuSubtitle>
-          {/* <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <>
+          <SettingsMenuDiv>
+            <MenuSubDiv>
+              <MenuSubtitle fontType={h1}>My Account</MenuSubtitle>
+              <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_PROFILE)}>
+                My Profile
+              </MenuHyperlink>
+              <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.EDIT_USER_PROFILE)}>
+                Edit Profile
+              </MenuHyperlink>
+            </MenuSubDiv>
+            <MenuSubDiv>
+              <MenuSubtitle fontType={h1}>Marketplace</MenuSubtitle>
+              {/* <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
             My Orders
           </MenuHyperlink> */}
-          <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_LISTINGS)}>
-            My Listings
-          </MenuHyperlink>
-        </MenuSubDiv>
-        {/* <MenuSubDiv>
+              <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_LISTINGS)}>
+                My Listings
+              </MenuHyperlink>
+            </MenuSubDiv>
+            {/* <MenuSubDiv>
           <MenuSubtitle fontType={h1}>Community</MenuSubtitle>
           <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
             My Groups
@@ -52,8 +60,10 @@ const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Eleme
             Activities History
           </MenuHyperlink>
         </MenuSubDiv> */}
-      </SettingsMenuDiv>
-      <ContentDiv>{children}</ContentDiv>
+          </SettingsMenuDiv>
+          <ContentDiv>{children}</ContentDiv>
+        </>
+      )}
     </StyledSettingsPage>
   )
 }

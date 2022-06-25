@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import GoogleButton from 'react-google-button'
@@ -32,6 +32,7 @@ import {
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const LoginPage = () => {
   const navigate = useNavigate()
@@ -39,7 +40,7 @@ const LoginPage = () => {
   const { register, handleSubmit, setValue, setError, formState } = useForm({
     mode: 'onSubmit',
   })
-  const { loginAttemptStatus } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, loginAttemptStatus } = useAppSelector((state) => state.auth_reducer)
   const { h1, p, labelFont } = { ...theme.typography.fontSize }
 
   useEffect(() => {
@@ -62,44 +63,61 @@ const LoginPage = () => {
     IS_USING_BACKEND && dispatch(logInWithGoogle())
   }
 
-  useEffect(() => {
-    console.log(formState.errors)
-  }, [formState])
+  // useEffect(() => {
+  //   console.log('errors', formState.errors)
+  // }, [formState])
+
+  // const emailField = useRef<any>(null)
+
+  // useEffect(() => {
+  //   console.log('the field', emailField)
+  //   emailField.current && emailField.current.click()
+  // }, [emailField])
 
   return (
     <StyledLoginPage>
-      <LoginDiv>
-        <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
-        <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputField title="Email" placeholder="Email" register={register} required />
-          <PasswordInputField
-            title="Password"
-            type="login"
-            placeholder="Password"
-            errorLabel={LOGIN_WARNINGS.INVALID}
-            isError={loginAttemptStatus === 'INVALID'}
-            register={register}
-            setValue={setValue}
-            setError={setError}
-            required
-          />
-          <Button type="submit" text="Login" />
-        </LoginForm>
-        <ForgetPwdSpan>
-          <ForgetPwdLink fontType={labelFont} onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
-            Forget Password?
-          </ForgetPwdLink>
-        </ForgetPwdSpan>
-        {/* <OrSpan>or</OrSpan>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <LoginDiv>
+          <LoginDivTitle fontType={h1}>Log In</LoginDivTitle>
+          <LoginForm onSubmit={handleSubmit(onSubmit)} noValidate>
+            <InputField
+              title="Email"
+              placeholder="Email"
+              // setValue={setValue}
+              register={register}
+              required
+            />
+            <PasswordInputField
+              title="Password"
+              type="login"
+              placeholder="Password"
+              errorLabel={LOGIN_WARNINGS.INVALID}
+              isError={loginAttemptStatus === 'INVALID'}
+              register={register}
+              setValue={setValue}
+              setError={setError}
+              required
+            />
+            <Button type="submit" text="Login" />
+          </LoginForm>
+          <ForgetPwdSpan>
+            <ForgetPwdLink fontType={labelFont} onClick={() => navigate(PATHS.FORGET_PASSWORD)}>
+              Forget Password?
+            </ForgetPwdLink>
+          </ForgetPwdSpan>
+          {/* <OrSpan>or</OrSpan>
         <GoogleButton type="light" onClick={onGoogleSignIn} disabled /> */}
-        <NewUserSpan fontType={p}>
-          New to this site?&nbsp;
-          <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
-            Sign Up
-          </SignUpLink>
-          &nbsp;here!
-        </NewUserSpan>
-      </LoginDiv>
+          <NewUserSpan fontType={p}>
+            New to this site?&nbsp;
+            <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>
+              Sign Up
+            </SignUpLink>
+            &nbsp;here!
+          </NewUserSpan>
+        </LoginDiv>
+      )}
     </StyledLoginPage>
   )
 }

@@ -11,6 +11,7 @@ import { FirebaseProfile } from '../../../store/authentication/types'
 import { getUserListings, search } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   NoListingsLabel,
@@ -24,8 +25,9 @@ import {
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()
   const params = useParams<{ searchText: string }>()
-
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
+
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
   )
@@ -60,29 +62,35 @@ const UserListingsPage = () => {
 
   return (
     <StyledSearchPage>
-      <SearchDiv>
-        <SearchTitle fontType={navTitleFont}>Search results for '{params.searchText}'</SearchTitle>
-        {/* <SearchTagsDiv>Tags</SearchTagsDiv> */}
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <SearchDiv>
+          <SearchTitle fontType={navTitleFont}>
+            Search results for '{params.searchText}'
+          </SearchTitle>
+          {/* <SearchTagsDiv>Tags</SearchTagsDiv> */}
 
-        {allSearchListings.length ? (
-          <SearchListingsDiv>
-            {manyListingsForTest.map((listing, index) => {
-              return (
-                <HorizontalListingBar
-                  key={index}
-                  title={listing.name}
-                  type={listing.typeOfTransaction}
-                  available={listing.available}
-                  price={listing.price}
-                  pictureURL={listing.imageURL}
-                />
-              )
-            })}
-          </SearchListingsDiv>
-        ) : (
-          <NoListingsLabel fontType={h1}>No Listings Found</NoListingsLabel>
-        )}
-      </SearchDiv>
+          {allSearchListings.length ? (
+            <SearchListingsDiv>
+              {manyListingsForTest.map((listing, index) => {
+                return (
+                  <HorizontalListingBar
+                    key={index}
+                    title={listing.name}
+                    type={listing.typeOfTransaction}
+                    available={listing.available}
+                    price={listing.price}
+                    pictureURL={listing.imageURL}
+                  />
+                )
+              })}
+            </SearchListingsDiv>
+          ) : (
+            <NoListingsLabel fontType={h1}>No Listings Found</NoListingsLabel>
+          )}
+        </SearchDiv>
+      )}
     </StyledSearchPage>
   )
 }

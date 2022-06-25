@@ -20,6 +20,7 @@ import { Credentials } from '../../../store/authentication/types'
 import InputField from '../../../components/common/InputFields/InputField'
 import PasswordInputField from '../../../components/common/InputFields/PasswordInputField'
 import WarningLabels from '../../../components/common/WarningLabels/WarningLabels'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   ExistingUserSpan,
@@ -46,7 +47,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm({ mode: 'onChange' })
 
-  const { signupAttemptStatus } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, signupAttemptStatus } = useAppSelector((state) => state.auth_reducer)
   const { h1, p } = { ...theme.typography.fontSize }
   const signupErrorLabel = SIGNUP_ERROR_LABELS[signupAttemptStatus]
 
@@ -71,46 +72,50 @@ const RegisterPage = () => {
 
   return (
     <StyledSignupPage>
-      <SignupDiv>
-        <SignupDivTitle fontType={h1}>Sign Up</SignupDivTitle>
-        <SignupWarningDiv>
-          <WarningLabels label={signupErrorLabel} isError={signupErrorLabel.length !== 0} />
-        </SignupWarningDiv>
-        <SignupForm onSubmit={handleSubmit(onSubmit)} noValidate>
-          <InputField
-            title="Email"
-            placeholder="Email"
-            errorLabel={SIGNUP_WARNINGS.EMAIL_INVALID}
-            isError={errors.Email}
-            register={register}
-            pattern={emailRegex}
-            required
-          />
-          <PasswordInputField
-            title="Password"
-            type="signup"
-            placeholder="Password"
-            errorLabel={SIGNUP_WARNINGS.PASSWORD_INVALID}
-            isError={errors.Password}
-            register={register}
-            setValue={setValue}
-            setError={setError}
-            clearErrors={clearErrors}
-            pattern={passwordRegex}
-            required
-          />
-          <SignupButton style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
-        </SignupForm>
-        {/* <OrSpan>or</OrSpan>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <SignupDiv>
+          <SignupDivTitle fontType={h1}>Sign Up</SignupDivTitle>
+          <SignupWarningDiv>
+            <WarningLabels label={signupErrorLabel} isError={signupErrorLabel.length !== 0} />
+          </SignupWarningDiv>
+          <SignupForm onSubmit={handleSubmit(onSubmit)} noValidate>
+            <InputField
+              title="Email"
+              placeholder="Email"
+              errorLabel={SIGNUP_WARNINGS.EMAIL_INVALID}
+              isError={errors.Email}
+              register={register}
+              pattern={emailRegex}
+              required
+            />
+            <PasswordInputField
+              title="Password"
+              type="signup"
+              placeholder="Password"
+              errorLabel={SIGNUP_WARNINGS.PASSWORD_INVALID}
+              isError={errors.Password}
+              register={register}
+              setValue={setValue}
+              setError={setError}
+              clearErrors={clearErrors}
+              pattern={passwordRegex}
+              required
+            />
+            <SignupButton style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
+          </SignupForm>
+          {/* <OrSpan>or</OrSpan>
         <GoogleButton type="light" onClick={onGoogleSignIn} disabled /> */}
-        <ExistingUserSpan fontType={p}>
-          Have an account?&nbsp;
-          <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>
-            Log In
-          </LoginLink>
-          &nbsp;here!
-        </ExistingUserSpan>
-      </SignupDiv>
+          <ExistingUserSpan fontType={p}>
+            Have an account?&nbsp;
+            <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>
+              Log In
+            </LoginLink>
+            &nbsp;here!
+          </ExistingUserSpan>
+        </SignupDiv>
+      )}
     </StyledSignupPage>
   )
 }

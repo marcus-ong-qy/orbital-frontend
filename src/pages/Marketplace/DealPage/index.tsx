@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { theme } from '../../../styles/Theme'
+import { useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
 import formatPrice from '../../../common/formatPrice'
@@ -9,6 +10,7 @@ import { UserData } from '../../../store/authentication/types'
 import { ItemListing } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   BottomDiv,
@@ -51,6 +53,7 @@ const DealPage = () => {
   const navigate = useNavigate()
   const params = useParams<{ itemId: string }>()
   const { h2, h3, p } = { ...theme.typography.fontSize }
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
 
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
@@ -108,48 +111,52 @@ const DealPage = () => {
 
   return (
     <StyledDealPage>
-      {itemInfo && (
-        <>
-          <LeftDiv>
-            <ItemShowcaseDiv>
-              <ItemPicture src={defaultPic} />
-            </ItemShowcaseDiv>
-            <BottomDiv>
-              <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-              <OwnerDiv>
-                <OwnerSubDiv>
-                  <ProfilePic src={defaultAvatar} diameter="55px" round />
-                  <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
-                </OwnerSubDiv>
-                <Button
-                  style={{ width: '15vw', borderRadius: '0' }}
-                  text="🗨️ Chat"
-                  onClick={chatOnClick}
-                />
-              </OwnerDiv>
-            </BottomDiv>
-          </LeftDiv>
-          <InfoDiv>
-            <DealSummaryCard>
-              <InfoRow title="Item Name" content={itemInfo.name} />
-              <InfoRow title="Deal Type" content={itemInfo.typeOfTransaction} />
-              <InfoRow title="Cost" content={`$${formatPrice(itemInfo.price)}`} />
-              <DealInfoDiv fontType={p}>
-                <Subheader fontType={h2}>Deal Information:</Subheader>
-                <DescriptionDiv fontType={p}>{itemInfo.deliveryInformation}</DescriptionDiv>
-              </DealInfoDiv>
-            </DealSummaryCard>
-            <DealButton
-              style={{ width: '43vw', borderRadius: '0', marginTop: '20px' }}
-              text="Confirm Offer"
-              onClick={dealOnClick}
-            />
-            <DisclaimerDiv fontType={p}>
-              <b>Disclaimer: </b>
-              {TEXTS.DEAL_DISCLAIMER}
-            </DisclaimerDiv>
-          </InfoDiv>
-        </>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        itemInfo && (
+          <>
+            <LeftDiv>
+              <ItemShowcaseDiv>
+                <ItemPicture src={defaultPic} />
+              </ItemShowcaseDiv>
+              <BottomDiv>
+                <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
+                <OwnerDiv>
+                  <OwnerSubDiv>
+                    <ProfilePic src={defaultAvatar} diameter="55px" round />
+                    <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
+                  </OwnerSubDiv>
+                  <Button
+                    style={{ width: '15vw', borderRadius: '0' }}
+                    text="🗨️ Chat"
+                    onClick={chatOnClick}
+                  />
+                </OwnerDiv>
+              </BottomDiv>
+            </LeftDiv>
+            <InfoDiv>
+              <DealSummaryCard>
+                <InfoRow title="Item Name" content={itemInfo.name} />
+                <InfoRow title="Deal Type" content={itemInfo.typeOfTransaction} />
+                <InfoRow title="Cost" content={`$${formatPrice(itemInfo.price)}`} />
+                <DealInfoDiv fontType={p}>
+                  <Subheader fontType={h2}>Deal Information:</Subheader>
+                  <DescriptionDiv fontType={p}>{itemInfo.deliveryInformation}</DescriptionDiv>
+                </DealInfoDiv>
+              </DealSummaryCard>
+              <DealButton
+                style={{ width: '43vw', borderRadius: '0', marginTop: '20px' }}
+                text="Confirm Offer"
+                onClick={dealOnClick}
+              />
+              <DisclaimerDiv fontType={p}>
+                <b>Disclaimer: </b>
+                {TEXTS.DEAL_DISCLAIMER}
+              </DisclaimerDiv>
+            </InfoDiv>
+          </>
+        )
       )}
     </StyledDealPage>
   )

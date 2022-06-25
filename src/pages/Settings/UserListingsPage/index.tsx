@@ -33,7 +33,7 @@ const UserListingsPage = () => {
       if (user && userFirebaseProfile === defaultUserFirebaseProfile)
         setUserFirebaseProfile(getUserFirebaseProfile(user))
     })
-  })
+  }, [userFirebaseProfile])
 
   useEffect(() => {
     dispatch(getUserListings())

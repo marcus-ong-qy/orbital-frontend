@@ -28,12 +28,14 @@ import {
 } from './styles/MainPage.styled'
 
 import horseHead from '../../../assets/Horse-head-transparent.png'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const MainPage = () => {
   const dispatch = useAppDispatch()
 
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
   const { allListings } = useAppSelector((state) => state.marketplace_reducer)
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
@@ -80,24 +82,28 @@ const MainPage = () => {
 
   return (
     <StyledMainPage data-testid="MarketplaceMain">
-      <GreetingsDiv fontType={navTitleFont}>
-        <HorseHead src={horseHead} />
-        <GreetingsSpan>
-          {`${TEXTS.GREETINGS}, `}
-          {isLoggedIn ? (
-            <GreetingsUsernameSpan>{userFirebaseProfile.email}</GreetingsUsernameSpan>
-          ) : (
-            'stranger'
-          )}
-          !
-        </GreetingsSpan>
-      </GreetingsDiv>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <>
+          <GreetingsDiv fontType={navTitleFont}>
+            <HorseHead src={horseHead} />
+            <GreetingsSpan>
+              {`${TEXTS.GREETINGS}, `}
+              {isLoggedIn ? (
+                <GreetingsUsernameSpan>{userFirebaseProfile.email}</GreetingsUsernameSpan>
+              ) : (
+                'stranger'
+              )}
+              !
+            </GreetingsSpan>
+          </GreetingsDiv>
 
-      {/* <CarouselDiv>
+          {/* <CarouselDiv>
         <h1>Carousel Under Construction</h1>
       </CarouselDiv> */}
 
-      {/* <FeaturedDiv>
+          {/* <FeaturedDiv>
         <Title fontType={h1}>Featured</Title>
         <FeaturedItemsContainer>
           {multipliedListings?.map((item, index) => {
@@ -106,18 +112,20 @@ const MainPage = () => {
         </FeaturedItemsContainer>
       </FeaturedDiv> */}
 
-      {/* <CategoriesDiv>
+          {/* <CategoriesDiv>
         <Title fontType={h1}>Categories</Title>
       </CategoriesDiv> */}
 
-      <ListingsDiv>
-        <Title fontType={h1}>Listings</Title>
-        <ItemsContainer>
-          {multipliedListings?.map((item, index) => (
-            <ItemDisplay key={index} item={item} />
-          ))}
-        </ItemsContainer>
-      </ListingsDiv>
+          <ListingsDiv>
+            <Title fontType={h1}>Listings</Title>
+            <ItemsContainer>
+              {multipliedListings?.map((item, index) => (
+                <ItemDisplay key={index} item={item} />
+              ))}
+            </ItemsContainer>
+          </ListingsDiv>
+        </>
+      )}
     </StyledMainPage>
   )
 }

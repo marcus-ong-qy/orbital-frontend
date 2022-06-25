@@ -37,6 +37,7 @@ const loginCredentialsDefault: Credentials = {
 }
 
 const initialState: State = {
+  isLoading: false,
   loginAttemptStatus: 'INITIAL',
   signupAttemptStatus: 'INITIAL',
   alwaysLoggedInChecked: false,
@@ -49,6 +50,7 @@ const initialState: State = {
 }
 
 type State = {
+  isLoading: boolean
   loginAttemptStatus: LoginStatus
   signupAttemptStatus: SignupStatus
   alwaysLoggedInChecked: boolean
@@ -63,6 +65,8 @@ type State = {
 
 export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
   switch (action.type) {
+    case AUTH_ACTIONS.SET_LOADING:
+      return { ...state, isLoading: action.isLoading }
     case AUTH_ACTIONS.LOGIN_OFFLINE:
       return {
         ...state,

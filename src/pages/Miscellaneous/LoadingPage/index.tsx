@@ -1,19 +1,11 @@
-import {
-  GallopingHorse,
-  LoadingText,
-  StyledLoadingDiv,
-  StyledLoadingPage,
-} from './styles/LoadingPage.styled'
+import { StyledLoadingPage } from './styles/LoadingPage.styled'
 
-import HorseLogo from '../../../assets/Horse-head-transparent.png'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const LoadingPage = () => {
   return (
     <StyledLoadingPage>
-      <StyledLoadingDiv>
-        <LoadingText>Loading...</LoadingText>
-        <GallopingHorse src={HorseLogo} />
-      </StyledLoadingDiv>
+      <LoadingSpin />
     </StyledLoadingPage>
   )
 }

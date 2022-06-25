@@ -3,12 +3,14 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { onValue, ref } from 'firebase/database'
 
 import { theme } from '../../../styles/Theme'
+import { useAppSelector } from '../../../app/hooks'
 import { auth, database, getUserFirebaseProfile } from '../../../firebase'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
 
 import ChatApplet from '../../../components/marketplace/ChatApplet/ChatApplet'
 import ChatTab from '../../../components/marketplace/ChatDrawer/ChatTab'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   ChatInterfaceDiv,
@@ -20,6 +22,7 @@ import {
 // Chat Page and Chat Components created with reference to https://www.youtube.com/watch?v=zQyrwxMPm88
 const ChatPage = () => {
   const { h1 } = { ...theme.typography.fontSize }
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
@@ -53,15 +56,21 @@ const ChatPage = () => {
 
   return (
     <StyledChatPage>
-      <ChatsDrawerDiv>
-        <ChatsDrawerHeader fontType={h1}>Chats</ChatsDrawerHeader>
-        {userChatsUID?.map((chatUID, index) => {
-          return <ChatTab key={index} chatUID={chatUID} />
-        })}
-      </ChatsDrawerDiv>
-      <ChatInterfaceDiv>
-        <ChatApplet user={userFirebaseProfile} />
-      </ChatInterfaceDiv>
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <>
+          <ChatsDrawerDiv>
+            <ChatsDrawerHeader fontType={h1}>Chats</ChatsDrawerHeader>
+            {userChatsUID?.map((chatUID, index) => {
+              return <ChatTab key={index} chatUID={chatUID} />
+            })}
+          </ChatsDrawerDiv>
+          <ChatInterfaceDiv>
+            <ChatApplet user={userFirebaseProfile} />
+          </ChatInterfaceDiv>
+        </>
+      )}
     </StyledChatPage>
   )
 }

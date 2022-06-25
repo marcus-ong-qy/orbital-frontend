@@ -42,6 +42,7 @@ export type ResetPasswordStatus =
 /** Actions' types */
 
 export enum AUTH_ACTIONS {
+  SET_LOADING = 'AUTH_ACTIONS.SET_LOADING',
   LOGIN_OFFLINE = 'AUTH_ACTIONS.LOGIN_OFFLINE',
   LOGIN_ATTEMPT_STATUS = 'AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS',
   SIGNUP_ATTEMPT_STATUS = 'AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS',
@@ -52,6 +53,11 @@ export enum AUTH_ACTIONS {
 }
 
 /** Actions */
+
+type SetLoading = {
+  type: typeof AUTH_ACTIONS.SET_LOADING
+  isLoading: boolean
+}
 
 type LogInOffline = {
   type: typeof AUTH_ACTIONS.LOGIN_OFFLINE
@@ -90,6 +96,7 @@ type SetSearchRedirect = {
 }
 
 export type ActionTypes =
+  | SetLoading
   | LogInOffline
   | LoginAttemptStatus
   | SignupAttemptStatus

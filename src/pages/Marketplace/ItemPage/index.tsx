@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { theme } from '../../../styles/Theme'
+import { useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
 // import { getItemInfo } from '../../../store/marketplace/actions'
@@ -9,6 +10,7 @@ import { ItemListing } from '../../../store/marketplace/types'
 import { UserData } from '../../../store/authentication/types'
 
 import Button from '../../../components/common/Button/Button'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   BottomDiv,
@@ -63,6 +65,7 @@ const ItemPage = () => {
   const navigate = useNavigate()
   const params = useParams<{ itemId: string }>()
   const { h1, h2, h3, p } = { ...theme.typography.fontSize }
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
 
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
@@ -134,7 +137,9 @@ const ItemPage = () => {
 
   return (
     <StyledItemPage>
-      {itemInfo ? (
+      {isLoading ? (
+        <LoadingSpin />
+      ) : itemInfo ? (
         <>
           <LeftDiv>
             <TypeBannerDiv>
