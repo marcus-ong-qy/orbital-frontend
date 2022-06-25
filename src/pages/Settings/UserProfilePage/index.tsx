@@ -30,17 +30,27 @@ import {
 
 import defaultPic from '../../../assets/picture.png'
 
+const Entry = ({ name, value }: { name: string; value: string }) => {
+  const { p } = { ...theme.typography.fontSize }
+
+  return (
+    <EntryDiv>
+      <EntryName fontType={p}>{name}</EntryName>
+      <EntryValue fontType={p}>&nbsp;{value}</EntryValue>
+    </EntryDiv>
+  )
+}
+
 const UserProfilePage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { userData } = useAppSelector((state) => state.auth_reducer)
 
-  const { navTitleFont, p } = { ...theme.typography.fontSize }
+  const { navTitleFont } = { ...theme.typography.fontSize }
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
   )
-
   const [userDataHook, setUserDataHook] = useState<UserData>(defaultUserData)
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -80,38 +90,14 @@ const UserProfilePage = () => {
       <UserProfileDiv>
         <ProfileDiv>
           <TitleDiv fontType={navTitleFont}>My Profile</TitleDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Username</EntryName>
-            <EntryValue fontType={p}> {userDataHook.username}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Name</EntryName>
-            <EntryValue fontType={p}> {userDataHook.name}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Gender</EntryName>
-            <EntryValue fontType={p}> {userDataHook.gender}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Date of Birth</EntryName>
-            <EntryValue fontType={p}>{unixToFullDate(userDataHook.dob)}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Email</EntryName>
-            <EntryValue fontType={p}> {userFirebaseProfile.email}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Phone</EntryName>
-            <EntryValue fontType={p}> {userDataHook.phone}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Address</EntryName>
-            <EntryValue fontType={p}> {userDataHook.address}</EntryValue>
-          </EntryDiv>
-          <EntryDiv>
-            <EntryName fontType={p}>Postal</EntryName>
-            <EntryValue fontType={p}> {userDataHook.postal}</EntryValue>
-          </EntryDiv>
+          <Entry name="Username" value={userDataHook.username} />
+          <Entry name="Name" value={userDataHook.name} />
+          <Entry name="Gender" value={userDataHook.gender} />
+          {/* <Entry name="Date of Birth" value={unixToFullDate(userDataHook.dob)} /> */}
+          <Entry name="Email" value={userFirebaseProfile.email!} />
+          <Entry name="Phone" value={userDataHook.phone} />
+          <Entry name="Address" value={userDataHook.address} />
+          <Entry name="Postal" value={userDataHook.postal} />
           <EditButton text="📝 Edit Info" onClick={() => navigate(PATHS.EDIT_USER_PROFILE)} />
         </ProfileDiv>
         <PictureDiv>

@@ -9,7 +9,7 @@ const blobToBase64 = (blob: Blob, setB64: React.Dispatch<React.SetStateAction<st
   reader.readAsDataURL(blob)
   reader.onloadend = () => {
     const base64data = reader.result
-    typeof base64data === 'string' && setB64(base64data)
+    setB64(base64data as string)
   }
 }
 

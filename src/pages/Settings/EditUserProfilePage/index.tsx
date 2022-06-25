@@ -141,7 +141,7 @@ const EditUserProfilePage = () => {
             />
           </EntryDiv>
 
-          <EntryDiv type="input">
+          {/* <EntryDiv type="input">
             <EntryName fontType={p}>Date of Birth&nbsp;</EntryName>
             <InputField
               title="DateOfBirth"
@@ -150,7 +150,7 @@ const EditUserProfilePage = () => {
               // onChange={(e) => setFormValues({ ...formValues, dob: e.target.value })}
               register={register}
             />
-          </EntryDiv>
+          </EntryDiv> */}
 
           <EntryDiv type="input">
             <EntryName fontType={p}>Email&nbsp;</EntryName>
