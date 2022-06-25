@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { theme } from '../../../styles/Theme'
@@ -10,6 +11,7 @@ import { FirebaseProfile } from '../../../store/authentication/types'
 import { getUserListings, search } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
+
 import {
   NoListingsLabel,
   SearchDiv,
@@ -18,12 +20,12 @@ import {
   SearchTitle,
   StyledSearchPage,
 } from './styles/SearchPage.styled'
-import { useParams } from 'react-router-dom'
 
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()
-  const { navTitleFont, h1 } = { ...theme.typography.fontSize }
   const params = useParams<{ searchText: string }>()
+
+  const { navTitleFont, h1 } = { ...theme.typography.fontSize }
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
     defaultUserFirebaseProfile,
   )

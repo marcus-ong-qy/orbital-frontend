@@ -13,7 +13,7 @@ import Button from '../../../components/common/Button/Button'
 import {
   BottomDiv,
   BottomDivTitle,
-  ChatButton,
+  // ChatButton,
   DealButton,
   DealInfoDiv,
   DealSummaryCard,
@@ -99,7 +99,7 @@ const DealPage = () => {
   }, [itemInfo])
 
   const chatOnClick = () => {
-    navigate(PATHS.CHAT)
+    navigate(`${PATHS.CHAT}/${ownerInfo?.firebaseUID}`)
   }
 
   const dealOnClick = () => {

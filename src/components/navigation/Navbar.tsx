@@ -87,9 +87,9 @@ const Navbar = ({
           {isLoggedIn ? (
             <>
               <LinkGroupSpan width="25vw" margin="0 5vw 0 0">
-                <NavLink text="Notifications" onClick={() => {}} />
+                <NavLink text="Notifications" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp;
-                <NavLink text="Settings" onClick={() => {}} />
+                <NavLink text="Settings" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp;
                 <UsernameHover maxWidth="10vw" userFirebaseProfile={userFirebaseProfile} />
               </LinkGroupSpan>

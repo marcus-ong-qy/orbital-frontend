@@ -11,7 +11,7 @@ export const StyledDealPage = styled.div`
   display: flex;
   flex-direction: row;
 
-  padding-top: 28px;
+  padding: 28px;
 `
 
 export const LeftDiv = styled.div`
@@ -131,9 +131,9 @@ export const DisclaimerDiv = styled.div<{ fontType: FontType }>`
   margin-top: 20px;
 `
 
-export const ChatButton = styled(Button)`
-  border-radius: 0;
-`
+// export const ChatButton = styled(Button)`
+//   border-radius: 0;
+// `
 
 export const DealButton = styled(Button)`
   background: ${(props) => props.theme.palette.primary};

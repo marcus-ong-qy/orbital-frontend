@@ -1,46 +1,35 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { DefaultOptionType } from 'antd/lib/select'
 
-import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { setSearchbarDropdownOpen, setSearchRedirect } from '../../../store/authentication/actions'
 import { ItemListing } from '../../../store/marketplace/types'
-import { useAppDispatch } from '../../../app/hooks'
 import SearchbarDropdown from './SearchbarDropdown'
 
 import { SearchBarStyled } from './styles/Searchbar.styled'
-import { DropdownText } from './styles/SearchbarDropdown.styled'
-
-const dropdownResult = (searchResults: ItemListing[] | null): DefaultOptionType[] | undefined => {
-  const { p } = { ...theme.typography.fontSize }
-
-  return searchResults?.map((listing, index) => {
-    return {
-      value: listing.name,
-      label: (
-        <div key={index}>
-          <DropdownText fontType={p}>{listing.name}</DropdownText>
-        </div>
-      ),
-    }
-  })
-}
 
 const Searchbar = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const [term, setTerm] = useState('')
-  const [debouncedTerm, setDebouncedTerm] = useState(term)
+  const { searchbarDropdownOpen, searchRedirect } = useAppSelector((state) => state.auth_reducer)
 
-  // const [loading, setLoading] = useState(false)
+  const [dropdownTerm, setDropdownTerm] = useState('')
+  const [debouncedTerm, setDebouncedTerm] = useState(dropdownTerm) // adds delay to dropdown results
+
+  // const [loading, setLoading] = useState(false) // TODO in store
   const [searchResults, setSearchResults] = useState<ItemListing[] | null>(null)
 
-  const [dropdownOptions, setdropdownOptions] = useState<DefaultOptionType[] | undefined>(undefined)
-  const [dropdownOpen, setDropdownOpen] = useState(false)
+  useEffect(() => {
+    if (searchbarDropdownOpen && searchRedirect === 'redirect') {
+      dispatch(setSearchbarDropdownOpen(false))
+      dispatch(setSearchRedirect('initial'))
+    }
+  }, [searchbarDropdownOpen, searchRedirect])
 
   const getSearchListings = (term: string) => {
-    console.log('a')
+    console.log('getting search listings')
     fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/marketplace?search=${term}`, {
       method: 'GET',
       mode: 'cors',
@@ -52,6 +41,7 @@ const Searchbar = () => {
       .then((res) => {
         const searchListings: ItemListing[] = res.message
         setSearchResults(searchListings)
+        console.log('i got', searchListings)
         // setLoading(false)
       })
       .catch((err) => {
@@ -59,59 +49,43 @@ const Searchbar = () => {
       })
   }
 
+  // after a delay, transfer debouncedTerm to dropdownTerm
   useEffect(() => {
-    const timer = setTimeout(() => setTerm(debouncedTerm), 500)
+    const timer = setTimeout(() => setDropdownTerm(debouncedTerm), 500)
     return () => clearTimeout(timer)
   }, [debouncedTerm])
 
-  const onChangeSubmit = (term: string) => {
+  const presentSearchResults = (term: string) => {
     // setLoading(true)
     getSearchListings(term)
-    // console.log('onChangeSubmit', term)
   }
 
   useEffect(() => {
-    // console.log(searchResults)
-    setdropdownOptions(dropdownResult(searchResults))
-  }, [searchResults])
+    dropdownTerm ? presentSearchResults(dropdownTerm) : setSearchResults(null)
+  }, [dropdownTerm])
 
-  // useEffect(() => {
-  //   console.log('dropdown options:', dropdownOptions)
-  // }, [dropdownOptions])
-
-  useEffect(() => {
-    term ? onChangeSubmit(term) : setSearchResults(null)
-  }, [term])
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDebouncedTerm(e.target.value)
   }
 
-  const onSearch = () => {
-    navigate(`${PATHS.SEARCH}/${debouncedTerm}`)
+  const onSearchClick = () => {
+    dispatch(setSearchbarDropdownOpen(false))
+    if (debouncedTerm) {
+      navigate(`${PATHS.SEARCH}/${debouncedTerm}`)
+      dispatch(setSearchRedirect('redirect'))
+    }
   }
 
   return (
-    // <AutoComplete
-    //   dropdownMatchSelectWidth={252}
-    //   options={dropdownOptions}
-    //   notFoundContent="No Results"
-    //   open={dropdownOpen}
-    // >
-    <SearchbarDropdown options={['Search Bar Dropdown Under Construction']} show={dropdownOpen}>
+    <SearchbarDropdown searchResults={searchResults ?? []}>
       <SearchBarStyled
-        // ref={wrapperRef}
         placeholder="Search"
         value={debouncedTerm}
-        onChange={onChange}
-        onSearch={onSearch}
+        onChange={onInputChange}
+        onSearch={onSearchClick}
         // loading={loading}
-        onFocus={() => setDropdownOpen(true)}
-        onBlur={() => setDropdownOpen(false)}
       />
     </SearchbarDropdown>
-
-    // </AutoComplete>
   )
 }
 export default Searchbar

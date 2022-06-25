@@ -47,6 +47,8 @@ export enum AUTH_ACTIONS {
   SIGNUP_ATTEMPT_STATUS = 'AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS',
   ALWAYS_LOGGED_IN_CHECKBOX = 'AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX',
   SET_USER_DATA = 'AUTH_ACTIONS.SET_USER_DATA',
+  SET_SEARCH_DROPDOWN = 'AUTH_ACTIONS.SET_SEARCH_DROPDOWN',
+  SET_SEARCH_REDIRECT = 'AUTH_ACTIONS.SET_SEARCH_REDIRECT',
 }
 
 /** Actions */
@@ -77,9 +79,21 @@ type SetUserData = {
   userData: UserData
 }
 
+type SetSearchDropdown = {
+  type: typeof AUTH_ACTIONS.SET_SEARCH_DROPDOWN
+  searchbarDropdownOpen: boolean
+}
+
+type SetSearchRedirect = {
+  type: typeof AUTH_ACTIONS.SET_SEARCH_REDIRECT
+  searchRedirect: 'redirect' | 'initial'
+}
+
 export type ActionTypes =
   | LogInOffline
   | LoginAttemptStatus
   | SignupAttemptStatus
   | AlwaysLoggedInCheckbox
   | SetUserData
+  | SetSearchDropdown
+  | SetSearchRedirect

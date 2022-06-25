@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import { AutoComplete, Input } from 'antd'
 import { FontType } from '../../../styles/Theme'
 import { fontTypeCss } from '../../../styles/index.styled'
 

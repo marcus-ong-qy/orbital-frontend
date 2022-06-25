@@ -42,6 +42,9 @@ const initialState: State = {
   alwaysLoggedInChecked: false,
   userData: defaultUserData,
 
+  searchbarDropdownOpen: false,
+  searchRedirect: 'initial',
+
   loginCredentialsOffline: loginCredentialsDefault,
 }
 
@@ -50,6 +53,9 @@ type State = {
   signupAttemptStatus: SignupStatus
   alwaysLoggedInChecked: boolean
   userData: UserData
+
+  searchbarDropdownOpen: boolean
+  searchRedirect: 'redirect' | 'initial'
 
   // for offline testing
   loginCredentialsOffline: Credentials
@@ -71,6 +77,10 @@ export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, 
       return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
     case AUTH_ACTIONS.SET_USER_DATA:
       return { ...state, userData: action.userData }
+    case AUTH_ACTIONS.SET_SEARCH_DROPDOWN:
+      return { ...state, searchbarDropdownOpen: action.searchbarDropdownOpen }
+    case AUTH_ACTIONS.SET_SEARCH_REDIRECT:
+      return { ...state, searchRedirect: action.searchRedirect }
     default:
       return state
   }

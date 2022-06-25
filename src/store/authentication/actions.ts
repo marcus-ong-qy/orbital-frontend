@@ -217,6 +217,21 @@ export const toggleAlwaysLoggedInCheckbox =
     })
   }
 
+export const setSearchbarDropdownOpen = (isOpen: boolean) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: AUTH_ACTIONS.SET_SEARCH_DROPDOWN,
+    searchbarDropdownOpen: isOpen,
+  })
+}
+
+export const setSearchRedirect =
+  (type: 'redirect' | 'initial') => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: AUTH_ACTIONS.SET_SEARCH_REDIRECT,
+      searchRedirect: type,
+    })
+  }
+
 // offline functions for offline testing
 const setLoginCredentials = (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
