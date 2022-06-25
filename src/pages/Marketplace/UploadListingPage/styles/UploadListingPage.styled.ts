@@ -27,42 +27,15 @@ export const TitleHighlight = styled.span<{ type: 'Rent' | 'Sell' }>`
 
 export const LeftDiv = styled.div`
   ${borderedGreyDivCss}
-
   width: 24vw;
   height: 485px;
+  padding: 2vw;
 `
 
 export const ItemPicture = styled.img`
   width: 20vw;
   height: 20vw;
-
-  margin: 19px 2vw 11px;
-`
-
-export const PictureButton = styled(Button)`
-  // TODO doesn't work
-
-  /* button {
-    height: 35px;
-    width: 100%;
-    border-radius: 35px;
-
-    margin: 0 2vw;
-
-    cursor: pointer;
-
-    background: ${(props) => props.theme.palette.primary};
-    font-weight: bold;
-    font-size: 18px;
-  }
-
-  span {
-    color: ${(props) => props.theme.palette.common.white};
-  }
-
-  :hover {
-    background: ${(props) => props.theme.palette.highlight.dark};
-  } */
+  margin: 19px 0 11px;
 `
 
 export const RightDiv = styled.div`

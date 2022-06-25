@@ -20,7 +20,6 @@ import {
   ProfileForm,
   ItemPicture,
   PictureDiv,
-  PictureButton,
   PostButton,
   EditUserProfileDiv,
   TitleDiv,
@@ -28,6 +27,7 @@ import {
 import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 const EditUserProfilePage = () => {
   const navigate = useNavigate()
@@ -52,6 +52,12 @@ const EditUserProfilePage = () => {
   const [formValues, setFormValues] = useState<UserData>(defaultUserData)
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+
+  useEffect(() => {
+    console.log('this is an image string:', selectedImage)
+  }, [selectedImage])
 
   useEffect(() => {
     userData && setFormValues(userData)
@@ -190,8 +196,8 @@ const EditUserProfilePage = () => {
         </ProfileForm>
 
         <PictureDiv>
-          <ItemPicture src={defaultPic} />
-          <PictureButton text="Upload Picture" onClick={uploadPicture} />
+          <ItemPicture src={selectedImage} />
+          <PictureUploader text="Select Display Pic" setSelectedImage={setSelectedImage} />
         </PictureDiv>
       </EditUserProfileDiv>
     </SettingsPageWrapper>

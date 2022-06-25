@@ -50,23 +50,3 @@ export const ItemPicture = styled.img`
   width: 19vw;
   height: 19vw;
 `
-
-export const PictureButton = styled(Button)`
-  height: 35px;
-  width: 100%;
-  border-radius: 35px;
-
-  cursor: pointer;
-
-  background: ${(props) => props.theme.palette.primary};
-  font-weight: bold;
-  font-size: 18px;
-
-  span {
-    color: ${(props) => props.theme.palette.common.white};
-  }
-
-  :hover {
-    background: ${(props) => props.theme.palette.highlight.dark};
-  }
-`

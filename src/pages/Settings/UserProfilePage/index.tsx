@@ -20,7 +20,6 @@ import {
   EntryName,
   EntryValue,
   ItemPicture,
-  PictureButton,
   PictureDiv,
   ProfileDiv,
   TitleDiv,
@@ -28,6 +27,7 @@ import {
 } from './styles/UserProfilePage.styled'
 
 import defaultPic from '../../../assets/picture.png'
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 const UserProfilePage = () => {
   const navigate = useNavigate()
@@ -44,9 +44,15 @@ const UserProfilePage = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+
   useEffect(() => {
     userData && setUserDataHook(userData)
   }, [userData])
+
+  useEffect(() => {
+    console.log('this is an image string:', selectedImage)
+  }, [selectedImage])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -103,8 +109,8 @@ const UserProfilePage = () => {
           <EditButton text="📝 Edit Info" onClick={() => navigate(PATHS.EDIT_USER_PROFILE)} />
         </ProfileDiv>
         <PictureDiv>
-          <ItemPicture src={defaultPic} />
-          <PictureButton text="Select Display Pic" onClick={uploadPicture} />
+          <ItemPicture src={selectedImage} />
+          <PictureUploader text="Select Display Pic" setSelectedImage={setSelectedImage} />
         </PictureDiv>
       </UserProfileDiv>
     </SettingsPageWrapper>

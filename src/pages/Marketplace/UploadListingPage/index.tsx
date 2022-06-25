@@ -18,7 +18,6 @@ import {
   PostForm,
   ItemPicture,
   LeftDiv,
-  PictureButton,
   PostButton,
   RightDiv,
   StyledUploadListingPage,
@@ -29,6 +28,7 @@ import {
 import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
@@ -44,6 +44,12 @@ const UploadListingPage = () => {
     defaultUserFirebaseProfile,
   )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+
+  useEffect(() => {
+    console.log('this is an image string:', selectedImage)
+  }, [selectedImage])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -83,8 +89,8 @@ const UploadListingPage = () => {
       </TitleDiv>
       <UploadListingDiv>
         <LeftDiv>
-          <ItemPicture src={defaultPic} />
-          <PictureButton text="Upload Picture" onClick={uploadPicture} />
+          <ItemPicture src={selectedImage} />
+          <PictureUploader text="Upload Picture" setSelectedImage={setSelectedImage} />
         </LeftDiv>
         <RightDiv>
           <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
