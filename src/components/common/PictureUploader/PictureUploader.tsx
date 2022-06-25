@@ -10,12 +10,12 @@ const PictureUploader = ({
   text,
   onClick,
   style,
-  setSelectedImage,
+  setSelectedImageBlob,
 }: {
   text: string
   onClick?: React.MouseEventHandler<HTMLElement>
   style?: React.CSSProperties
-  setSelectedImage?: any
+  setSelectedImageBlob?: any
 }) => {
   return (
     <PictureUploaderLabel>
@@ -23,7 +23,7 @@ const PictureUploader = ({
         type="file"
         onClick={onClick}
         style={style}
-        onChange={(e) => setSelectedImage(URL.createObjectURL(e.target.files![0]))}
+        onChange={(e) => setSelectedImageBlob(e.target.files![0])}
       />
       {text}
     </PictureUploaderLabel>

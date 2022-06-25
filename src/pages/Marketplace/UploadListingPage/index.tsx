@@ -5,14 +5,16 @@ import { onAuthStateChanged } from 'firebase/auth'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
+import blobToBase64 from '../../../common/blobToBase64'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { postNewListing, setNewListing } from '../../../store/marketplace/actions'
+import { postNewListing } from '../../../store/marketplace/actions'
 import { ItemListingPost } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 import {
   PostForm,
@@ -28,7 +30,6 @@ import {
 import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
@@ -45,11 +46,16 @@ const UploadListingPage = () => {
   )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+  const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
+  const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
+  const [selectedImageB64, setSelectedImageB64] = useState<string>('')
 
   useEffect(() => {
-    console.log('this is an image string:', selectedImage)
-  }, [selectedImage])
+    if (selectedImageBlob) {
+      setSelectedImageURL(URL.createObjectURL(selectedImageBlob))
+      blobToBase64(selectedImageBlob, setSelectedImageB64)
+    }
+  }, [selectedImageBlob])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -89,8 +95,8 @@ const UploadListingPage = () => {
       </TitleDiv>
       <UploadListingDiv>
         <LeftDiv>
-          <ItemPicture src={selectedImage} />
-          <PictureUploader text="Upload Picture" setSelectedImage={setSelectedImage} />
+          <ItemPicture src={selectedImageURL} />
+          <PictureUploader text="Upload Picture" setSelectedImageBlob={setSelectedImageBlob} />
         </LeftDiv>
         <RightDiv>
           <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>

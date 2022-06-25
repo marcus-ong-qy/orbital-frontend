@@ -7,11 +7,13 @@ import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import unixToFullDate from '../../../common/unixToFullDate'
+import blobToBase64 from '../../../common/blobToBase64'
 
 import { getUserData } from '../../../store/authentication/actions'
 import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile, UserData } from '../../../store/authentication/types'
 
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 import SettingsPageWrapper from '../SettingsPageWrapper'
 
 import {
@@ -27,7 +29,6 @@ import {
 } from './styles/UserProfilePage.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 const UserProfilePage = () => {
   const navigate = useNavigate()
@@ -44,15 +45,20 @@ const UserProfilePage = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+  const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
+  const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
+  const [selectedImageB64, setSelectedImageB64] = useState<string>('')
+
+  useEffect(() => {
+    if (selectedImageBlob) {
+      setSelectedImageURL(URL.createObjectURL(selectedImageBlob))
+      blobToBase64(selectedImageBlob, setSelectedImageB64)
+    }
+  }, [selectedImageBlob])
 
   useEffect(() => {
     userData && setUserDataHook(userData)
   }, [userData])
-
-  useEffect(() => {
-    console.log('this is an image string:', selectedImage)
-  }, [selectedImage])
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -109,8 +115,8 @@ const UserProfilePage = () => {
           <EditButton text="📝 Edit Info" onClick={() => navigate(PATHS.EDIT_USER_PROFILE)} />
         </ProfileDiv>
         <PictureDiv>
-          <ItemPicture src={selectedImage} />
-          <PictureUploader text="Select Display Pic" setSelectedImage={setSelectedImage} />
+          <ItemPicture src={selectedImageURL} />
+          <PictureUploader text="Select Display Pic" setSelectedImageBlob={setSelectedImageBlob} />
         </PictureDiv>
       </UserProfileDiv>
     </SettingsPageWrapper>

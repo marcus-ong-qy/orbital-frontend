@@ -7,6 +7,7 @@ import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
+import blobToBase64 from '../../../common/blobToBase64'
 
 import { editUserData, getUserData } from '../../../store/authentication/actions'
 import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
@@ -15,6 +16,7 @@ import { FirebaseProfile, UserData } from '../../../store/authentication/types'
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
+import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 
 import {
   ProfileForm,
@@ -27,8 +29,6 @@ import {
 import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
-
 const EditUserProfilePage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -53,11 +53,16 @@ const EditUserProfilePage = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [selectedImage, setSelectedImage] = useState<string>(defaultPic)
+  const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
+  const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
+  const [selectedImageB64, setSelectedImageB64] = useState<string>('')
 
   useEffect(() => {
-    console.log('this is an image string:', selectedImage)
-  }, [selectedImage])
+    if (selectedImageBlob) {
+      setSelectedImageURL(URL.createObjectURL(selectedImageBlob))
+      blobToBase64(selectedImageBlob, setSelectedImageB64)
+    }
+  }, [selectedImageBlob])
 
   useEffect(() => {
     userData && setFormValues(userData)
@@ -196,8 +201,8 @@ const EditUserProfilePage = () => {
         </ProfileForm>
 
         <PictureDiv>
-          <ItemPicture src={selectedImage} />
-          <PictureUploader text="Select Display Pic" setSelectedImage={setSelectedImage} />
+          <ItemPicture src={selectedImageURL} />
+          <PictureUploader text="Select Display Pic" setSelectedImageBlob={setSelectedImageBlob} />
         </PictureDiv>
       </EditUserProfileDiv>
     </SettingsPageWrapper>
