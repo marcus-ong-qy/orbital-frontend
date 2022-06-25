@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database'
+
 import { theme } from '../../../styles/Theme'
+import { auth, database } from '../../../firebase'
+import { useAppDispatch } from '../../../app/hooks'
+import { setSelectedChatData } from '../../../store/marketplace/actions'
+import { ChatMetadata } from '../../../store/marketplace/types'
 
 import {
   ChatInfoDiv,
@@ -10,14 +15,10 @@ import {
   ItemInfo,
   ProductPic,
 } from './styles/ChatTab.styled'
-
-import catanSet from '../../../assets/catan-set.jpg'
-import defaultAvatar from '../../../assets/default_avatar.png'
-import { auth, database } from '../../../firebase'
-import { ChatMetadata } from '../../../store/marketplace/types'
-import { setSelectedChatData } from '../../../store/marketplace/actions'
-import { useAppDispatch } from '../../../app/hooks'
 import { ProfilePic } from '../../../styles/index.styled'
+
+import defaultPic from '../../../assets/picture.png'
+import defaultAvatar from '../../../assets/default_avatar.png'
 
 const ChatTab = ({ chatUID }: { chatUID: string }) => {
   const dispatch = useAppDispatch()
@@ -50,7 +51,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
         <ChatPreview fontType={p}>{chatMetadata?.recentMessage?.messageText}</ChatPreview>
         <ItemInfo fontType={h3}>{chatMetadata?.itemListing}</ItemInfo>
       </ChatInfoDiv>
-      <ProductPic src={catanSet} />
+      <ProductPic src={defaultPic} />
     </ChatTabDiv>
   )
 }

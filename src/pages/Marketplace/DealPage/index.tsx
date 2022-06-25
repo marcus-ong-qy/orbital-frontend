@@ -1,6 +1,14 @@
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
+import { TEXTS } from '../../../common/texts'
+import formatPrice from '../../../common/formatPrice'
+import { UserData } from '../../../store/authentication/types'
+import { ItemListing } from '../../../store/marketplace/types'
+
+import Button from '../../../components/common/Button/Button'
 
 import {
   BottomDiv,
@@ -27,13 +35,7 @@ import {
 import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
-import catanSet from '../../../assets/catan-set.jpg'
-import { TEXTS } from '../../../common/texts'
-import Button from '../../../components/common/Button/Button'
-import { useEffect, useState } from 'react'
-import { UserData } from '../../../store/authentication/types'
-import { ItemListing } from '../../../store/marketplace/types'
-import formatPrice from '../../../common/formatPrice'
+import defaultPic from '../../../assets/picture.png'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
   const { h3 } = { ...theme.typography.fontSize }
@@ -110,7 +112,7 @@ const DealPage = () => {
         <>
           <LeftDiv>
             <ItemShowcaseDiv>
-              <ItemPicture src={catanSet} />
+              <ItemPicture src={defaultPic} />
             </ItemShowcaseDiv>
             <BottomDiv>
               <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>

@@ -4,10 +4,11 @@ import { onValue, ref, set } from 'firebase/database'
 import { useAppSelector } from '../../../app/hooks'
 import { auth, database } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
-import ChatMessage from '../ChatMessage/ChatMessage'
 
 import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
 import { FirebaseProfile } from '../../../store/authentication/types'
+
+import ChatMessage from '../ChatMessage/ChatMessage'
 
 import {
   ChatAppletDiv,
@@ -28,7 +29,7 @@ import {
 } from './styles/ChatApplet.styled'
 import { ProfilePic } from '../../../styles/index.styled'
 
-import catanSet from '../../../assets/catan-set.jpg'
+import defaultPic from '../../../assets/picture.png'
 import defaultAvatar from '../../../assets/default_avatar.png'
 import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
@@ -158,7 +159,7 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
               )}
             </ProductInfo>
           </div>
-          <ProductPic src={catanSet} />
+          <ProductPic src={defaultPic} />
         </ChatProductBannerDiv>
       )}
 

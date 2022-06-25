@@ -12,7 +12,7 @@ import {
   ItemPic,
 } from './styles/HorizontalListingBar.styled'
 
-import catanSet from '../../../assets/catan-set.jpg'
+import defaultPic from '../../../assets/picture.png'
 
 type Props = {
   title: string
@@ -50,7 +50,7 @@ const HorizontalListingBar = (props: Props) => {
           </PriceTag>
         </ListingStatusDiv>
       </ListingInfoDiv>
-      <ItemPic src={catanSet} />
+      <ItemPic src={defaultPic} />
     </ListingBarDiv>
   )
 }

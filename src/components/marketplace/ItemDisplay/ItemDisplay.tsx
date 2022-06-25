@@ -13,14 +13,7 @@ import {
   PriceTagSuffix,
 } from './styles/ItemDisplay.styled'
 
-import catanSet from '../../../assets/catan-set.jpg'
-
-// export type Item = {
-//   id: string
-//   title: string
-//   price: number
-//   type: 'sale' | 'rent'
-// }
+import defaultPic from '../../../assets/picture.png'
 
 const ItemDisplay = ({ item }: { item: ItemListing }) => {
   const navigate = useNavigate()
@@ -33,7 +26,7 @@ const ItemDisplay = ({ item }: { item: ItemListing }) => {
 
   return (
     <ItemDisplayDiv id={item._id} onClick={onClick}>
-      <ItemPic src={item.imageURL ?? catanSet} />
+      <ItemPic src={item.imageURL ? item.imageURL : defaultPic} />
       <ItemName fontType={h2}>{item.name}</ItemName>
       <ItemBottomDiv>
         <PriceTag>${formatPrice(item.price)}</PriceTag>

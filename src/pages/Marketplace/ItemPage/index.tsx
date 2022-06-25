@@ -37,7 +37,7 @@ import {
 import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
-import catanSet from '../../../assets/catan-set.jpg'
+import defaultPic from '../../../assets/picture.png'
 import saleBannerPic from '../../../assets/trade.png'
 import rentBannerPic from '../../../assets/rent.png'
 
@@ -142,7 +142,7 @@ const ItemPage = () => {
               <TypeBannerText>{itemInfo.typeOfTransaction}</TypeBannerText>
             </TypeBannerDiv>
             <ItemShowcaseDiv>
-              <ItemPicture src={itemInfo.imageURL ?? catanSet} />
+              <ItemPicture src={itemInfo.imageURL ?? defaultPic} />
             </ItemShowcaseDiv>
             <BottomDiv>
               <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
