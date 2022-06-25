@@ -67,7 +67,8 @@ const UploadListingPage = () => {
       description: data.ProductDescription.trim(),
       typeOfTransaction: listingType,
       deliveryInformation: data.DealInformation.trim(),
-      tags: data.Tags.split(',').map((tag: string) => tag.trim()),
+      // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
+      tags: [],
       imageURL: '',
     }
     dispatch(postNewListing(newListing))
@@ -110,6 +111,7 @@ const UploadListingPage = () => {
                 title="Price"
                 type="number"
                 placeholder="Enter Price (in SGD)"
+                pattern={/^\d*\.?\d{0,2}$/}
                 register={register}
               />
             </EntryDiv>
@@ -129,14 +131,14 @@ const UploadListingPage = () => {
                 {...register('DealInformation', { required: true })}
               />
             </EntryDiv>
-            <EntryDiv type="input">
+            {/* <EntryDiv type="input">
               <EntryName fontType={p}>Tags </EntryName>
               <InputField
                 title="Tags"
                 placeholder="Seperate keywords with commas (,)"
                 register={register}
               />
-            </EntryDiv>
+            </EntryDiv> */}
             <PostButton type="submit" text="Post" />
           </PostForm>
         </RightDiv>
