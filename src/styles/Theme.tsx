@@ -137,6 +137,11 @@ function Theme({ children }: { children: React.ReactNode }) {
   return <ThemeProvider theme={theme}>{children}</ThemeProvider>
 }
 
+/**
+ * @param fontType a FontType object
+ * @return a css clamp() string with the fontType data formatted in e.g. 'clamp(14px, 1vw, 18px)'
+ */
+
 export const getClamp = (fontType: FontType) => {
   const { min, size, max } = fontType
 
