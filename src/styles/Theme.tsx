@@ -145,7 +145,7 @@ function Theme({ children }: { children: React.ReactNode }) {
 export const getClamp = (fontType: FontType) => {
   const { min, size, max } = fontType
 
-  return `clamp(${min}, ${size}, ${max})`
+  return `clamp(${min},${size},${max})`
 }
 
 export default Theme
