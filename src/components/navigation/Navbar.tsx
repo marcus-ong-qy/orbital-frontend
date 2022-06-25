@@ -78,20 +78,27 @@ const Navbar = ({
       <BodyDiv width="100%">
         <NavLinks fontType={navLinkFont} justify="space-between">
           <LinkGroupSpan>
-            <NavLink text="Community" onClick={() => navigate(PATHS.COMMUNITY)} />
-            &nbsp;|&nbsp;
+            {/* <NavLink text="Community" onClick={() => navigate(PATHS.COMMUNITY)} /> */}
+            <NavLink text="Marketplace" onClick={() => navigate(PATHS.MAIN)} />
+            {/* &nbsp;|&nbsp;
             <NavLink text="Sell" onClick={sellOnClick} />
             &nbsp;|&nbsp;
-            <NavLink text="Rent" onClick={rentOnClick} />
+            <NavLink text="Rent" onClick={rentOnClick} /> */}
+            {isLoggedIn && (
+              <>
+                &nbsp;|&nbsp;
+                <NavLink text="Upload" onClick={sellOnClick} />
+              </>
+            )}
           </LinkGroupSpan>
           {isLoggedIn ? (
             <>
-              <LinkGroupSpan width="25vw" margin="0 5vw 0 0">
-                <NavLink text="Notifications" onClick={() => alert('TODO')} />
+              <LinkGroupSpan width="25vw" margin="0 0vw 0 0">
+                {/* <NavLink text="Notifications" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp;
                 <NavLink text="Settings" onClick={() => alert('TODO')} />
-                &nbsp;|&nbsp;
-                <UsernameHover maxWidth="10vw" userFirebaseProfile={userFirebaseProfile} />
+                &nbsp;|&nbsp; */}
+                <UsernameHover maxWidth="20vw" userFirebaseProfile={userFirebaseProfile} />
               </LinkGroupSpan>
             </>
           ) : (
@@ -104,9 +111,7 @@ const Navbar = ({
         </NavLinks>
         <SearchDiv>
           <SearchBar />
-          <ShoppingCartDiv>
-            <ShoppingCart src={shoppingCartLogo} />
-          </ShoppingCartDiv>
+          <ShoppingCartDiv>{/* <ShoppingCart src={shoppingCartLogo} /> */}</ShoppingCartDiv>
         </SearchDiv>
       </BodyDiv>
     </StyledLandingPageNav>

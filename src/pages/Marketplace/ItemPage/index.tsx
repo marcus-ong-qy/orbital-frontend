@@ -172,14 +172,14 @@ const ItemPage = () => {
               <Subheader fontType={h2}>Item Condition:&nbsp;</Subheader>
               <DescriptionDiv fontType={p}>Very Good</DescriptionDiv>
             </ItemConditionSpan>
-            <TagsDiv>
+            {/* <TagsDiv>
               <Subheader fontType={h2}>Tags</Subheader>
               <TagsContainer>
                 {itemInfo.tags?.map((tag, index) => (
                   <Tag key={index} label={tag} />
                 ))}
               </TagsContainer>
-            </TagsDiv>
+            </TagsDiv> */}
             <Button
               style={{
                 marginTop: '24px',

@@ -52,8 +52,8 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       <BodyDiv>
         <NavLinks fontType={navLinkFont}>
           <NavLink text={'Marketplace'} onClick={() => navigate(PATHS.MAIN)} />
-          &nbsp;|&nbsp;
-          <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
+          {/* &nbsp;|&nbsp;
+          <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} /> */}
         </NavLinks>
         <SearchDiv>
           <SearchBar />

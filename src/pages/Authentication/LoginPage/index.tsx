@@ -90,8 +90,8 @@ const LoginPage = () => {
             Forget Password?
           </ForgetPwdLink>
         </ForgetPwdSpan>
-        <OrSpan>or</OrSpan>
-        <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
+        {/* <OrSpan>or</OrSpan>
+        <GoogleButton type="light" onClick={onGoogleSignIn} disabled /> */}
         <NewUserSpan fontType={p}>
           New to this site?&nbsp;
           <SignUpLink fontType={p} onClick={() => navigate(PATHS.REGISTER)}>

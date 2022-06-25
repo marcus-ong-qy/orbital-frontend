@@ -22,7 +22,6 @@ const UsernameHover = ({
   maxWidth: string
 }) => {
   const navigate = useNavigate()
-  const [showDropdown, setShowDropdown] = useState(false)
   const { h3 } = { ...theme.typography.fontSize }
 
   const myAccOnClick = () => {
@@ -34,22 +33,27 @@ const UsernameHover = ({
     window.location.reload()
   }
 
+  const [usernameEnter, setUsernameEnter] = useState(false)
+  const [dropdownEnter, setDropdownEnter] = useState(false)
+
+  const showDropdown = usernameEnter || dropdownEnter
+
   return (
     <UsernameDiv>
       <UsernameSpan>
         <StyledUsernameHover
           data-testid="navbar-username"
           maxWidth={maxWidth}
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
+          onMouseEnter={() => setUsernameEnter(true)}
+          onMouseLeave={() => setUsernameEnter(false)}
         >
           {userFirebaseProfile.email}
         </StyledUsernameHover>
       </UsernameSpan>
       {showDropdown && (
         <DropdownDiv
-          onMouseEnter={() => setShowDropdown(true)}
-          onMouseLeave={() => setShowDropdown(false)}
+          onMouseEnter={() => setDropdownEnter(true)}
+          onMouseLeave={() => setDropdownEnter(false)}
         >
           <DropdownButtons fontType={h3} onClick={myAccOnClick}>
             My Account

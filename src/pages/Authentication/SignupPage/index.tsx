@@ -101,8 +101,8 @@ const RegisterPage = () => {
           />
           <SignupButton style={{ marginTop: '1vh' }} type="submit" text="Sign Up" />
         </SignupForm>
-        <OrSpan>or</OrSpan>
-        <GoogleButton type="light" onClick={onGoogleSignIn} disabled />
+        {/* <OrSpan>or</OrSpan>
+        <GoogleButton type="light" onClick={onGoogleSignIn} disabled /> */}
         <ExistingUserSpan fontType={p}>
           Have an account?&nbsp;
           <LoginLink fontType={p} onClick={() => navigate(PATHS.LOGIN)}>

@@ -30,14 +30,14 @@ const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Eleme
         </MenuSubDiv>
         <MenuSubDiv>
           <MenuSubtitle fontType={h1}>Marketplace</MenuSubtitle>
-          <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
+          {/* <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
             My Orders
-          </MenuHyperlink>
+          </MenuHyperlink> */}
           <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_LISTINGS)}>
             My Listings
           </MenuHyperlink>
         </MenuSubDiv>
-        <MenuSubDiv>
+        {/* <MenuSubDiv>
           <MenuSubtitle fontType={h1}>Community</MenuSubtitle>
           <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
             My Groups
@@ -51,7 +51,7 @@ const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Eleme
           <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
             Activities History
           </MenuHyperlink>
-        </MenuSubDiv>
+        </MenuSubDiv> */}
       </SettingsMenuDiv>
       <ContentDiv>{children}</ContentDiv>
     </StyledSettingsPage>

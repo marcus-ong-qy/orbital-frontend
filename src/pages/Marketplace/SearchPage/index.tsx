@@ -62,7 +62,7 @@ const UserListingsPage = () => {
     <StyledSearchPage>
       <SearchDiv>
         <SearchTitle fontType={navTitleFont}>Search results for '{params.searchText}'</SearchTitle>
-        <SearchTagsDiv>Tags</SearchTagsDiv>
+        {/* <SearchTagsDiv>Tags</SearchTagsDiv> */}
 
         {allSearchListings.length ? (
           <SearchListingsDiv>
