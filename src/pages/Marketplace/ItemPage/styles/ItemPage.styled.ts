@@ -121,6 +121,10 @@ export const PriceTag = styled.div<{ fontType: FontType }>`
   color: ${(props) => props.theme.palette.highlight.regular};
 `
 
+export const PerDayHighlight = styled.span`
+  color: ${(props) => props.theme.palette.primary};
+`
+
 export const DescriptionDiv = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 `

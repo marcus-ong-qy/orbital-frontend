@@ -26,7 +26,7 @@ export const defaultUserData: UserData = {
   phone: '',
   postal: '',
   address: '',
-  gender: '',
+  gender: '-',
   birthday: 0,
 }
 

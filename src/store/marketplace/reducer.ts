@@ -6,6 +6,7 @@ import {
   ItemListing,
   ItemListingPost,
   MARKETPLACE_ACTIONS,
+  UploadStatus,
 } from './types'
 
 // const defaultListingPost: ItemListingPost = {
@@ -45,6 +46,7 @@ const initialState: State = {
   searchTags: [],
   allSearchListings: [],
   newListing: defaultListingPost,
+  uploadStatus: 'INITIAL',
 }
 
 type State = {
@@ -55,6 +57,7 @@ type State = {
   searchTags: string[]
   allSearchListings: ItemListing[]
   newListing: ItemListingPost
+  uploadStatus: UploadStatus
 }
 
 export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
@@ -74,6 +77,8 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
       return { ...state, allUserListings: action.allUserListings }
     case MARKETPLACE_ACTIONS.CREATE_NEW_LISTING:
       return { ...state, newListing: action.newListing }
+    case MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS:
+      return { ...state, uploadStatus: action.uploadStatus }
     default:
       return state
   }

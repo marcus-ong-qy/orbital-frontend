@@ -4,7 +4,10 @@
  * @param setB64 a React setState hook
  */
 
-const blobToBase64 = (blob: Blob, setB64: React.Dispatch<React.SetStateAction<string>>) => {
+const blobToBase64 = (
+  blob: Blob,
+  setB64: React.Dispatch<React.SetStateAction<string | undefined>>,
+) => {
   const reader = new FileReader()
   reader.readAsDataURL(blob)
   reader.onloadend = () => {

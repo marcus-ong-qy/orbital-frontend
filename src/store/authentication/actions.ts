@@ -112,25 +112,45 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     }
 
     await setRealtimeDatabase(initRealtimeData)
-
-    fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(initUserData),
+    // TODO abstract use editUserData
+    const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
+    const result = (await updateParticularsForm(initUserData)) as any
+    const success = result.data.success as boolean
+    if (!success) {
+      // Do some shit to handle failure on the backend
+      console.log(result)
+      throw new Error("edit user data don't success")
+    }
+    console.log(result)
+    // const userData: UserData = result.data.message
+    dispatch({
+      type: AUTH_ACTIONS.SET_USER_DATA,
+      userData: initUserData,
     })
-      .then((resp) => {
-        resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
-      })
-      .catch((err) => console.error(err))
-  } catch (err) {
-    console.error(err)
-    dispatch(setSignupAttemptStatus(readSignupError(err)))
+  } catch (e) {
+    console.error('The error is:\n', e as Error)
   } finally {
     dispatch(setIsLoading(false))
   }
+
+  //   fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user', {
+  //     method: 'POST',
+  //     mode: 'cors',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(initUserData),
+  //   })
+  //     .then((resp) => {
+  //       resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
+  //     })
+  //     .catch((err) => console.error(err))
+  // } catch (err) {
+  //   console.error(err)
+  //   dispatch(setSignupAttemptStatus(readSignupError(err)))
+  // } finally {
+  //   dispatch(setIsLoading(false))
+  // }
 }
 
 const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
@@ -177,7 +197,7 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
       throw new Error("get user data don't success")
     }
     console.log(result)
-    const userData: UserData = result.data.message
+    const userData: UserData = result.data.message._doc
     dispatch({
       type: AUTH_ACTIONS.SET_USER_DATA,
       userData: userData,
@@ -189,23 +209,49 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   }
 }
 
+export const editUserData_old =
+  (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
+    dispatch(setIsLoading(true))
+    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
+      method: 'PUT',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserData),
+    })
+      .then((resp) => {
+        resp.status === 200 && dispatch(setUserData(newUserData))
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+      .finally(() => dispatch(setIsLoading(false)))
+  }
+
 export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
+  console.log('user dataediting uwu')
   dispatch(setIsLoading(true))
-  fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
-    method: 'PUT',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newUserData),
-  })
-    .then((resp) => {
-      resp.status === 200 && dispatch(setUserData(newUserData))
+  try {
+    const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
+    const result = (await updateParticularsForm(newUserData)) as any
+    const success = result.data.success as boolean
+    if (!success) {
+      // Do some shit to handle failure on the backend
+      console.log(result)
+      throw new Error("edit user data don't success")
+    }
+    console.log('lovely user data:\n', result)
+    // const userData: UserData = result.data.message
+    dispatch({
+      type: AUTH_ACTIONS.SET_USER_DATA,
+      userData: newUserData,
     })
-    .catch((err) => {
-      console.error(err)
-    })
-    .finally(() => dispatch(setIsLoading(false)))
+  } catch (e) {
+    console.error('The error is:\n', e as Error)
+  } finally {
+    dispatch(setIsLoading(false))
+  }
 }
 
 const readResetPasswordError = (err: any) => {

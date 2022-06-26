@@ -35,7 +35,7 @@ const MainPage = () => {
 
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
-  const { isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, userData } = useAppSelector((state) => state.auth_reducer)
   const { allListings } = useAppSelector((state) => state.marketplace_reducer)
 
   const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
@@ -57,7 +57,7 @@ const MainPage = () => {
         setIsLoggedIn(false)
       }
     })
-  })
+  }, [dispatch, isLoggedIn])
 
   return (
     <StyledMainPage data-testid="MarketplaceMain">
@@ -70,7 +70,9 @@ const MainPage = () => {
             <GreetingsSpan>
               {`${TEXTS.GREETINGS}, `}
               {isLoggedIn ? (
-                <GreetingsUsernameSpan>{userFirebaseProfile.email}</GreetingsUsernameSpan>
+                <GreetingsUsernameSpan>
+                  {!!userData.username ? userData.username : userFirebaseProfile.email}
+                </GreetingsUsernameSpan>
               ) : (
                 'stranger'
               )}

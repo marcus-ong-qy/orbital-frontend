@@ -58,7 +58,7 @@ const UserListingsPage = () => {
 
   useEffect(() => {
     dispatch(getUserListings())
-  }, [userFirebaseProfile, dispatch])
+  }, [])
 
   return (
     <StyledSearchPage>
@@ -76,6 +76,7 @@ const UserListingsPage = () => {
               {manyListingsForTest.map((listing, index) => {
                 return (
                   <HorizontalListingBar
+                    id={listing._id}
                     key={index}
                     title={listing.name}
                     type={listing.typeOfTransaction}

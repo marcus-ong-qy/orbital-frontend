@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { PATHS } from '../../../routes/PATHS'
@@ -9,7 +9,7 @@ import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { editUserData, getUserData } from '../../../store/authentication/actions'
+import { editUserData } from '../../../store/authentication/actions'
 import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile, UserData } from '../../../store/authentication/types'
 
@@ -55,7 +55,7 @@ const EditUserProfilePage = () => {
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
-  const [selectedImageB64, setSelectedImageB64] = useState<string>('')
+  const [selectedImageB64, setSelectedImageB64] = useState<string>()
 
   useEffect(() => {
     if (selectedImageBlob) {
@@ -66,7 +66,7 @@ const EditUserProfilePage = () => {
 
   useEffect(() => {
     userData && setFormValues(userData)
-    console.table(userData)
+    console.log('form values set:\n', userData)
   }, [userData])
 
   useEffect(() => {
@@ -74,7 +74,6 @@ const EditUserProfilePage = () => {
       if (user && !isLoggedIn) {
         setUserFirebaseProfile(getUserFirebaseProfile(user))
         setIsLoggedIn(true)
-        dispatch(getUserData())
       } else if (!user && isLoggedIn) {
         setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)
@@ -84,15 +83,15 @@ const EditUserProfilePage = () => {
 
   const uploadPicture = () => {}
 
-  const onSubmit = (data: FieldValues) => {
+  const onSubmit = () => {
     const newUserData: UserData = {
-      name: data.Name,
-      username: data.Username,
-      phone: data.PhoneNumber,
-      postal: data.PostalCode,
-      address: data.Address,
-      gender: data.Gender,
-      birthday: data.DateOfBirth,
+      name: formValues.name.trim(),
+      username: formValues.username.trim(),
+      phone: formValues.phone.trim(),
+      postal: formValues.postal.trim(),
+      address: formValues.address.trim(),
+      gender: formValues.gender,
+      birthday: formValues.birthday,
       // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(editUserData(newUserData))
@@ -133,7 +132,7 @@ const EditUserProfilePage = () => {
               placeholder="Gender"
               value={formValues.gender}
               onChange={(e) => setFormValues({ ...formValues, gender: e.target.value })}
-              options={['Male', 'Female', 'Others', 'Prefer Not to Say']}
+              options={['-', 'Male', 'Female', 'Others', 'Prefer Not to Say']}
               register={register}
               // onChange={(e) => {
               //   setListingType(e.target.value as 'Rent' | 'Sell')
@@ -152,23 +151,23 @@ const EditUserProfilePage = () => {
             />
           </EntryDiv> */}
 
-          <EntryDiv type="input">
+          {/* <EntryDiv type="input">
             <EntryName fontType={p}>Email&nbsp;</EntryName>
             <InputField
               title="Email"
-              placeholder="TODO put a verify/ied button"
+              placeholder="Email"
               // value={formValues.email} // TODO
               // onChange={(e) => setFormValues({ ...formValues, email: e.target.value })}
               register={register}
             />
-          </EntryDiv>
+          </EntryDiv> */}
 
           <EntryDiv type="input">
             <EntryName fontType={p}>Phone no.&nbsp;</EntryName>
             <InputField
               title="PhoneNumber"
               type="number"
-              placeholder="TODO format it"
+              placeholder="Phone Number"
               value={formValues.phone}
               onChange={(e) => setFormValues({ ...formValues, phone: e.target.value })}
               register={register}
@@ -180,7 +179,7 @@ const EditUserProfilePage = () => {
             <EntryArea
               title="Address"
               placeholder="Address"
-              {...register('Address', { required: true })}
+              {...register('Address', { required: false })}
               value={formValues.address}
               onChange={(e) => setFormValues({ ...formValues, address: e.target.value })}
             />

@@ -67,6 +67,8 @@ export type ItemListingPost = {
   imageURL: string | undefined
 }
 
+export type UploadStatus = 'SUCCESS' | 'INITIAL'
+
 /** Actions' types */
 
 export enum MARKETPLACE_ACTIONS {
@@ -75,6 +77,7 @@ export enum MARKETPLACE_ACTIONS {
   SET_ALL_USER_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS',
   SEARCH = 'MARKETPLACE_ACTIONS.SEARCH',
   CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
+  SET_UPLOAD_STATUS = 'MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS',
 }
 
 /** Actions */
@@ -105,9 +108,15 @@ type UploadListing = {
   newListing: ItemListingPost
 }
 
+type SetUploadStatus = {
+  type: typeof MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS
+  uploadStatus: UploadStatus
+}
+
 export type ActionTypes =
   | SelectedChatData
   | SetAllListings
   | Search
   | SetAllUserListings
   | UploadListing
+  | SetUploadStatus

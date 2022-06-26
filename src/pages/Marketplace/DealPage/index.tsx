@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { theme } from '../../../styles/Theme'
-import { useAppSelector } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
 import formatPrice from '../../../common/formatPrice'
@@ -38,6 +38,9 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
+import { setIsLoading } from '../../../store/authentication/actions'
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../../../firebase'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
   const { h3 } = { ...theme.typography.fontSize }
@@ -51,6 +54,7 @@ const InfoRow = ({ title, content }: { title: string; content: string }) => {
 
 const DealPage = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()
   const { h2, h3, p } = { ...theme.typography.fontSize }
   const { isLoading } = useAppSelector((state) => state.auth_reducer)
@@ -58,38 +62,47 @@ const DealPage = () => {
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
-  const getItemInfo = (itemId: string) => {
-    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item?id=${itemId}`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        const info: ItemListing = res.message
-        setItemInfo(info)
-      })
-      .catch((err) => console.error(err))
+  const getItemInfo = async (itemId: string) => {
+    console.log('infoing')
+    dispatch(setIsLoading(true))
+    try {
+      const getItemById = httpsCallable(functions, 'getItemById')
+      const result = (await getItemById({ id: itemId })) as any
+      const success = result.data.sucess as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("don't success")
+      }
+      console.log(result)
+      const info: ItemListing = result.data.message._doc
+      setItemInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
   }
 
-  const getOwnerData = (firebaseUID: string) => {
-    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user?user=${firebaseUID}`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => {
-        return resp.json()
-      })
-      .then((res) => {
-        const userData: UserData = res.message
-        setOwnerInfo(userData)
-      })
-      .catch((err) => console.error(err))
+  const getOwnerData = async (firebaseUID: string) => {
+    dispatch(setIsLoading(true))
+    try {
+      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
+      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
+      const success = result.data.sucess as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("don't success")
+      }
+      console.log(result)
+      const info: UserData = result.data.message._doc
+      setOwnerInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
   }
 
   useEffect(() => {

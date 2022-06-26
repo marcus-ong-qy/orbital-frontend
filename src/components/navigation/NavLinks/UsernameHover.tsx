@@ -1,9 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { onAuthStateChanged } from 'firebase/auth'
 
+import { auth } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
-import { logout } from '../../../store/authentication/actions'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+
+import { getUserData, logout } from '../../../store/authentication/actions'
 import { FirebaseProfile } from '../../../store/authentication/types'
 
 import {
@@ -22,7 +26,16 @@ const UsernameHover = ({
   maxWidth: string
 }) => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const { h3 } = { ...theme.typography.fontSize }
+
+  const { userData } = useAppSelector((state) => state.auth_reducer)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user: any) => {
+      user && dispatch(getUserData())
+    })
+  }, [])
 
   const myAccOnClick = () => {
     navigate(PATHS.USER_PROFILE)
@@ -47,7 +60,7 @@ const UsernameHover = ({
           onMouseEnter={() => setUsernameEnter(true)}
           onMouseLeave={() => setUsernameEnter(false)}
         >
-          {userFirebaseProfile.email}
+          {!!userData.username ? userData.username : userFirebaseProfile.email}
         </StyledUsernameHover>
       </UsernameSpan>
       {showDropdown && (

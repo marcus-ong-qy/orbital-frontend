@@ -1,7 +1,9 @@
-import { FieldValues, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { FieldValues, useForm } from 'react-hook-form'
 import { onAuthStateChanged } from 'firebase/auth'
 
+import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
@@ -9,12 +11,13 @@ import blobToBase64 from '../../../common/blobToBase64'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { postNewListing } from '../../../store/marketplace/actions'
+import { postNewListing, setUploadStatus } from '../../../store/marketplace/actions'
 import { ItemListingPost } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
 import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
   PostForm,
@@ -30,27 +33,34 @@ import {
 import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
   const { isLoading } = useAppSelector((state) => state.auth_reducer)
-  const { newListing } = useAppSelector((state) => state.marketplace_reducer)
+  const { newListing, uploadStatus } = useAppSelector((state) => state.marketplace_reducer)
   const { typeOfTransaction } = { ...newListing }
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
   const [listingType, setListingType] = useState<'Rent' | 'Sell'>(typeOfTransaction)
 
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
+  //   defaultUserFirebaseProfile,
+  // )
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
-  const [selectedImageB64, setSelectedImageB64] = useState<string>('')
+  const [selectedImageB64, setSelectedImageB64] = useState<string>()
+
+  useEffect(() => {
+    if (uploadStatus === 'SUCCESS') {
+      navigate(`${PATHS.USER_LISTINGS}`) // TODO make it redirect to the listing itself
+      dispatch(setUploadStatus('INITIAL'))
+    }
+  })
 
   useEffect(() => {
     if (selectedImageBlob) {
@@ -59,23 +69,22 @@ const UploadListingPage = () => {
     }
   }, [selectedImageBlob])
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  })
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user && !isLoggedIn) {
+  //       setUserFirebaseProfile(getUserFirebaseProfile(user))
+  //       setIsLoggedIn(true)
+  //     } else if (!user && isLoggedIn) {
+  //       setUserFirebaseProfile(defaultUserFirebaseProfile)
+  //       setIsLoggedIn(false)
+  //     }
+  //   })
+  // })
 
   const uploadPicture = () => {}
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {
-      // firebaseUID: userFirebaseProfile.uid ?? '',
       name: data.ItemName.trim(),
       price: data.Price,
       description: data.ProductDescription.trim(),
@@ -83,7 +92,7 @@ const UploadListingPage = () => {
       deliveryInformation: data.DealInformation.trim(),
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
-      imageURL: undefined, // TODO
+      imageURL: selectedImageB64,
     }
     dispatch(postNewListing(newListing))
     console.table(newListing)
