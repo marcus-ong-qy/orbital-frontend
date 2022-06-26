@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
+import { PATHS } from '../../../routes/PATHS'
 import { theme } from '../../../styles/Theme'
 
 import {
@@ -10,11 +12,13 @@ import {
   StatusLabel,
   PriceTag,
   ItemPic,
+  PriceStyled,
 } from './styles/HorizontalListingBar.styled'
 
 import defaultPic from '../../../assets/picture.png'
 
 type Props = {
+  id: string
   title: string
   type: 'Sell' | 'Rent'
   available: boolean
@@ -23,6 +27,7 @@ type Props = {
 }
 
 const HorizontalListingBar = (props: Props) => {
+  const navigate = useNavigate()
   const { title, type, available, price, pictureURL } = { ...props }
   const { h2 } = { ...theme.typography.fontSize }
 
@@ -36,8 +41,12 @@ const HorizontalListingBar = (props: Props) => {
     }
   }, [])
 
+  const onClick = () => {
+    navigate(`${PATHS.ITEM}/${props.id}`)
+  }
+
   return (
-    <ListingBarDiv>
+    <ListingBarDiv onClick={onClick}>
       <ListingInfoDiv>
         <ListingTitle fontType={h2}>{title}</ListingTitle>
         <ListingStatusDiv>
@@ -45,12 +54,15 @@ const HorizontalListingBar = (props: Props) => {
             {statusText}
           </StatusLabel>
           <PriceTag>
-            for ${price.toFixed(2)}
-            {type === 'Rent' && '/day'}
+            for&nbsp;
+            <b>
+              <PriceStyled>${price.toFixed(2)}</PriceStyled>
+              {type === 'Rent' && '/day'}
+            </b>
           </PriceTag>
         </ListingStatusDiv>
       </ListingInfoDiv>
-      <ItemPic src={defaultPic} />
+      <ItemPic src={pictureURL ? pictureURL : defaultPic} />
     </ListingBarDiv>
   )
 }

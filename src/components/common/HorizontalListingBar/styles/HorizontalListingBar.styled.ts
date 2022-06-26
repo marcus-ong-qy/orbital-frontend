@@ -9,8 +9,11 @@ export const ListingBarDiv = styled.div`
 
   width: 100%;
   height: 112px;
+  padding: 0 4vw;
 
   border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
+
+  cursor: pointer;
 
   :hover {
     ${borderedGreyDivCss}
@@ -23,6 +26,8 @@ export const ListingBarDiv = styled.div`
 export const ListingInfoDiv = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  padding: 18px 0;
 
   width: 100%;
   height: 112px;
@@ -43,11 +48,11 @@ export const StatusLabel = styled.div<{ type: 'Sell' | 'Rent'; available: boolea
   align-items: center;
   justify-content: center;
 
-  width: 150px;
-  height: 32px;
+  width: 100px;
+  height: 24px;
   border-radius: 51px;
 
-  font-weight: 800;
+  font-weight: 700;
   color: ${(props) => props.theme.palette.common.white};
 
   background: ${(props) => {
@@ -58,6 +63,10 @@ export const StatusLabel = styled.div<{ type: 'Sell' | 'Rent'; available: boolea
 
 export const PriceTag = styled.div`
   margin-left: 9px;
+`
+
+export const PriceStyled = styled.span`
+  color: ${(props) => props.theme.palette.highlight.regular};
 `
 
 export const ItemPic = styled.img`

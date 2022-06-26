@@ -17,6 +17,7 @@ import {
   UserListingsDiv,
   UserListingTitle,
 } from './styles/UserListingsPage.styled'
+import { ItemListing } from '../../../store/marketplace/types'
 
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()
@@ -27,7 +28,6 @@ const UserListingsPage = () => {
 
   const { allUserListings } = useAppSelector((state) => state.marketplace_reducer)
 
-  // TODO show loading page
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && userFirebaseProfile === defaultUserFirebaseProfile)
@@ -37,7 +37,7 @@ const UserListingsPage = () => {
 
   useEffect(() => {
     dispatch(getUserListings())
-  }, [userFirebaseProfile, dispatch])
+  }, [])
 
   return (
     <SettingsPageWrapper>
@@ -48,6 +48,7 @@ const UserListingsPage = () => {
             return (
               <HorizontalListingBar
                 key={index}
+                id={listing._id}
                 title={listing.name}
                 type={listing.typeOfTransaction}
                 // available={listing.available}
