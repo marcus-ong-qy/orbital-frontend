@@ -50,7 +50,8 @@ const UserListingsPage = () => {
                 key={index}
                 title={listing.name}
                 type={listing.typeOfTransaction}
-                available={listing.available}
+                // available={listing.available}
+                available
                 price={listing.price}
                 pictureURL={listing.imageURL}
               />

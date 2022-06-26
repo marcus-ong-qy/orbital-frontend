@@ -75,7 +75,7 @@ const UserProfilePage = () => {
       if (user && !isLoggedIn) {
         setUserFirebaseProfile(getUserFirebaseProfile(user))
         setIsLoggedIn(true)
-        dispatch(getUserData(user))
+        dispatch(getUserData())
       } else if (!user && isLoggedIn) {
         setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)

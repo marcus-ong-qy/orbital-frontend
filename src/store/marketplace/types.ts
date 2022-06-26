@@ -15,32 +15,56 @@ export type Message = {
   sentBy: string
 }
 
+// export type ItemListing = {
+//   _id: string
+//   createdBy: string
+//   name: string
+//   price: number
+//   description: string
+//   typeOfTransaction: 'Rent' | 'Sell'
+//   deliveryInformation: string
+//   available: boolean
+//   currentOwner: string
+//   durationOfRent: number
+//   tags: string[]
+//   imageURL: string
+//   timeCreated: number
+// }
+
 export type ItemListing = {
   _id: string
-  createdBy: string
   name: string
-  price: number
   description: string
-  typeOfTransaction: 'Rent' | 'Sell'
-  deliveryInformation: string
-  available: boolean
+  createdBy: string
   currentOwner: string
-  durationOfRent: number
+  typeOfTransaction: 'Sell' | 'Rent'
+  price: number
+  deliveryInformation: string
   tags: string[]
   imageURL: string
-  timeCreated: number
+  // durationOfRent: number
 }
 
+// export type ItemListingPost = {
+//   firebaseUID: string
+//   name: string
+//   price: number
+//   description: string
+//   typeOfTransaction: 'Rent' | 'Sell'
+//   deliveryInformation: string
+//   // durationOfRent: number
+//   tags: string[]
+//   imageURL: string
+// }
+
 export type ItemListingPost = {
-  firebaseUID: string
   name: string
-  price: number
   description: string
-  typeOfTransaction: 'Rent' | 'Sell'
+  typeOfTransaction: 'Sell' | 'Rent'
+  price: number
   deliveryInformation: string
-  // durationOfRent: number
-  tags: string[]
-  imageURL: string
+  tags: string[] | undefined
+  imageURL: string | undefined
 }
 
 /** Actions' types */

@@ -27,8 +27,7 @@ export const defaultUserData: UserData = {
   postal: '',
   address: '',
   gender: '',
-  dob: 0,
-  firebaseUID: '',
+  birthday: 0,
 }
 
 const loginCredentialsDefault: Credentials = {

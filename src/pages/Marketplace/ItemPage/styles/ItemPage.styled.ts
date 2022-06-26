@@ -10,6 +10,7 @@ export const StyledItemPage = styled.div`
   align-items: flex-start;
 
   padding-top: 28px;
+  padding-bottom: 28px;
 `
 
 export const LeftDiv = styled.div`

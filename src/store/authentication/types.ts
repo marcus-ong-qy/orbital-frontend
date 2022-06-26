@@ -12,15 +12,25 @@ export type RealtimeUserData = {
   uid: string
 }
 
+// export type UserData = {
+//   name: string
+//   username: string
+//   phone: string
+//   postal: string
+//   address: string
+//   gender: string
+//   dob: number
+//   firebaseUID: string
+// }
+
 export type UserData = {
   name: string
   username: string
-  phone: string
   postal: string
-  address: string
   gender: string
-  dob: number
-  firebaseUID: string
+  address: string
+  birthday: number
+  phone: string
 }
 
 export type Credentials = {

@@ -9,7 +9,7 @@ import {
   User,
 } from 'firebase/auth'
 
-import { auth, setRealtimeDatabase } from '../../firebase'
+import { auth, functions, setRealtimeDatabase } from '../../firebase'
 import { demoAcc } from '../../demo-config'
 
 import { Dispatch, GetState } from '../types'
@@ -24,6 +24,7 @@ import {
   RealtimeUserData,
 } from './types'
 import { defaultUserData } from './reducer'
+import { httpsCallable } from 'firebase/functions'
 
 export const setIsLoading = (isLoading: boolean) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -100,7 +101,7 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     const initUserData: UserData = {
       ...defaultUserData,
       username: user.email ?? '',
-      firebaseUID: user.uid,
+      // firebaseUID: user.uid,
     }
 
     const initRealtimeData: RealtimeUserData = {
@@ -122,12 +123,12 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     })
       .then((resp) => {
         resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
-        dispatch(setIsLoading(false))
       })
       .catch((err) => console.error(err))
   } catch (err) {
     console.error(err)
     dispatch(setSignupAttemptStatus(readSignupError(err)))
+  } finally {
     dispatch(setIsLoading(false))
   }
 }
@@ -139,7 +140,7 @@ const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) =>
   })
 }
 
-export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
+export const getUserData_old = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
   dispatch(setIsLoading(true))
   const firebaseUID = user.uid
 
@@ -164,6 +165,30 @@ export const getUserData = (user: User) => async (dispatch: Dispatch<ActionTypes
     })
 }
 
+export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true))
+  try {
+    const getUserInfo = httpsCallable(functions, 'getUserInfo')
+    const result = (await getUserInfo()) as any
+    const success = result.data.success as boolean
+    if (!success) {
+      // Do some shit to handle failure on the backend
+      console.log(result)
+      throw new Error("get user data don't success")
+    }
+    console.log(result)
+    const userData: UserData = result.data.message
+    dispatch({
+      type: AUTH_ACTIONS.SET_USER_DATA,
+      userData: userData,
+    })
+  } catch (e) {
+    console.error('The error is:\n', e as Error)
+  } finally {
+    dispatch(setIsLoading(false))
+  }
+}
+
 export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
   dispatch(setIsLoading(true))
   fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
@@ -176,12 +201,11 @@ export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch
   })
     .then((resp) => {
       resp.status === 200 && dispatch(setUserData(newUserData))
-      dispatch(setIsLoading(false))
     })
     .catch((err) => {
       console.error(err)
-      dispatch(setIsLoading(false))
     })
+    .finally(() => dispatch(setIsLoading(false)))
 }
 
 const readResetPasswordError = (err: any) => {

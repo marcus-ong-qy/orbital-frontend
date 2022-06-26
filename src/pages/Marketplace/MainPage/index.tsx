@@ -43,27 +43,6 @@ const MainPage = () => {
   )
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  // For testing
-  const multipliedListings = [
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-    ...allListings,
-  ]
-
   useEffect(() => {
     dispatch(getListings())
   }, [])
@@ -106,7 +85,7 @@ const MainPage = () => {
           {/* <FeaturedDiv>
         <Title fontType={h1}>Featured</Title>
         <FeaturedItemsContainer>
-          {multipliedListings?.map((item, index) => {
+          {allListings?.map((item, index) => {
             return <ItemDisplay key={index} item={item} />
           })}
         </FeaturedItemsContainer>
@@ -119,7 +98,7 @@ const MainPage = () => {
           <ListingsDiv>
             <Title fontType={h1}>Listings</Title>
             <ItemsContainer>
-              {multipliedListings?.map((item, index) => (
+              {allListings?.map((item, index) => (
                 <ItemDisplay key={index} item={item} />
               ))}
             </ItemsContainer>

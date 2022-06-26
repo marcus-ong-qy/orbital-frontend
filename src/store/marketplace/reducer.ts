@@ -8,14 +8,24 @@ import {
   MARKETPLACE_ACTIONS,
 } from './types'
 
+// const defaultListingPost: ItemListingPost = {
+//   firebaseUID: '',
+//   name: '',
+//   price: 0,
+//   description: '',
+//   typeOfTransaction: 'Sell',
+//   deliveryInformation: '',
+//   // durationOfRent: 0,
+//   tags: [],
+//   imageURL: '',
+// }
+
 const defaultListingPost: ItemListingPost = {
-  firebaseUID: '',
   name: '',
-  price: 0,
   description: '',
   typeOfTransaction: 'Sell',
+  price: 0,
   deliveryInformation: '',
-  // durationOfRent: 0,
   tags: [],
   imageURL: '',
 }

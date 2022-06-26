@@ -74,7 +74,7 @@ const EditUserProfilePage = () => {
       if (user && !isLoggedIn) {
         setUserFirebaseProfile(getUserFirebaseProfile(user))
         setIsLoggedIn(true)
-        dispatch(getUserData(user))
+        dispatch(getUserData())
       } else if (!user && isLoggedIn) {
         setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)
@@ -92,8 +92,8 @@ const EditUserProfilePage = () => {
       postal: data.PostalCode,
       address: data.Address,
       gender: data.Gender,
-      dob: data.DateOfBirth,
-      firebaseUID: userFirebaseProfile.uid!,
+      birthday: data.DateOfBirth,
+      // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(editUserData(newUserData))
     console.table(newUserData)

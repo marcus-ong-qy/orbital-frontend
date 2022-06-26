@@ -18,7 +18,7 @@ export const setSelectedChatData =
     })
   }
 
-export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
+export const getListings_old = () => (dispatch: Dispatch<ActionTypes>) => {
   dispatch(setIsLoading(true) as any)
   fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/home', {
     method: 'GET',
@@ -35,25 +35,24 @@ export const getListings = () => (dispatch: Dispatch<ActionTypes>) => {
         type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
         allListings: allListings,
       })
-      dispatch(setIsLoading(false) as any)
     })
     .catch((err) => {
       console.error(err)
-      dispatch(setIsLoading(false) as any)
     })
+    .finally(() => dispatch(setIsLoading(false) as any))
 }
 
-export const getListings_new = () => async (dispatch: Dispatch<ActionTypes>) => {
+export const getListings = () => async (dispatch: Dispatch<ActionTypes>) => {
+  console.log('getting listings')
   dispatch(setIsLoading(true) as any)
   try {
     const getHomepageListings = httpsCallable(functions, 'getHomepageListings')
     const result = (await getHomepageListings()) as any
-    const success = result.data.success as Boolean
+    const success = result.data.success as boolean
     if (!success) {
       // Do some shit to handle failure on the backend
       console.log(result)
-      console.log("don't success")
-      return
+      throw new Error("get listings don't success")
     }
     console.log(result)
     const allListings: ItemListing[] = result.data.message
@@ -61,9 +60,9 @@ export const getListings_new = () => async (dispatch: Dispatch<ActionTypes>) => 
       type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
       allListings: allListings,
     })
-    dispatch(setIsLoading(false) as any)
   } catch (e) {
-    console.log('The error is ', e as Error)
+    console.error('The error is:\n', e as Error)
+  } finally {
     dispatch(setIsLoading(false) as any)
   }
 }
@@ -75,7 +74,7 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
   })
 }
 
-export const postNewListing =
+export const postNewListing_old =
   (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch(setIsLoading(true) as any)
     fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item`, {
@@ -93,16 +92,35 @@ export const postNewListing =
           type: MARKETPLACE_ACTIONS.CREATE_NEW_LISTING,
           newListing: newListing,
         })
-        dispatch(setIsLoading(false) as any)
       })
       .catch((err) => {
         console.error(err)
-        dispatch(setIsLoading(false) as any)
       })
+      .finally(() => dispatch(setIsLoading(false) as any))
+  }
+export const postNewListing =
+  (newListing: ItemListingPost) => async (dispatch: Dispatch<ActionTypes>) => {
+    console.log('posty post')
+    dispatch(setIsLoading(true) as any)
+    try {
+      const uploadListing = httpsCallable(functions, 'uploadListing')
+      const result = (await uploadListing(newListing)) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("post new listing don't success")
+      }
+      console.log(result)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false) as any)
+    }
   }
 
 // TODO searchTags not yet implemented
-export const search =
+export const search_old =
   (searchText: string, searchTags: string[]) => async (dispatch: Dispatch<ActionTypes>) => {
     dispatch(setIsLoading(true) as any)
     try {
@@ -111,7 +129,7 @@ export const search =
         // tags: [],
         search: searchText,
       })) as any
-      const success = result.data.success as Boolean
+      const success = result.data.success as boolean
       if (!success) {
         // Do some shit to handle failure on the backend
         console.log(result)
@@ -128,17 +146,43 @@ export const search =
       })
       dispatch(setIsLoading(false) as any)
     } catch (e) {
-      console.log('The error is ', e as Error)
+      console.error('The error is:\n', e as Error)
       dispatch(setIsLoading(false) as any)
     }
   }
 
-export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => {
+export const search =
+  (searchText: string, searchTags: string[]) => async (dispatch: Dispatch<ActionTypes>) => {
+    dispatch(setIsLoading(true) as any)
+    try {
+      const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
+      const result = (await filterAndSearch({ search: searchText, tags: searchTags })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("search don't success")
+      }
+      console.log('i present to you search', result)
+      const allSearchListings: ItemListing[] = result.data.message
+      dispatch({
+        type: MARKETPLACE_ACTIONS.SEARCH,
+        searchTags: searchTags,
+        allSearchListings: allSearchListings,
+      })
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false) as any)
+    }
+  }
+
+export const getUserListings_old = () => async (dispatch: Dispatch<ActionTypes>) => {
   dispatch(setIsLoading(true) as any)
   try {
     const getUserListings = httpsCallable(functions, 'getUserListings')
     const result = (await getUserListings()) as any
-    const success = result.data.success as Boolean
+    const success = result.data.success as boolean
     if (!success) {
       // Do some shit to handle failure on the backend
       console.log(result)
@@ -153,7 +197,31 @@ export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => 
     })
     dispatch(setIsLoading(false) as any)
   } catch (e) {
-    console.log('The error is ', e as Error)
+    console.error('The error is:\n', e as Error)
+    dispatch(setIsLoading(false) as any)
+  }
+}
+
+export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => {
+  dispatch(setIsLoading(true) as any)
+  try {
+    const getUserListings = httpsCallable(functions, 'getUserListings')
+    const result = (await getUserListings()) as any
+    const success = result.data.success as boolean
+    if (!success) {
+      // Do some shit to handle failure on the backend
+      console.log(result)
+      throw new Error("get user listings don't success")
+    }
+    console.log(result)
+    const allUserListings: ItemListing[] = result.data.message.map((msg: any) => msg._doc)
+    dispatch({
+      type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
+      allUserListings: allUserListings,
+    })
+  } catch (e) {
+    console.error('The error is:\n', e as Error)
+  } finally {
     dispatch(setIsLoading(false) as any)
   }
 }

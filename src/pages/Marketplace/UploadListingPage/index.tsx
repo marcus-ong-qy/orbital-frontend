@@ -30,11 +30,13 @@ import {
 import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const UploadListingPage = () => {
   const dispatch = useAppDispatch()
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
+  const { isLoading } = useAppSelector((state) => state.auth_reducer)
   const { newListing } = useAppSelector((state) => state.marketplace_reducer)
   const { typeOfTransaction } = { ...newListing }
   const { navTitleFont, p } = { ...theme.typography.fontSize }
@@ -73,15 +75,15 @@ const UploadListingPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {
-      firebaseUID: userFirebaseProfile.uid ?? '',
+      // firebaseUID: userFirebaseProfile.uid ?? '',
       name: data.ItemName.trim(),
       price: data.Price,
       description: data.ProductDescription.trim(),
       typeOfTransaction: listingType,
       deliveryInformation: data.DealInformation.trim(),
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
-      tags: [],
-      imageURL: '',
+      tags: undefined, // TODO
+      imageURL: undefined, // TODO
     }
     dispatch(postNewListing(newListing))
     console.table(newListing)
@@ -89,61 +91,65 @@ const UploadListingPage = () => {
 
   return (
     <StyledUploadListingPage>
-      <TitleDiv fontType={navTitleFont}>
-        What are you <TitleHighlight type={listingType}>{`${listingType}ing `}</TitleHighlight>
-        today?
-      </TitleDiv>
-      <UploadListingDiv>
-        <LeftDiv>
-          <ItemPicture src={selectedImageURL} />
-          <PictureUploader text="Upload Picture" setSelectedImageBlob={setSelectedImageBlob} />
-        </LeftDiv>
-        <RightDiv>
-          <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
-            <EntryDiv type="input">
-              <EntryName fontType={p}> Listing Type&nbsp;</EntryName>
-              <Dropdown
-                title="ListingType"
-                placeholder="Listing Type"
-                options={['Rent', 'Sell']}
-                register={register}
-                value={listingType}
-                onChange={(e) => setListingType(e.target.value as 'Rent' | 'Sell')}
-              />
-            </EntryDiv>
-            <EntryDiv type="input">
-              <EntryName fontType={p}>Item Name&nbsp;</EntryName>
-              <InputField title="ItemName" placeholder="Item Name" register={register} />
-            </EntryDiv>
-            <EntryDiv type="input">
-              <EntryName fontType={p}>
-                Price <b>SG$</b> {listingType === 'Rent' && '/day'}
-              </EntryName>
-              <InputField
-                title="Price"
-                type="number"
-                placeholder="Enter Price (in SGD)"
-                pattern={/^\d*\.?\d{0,2}$/}
-                register={register}
-              />
-            </EntryDiv>
-            <EntryDiv type="textarea">
-              <EntryName fontType={p}>Product Description&nbsp;</EntryName>
-              <EntryArea
-                title="ProductDescription"
-                placeholder="Description of your Product"
-                {...register('ProductDescription', { required: true })}
-              />
-            </EntryDiv>
-            <EntryDiv type="textarea">
-              <EntryName fontType={p}>Deal Information&nbsp;</EntryName>
-              <EntryArea
-                title="DealInformation"
-                placeholder="Include details such as Delivery and Payment methods"
-                {...register('DealInformation', { required: true })}
-              />
-            </EntryDiv>
-            {/* <EntryDiv type="input">
+      {isLoading ? (
+        <LoadingSpin />
+      ) : (
+        <>
+          <TitleDiv fontType={navTitleFont}>
+            What are you <TitleHighlight type={listingType}>{`${listingType}ing `}</TitleHighlight>
+            today?
+          </TitleDiv>
+          <UploadListingDiv>
+            <LeftDiv>
+              <ItemPicture src={selectedImageURL} />
+              <PictureUploader text="Upload Picture" setSelectedImageBlob={setSelectedImageBlob} />
+            </LeftDiv>
+            <RightDiv>
+              <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
+                <EntryDiv type="input">
+                  <EntryName fontType={p}> Listing Type&nbsp;</EntryName>
+                  <Dropdown
+                    title="ListingType"
+                    placeholder="Listing Type"
+                    options={['Rent', 'Sell']}
+                    register={register}
+                    value={listingType}
+                    onChange={(e) => setListingType(e.target.value as 'Rent' | 'Sell')}
+                  />
+                </EntryDiv>
+                <EntryDiv type="input">
+                  <EntryName fontType={p}>Item Name&nbsp;</EntryName>
+                  <InputField title="ItemName" placeholder="Item Name" register={register} />
+                </EntryDiv>
+                <EntryDiv type="input">
+                  <EntryName fontType={p}>
+                    Price <b>SG$</b> {listingType === 'Rent' && '/day'}
+                  </EntryName>
+                  <InputField
+                    title="Price"
+                    type="number"
+                    placeholder="Enter Price (in SGD)"
+                    pattern={/^\d*\.?\d{0,2}$/}
+                    register={register}
+                  />
+                </EntryDiv>
+                <EntryDiv type="textarea">
+                  <EntryName fontType={p}>Product Description&nbsp;</EntryName>
+                  <EntryArea
+                    title="ProductDescription"
+                    placeholder="Description of your Product"
+                    {...register('ProductDescription', { required: true })}
+                  />
+                </EntryDiv>
+                <EntryDiv type="textarea">
+                  <EntryName fontType={p}>Deal Information&nbsp;</EntryName>
+                  <EntryArea
+                    title="DealInformation"
+                    placeholder="Include details such as Delivery and Payment methods"
+                    {...register('DealInformation', { required: true })}
+                  />
+                </EntryDiv>
+                {/* <EntryDiv type="input">
               <EntryName fontType={p}>Tags </EntryName>
               <InputField
                 title="Tags"
@@ -151,10 +157,12 @@ const UploadListingPage = () => {
                 register={register}
               />
             </EntryDiv> */}
-            <PostButton type="submit" text="Post" />
-          </PostForm>
-        </RightDiv>
-      </UploadListingDiv>
+                <PostButton type="submit" text="Post" />
+              </PostForm>
+            </RightDiv>
+          </UploadListingDiv>
+        </>
+      )}
     </StyledUploadListingPage>
   )
 }

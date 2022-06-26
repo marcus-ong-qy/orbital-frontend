@@ -16,7 +16,7 @@ export const UserListingTitle = styled.div<{ fontType: FontType }>`
 `
 
 export const UserListingsDiv = styled.div`
-  height: 100%;
+  height: calc(100% - 68px);
   width: 100%;
 
   overflow-y: scroll;

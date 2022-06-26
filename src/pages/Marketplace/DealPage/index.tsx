@@ -98,11 +98,11 @@ const DealPage = () => {
 
   useEffect(() => {
     console.log(itemInfo)
-    itemInfo?.currentOwner && getOwnerData(itemInfo.currentOwner)
+    itemInfo?.createdBy && getOwnerData(itemInfo.createdBy)
   }, [itemInfo])
 
   const chatOnClick = () => {
-    navigate(`${PATHS.CHAT}/${ownerInfo?.firebaseUID}`)
+    // navigate(`${PATHS.CHAT}/${ownerInfo?.firebaseUID}`)
   }
 
   const dealOnClick = () => {

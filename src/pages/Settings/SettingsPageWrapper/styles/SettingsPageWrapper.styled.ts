@@ -8,7 +8,7 @@ export const StyledSettingsPage = styled.div`
   flex-direction: row;
   height: 515px;
 
-  margin-top: 53px;
+  margin: 53px 0;
 `
 
 export const SettingsMenuDiv = styled.div`
