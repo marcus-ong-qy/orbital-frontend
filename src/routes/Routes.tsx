@@ -44,6 +44,9 @@ const MainPage = React.lazy(
 const ItemPage = React.lazy(
   () => import(/* webpackChunckName: "ItemPage" */ '../pages/Marketplace/ItemPage'),
 )
+const EditItemPage = React.lazy(
+  () => import(/* webpackChunckName: "EditItemPage" */ '../pages/Marketplace/EditItemPage'),
+)
 const SearchPage = React.lazy(
   () => import(/* webpackChunckName: "SearchPage" */ '../pages/Marketplace/SearchPage'),
 )
@@ -110,6 +113,16 @@ export const Routes = () => (
       path={PATHS.ITEM_ID}
       element={
         <RouteWithNavbar navbarType="marketplace" component={ItemPage} title={TITLE.MARKETPLACE} />
+      }
+    />
+    <Route
+      path={PATHS.EDIT_ITEM_ID}
+      element={
+        <RouteWithNavbar
+          navbarType="marketplace"
+          component={EditItemPage}
+          title={TITLE.MARKETPLACE}
+        />
       }
     />
     <Route

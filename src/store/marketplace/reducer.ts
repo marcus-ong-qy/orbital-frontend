@@ -9,18 +9,6 @@ import {
   UploadStatus,
 } from './types'
 
-// const defaultListingPost: ItemListingPost = {
-//   firebaseUID: '',
-//   name: '',
-//   price: 0,
-//   description: '',
-//   typeOfTransaction: 'Sell',
-//   deliveryInformation: '',
-//   // durationOfRent: 0,
-//   tags: [],
-//   imageURL: '',
-// }
-
 const defaultListingPost: ItemListingPost = {
   name: '',
   description: '',

@@ -141,7 +141,7 @@ const DealPage = () => {
                     <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
                   </OwnerSubDiv>
                   <Button
-                    style={{ width: '15vw', borderRadius: '0' }}
+                    style={{ width: '15vw', borderRadius: 0 }}
                     text="🗨️ Chat"
                     onClick={chatOnClick}
                   />
@@ -159,7 +159,7 @@ const DealPage = () => {
                 </DealInfoDiv>
               </DealSummaryCard>
               <DealButton
-                style={{ width: '43vw', borderRadius: '0', marginTop: '20px' }}
+                style={{ width: '43vw', borderRadius: 0, marginTop: '20px' }}
                 text="Confirm Offer"
                 onClick={dealOnClick}
               />

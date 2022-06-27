@@ -6,12 +6,10 @@ import { PATHS } from '../../../routes/PATHS'
 import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import blobToBase64 from '../../../common/blobToBase64'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
 
-import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 import SettingsPageWrapper from '../SettingsPageWrapper'
 
 import {
@@ -52,10 +50,6 @@ const UserProfilePage = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [selectedImageURL, setSelectedImageURL] = useState<string>(
-    userData.imageURL ? userData.imageURL : defaultPic,
-  )
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
@@ -84,7 +78,7 @@ const UserProfilePage = () => {
           <EditButton text="📝 Edit Info" onClick={() => navigate(PATHS.EDIT_USER_PROFILE)} />
         </ProfileDiv>
         <PictureDiv>
-          <ItemPicture src={selectedImageURL} />
+          <ItemPicture src={userData.imageURL ? userData.imageURL : defaultPic} />
         </PictureDiv>
       </UserProfileDiv>
     </SettingsPageWrapper>

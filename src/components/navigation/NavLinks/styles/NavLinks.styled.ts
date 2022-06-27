@@ -36,7 +36,7 @@ export const LinkGroupSpan = styled.span<{ width?: string; margin?: string }>`
   overflow: left;
 
   width: ${(props) => props.width ?? 'auto'};
-  margin: ${(props) => props.margin ?? '0'};
+  margin: ${(props) => props.margin ?? 0};
 
   color: ${(props) => props.theme.palette.common.white};
   cursor: default;

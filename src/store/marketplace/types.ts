@@ -15,22 +15,6 @@ export type Message = {
   sentBy: string
 }
 
-// export type ItemListing = {
-//   _id: string
-//   createdBy: string
-//   name: string
-//   price: number
-//   description: string
-//   typeOfTransaction: 'Rent' | 'Sell'
-//   deliveryInformation: string
-//   available: boolean
-//   currentOwner: string
-//   durationOfRent: number
-//   tags: string[]
-//   imageURL: string
-//   timeCreated: number
-// }
-
 export type ItemListing = {
   _id: string
   name: string
@@ -42,20 +26,9 @@ export type ItemListing = {
   deliveryInformation: string
   tags: string[]
   imageURL: string
+  status: ItemStatus
   // durationOfRent: number
 }
-
-// export type ItemListingPost = {
-//   firebaseUID: string
-//   name: string
-//   price: number
-//   description: string
-//   typeOfTransaction: 'Rent' | 'Sell'
-//   deliveryInformation: string
-//   // durationOfRent: number
-//   tags: string[]
-//   imageURL: string
-// }
 
 export type ItemListingPost = {
   name: string
@@ -68,6 +41,7 @@ export type ItemListingPost = {
 }
 
 export type UploadStatus = 'SUCCESS' | 'INITIAL'
+export type ItemStatus = 'AVAILABLE' | 'RESERVED' | 'ON_LOAN' | 'SOLD'
 
 /** Actions' types */
 

@@ -94,7 +94,7 @@ const EditUserProfilePage = () => {
       address: formValues.address?.trim(),
       gender: formValues.gender,
       birthday: formValues.birthday,
-      imageURL: selectedImageB64 ?? '',
+      imageURL: selectedImageB64,
       // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(editUserData(newUserData))

@@ -74,6 +74,19 @@ export const BottomDiv = styled.div`
   margin-top: 21px;
 `
 
+export const TopDiv = styled.div`
+  ${borderedGreyDivCss}
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  height: 132px;
+  margin: 7px 0 21px;
+`
+
 export const BottomDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 

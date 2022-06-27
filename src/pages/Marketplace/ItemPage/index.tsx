@@ -40,6 +40,7 @@ import {
   TypeBannerPic,
   TypeBannerText,
   PerDayHighlight,
+  TopDiv,
 } from './styles/ItemPage.styled'
 import { ProfilePic } from '../../../styles/index.styled'
 
@@ -143,6 +144,10 @@ const ItemPage = () => {
     navigate(`${PATHS.CHAT}/${itemInfo?.currentOwner}`)
   }
 
+  const editOnClick = () => {
+    navigate(`${PATHS.EDIT_ITEM}/${params.itemId}`)
+  }
+
   const dealOnClick = () => {
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
@@ -154,6 +159,28 @@ const ItemPage = () => {
       ) : itemInfo ? (
         <>
           <LeftDiv>
+            {itemInfo?.createdBy === userUID && "itemInfo?.status === 'RESERVED'" && (
+              <TopDiv>
+                <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
+                <OwnerDiv>
+                  <OwnerSubDiv>
+                    <ProfilePic src={defaultAvatar} diameter="55px" round />
+                    <OwnerName fontType={h3}>{'itemInfo.buyer'}</OwnerName>
+                  </OwnerSubDiv>
+                  <Button
+                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                    text="🗨️ Chat"
+                    onClick={chatOnClick}
+                  />
+                  <Button
+                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                    text="Accept"
+                    onClick={() => console.log('TODO')}
+                  />
+                </OwnerDiv>
+              </TopDiv>
+            )}
+
             <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
               <TypeBannerText>{itemInfo.typeOfTransaction}</TypeBannerText>
@@ -162,27 +189,7 @@ const ItemPage = () => {
               <ItemPicture src={itemInfo.imageURL ?? defaultPic} />
             </ItemShowcaseDiv>
 
-            {!'ownerInfo?.username' === !'userUID' ? (
-              <BottomDiv>
-                <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-                <OwnerDiv>
-                  <OwnerSubDiv>
-                    <ProfilePic src={defaultAvatar} diameter="55px" round />
-                    <OwnerName fontType={h3}>{'itemInfo.buyer'}</OwnerName>
-                  </OwnerSubDiv>
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: '0' }}
-                    text="🗨️ Chat"
-                    onClick={chatOnClick}
-                  />
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: '0' }}
-                    text="Accept"
-                    onClick={() => console.log('TODO')}
-                  />
-                </OwnerDiv>
-              </BottomDiv>
-            ) : (
+            {itemInfo?.createdBy !== userUID && (
               <BottomDiv>
                 <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
                 <OwnerDiv>
@@ -191,7 +198,7 @@ const ItemPage = () => {
                     <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
                   </OwnerSubDiv>
                   <Button
-                    style={{ width: '15vw', borderRadius: '0' }}
+                    style={{ width: '15vw', borderRadius: 0 }}
                     text="🗨️ Chat"
                     onClick={chatOnClick}
                   />
@@ -224,21 +231,20 @@ const ItemPage = () => {
               </TagsContainer>
             </TagsDiv> */}
 
-            {ownerInfo?.username === userUID ? (
-              // <Button
-              //   style={{
-              //     marginTop: '24px',
-              //     borderRadius: '0',
-              //   }}
-              //   text="Edit Listing✏️"
-              //   onClick={() => console.log('TODO')}
-              // />
-              <></>
+            {itemInfo?.createdBy === userUID ? (
+              <Button
+                style={{
+                  marginTop: '24px',
+                  borderRadius: 0,
+                }}
+                text="Edit Listing✏️"
+                onClick={editOnClick}
+              />
             ) : (
               <Button
                 style={{
                   marginTop: '24px',
-                  borderRadius: '0',
+                  borderRadius: 0,
                 }}
                 text="Make An Offer"
                 onClick={dealOnClick}

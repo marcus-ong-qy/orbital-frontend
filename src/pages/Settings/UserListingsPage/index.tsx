@@ -17,7 +17,6 @@ import {
   UserListingsDiv,
   UserListingTitle,
 } from './styles/UserListingsPage.styled'
-import { ItemListing } from '../../../store/marketplace/types'
 
 const UserListingsPage = () => {
   const dispatch = useAppDispatch()

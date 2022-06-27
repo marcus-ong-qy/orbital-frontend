@@ -31,7 +31,7 @@ export type UserData = {
   address: string
   birthday: number
   phone: string
-  imageURL: string
+  imageURL: string | undefined
 }
 
 export type Credentials = {

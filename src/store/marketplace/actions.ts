@@ -76,6 +76,31 @@ export const postNewListing =
     }
   }
 
+export const updateItem =
+  (updatedListing: ItemListingPost, itemId: string) => async (dispatch: Dispatch<ActionTypes>) => {
+    console.log('posty post')
+    dispatch(setIsLoading(true) as any)
+    try {
+      const updateItem = httpsCallable(functions, 'updateItem')
+      const result = (await updateItem({ ...updatedListing, item_id: itemId })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("update listing don't success")
+      }
+      console.log(result)
+      dispatch({
+        type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+        uploadStatus: 'SUCCESS',
+      })
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false) as any)
+    }
+  }
+
 export const setUploadStatus =
   (uploadStatus: UploadStatus) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({
