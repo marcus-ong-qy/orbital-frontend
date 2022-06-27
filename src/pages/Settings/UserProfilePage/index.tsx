@@ -52,16 +52,9 @@ const UserProfilePage = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
-  const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
-  const [selectedImageB64, setSelectedImageB64] = useState<string>()
-
-  useEffect(() => {
-    if (selectedImageBlob) {
-      setSelectedImageURL(URL.createObjectURL(selectedImageBlob))
-      blobToBase64(selectedImageBlob, setSelectedImageB64)
-    }
-  }, [selectedImageBlob])
+  const [selectedImageURL, setSelectedImageURL] = useState<string>(
+    userData.imageURL ? userData.imageURL : defaultPic,
+  )
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -74,8 +67,6 @@ const UserProfilePage = () => {
       }
     })
   }, [dispatch, isLoggedIn])
-
-  const uploadPicture = () => {}
 
   return (
     <SettingsPageWrapper data-testid="user-profile-page">
@@ -94,7 +85,6 @@ const UserProfilePage = () => {
         </ProfileDiv>
         <PictureDiv>
           <ItemPicture src={selectedImageURL} />
-          <PictureUploader text="Select Display Pic" setSelectedImageBlob={setSelectedImageBlob} />
         </PictureDiv>
       </UserProfileDiv>
     </SettingsPageWrapper>

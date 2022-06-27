@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Button from '../../../../components/common/Button/Button'
 import { FontType } from '../../../../styles/Theme'
-import { fontTypeCss } from '../../../../styles/index.styled'
+import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 
 export const EditUserProfileDiv = styled.div`
   display: flex;
@@ -49,4 +49,8 @@ export const PictureDiv = styled.div`
 export const ItemPicture = styled.img`
   width: 19vw;
   height: 19vw;
+
+  border-style: solid;
+  border-width: 1.2px;
+  border-radius: 12px;
 `

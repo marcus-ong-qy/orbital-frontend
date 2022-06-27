@@ -73,4 +73,8 @@ export const PictureDiv = styled.div`
 export const ItemPicture = styled.img`
   width: 19vw;
   height: 19vw;
+
+  border-style: solid;
+  border-width: 1.2px;
+  border-radius: 12px;
 `

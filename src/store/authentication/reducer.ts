@@ -28,6 +28,7 @@ export const defaultUserData: UserData = {
   address: '',
   gender: '-',
   birthday: 0,
+  imageURL: '',
 }
 
 const loginCredentialsDefault: Credentials = {

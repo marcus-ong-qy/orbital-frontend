@@ -54,7 +54,9 @@ const EditUserProfilePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
-  const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
+  const [selectedImageURL, setSelectedImageURL] = useState<string>(
+    userData.imageURL ? userData.imageURL : defaultPic,
+  )
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
 
   useEffect(() => {
@@ -85,13 +87,14 @@ const EditUserProfilePage = () => {
 
   const onSubmit = () => {
     const newUserData: UserData = {
-      name: formValues.name.trim(),
-      username: formValues.username.trim(),
-      phone: formValues.phone.trim(),
-      postal: formValues.postal.trim(),
-      address: formValues.address.trim(),
+      name: formValues.name?.trim(),
+      username: formValues.username?.trim(),
+      phone: formValues.phone?.trim(),
+      postal: formValues.postal?.trim(),
+      address: formValues.address?.trim(),
       gender: formValues.gender,
       birthday: formValues.birthday,
+      imageURL: selectedImageB64 ?? '',
       // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(editUserData(newUserData))
