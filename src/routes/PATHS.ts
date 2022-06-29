@@ -21,6 +21,6 @@ export enum PATHS {
   DEAL = '/marketplace/item/deal',
   DEAL_ID = '/marketplace/item/deal/:itemId',
   CHAT = '/marketplace/chat',
-  CHAT_ID = '/marketplace/chat/:userUID',
+  CHAT_ID = '/marketplace/chat/:chatUID',
   UPLOAD_LISTING = '/marketplace/list',
 }

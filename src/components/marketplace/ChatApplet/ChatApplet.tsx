@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { onValue, ref, set } from 'firebase/database'
 
-import { useAppSelector } from '../../../app/hooks'
-import { auth, database } from '../../../firebase'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { auth, database, functions } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 
 import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
-import { FirebaseProfile } from '../../../store/authentication/types'
+import { FirebaseProfile, UserData } from '../../../store/authentication/types'
 
 import ChatMessage from '../ChatMessage/ChatMessage'
 
@@ -33,6 +33,10 @@ import defaultPic from '../../../assets/picture.png'
 import defaultAvatar from '../../../assets/default_avatar.png'
 import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
+import { setChatUID, setSelectedChatData } from '../../../store/marketplace/actions'
+import { useNavigate, useParams } from 'react-router-dom'
+import { httpsCallable } from 'firebase/functions'
+import { PATHS } from '../../../routes/PATHS'
 
 export type Item = {
   id: string
@@ -41,25 +45,93 @@ export type Item = {
   type: 'sale' | 'rent'
 }
 
-const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
-  const dummy = useRef()
-  // const messagesRef = firestore.collection('messages')
-  // const query = messagesRef.orderBy('createdAt').limit(25)
-
+const ChatApplet = () => {
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const params = useParams<{ chatUID: string }>()
   const { h1, h2, h3 } = { ...theme.typography.fontSize }
+  const {
+    // selectedChatData,
+    chatUID,
+  } = useAppSelector((state) => state.marketplace_reducer)
 
-  const { selectedChatData } = useAppSelector((state) => state.marketplace_reducer)
-
-  const isCreator = selectedChatData.createdBy === user.uid
-  const receipientUID = isCreator ? selectedChatData.receipient : selectedChatData.createdBy
+  // const isCreator = selectedChatData.createdBy === user.uid
+  // const receipientUID = isCreator ? selectedChatData.receipient : selectedChatData.createdBy
 
   const [messages, setMessages] = useState<Message[] | null>(null)
   const [formValue, setFormValue] = useState('')
 
+  const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
+  const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
+  const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
+
+  const user = auth.currentUser
+  const isCreator = chatMetadata?.createdBy === user?.uid
+  const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
+
+  const getItemInfo = async (itemId: string) => {
+    try {
+      const getItemById = httpsCallable(functions, 'getItemById')
+      const result = (await getItemById({ id: itemId })) as any
+      const success = result.data.sucess as boolean
+      if (!success) {
+        console.log(result)
+        throw new Error("get item info don't success")
+      }
+      console.log('iteminfo', result)
+      const info: ItemListing = result.data.message._doc
+      setItemInfo(info)
+      console.log('da infoooooooo', info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    }
+  }
+
+  const getOwnerData = async (firebaseUID: string) => {
+    try {
+      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
+      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log('owner data', result)
+        throw new Error("get owner data don't success")
+      }
+      console.log('owner data', result)
+      const info: UserData = result.data.message._doc
+      setOwnerInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    }
+  }
+
   useEffect(() => {
-    const chatUUID = selectedChatData.id
-    if (chatUUID) {
-      const messagesRef = ref(database, 'messages/' + chatUUID)
+    // TODO might be redundant
+    params.chatUID && dispatch(setChatUID(params.chatUID))
+  }, [params.chatUID])
+
+  useEffect(() => {
+    const userChatRef = ref(database, 'chats/' + chatUID)
+
+    onValue(userChatRef, (snapshot) => {
+      const chatData: ChatMetadata = snapshot.val()
+      // chatData && dispatch(setSelectedChatData(chatData))
+      setChatMetadata(chatData)
+      console.log('chat metadata', chatData)
+    })
+  }, [chatUID])
+
+  useEffect(() => {
+    chatMetadata?.itemListing && getItemInfo(chatMetadata.itemListing)
+  }, [chatMetadata])
+
+  useEffect(() => {
+    receipientUID && getOwnerData(receipientUID)
+  }, [chatMetadata])
+
+  useEffect(() => {
+    if (chatUID) {
+      const messagesRef = ref(database, 'messages/' + chatUID)
 
       onValue(messagesRef, (snapshot) => {
         const data: Record<string, Message> = snapshot.val()
@@ -67,42 +139,9 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
         setMessages(newMessages)
       })
     }
-  }, [selectedChatData.id])
+  }, [chatUID])
 
-  // setMessages([
-  //   {
-  //     id: '2646',
-  //     messageText: 'hello',
-  //     sentAt: Date.now(),
-  //     sentBy: 'Kh45xlC3RPQm0501LB7NihUSEwu1',
-  //   },
-  //   {
-  //     id: '2647',
-  //     messageText: 'neigh?',
-  //     sentAt: Date.now(),
-  //     sentBy: 'wu1wu1wu1wu1wu1wu1wu1wu1',
-  //   },
-  // ])
-
-  // const [messages] = useCollectionData(query, { idField: 'id' })
-
-  const [itemListing, setItemListing] = useState<ItemListing | null>(null)
-
-  const getItemListing = (itemId: string) => {
-    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item?id=${itemId}`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => resp.json())
-      .then((res) => {
-        const info: ItemListing = res.message
-        setItemListing(info)
-      })
-      .catch((err) => console.error(err))
-  }
+  // const [itemListing, setItemListing] = useState<ItemListing | null>(null)
 
   useEffect(() => {
     // getItemListing(params.itemId!) // TODO
@@ -116,7 +155,6 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
   const sendMessage = async (e: any) => {
     e.preventDefault()
 
-    const chatUUID = selectedChatData.id
     const { uid, photoURL } = auth.currentUser! // You must be sign in to access here!
 
     const messageUUID = crypto.randomUUID()
@@ -126,14 +164,13 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
       sentAt: Date.now(),
       sentBy: uid,
     }
-    const messagesRef = ref(database, `messages/${chatUUID}/${messageUUID}`)
-    const recentMessageRef = ref(database, `chats/${chatUUID}/recentMessage`)
+    const messagesRef = ref(database, `messages/${chatUID}/${messageUUID}`)
+    const recentMessageRef = ref(database, `chats/${chatUID}/recentMessage`)
 
     set(messagesRef, newMessage)
     set(recentMessageRef, newMessage)
 
     setFormValue('')
-    // dummy.current.scrollIntoView({ behavior: 'smooth' })
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,22 +181,23 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
     <ChatAppletDiv>
       <ChatAppletHeaderDiv>
         <ProfilePic src={defaultAvatar} diameter="55px" round />
-        <ReceipientUsername fontType={h1}>{'{receipientUID}'}</ReceipientUsername>
+        <ReceipientUsername fontType={h1}>
+          {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+        </ReceipientUsername>
       </ChatAppletHeaderDiv>
 
-      {'itemListing' && (
-        <ChatProductBannerDiv>
+      {itemInfo && (
+        <ChatProductBannerDiv
+        // onClick={() => navigate(`${PATHS.CHAT}/${itemInfo._id}`)} // TODO back end returns _id: {}
+        >
           <div>
-            <ProductTitle fontType={h2}>{'{selectedChatData.itemListing}'}</ProductTitle>
+            <ProductTitle fontType={h2}>{itemInfo.name}</ProductTitle>
             <ProductInfo fontType={h3}>
-              {'{itemListing.typeOfTransaction}'} for{' '}
-              <PriceHighlight>${'{itemListing.price}'}</PriceHighlight>
-              {"itemListing.typeOfTransaction === 'Rent'" && (
-                <PerDayHighlight>/day</PerDayHighlight>
-              )}
+              {itemInfo?.typeOfTransaction} for <PriceHighlight>${itemInfo.price}</PriceHighlight>
+              {itemInfo?.typeOfTransaction === 'Rent' && <PerDayHighlight>/day</PerDayHighlight>}
             </ProductInfo>
           </div>
-          <ProductPic src={defaultPic} />
+          <ProductPic src={itemInfo?.imageURL ? itemInfo?.imageURL : defaultPic} />
         </ChatProductBannerDiv>
       )}
 
@@ -167,7 +205,6 @@ const ChatApplet = ({ user }: { user: FirebaseProfile }) => {
         {messages?.map((msg, index) => (
           <ChatMessage key={index} message={msg} />
         ))}
-        {/* <span ref={dummy}/> */}
       </ChatMessagesDiv>
 
       <MessageForm onSubmit={sendMessage}>

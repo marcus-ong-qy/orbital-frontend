@@ -105,9 +105,9 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     }
 
     const initRealtimeData: RealtimeUserData = {
+      chats: {},
       displayName: '',
       email: credentials.email,
-      groups: [],
       uid: user.uid,
     }
 
@@ -132,25 +132,6 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
   } finally {
     dispatch(setIsLoading(false))
   }
-
-  //   fetch('https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user', {
-  //     method: 'POST',
-  //     mode: 'cors',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify(initUserData),
-  //   })
-  //     .then((resp) => {
-  //       resp.status === 200 && dispatch(setSignupAttemptStatus('SUCCESS'))
-  //     })
-  //     .catch((err) => console.error(err))
-  // } catch (err) {
-  //   console.error(err)
-  //   dispatch(setSignupAttemptStatus(readSignupError(err)))
-  // } finally {
-  //   dispatch(setIsLoading(false))
-  // }
 }
 
 const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
@@ -158,31 +139,6 @@ const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) =>
     type: AUTH_ACTIONS.SET_USER_DATA,
     userData: userData,
   })
-}
-
-export const getUserData_old = (user: User) => async (dispatch: Dispatch<ActionTypes>) => {
-  dispatch(setIsLoading(true))
-  const firebaseUID = user.uid
-
-  fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user?user=${firebaseUID}`, {
-    method: 'GET',
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((resp) => {
-      return resp.json()
-    })
-    .then((res) => {
-      const userData: UserData = res.message
-      dispatch(setUserData(userData))
-      dispatch(setIsLoading(false))
-    })
-    .catch((err) => {
-      console.error(err)
-      dispatch(setIsLoading(false))
-    })
 }
 
 export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
@@ -208,26 +164,6 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
     dispatch(setIsLoading(false))
   }
 }
-
-export const editUserData_old =
-  (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
-    dispatch(setIsLoading(true))
-    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/user`, {
-      method: 'PUT',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newUserData),
-    })
-      .then((resp) => {
-        resp.status === 200 && dispatch(setUserData(newUserData))
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-      .finally(() => dispatch(setIsLoading(false)))
-  }
 
 export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
   console.log('user dataediting uwu')

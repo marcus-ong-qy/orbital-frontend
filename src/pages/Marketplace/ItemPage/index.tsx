@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
+import { ref, onValue, set } from 'firebase/database'
 
-import { auth, functions } from '../../../firebase'
+import { auth, database, functions, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
 
 import { setIsLoading } from '../../../store/authentication/actions'
-import { UserData } from '../../../store/authentication/types'
-import { ItemListing } from '../../../store/marketplace/types'
+import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
+import { FirebaseProfile, UserData } from '../../../store/authentication/types'
+import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
@@ -76,14 +78,32 @@ const ItemPage = () => {
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
-  const [userUID, setUserUID] = useState()
+  // const [userUID, setUserUID] = useState()
+
+  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
+    defaultUserFirebaseProfile,
+  )
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user: any) => {
-      setUserUID(user.uid)
-      console.log('this is the uid of me:\n\n', user.uid)
+    onAuthStateChanged(auth, (user) => {
+      if (user && !isLoggedIn) {
+        setUserFirebaseProfile(getUserFirebaseProfile(user))
+        setIsLoggedIn(true)
+      } else if (!user && isLoggedIn) {
+        setUserFirebaseProfile(defaultUserFirebaseProfile)
+        setIsLoggedIn(false)
+      }
     })
-  }, [])
+  })
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user: any) => {
+  //     setUserUID(user.uid)
+  //     console.log('this is the uid of me:\n\n', user.uid)
+  //   })
+  // }, [])
 
   const getItemInfo = async (itemId: string) => {
     dispatch(setIsLoading(true))
@@ -137,11 +157,56 @@ const ItemPage = () => {
   }, [itemInfo])
 
   useEffect(() => {
-    console.log('the glorious', ownerInfo)
+    console.log('the glorious\n\n', ownerInfo)
   }, [ownerInfo])
 
   const chatOnClick = () => {
-    navigate(`${PATHS.CHAT}/${itemInfo?.currentOwner}`)
+    const userUID = userFirebaseProfile.uid!
+    const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
+    const newChatUID = crypto.randomUUID()
+    const newChatRef = ref(database, 'chats/' + newChatUID)
+
+    if (!isLoggedIn) return alert('Please Log In to use this Feature!')
+
+    onValue(userChatsUIDRef, (snapshot) => {
+      const data: Record<string, string> = snapshot.val()
+
+      if (data && itemInfo!.currentOwner in data) {
+        const chatUID = data[itemInfo!.currentOwner]
+        navigate(`${PATHS.CHAT}/${chatUID}`)
+      } else {
+        // // Create new chat
+
+        // Set data in 'chats/'
+        const newChat: ChatMetadata = {
+          id: newChatUID,
+          createdAt: Date.now(),
+          createdBy: userFirebaseProfile.uid!,
+          receipient: itemInfo!.currentOwner,
+          itemListing: itemInfo!._id,
+          recentMessage: null,
+        }
+        set(newChatRef, newChat)
+      }
+    })
+
+    onValue(newChatRef, () => {
+      // Set data in 'users/'
+      console.log('i reffing u always')
+      const ownerUID = itemInfo!.currentOwner
+      const userRef = ref(database, 'users/' + userUID + '/chats')
+      const ownerRef = ref(database, 'users/' + ownerUID + '/chats')
+
+      const userChatRecord: Record<string, string> = {}
+      userChatRecord[ownerUID] = newChatUID
+      const ownerChatRecord: Record<string, string> = {}
+      ownerChatRecord[userUID] = newChatUID
+
+      set(userRef, userChatRecord)
+      set(ownerRef, ownerChatRecord)
+
+      navigate(`${PATHS.CHAT}/${newChatUID}`)
+    })
   }
 
   const editOnClick = () => {
@@ -149,6 +214,8 @@ const ItemPage = () => {
   }
 
   const dealOnClick = () => {
+    if (!isLoggedIn) return alert('Please Log In to use this Feature!')
+
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
@@ -159,7 +226,7 @@ const ItemPage = () => {
       ) : itemInfo ? (
         <>
           <LeftDiv>
-            {itemInfo?.createdBy === userUID && "itemInfo?.status === 'RESERVED'" && (
+            {itemInfo?.createdBy === userFirebaseProfile.uid && "itemInfo?.status === 'RESERVED'" && (
               <TopDiv>
                 <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
                 <OwnerDiv>
@@ -189,7 +256,7 @@ const ItemPage = () => {
               <ItemPicture src={itemInfo.imageURL ?? defaultPic} />
             </ItemShowcaseDiv>
 
-            {itemInfo?.createdBy !== userUID && (
+            {itemInfo?.createdBy !== userFirebaseProfile.uid && (
               <BottomDiv>
                 <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
                 <OwnerDiv>
@@ -231,7 +298,7 @@ const ItemPage = () => {
               </TagsContainer>
             </TagsDiv> */}
 
-            {itemInfo?.createdBy === userUID ? (
+            {itemInfo?.createdBy === userFirebaseProfile.uid ? (
               <Button
                 style={{
                   marginTop: '24px',

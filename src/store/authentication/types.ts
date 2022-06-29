@@ -6,22 +6,11 @@ export type FirebaseProfile = {
 }
 
 export type RealtimeUserData = {
+  chats: Record<string, string>
   displayName: string
   email: string
-  groups: string[]
   uid: string
 }
-
-// export type UserData = {
-//   name: string
-//   username: string
-//   phone: string
-//   postal: string
-//   address: string
-//   gender: string
-//   dob: number
-//   firebaseUID: string
-// }
 
 export type UserData = {
   name: string

@@ -29,6 +29,8 @@ export const ChatProductBannerDiv = styled.div`
   height: 88px;
   padding: 15px;
 
+  /* cursor: pointer; */
+
   border-top: 1px solid ${(props) => props.theme.palette.common.black};
   border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
 `

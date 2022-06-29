@@ -111,7 +111,9 @@ const Navbar = ({
         </NavLinks>
         <SearchDiv>
           <SearchBar />
-          <ShoppingCartDiv>{/* <ShoppingCart src={shoppingCartLogo} /> */}</ShoppingCartDiv>
+          <ShoppingCartDiv>
+            <ShoppingCart src={shoppingCartLogo} />
+          </ShoppingCartDiv>
         </SearchDiv>
       </BodyDiv>
     </StyledLandingPageNav>
