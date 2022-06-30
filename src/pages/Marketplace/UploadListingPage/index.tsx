@@ -11,7 +11,7 @@ import blobToBase64 from '../../../common/blobToBase64'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { uploadListings, setUploadStatus } from '../../../store/marketplace/actions'
+import { uploadListing, setUploadStatus } from '../../../store/marketplace/actions'
 import { ItemListingPost } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
@@ -94,7 +94,7 @@ const UploadListingPage = () => {
       tags: undefined, // TODO
       imageURL: selectedImageB64,
     }
-    dispatch(uploadListings(newListing))
+    dispatch(uploadListing(newListing))
     console.table(newListing)
   }
 

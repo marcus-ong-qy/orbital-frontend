@@ -58,13 +58,13 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
   })
 }
 
-export const uploadListings =
+export const uploadListing =
   (newListing: ItemListingPost) => async (dispatch: Dispatch<ActionTypes>) => {
     console.log('posty post')
     dispatch(setIsLoading(true) as any)
     try {
-      const uploadListings = httpsCallable(functions, 'uploadListings')
-      const result = (await uploadListings(newListing)) as any
+      const uploadListing = httpsCallable(functions, 'uploadListing')
+      const result = (await uploadListing(newListing)) as any
       const success = result.data.success as boolean
       if (!success) {
         // Do some shit to handle failure on the backend

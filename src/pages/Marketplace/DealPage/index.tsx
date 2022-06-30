@@ -63,7 +63,6 @@ const DealPage = () => {
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
   const getItemInfo = async (itemId: string) => {
-    console.log('infoing')
     dispatch(setIsLoading(true))
     try {
       const getItemById = httpsCallable(functions, 'getItemById')
