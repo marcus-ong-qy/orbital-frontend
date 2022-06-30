@@ -1,6 +1,5 @@
-import styled, { css } from 'styled-components'
+import styled, { FontType } from 'styled-components'
 import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
-import { FontType, theme } from '../../../../styles/Theme'
 
 // export const DropdownText = styled.div<{ fontType: FontType }>`
 //   ${fontTypeCss}

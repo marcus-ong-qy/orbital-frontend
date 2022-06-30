@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { auth } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
@@ -25,6 +25,7 @@ const UsernameHover = ({
   userFirebaseProfile: FirebaseProfile
   maxWidth: string
 }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { h3 } = { ...theme.typography.fontSize }

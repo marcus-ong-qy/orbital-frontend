@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
+
 import { useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
-import { theme } from '../../../styles/Theme'
 
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
@@ -15,6 +16,7 @@ import {
 } from './styles/SettingsPageWrapper.styled'
 
 const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Element }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const { h1, h3 } = { ...theme.typography.fontSize }
   const { isLoading } = useAppSelector((state) => state.auth_reducer)

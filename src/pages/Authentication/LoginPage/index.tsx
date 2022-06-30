@@ -2,10 +2,10 @@ import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import GoogleButton from 'react-google-button'
+import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { LOGIN_WARNINGS } from '../../../common/warnings'
-import { theme } from '../../../styles/Theme'
 import { PATHS } from '../../../routes/PATHS'
 
 import {
@@ -35,6 +35,7 @@ import {
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const LoginPage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { register, handleSubmit, setValue, setError, formState } = useForm({

@@ -1,7 +1,4 @@
-// For ease of creating new pages, just copy enire folder and rename accordingly
-
-import styled from 'styled-components'
-import { FontType } from '../../../../styles/Theme'
+import styled, { FontType } from 'styled-components'
 import Button from '../../../../components/common/Button/Button'
 
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { setSearchbarDropdownOpen, setSearchRedirect } from '../../../store/authentication/actions'
@@ -26,6 +26,7 @@ type Props = {
 // }
 
 const SearchbarDropdown = (props: Props) => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const wrapperRef = useRef<any>(null)

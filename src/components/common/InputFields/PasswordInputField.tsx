@@ -6,9 +6,9 @@ import {
   UseFormSetError,
   UseFormClearErrors,
 } from 'react-hook-form'
+import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { theme } from '../../../styles/Theme'
 import { toggleAlwaysLoggedInCheckbox } from '../../../store/authentication/actions'
 import WarningLabels from '../WarningLabels/WarningLabels'
 
@@ -38,6 +38,7 @@ type Props = {
 const CapsLockIndicator = () => <StyledBigA data-testid="BigA">A</StyledBigA>
 
 const PasswordInputField = (props: Props) => {
+  const theme = useTheme()
   const {
     title,
     type,

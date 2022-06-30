@@ -1,4 +1,4 @@
-import { theme } from '../../../styles/Theme'
+import { useTheme } from 'styled-components'
 
 import { StyledLabel } from './styles/WarningLabels.styled'
 
@@ -9,6 +9,7 @@ type Props = {
 
 // TODO might be a little redundant
 const Label = ({ label }: { label: string }) => {
+  const theme = useTheme()
   const { labelFont } = { ...theme.typography.fontSize }
 
   return <StyledLabel fontType={labelFont}>{label}</StyledLabel>

@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { updateParticularsForm } from '../../../store/authentication/actions'
@@ -30,6 +30,7 @@ import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
 const EditUserProfilePage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const {

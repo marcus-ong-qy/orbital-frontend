@@ -1,6 +1,5 @@
-import styled from 'styled-components'
+import styled, { FontType } from 'styled-components'
 import Button from '../../../../components/common/Button/Button'
-import { FontType } from '../../../../styles/Theme'
 import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 
 export const EditUserProfileDiv = styled.div`

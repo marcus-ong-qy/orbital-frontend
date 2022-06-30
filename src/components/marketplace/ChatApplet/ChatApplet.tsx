@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { onValue, ref, set } from 'firebase/database'
+import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database, functions } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 
 import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
 import { FirebaseProfile, UserData } from '../../../store/authentication/types'
@@ -46,6 +46,7 @@ export type Item = {
 }
 
 const ChatApplet = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const params = useParams<{ chatUID: string }>()

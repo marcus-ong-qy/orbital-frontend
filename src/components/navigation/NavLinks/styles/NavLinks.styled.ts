@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { FontType, getClamp } from '../../../../styles/Theme'
+import styled, { FontType } from 'styled-components'
+import { getClamp } from '../../../../styles/Theme'
 import { fontTypeCss } from '../../../../styles/index.styled'
 
 export const StyledNavLink = styled.span`

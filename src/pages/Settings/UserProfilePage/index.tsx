@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
-import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
@@ -27,6 +27,7 @@ import {
 import defaultPic from '../../../assets/picture.png'
 
 const Entry = ({ name, value }: { name: string; value: string }) => {
+  const theme = useTheme()
   const { p } = { ...theme.typography.fontSize }
 
   return (
@@ -38,6 +39,7 @@ const Entry = ({ name, value }: { name: string; value: string }) => {
 }
 
 const UserProfilePage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { userData } = useAppSelector((state) => state.auth_reducer)

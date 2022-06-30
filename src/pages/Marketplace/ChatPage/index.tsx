@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { onValue, ref } from 'firebase/database'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database, getUserFirebaseProfile } from '../../../firebase'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
@@ -23,6 +23,7 @@ import { PATHS } from '../../../routes/PATHS'
 
 // Chat Page and Chat Components created with reference to https://www.youtube.com/watch?v=zQyrwxMPm88
 const ChatPage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { h1 } = { ...theme.typography.fontSize }

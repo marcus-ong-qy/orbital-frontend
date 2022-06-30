@@ -1,5 +1,4 @@
-import styled from 'styled-components'
-import { FontType } from '../../../../styles/Theme'
+import styled, { FontType } from 'styled-components'
 
 import { fontTypeCss } from '../../../../styles/index.styled'
 

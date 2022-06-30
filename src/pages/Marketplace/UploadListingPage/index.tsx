@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
@@ -35,6 +35,7 @@ import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 import defaultPic from '../../../assets/picture.png'
 
 const UploadListingPage = () => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm({ mode: 'onChange' })

@@ -1,54 +1,7 @@
 import React from 'react'
-import { ThemeProvider } from 'styled-components'
+import { DefaultTheme, FontType, ThemeProvider } from 'styled-components'
 
-type HexCode = `#${string}`
-
-export type ThemeType = {
-  palette: {
-    common: {
-      black: HexCode
-      white: HexCode
-      gray: {
-        dark: HexCode
-        normal: HexCode
-        light: HexCode
-      }
-    }
-    primary: HexCode
-    secondary: HexCode
-    danger: HexCode
-    highlight: {
-      normal: HexCode
-      regular: HexCode
-      light: HexCode
-      dark: HexCode
-    }
-    background: HexCode
-  }
-  typography: {
-    main: string
-    fontSize: {
-      body: FontType
-      navTitleFont: FontType
-      navLinkFont: FontType
-      h1: FontType
-      h2: FontType
-      h3: FontType
-      p: FontType
-      labelFont: FontType
-    }
-  }
-}
-
-export type FontType = {
-  min: string
-  size: string
-  max: string
-  weight: string
-  height: string
-}
-
-export const theme: ThemeType = {
+const theme: DefaultTheme = {
   palette: {
     common: {
       black: '#271801',

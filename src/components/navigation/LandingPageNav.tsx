@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { auth, getUserFirebaseProfile } from '../../firebase'
-import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
@@ -25,6 +25,7 @@ import { NavLinks } from './NavLinks/styles/NavLinks.styled'
 import logo from '../../assets/Neigh-logos_transparent.png'
 
 const LoadingPageNav = ({ title }: { title: string }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
 

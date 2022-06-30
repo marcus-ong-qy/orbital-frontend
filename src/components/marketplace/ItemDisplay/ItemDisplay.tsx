@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
+
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
-import { theme } from '../../../styles/Theme'
 import { ItemListing } from '../../../store/marketplace/types'
 
 import {
@@ -16,6 +17,7 @@ import {
 import defaultPic from '../../../assets/picture.png'
 
 const ItemDisplay = ({ item }: { item: ItemListing }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
 
   const { h2 } = { ...theme.typography.fontSize }

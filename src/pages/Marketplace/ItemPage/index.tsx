@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
 import { ref, onValue, set } from 'firebase/database'
+import { useTheme } from 'styled-components'
 
 import { auth, database, functions, getUserFirebaseProfile } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
@@ -54,6 +54,7 @@ import saleBannerPic from '../../../assets/trade.png'
 // TODO allow Button to have custom fonts and stylings
 
 const Tag = ({ label }: { label: string }) => {
+  const theme = useTheme()
   const { h2 } = { ...theme.typography.fontSize }
 
   const onClick = () => {
@@ -69,6 +70,7 @@ const Tag = ({ label }: { label: string }) => {
 }
 
 const ItemPage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()

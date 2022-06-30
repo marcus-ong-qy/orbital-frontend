@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { auth, getUserFirebaseProfile } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
 
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
@@ -36,6 +36,7 @@ const Navbar = ({
   title: string
   type: 'marketplace' | 'community'
 }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }

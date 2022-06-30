@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
@@ -23,6 +23,7 @@ import {
 } from './styles/SearchPage.styled'
 
 const UserListingsPage = () => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useParams<{ searchText: string }>()
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }

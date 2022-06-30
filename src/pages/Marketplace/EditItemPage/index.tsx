@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { httpsCallable } from 'firebase/functions'
+import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, functions, getUserFirebaseProfile } from '../../../firebase'
-import { theme } from '../../../styles/Theme'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { setIsLoading } from '../../../store/authentication/actions'
@@ -37,6 +37,7 @@ import { defaultUserFirebaseProfile } from '../../../store/authentication/reduce
 import { FirebaseProfile } from '../../../store/authentication/types'
 
 const EditItemPage = () => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = useParams<{ itemId: string }>()

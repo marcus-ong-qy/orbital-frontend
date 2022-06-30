@@ -1,6 +1,4 @@
-import styled from 'styled-components'
-import { fontTypeCss } from '../../../../styles/index.styled'
-import { FontType } from '../../../../styles/Theme'
+import styled, { FontType } from 'styled-components'
 
 export const ChatMessageDiv = styled.div<{ messageType: 'sent' | 'received' }>`
   display: flex;

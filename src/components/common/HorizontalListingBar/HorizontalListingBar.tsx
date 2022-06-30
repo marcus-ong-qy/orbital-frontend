@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
-import { theme } from '../../../styles/Theme'
 
 import {
   ListingBarDiv,
@@ -27,6 +27,7 @@ type Props = {
 }
 
 const HorizontalListingBar = (props: Props) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const { title, type, available, price, pictureURL } = { ...props }
   const { h2 } = { ...theme.typography.fontSize }

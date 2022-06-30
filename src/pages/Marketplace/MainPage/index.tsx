@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
 import { TEXTS } from '../../../common/texts'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { theme } from '../../../styles/Theme'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
@@ -31,6 +31,7 @@ import horseHead from '../../../assets/Horse-head-transparent.png'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const MainPage = () => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
 
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }

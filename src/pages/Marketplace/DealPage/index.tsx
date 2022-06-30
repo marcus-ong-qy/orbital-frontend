@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
@@ -43,6 +43,7 @@ import { httpsCallable } from 'firebase/functions'
 import { functions } from '../../../firebase'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
+  const theme = useTheme()
   const { h3 } = { ...theme.typography.fontSize }
   return (
     <InfoRowDiv fontType={h3}>
@@ -53,6 +54,7 @@ const InfoRow = ({ title, content }: { title: string; content: string }) => {
 }
 
 const DealPage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()

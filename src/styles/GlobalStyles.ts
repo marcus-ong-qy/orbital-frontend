@@ -1,7 +1,6 @@
-import { createGlobalStyle } from 'styled-components'
-import { ThemeType } from './Theme'
+import { createGlobalStyle, DefaultTheme } from 'styled-components'
 
-export const GlobalStyle = createGlobalStyle<{ theme: ThemeType }>`
+export const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   * {
     box-sizing: border-box;
     color: ${(props) => props.theme.palette.common.black};

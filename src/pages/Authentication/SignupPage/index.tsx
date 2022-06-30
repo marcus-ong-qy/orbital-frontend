@@ -2,8 +2,8 @@ import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import GoogleButton from 'react-google-button'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { emailRegex, passwordRegex } from '../../../common/regex'
@@ -36,6 +36,7 @@ import {
 
 // TODO make label go away when exit page
 const RegisterPage = () => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const {

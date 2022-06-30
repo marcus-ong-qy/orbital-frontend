@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
@@ -19,20 +19,11 @@ import {
 } from './styles/UserListingsPage.styled'
 
 const UserListingsPage = () => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
 
   const { allUserListings } = useAppSelector((state) => state.marketplace_reducer)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && userFirebaseProfile === defaultUserFirebaseProfile)
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-    })
-  }, [userFirebaseProfile])
 
   useEffect(() => {
     dispatch(getUserListings())

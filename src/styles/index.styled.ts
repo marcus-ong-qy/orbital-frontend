@@ -1,5 +1,4 @@
-import styled, { css, keyframes } from 'styled-components'
-import { FontType } from './Theme'
+import styled, { css, FontType, keyframes } from 'styled-components'
 
 // Global style variables
 export const fontTypeCss = css<{ fontType: FontType }>`

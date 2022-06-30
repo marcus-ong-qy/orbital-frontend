@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { onValue, ref } from 'firebase/database'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { auth, database, functions } from '../../../firebase'
 import { useAppDispatch } from '../../../app/hooks'
 import { setSelectedChatData } from '../../../store/marketplace/actions'
@@ -26,6 +26,7 @@ import { setIsLoading } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
 
 const ChatTab = ({ chatUID }: { chatUID: string }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { h3, p } = { ...theme.typography.fontSize }

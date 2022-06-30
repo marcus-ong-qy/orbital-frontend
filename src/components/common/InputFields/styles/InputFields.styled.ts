@@ -1,6 +1,5 @@
-import styled from 'styled-components'
+import styled, { FontType } from 'styled-components'
 import { Input } from 'antd'
-import { FontType } from '../../../../styles/Theme'
 import { fontTypeCss } from '../../../../styles/index.styled'
 
 export const InputFieldContainer = styled.div`

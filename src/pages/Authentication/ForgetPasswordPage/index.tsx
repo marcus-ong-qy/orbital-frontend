@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
+import { useTheme } from 'styled-components'
 
-import { theme } from '../../../styles/Theme'
 import { sendPasswordReset } from '../../../store/authentication/actions'
 import { IS_USING_BACKEND } from '../../../store/authentication/reducer'
 import { ResetPasswordStatus } from '../../../store/authentication/types'
@@ -24,6 +24,7 @@ import {
 import confusedHorse from '../../../assets/Horse-confused.png'
 
 const ForgetPasswordPage = () => {
+  const theme = useTheme()
   const { register, handleSubmit } = useForm()
   const { h1, p } = { ...theme.typography.fontSize }
 

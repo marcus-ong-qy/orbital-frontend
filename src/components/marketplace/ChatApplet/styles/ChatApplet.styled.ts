@@ -1,7 +1,5 @@
-import { Input } from 'antd'
-import styled from 'styled-components'
+import styled, { FontType } from 'styled-components'
 import { fontTypeCss } from '../../../../styles/index.styled'
-import { FontType } from '../../../../styles/Theme'
 
 export const ChatAppletDiv = styled.div`
   position: relative;

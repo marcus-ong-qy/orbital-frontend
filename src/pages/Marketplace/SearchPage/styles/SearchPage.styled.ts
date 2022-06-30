@@ -1,7 +1,6 @@
 // For ease of creating new pages, just Search enire folder and rename accordingly
 
-import styled from 'styled-components'
-import { FontType } from '../../../../styles/Theme'
+import styled, { FontType } from 'styled-components'
 
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 

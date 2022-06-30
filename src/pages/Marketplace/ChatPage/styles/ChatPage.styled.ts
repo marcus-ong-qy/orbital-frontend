@@ -1,6 +1,5 @@
-import styled from 'styled-components'
+import styled, { FontType } from 'styled-components'
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
-import { FontType } from '../../../../styles/Theme'
 
 export const StyledChatPage = styled.div`
   ${styledPageCss}
