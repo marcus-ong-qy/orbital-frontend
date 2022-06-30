@@ -9,7 +9,7 @@ import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { theme } from '../../../styles/Theme'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { editUserData } from '../../../store/authentication/actions'
+import { updateParticularsForm } from '../../../store/authentication/actions'
 import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile, UserData } from '../../../store/authentication/types'
 
@@ -97,7 +97,7 @@ const EditUserProfilePage = () => {
       imageURL: selectedImageB64,
       // firebaseUID: userFirebaseProfile.uid!,
     }
-    dispatch(editUserData(newUserData))
+    dispatch(updateParticularsForm(newUserData))
     console.table(newUserData)
     navigate(PATHS.USER_PROFILE)
   }

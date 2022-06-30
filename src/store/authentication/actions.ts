@@ -165,30 +165,30 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   }
 }
 
-export const editUserData = (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
-  console.log('user dataediting uwu')
-  dispatch(setIsLoading(true))
-  try {
-    const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
-    const result = (await updateParticularsForm(newUserData)) as any
-    const success = result.data.success as boolean
-    if (!success) {
-      // Do some shit to handle failure on the backend
-      console.log(result)
-      throw new Error("edit user data don't success")
+export const updateParticularsForm =
+  (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
+    dispatch(setIsLoading(true))
+    try {
+      const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
+      const result = (await updateParticularsForm(newUserData)) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("edit user data don't success")
+      }
+      console.log('lovely user data:\n', result)
+      // const userData: UserData = result.data.message
+      dispatch({
+        type: AUTH_ACTIONS.SET_USER_DATA,
+        userData: newUserData,
+      })
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
     }
-    console.log('lovely user data:\n', result)
-    // const userData: UserData = result.data.message
-    dispatch({
-      type: AUTH_ACTIONS.SET_USER_DATA,
-      userData: newUserData,
-    })
-  } catch (e) {
-    console.error('The error is:\n', e as Error)
-  } finally {
-    dispatch(setIsLoading(false))
   }
-}
 
 const readResetPasswordError = (err: any) => {
   switch (`${err}`) {

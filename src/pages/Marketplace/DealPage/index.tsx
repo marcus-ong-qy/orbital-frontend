@@ -91,11 +91,30 @@ const DealPage = () => {
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
       const success = result.data.sucess as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("don't success")
       }
       console.log(result)
+      const info: UserData = result.data.message._doc
+      setOwnerInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+
+  const createReservation = async (itemId: string) => {
+    dispatch(setIsLoading(true))
+    try {
+      const createReservation = httpsCallable(functions, 'createReservation')
+      const result = (await createReservation({ item_id: itemId })) as any
+      const success = result.data.sucess as boolean
+      if (!success) {
+        console.log(result)
+        throw new Error("create reservation don't success")
+      }
+      console.log('reservation', result)
       const info: UserData = result.data.message._doc
       setOwnerInfo(info)
     } catch (e) {
@@ -119,6 +138,7 @@ const DealPage = () => {
   }
 
   const dealOnClick = () => {
+    createReservation(params.itemId!)
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 

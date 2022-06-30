@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { getUserListings, search } from '../../../store/marketplace/actions'
+import { getUserListings, filterAndSearch } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
@@ -45,7 +45,7 @@ const UserListingsPage = () => {
   ]
 
   useEffect(() => {
-    dispatch(search(params.searchText ?? '', []))
+    dispatch(filterAndSearch(params.searchText ?? '', []))
   }, [])
 
   // TODO show loading page

@@ -8,7 +8,7 @@ import { theme } from '../../../styles/Theme'
 
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
-import { getListings } from '../../../store/marketplace/actions'
+import { getHomepageListings } from '../../../store/marketplace/actions'
 
 import ItemDisplay from '../../../components/marketplace/ItemDisplay/ItemDisplay'
 
@@ -44,7 +44,7 @@ const MainPage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
-    dispatch(getListings())
+    dispatch(getHomepageListings())
   }, [])
 
   useEffect(() => {

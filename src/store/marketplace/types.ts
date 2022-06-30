@@ -34,7 +34,7 @@ export type ItemListingPost = {
   name: string
   description: string
   typeOfTransaction: 'Sell' | 'Rent'
-  price: number
+  price: number | undefined
   deliveryInformation: string
   tags: string[] | undefined
   imageURL: string | undefined

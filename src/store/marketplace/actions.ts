@@ -26,7 +26,7 @@ export const setSelectedChatData =
     })
   }
 
-export const getListings = () => async (dispatch: Dispatch<ActionTypes>) => {
+export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>) => {
   console.log('getting listings')
   dispatch(setIsLoading(true) as any)
   try {
@@ -58,13 +58,13 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
   })
 }
 
-export const postNewListing =
+export const uploadListings =
   (newListing: ItemListingPost) => async (dispatch: Dispatch<ActionTypes>) => {
     console.log('posty post')
     dispatch(setIsLoading(true) as any)
     try {
-      const uploadListing = httpsCallable(functions, 'uploadListing')
-      const result = (await uploadListing(newListing)) as any
+      const uploadListings = httpsCallable(functions, 'uploadListings')
+      const result = (await uploadListings(newListing)) as any
       const success = result.data.success as boolean
       if (!success) {
         // Do some shit to handle failure on the backend
@@ -118,7 +118,7 @@ export const setUploadStatus =
 
 // TODO searchTags not yet implemented
 
-export const search =
+export const filterAndSearch =
   (searchText: string, searchTags: string[]) => async (dispatch: Dispatch<ActionTypes>) => {
     dispatch(setIsLoading(true) as any)
     try {
