@@ -7,6 +7,7 @@ import { auth, getUserFirebaseProfile } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { PATHS } from '../../routes/PATHS'
 
+import { toggleTheme } from '../../store/authentication/actions'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
 import { setNewListing } from '../../store/marketplace/actions'
@@ -19,8 +20,8 @@ import {
   BodyDiv,
   NavbarTitle,
   SearchDiv,
-  ShoppingCart,
-  ShoppingCartDiv,
+  // ShoppingCart,
+  ThemeSwitchDiv,
   StyledLandingPageNav,
   StyledLogo,
 } from './styles/Navbars.styled'
@@ -28,13 +29,14 @@ import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
 import shoppingCartLogo from '../../assets/shopping-cart.png'
+import DarkModeToggleSwitch from './DarkModeToggleSwitch/DarkModeToggleSwitch'
 
 const Navbar = ({
   title,
-  type, // TODO create a type for community
-}: {
+}: // type, // TODO create a type for community
+{
   title: string
-  type: 'marketplace' | 'community'
+  // type: 'marketplace' | 'community'
 }) => {
   const theme = useTheme()
   const navigate = useNavigate()
@@ -112,9 +114,10 @@ const Navbar = ({
         </NavLinks>
         <SearchDiv>
           <SearchBar />
-          <ShoppingCartDiv>
-            <ShoppingCart src={shoppingCartLogo} />
-          </ShoppingCartDiv>
+          <ThemeSwitchDiv>
+            {/* <ShoppingCart src={shoppingCartLogo} /> */}
+            <DarkModeToggleSwitch />
+          </ThemeSwitchDiv>
         </SearchDiv>
       </BodyDiv>
     </StyledLandingPageNav>

@@ -9,6 +9,19 @@ declare module 'styled-components' {
     height: string
   }
   type HexCode = `#${string}`
+  export interface Typography {
+    main: string
+    fontSize: {
+      body: FontType
+      navTitleFont: FontType
+      navLinkFont: FontType
+      h1: FontType
+      h2: FontType
+      h3: FontType
+      p: FontType
+      labelFont: FontType
+    }
+  }
   export interface DefaultTheme {
     palette: {
       common: {
@@ -31,18 +44,6 @@ declare module 'styled-components' {
       }
       background: HexCode
     }
-    typography: {
-      main: string
-      fontSize: {
-        body: FontType
-        navTitleFont: FontType
-        navLinkFont: FontType
-        h1: FontType
-        h2: FontType
-        h3: FontType
-        p: FontType
-        labelFont: FontType
-      }
-    }
+    typography: Typography
   }
 }

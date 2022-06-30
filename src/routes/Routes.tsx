@@ -73,89 +73,63 @@ export const Routes = () => (
     {/* Authentication */}
     <Route
       path={PATHS.LOGIN}
-      element={<RouteWithLandingPageNav component={LoginPage} title={TITLE.LOGIN} />}
+      element={<RouteWithNavbar component={LoginPage} title={TITLE.LOGIN} />}
     />
     <Route
       path={PATHS.REGISTER}
-      element={<RouteWithLandingPageNav component={RegisterPage} title={TITLE.SIGNUP} />}
+      element={<RouteWithNavbar component={RegisterPage} title={TITLE.SIGNUP} />}
     />
     <Route
       path={PATHS.FORGET_PASSWORD}
-      element={<RouteWithLandingPageNav component={ForgetPasswordPage} title={TITLE.LOGIN} />}
+      element={<RouteWithNavbar component={ForgetPasswordPage} title={TITLE.LOGIN} />}
     />
     <Route
       path="/neigh" // easter egg
-      element={<RouteWithLandingPageNav component={LoadingPage} title="neigh??" />}
+      element={<RouteWithNavbar component={LoadingPage} title="neigh??" />}
     />
 
     {/* Settings */}
     <Route
       path={PATHS.USER_PROFILE}
-      element={<RouteWithLandingPageNav component={UserProfilePage} title={TITLE.SETTINGS} />}
+      element={<RouteWithNavbar component={UserProfilePage} title={TITLE.SETTINGS} />}
     />
     <Route
       path={PATHS.EDIT_USER_PROFILE}
-      element={<RouteWithLandingPageNav component={EditUserProfilePage} title={TITLE.SETTINGS} />}
+      element={<RouteWithNavbar component={EditUserProfilePage} title={TITLE.SETTINGS} />}
     />
     <Route
       path={PATHS.USER_LISTINGS}
-      element={<RouteWithLandingPageNav component={UserListingsPage} title={TITLE.SETTINGS} />}
+      element={<RouteWithNavbar component={UserListingsPage} title={TITLE.SETTINGS} />}
     />
 
     {/* Marketplace */}
     <Route
       path={PATHS.MAIN}
-      element={
-        <RouteWithNavbar navbarType="marketplace" component={MainPage} title={TITLE.MARKETPLACE} />
-      }
+      element={<RouteWithNavbar component={MainPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.ITEM_ID}
-      element={
-        <RouteWithNavbar navbarType="marketplace" component={ItemPage} title={TITLE.MARKETPLACE} />
-      }
+      element={<RouteWithNavbar component={ItemPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.EDIT_ITEM_ID}
-      element={
-        <RouteWithNavbar
-          navbarType="marketplace"
-          component={EditItemPage}
-          title={TITLE.MARKETPLACE}
-        />
-      }
+      element={<RouteWithNavbar component={EditItemPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.SEARCH_ID}
-      element={
-        <RouteWithNavbar
-          navbarType="marketplace"
-          component={SearchPage}
-          title={TITLE.MARKETPLACE}
-        />
-      }
+      element={<RouteWithNavbar component={SearchPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.CHAT_ID}
-      element={
-        <RouteWithNavbar navbarType="marketplace" component={ChatPage} title={TITLE.MARKETPLACE} />
-      }
+      element={<RouteWithNavbar component={ChatPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.DEAL_ID}
-      element={
-        <RouteWithNavbar navbarType="marketplace" component={DealPage} title={TITLE.MARKETPLACE} />
-      }
+      element={<RouteWithNavbar component={DealPage} title={TITLE.MARKETPLACE} />}
     />
     <Route
       path={PATHS.UPLOAD_LISTING}
-      element={
-        <RouteWithNavbar
-          navbarType="marketplace"
-          component={UploadListingPage}
-          title={TITLE.MARKETPLACE}
-        />
-      }
+      element={<RouteWithNavbar component={UploadListingPage} title={TITLE.MARKETPLACE} />}
     />
   </Switch>
 )

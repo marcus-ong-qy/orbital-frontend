@@ -43,22 +43,23 @@ export const SearchDiv = styled.div`
   align-items: flex-end;
 `
 
-export const ShoppingCartDiv = styled.span`
+// export const ShoppingCartDiv = styled.span`
+export const ThemeSwitchDiv = styled.span`
   width: 100%;
   display: flex;
   justify-content: center;
 `
 
-export const ShoppingCart = styled.img`
-  height: 33px;
-  width: 44px;
+// export const ShoppingCart = styled.img`
+//   height: 33px;
+//   width: 44px;
 
-  cursor: pointer;
+//   cursor: pointer;
 
-  :hover {
-    opacity: 0.7;
-  }
-`
+//   :hover {
+//     opacity: 0.7;
+//   }
+// `
 
 export const BodyDiv = styled.div<{ width?: string }>`
   width: ${(props) => props.width ?? ''};

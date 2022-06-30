@@ -26,6 +26,14 @@ import {
 import { defaultUserData } from './reducer'
 import { httpsCallable } from 'firebase/functions'
 
+export const toggleTheme = () => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+  const { themeMode } = getState().auth_reducer
+  dispatch({
+    type: AUTH_ACTIONS.SET_THEME,
+    themeMode: themeMode === 'light' ? 'dark' : 'light',
+  })
+}
+
 export const setIsLoading = (isLoading: boolean) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
     type: AUTH_ACTIONS.SET_LOADING,

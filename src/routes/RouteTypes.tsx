@@ -34,13 +34,20 @@ export const RouteWithLandingPageNav = (routeProps: {
 export const RouteWithNavbar = (routeProps: {
   component: React.LazyExoticComponent<React.ComponentType<any>>
   title: string
-  navbarType: 'marketplace' | 'community'
+  // navbarType: 'marketplace' | 'community'
 }) => {
-  const { component: Component, title, navbarType } = routeProps
+  const {
+    component: Component,
+    title,
+    // navbarType
+  } = routeProps
 
   return (
     <StyledNavPage>
-      <Navbar title={title} type={navbarType} />
+      <Navbar
+        title={title}
+        // type={navbarType}
+      />
       <div style={{ height: navBarBuffer }} />
       <Component />
     </StyledNavPage>

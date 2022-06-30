@@ -1,4 +1,6 @@
 /** Types */
+export type ThemeMode = 'light' | 'dark'
+
 export type FirebaseProfile = {
   email: string | null
   emailVerified: boolean
@@ -42,6 +44,7 @@ export type ResetPasswordStatus =
 /** Actions' types */
 
 export enum AUTH_ACTIONS {
+  SET_THEME = 'AUTH_ACTIONS.SET_THEME',
   SET_LOADING = 'AUTH_ACTIONS.SET_LOADING',
   LOGIN_OFFLINE = 'AUTH_ACTIONS.LOGIN_OFFLINE',
   LOGIN_ATTEMPT_STATUS = 'AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS',
@@ -53,6 +56,11 @@ export enum AUTH_ACTIONS {
 }
 
 /** Actions */
+
+type SetTheme = {
+  type: typeof AUTH_ACTIONS.SET_THEME
+  themeMode: ThemeMode
+}
 
 type SetLoading = {
   type: typeof AUTH_ACTIONS.SET_LOADING
@@ -96,6 +104,7 @@ type SetSearchRedirect = {
 }
 
 export type ActionTypes =
+  | SetTheme
   | SetLoading
   | LogInOffline
   | LoginAttemptStatus

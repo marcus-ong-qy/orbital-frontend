@@ -8,6 +8,7 @@ import {
   SignupStatus,
   UserData,
   FirebaseProfile,
+  ThemeMode,
 } from './types'
 
 // TODO remove IS_USING_BACKEND, and relook some state values are not needed
@@ -37,6 +38,7 @@ const loginCredentialsDefault: Credentials = {
 }
 
 const initialState: State = {
+  themeMode: 'light',
   isLoading: false,
   loginAttemptStatus: 'INITIAL',
   signupAttemptStatus: 'INITIAL',
@@ -50,6 +52,7 @@ const initialState: State = {
 }
 
 type State = {
+  themeMode: ThemeMode
   isLoading: boolean
   loginAttemptStatus: LoginStatus
   signupAttemptStatus: SignupStatus
@@ -65,6 +68,8 @@ type State = {
 
 export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
   switch (action.type) {
+    case AUTH_ACTIONS.SET_THEME:
+      return { ...state, themeMode: action.themeMode }
     case AUTH_ACTIONS.SET_LOADING:
       return { ...state, isLoading: action.isLoading }
     case AUTH_ACTIONS.LOGIN_OFFLINE:
