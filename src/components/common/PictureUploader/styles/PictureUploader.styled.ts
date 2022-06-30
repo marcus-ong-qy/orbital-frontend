@@ -17,7 +17,7 @@ export const PictureUploaderLabel = styled.label`
   white-space: nowrap;
 
   background: ${(props) => props.theme.palette.secondary};
-  color: ${(props) => props.theme.palette.common.white};
+  color: ${(props) => props.theme.palette.text.white};
 
   border: 2px solid ${(props) => props.theme.palette.common.black};
 

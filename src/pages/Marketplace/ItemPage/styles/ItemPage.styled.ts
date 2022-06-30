@@ -184,7 +184,7 @@ export const TagDiv = styled.div<{ fontType: FontType }>`
   background: ${(props) => props.theme.palette.primary};
   border: 1px solid ${(props) => props.theme.palette.common.black};
   border-radius: 20px;
-  color: ${(props) => props.theme.palette.common.white};
+  color: ${(props) => props.theme.palette.text.white};
 
   cursor: pointer;
 `

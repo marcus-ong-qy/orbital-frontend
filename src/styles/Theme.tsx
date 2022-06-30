@@ -71,9 +71,13 @@ const lightTheme: DefaultTheme = {
       white: '#fdfdfb',
       gray: {
         dark: '#717a99',
-        normal: '#e5e5e5',
-        light: '#c4c4c4', // TODO why light is more darker than normal?
+        normal: '#c4c4c4',
+        light: '#e5e5e5',
       },
+    },
+    text: {
+      black: '#271801',
+      white: '#fdfdfb',
     },
     primary: '#719972',
     secondary: '#816353',
@@ -94,15 +98,19 @@ const darkTheme: DefaultTheme = {
   palette: {
     common: {
       black: '#271801',
-      white: '#fdfdfb',
+      white: '#e4e4e2',
       gray: {
         dark: '#717a99',
-        normal: '#c4c4c4',
+        normal: '#a3a3a3',
         light: '#c4c4c4',
       },
     },
+    text: {
+      black: '#271801',
+      white: '#fdfdfb',
+    },
     primary: '#816353',
-    secondary: '#719972',
+    secondary: '#5a7a5b',
     danger: '#997198',
     highlight: {
       normal: '#b89cb7',

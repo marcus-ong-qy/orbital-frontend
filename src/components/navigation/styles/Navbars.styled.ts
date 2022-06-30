@@ -30,7 +30,7 @@ export const NavbarTitle = styled.div<{ fontType: FontType }>`
   margin-right: 2vw;
   text-align: center;
 
-  color: ${(props) => props.theme.palette.common.white};
+  color: ${(props) => props.theme.palette.text.white};
 
   cursor: pointer;
 `
@@ -44,7 +44,7 @@ export const SearchDiv = styled.div`
 `
 
 // export const ShoppingCartDiv = styled.span`
-export const ThemeSwitchDiv = styled.span`
+export const ThemeSwitchDiv = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;

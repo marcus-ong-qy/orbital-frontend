@@ -55,7 +55,7 @@ export const EditButton = styled(Button)`
   font-size: 18px;
 
   span {
-    color: ${(props) => props.theme.palette.common.white};
+    color: ${(props) => props.theme.palette.text.white};
   }
 
   :hover {

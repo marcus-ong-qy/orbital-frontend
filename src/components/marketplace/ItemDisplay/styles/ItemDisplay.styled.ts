@@ -87,7 +87,7 @@ export const PriceTagSuffix = styled.div`
 //   height: 51px;
 //   border-radius: 51px;
 
-//   color: ${(props) => props.theme.palette.common.white};
+//   color: ${(props) => props.theme.palette.text.white};
 //   background: ${(props) =>
 //     props.type === 'sale' ? props.theme.palette.primary : props.theme.palette.secondary};
 // `

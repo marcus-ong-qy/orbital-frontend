@@ -7,7 +7,6 @@ import { auth, getUserFirebaseProfile } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { PATHS } from '../../routes/PATHS'
 
-import { toggleTheme } from '../../store/authentication/actions'
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { FirebaseProfile } from '../../store/authentication/types'
 import { setNewListing } from '../../store/marketplace/actions'
@@ -15,6 +14,7 @@ import { setNewListing } from '../../store/marketplace/actions'
 import NavLink from './NavLinks/NavLink'
 import UsernameHover from './NavLinks/UsernameHover'
 import SearchBar from './Searchbar/Searchbar'
+import DarkModeToggleSwitch from './DarkModeToggleSwitch/DarkModeToggleSwitch'
 
 import {
   BodyDiv,
@@ -28,8 +28,7 @@ import {
 import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
-import shoppingCartLogo from '../../assets/shopping-cart.png'
-import DarkModeToggleSwitch from './DarkModeToggleSwitch/DarkModeToggleSwitch'
+// import shoppingCartLogo from '../../assets/shopping-cart.png'
 
 const Navbar = ({
   title,

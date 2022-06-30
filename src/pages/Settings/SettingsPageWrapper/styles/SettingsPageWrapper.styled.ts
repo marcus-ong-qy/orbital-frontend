@@ -36,7 +36,7 @@ export const MenuHyperlink = styled.div<{ fontType: FontType }>`
   font-weight: 300;
   white-space: nowrap;
 
-  color: ${(props) => props.theme.palette.common.black};
+  color: ${(props) => props.theme.palette.text.black};
 
   :hover {
     color: ${(props) => props.theme.palette.highlight.dark};

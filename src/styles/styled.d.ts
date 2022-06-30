@@ -33,6 +33,10 @@ declare module 'styled-components' {
           light: HexCode
         }
       }
+      text: {
+        black: HexCode
+        white: HexCode
+      }
       primary: HexCode
       secondary: HexCode
       danger: HexCode

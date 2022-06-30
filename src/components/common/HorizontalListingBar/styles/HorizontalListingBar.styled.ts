@@ -52,7 +52,7 @@ export const StatusLabel = styled.div<{ type: 'Sell' | 'Rent'; available: boolea
   border-radius: 51px;
 
   font-weight: 700;
-  color: ${(props) => props.theme.palette.common.white};
+  color: ${(props) => props.theme.palette.text.white};
 
   background: ${(props) => {
     if (!props.available) return props.theme.palette.danger

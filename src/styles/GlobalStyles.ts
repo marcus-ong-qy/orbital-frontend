@@ -3,7 +3,7 @@ import { createGlobalStyle, DefaultTheme } from 'styled-components'
 export const GlobalStyle = createGlobalStyle<{ theme: DefaultTheme }>`
   * {
     box-sizing: border-box;
-    color: ${(props) => props.theme.palette.common.black};
+    color: ${(props) => props.theme.palette.text.black};
     font-family: ${(props) => props.theme.typography.main}, 
       'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
       'Droid Sans', 'Helvetica Neue', sans-serif;
