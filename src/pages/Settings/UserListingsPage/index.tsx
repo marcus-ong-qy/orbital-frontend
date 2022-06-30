@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
+import { useEffect } from 'react'
 import { useTheme } from 'styled-components'
 
-import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
 import { getUserListings } from '../../../store/marketplace/actions'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'

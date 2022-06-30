@@ -1,5 +1,4 @@
 import styled, { FontType } from 'styled-components'
-
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
 export const StyledSettingsPage = styled.div`

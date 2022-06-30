@@ -7,6 +7,7 @@ import { PATHS } from '../../../routes/PATHS'
 import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
+import { setIsLoading } from '../../../store/authentication/actions'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
 import { FirebaseProfile } from '../../../store/authentication/types'
 
@@ -25,7 +26,6 @@ import {
 } from './styles/UserProfilePage.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import { setIsLoading } from '../../../store/authentication/actions'
 
 const Entry = ({ name, value }: { name: string; value: string }) => {
   const theme = useTheme()

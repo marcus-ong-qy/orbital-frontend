@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
+import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database, getUserFirebaseProfile } from '../../../firebase'
 import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
@@ -19,7 +20,6 @@ import {
   ChatsDrawerHeader,
   StyledChatPage,
 } from './styles/ChatPage.styled'
-import { PATHS } from '../../../routes/PATHS'
 
 // Chat Page and Chat Components created with reference to https://www.youtube.com/watch?v=zQyrwxMPm88
 const ChatPage = () => {

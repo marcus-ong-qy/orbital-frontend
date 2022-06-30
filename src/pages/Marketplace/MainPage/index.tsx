@@ -11,12 +11,13 @@ import { FirebaseProfile } from '../../../store/authentication/types'
 import { getHomepageListings } from '../../../store/marketplace/actions'
 
 import ItemDisplay from '../../../components/marketplace/ItemDisplay/ItemDisplay'
+import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
-  CarouselDiv,
-  CategoriesDiv,
-  FeaturedDiv,
-  FeaturedItemsContainer,
+  // CarouselDiv,
+  // CategoriesDiv,
+  // FeaturedDiv,
+  // FeaturedItemsContainer,
   GreetingsDiv,
   GreetingsSpan,
   GreetingsUsernameSpan,
@@ -28,7 +29,6 @@ import {
 } from './styles/MainPage.styled'
 
 import horseHead from '../../../assets/Horse-head-transparent.png'
-import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 const MainPage = () => {
   const theme = useTheme()

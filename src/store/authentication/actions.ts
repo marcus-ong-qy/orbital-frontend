@@ -125,7 +125,6 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     const result = (await updateParticularsForm(initUserData)) as any
     const success = result.data.success as boolean
     if (!success) {
-      // Do some shit to handle failure on the backend
       console.log(result)
       throw new Error("edit user data don't success")
     }
@@ -158,7 +157,6 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
     const result = (await getUserInfo()) as any
     const success = result.data.success as boolean
     if (!success) {
-      // Do some shit to handle failure on the backend
       console.log(result)
       throw new Error("get user data don't success")
     }
@@ -183,7 +181,6 @@ export const updateParticularsForm =
       const result = (await updateParticularsForm(newUserData)) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("edit user data don't success")
       }

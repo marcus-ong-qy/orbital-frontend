@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import { onAuthStateChanged } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
@@ -10,6 +11,8 @@ import { auth, functions, getUserFirebaseProfile } from '../../../firebase'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { setIsLoading } from '../../../store/authentication/actions'
+import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
+import { FirebaseProfile } from '../../../store/authentication/types'
 import { setUploadStatus, updateItem } from '../../../store/marketplace/actions'
 import { ItemListing, ItemListingPost } from '../../../store/marketplace/types'
 
@@ -32,9 +35,6 @@ import {
 import { EntryDiv, EntryName, EntryArea } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
-import { onAuthStateChanged } from 'firebase/auth'
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
 
 const EditItemPage = () => {
   const theme = useTheme()
@@ -89,7 +89,6 @@ const EditItemPage = () => {
       const result = (await getItemById({ id: itemId })) as any
       const success = result.data.sucess as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("get item info don't success")
       }

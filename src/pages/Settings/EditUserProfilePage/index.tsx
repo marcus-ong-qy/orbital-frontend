@@ -29,6 +29,7 @@ import {
 import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
+
 const EditUserProfilePage = () => {
   const theme = useTheme()
   const navigate = useNavigate()

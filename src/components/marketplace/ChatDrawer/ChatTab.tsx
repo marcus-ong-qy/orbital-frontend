@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
+import { httpsCallable } from 'firebase/functions'
 
+import { PATHS } from '../../../routes/PATHS'
 import { auth, database, functions } from '../../../firebase'
-import { useAppDispatch } from '../../../app/hooks'
-import { setSelectedChatData } from '../../../store/marketplace/actions'
+import { UserData } from '../../../store/authentication/types'
 import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
 
 import {
@@ -19,16 +21,10 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultPic from '../../../assets/picture.png'
 import defaultAvatar from '../../../assets/default_avatar.png'
-import { useNavigate } from 'react-router-dom'
-import { PATHS } from '../../../routes/PATHS'
-import { httpsCallable } from 'firebase/functions'
-import { setIsLoading } from '../../../store/authentication/actions'
-import { UserData } from '../../../store/authentication/types'
 
 const ChatTab = ({ chatUID }: { chatUID: string }) => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const { h3, p } = { ...theme.typography.fontSize }
 
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
@@ -46,7 +42,6 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
       const result = (await getItemById({ id: itemId })) as any
       const success = result.data.sucess as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("get item info don't success")
       }
@@ -64,7 +59,6 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log('owner data', result)
         throw new Error("get owner data don't success")
       }

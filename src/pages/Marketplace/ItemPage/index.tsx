@@ -115,7 +115,6 @@ const ItemPage = () => {
       const result = (await getItemById({ id: itemId })) as any
       const success = result.data.sucess as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("get item info don't success")
       }
@@ -136,7 +135,6 @@ const ItemPage = () => {
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log('owner data', result)
         throw new Error("get owner data don't success")
       }
@@ -157,7 +155,6 @@ const ItemPage = () => {
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log('owner data', result)
         throw new Error("get owner data don't success")
       }

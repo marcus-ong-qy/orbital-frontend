@@ -17,7 +17,7 @@ import {
   NoListingsLabel,
   SearchDiv,
   SearchListingsDiv,
-  SearchTagsDiv,
+  // SearchTagsDiv,
   SearchTitle,
   StyledSearchPage,
 } from './styles/SearchPage.styled'

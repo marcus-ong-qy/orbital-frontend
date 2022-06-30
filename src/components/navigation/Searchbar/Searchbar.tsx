@@ -37,7 +37,6 @@ const Searchbar = () => {
       const result = (await filterAndSearch({ search: searchText })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("getSearchListing don't success")
       }

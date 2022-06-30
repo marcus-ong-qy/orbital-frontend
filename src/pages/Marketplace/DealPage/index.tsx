@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { httpsCallable } from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
+import { functions } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
 import formatPrice from '../../../common/formatPrice'
+import { setIsLoading } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
 import { ItemListing } from '../../../store/marketplace/types'
 
@@ -38,9 +41,6 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
-import { setIsLoading } from '../../../store/authentication/actions'
-import { httpsCallable } from 'firebase/functions'
-import { functions } from '../../../firebase'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
   const theme = useTheme()
@@ -71,7 +71,6 @@ const DealPage = () => {
       const result = (await getItemById({ id: itemId })) as any
       const success = result.data.sucess as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("don't success")
       }

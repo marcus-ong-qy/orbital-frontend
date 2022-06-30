@@ -1,12 +1,15 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { httpsCallable } from 'firebase/functions'
 import { onValue, ref, set } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database, functions } from '../../../firebase'
 
+import { setChatUID, setSelectedChatData } from '../../../store/marketplace/actions'
 import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
-import { FirebaseProfile, UserData } from '../../../store/authentication/types'
+import { UserData } from '../../../store/authentication/types'
 
 import ChatMessage from '../ChatMessage/ChatMessage'
 
@@ -33,10 +36,6 @@ import defaultPic from '../../../assets/picture.png'
 import defaultAvatar from '../../../assets/default_avatar.png'
 import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
-import { setChatUID, setSelectedChatData } from '../../../store/marketplace/actions'
-import { useNavigate, useParams } from 'react-router-dom'
-import { httpsCallable } from 'firebase/functions'
-import { PATHS } from '../../../routes/PATHS'
 
 export type Item = {
   id: string
@@ -94,7 +93,6 @@ const ChatApplet = () => {
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log('owner data', result)
         throw new Error("get owner data don't success")
       }

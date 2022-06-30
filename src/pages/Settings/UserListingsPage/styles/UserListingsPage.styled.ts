@@ -1,5 +1,4 @@
 import styled, { FontType } from 'styled-components'
-
 import { fontTypeCss } from '../../../../styles/index.styled'
 
 export const UserListingTitle = styled.div<{ fontType: FontType }>`

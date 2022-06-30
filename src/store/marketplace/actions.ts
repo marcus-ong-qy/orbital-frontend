@@ -34,7 +34,6 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
     const result = (await getHomepageListings()) as any
     const success = result.data.success as boolean
     if (!success) {
-      // Do some shit to handle failure on the backend
       console.log(result)
       throw new Error("get listings don't success")
     }
@@ -67,7 +66,6 @@ export const uploadListing =
       const result = (await uploadListing(newListing)) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("post new listing don't success")
       }
@@ -92,7 +90,6 @@ export const updateItem =
       const result = (await updateItem({ ...updatedListing, item_id: itemId })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("update listing don't success")
       }
@@ -151,7 +148,6 @@ export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => 
     const result = (await getUserListings()) as any
     const success = result.data.success as boolean
     if (!success) {
-      // Do some shit to handle failure on the backend
       console.log(result)
       throw new Error("get user listings don't success")
     }
