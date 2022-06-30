@@ -29,10 +29,8 @@ const SearchbarDropdown = (props: Props) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const wrapperRef = useRef<any>(null)
-  const { h2 } = { ...theme.typography.fontSize }
+  const { h3 } = { ...theme.typography.fontSize }
   const { children, searchResults, value, onChange, required } = props
-
-  const manyResults = [...searchResults, ...searchResults, ...searchResults, ...searchResults]
 
   const { searchbarDropdownOpen } = useAppSelector((state) => state.auth_reducer)
 
@@ -42,7 +40,7 @@ const SearchbarDropdown = (props: Props) => {
       dispatch(setSearchRedirect('redirect'))
     }
     return (
-      <DropdownOptionDiv fontType={h2} onClick={onClick}>
+      <DropdownOptionDiv fontType={h3} onClick={onClick}>
         {result.name}
       </DropdownOptionDiv>
     )
@@ -65,9 +63,9 @@ const SearchbarDropdown = (props: Props) => {
       {searchbarDropdownOpen && (
         <StyledSearchbarDropdown>
           {searchResults.length ? (
-            manyResults.map((result, index) => <DropdownOption key={index} result={result} />)
+            searchResults.map((result, index) => <DropdownOption key={index} result={result} />)
           ) : (
-            <DropdownOptionDiv fontType={h2} disabled>
+            <DropdownOptionDiv fontType={h3} disabled>
               No Results
             </DropdownOptionDiv>
           )}

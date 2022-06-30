@@ -22,7 +22,8 @@ export const SearchTitle = styled.div<{ fontType: FontType }>`
   align-items: center;
 
   height: 68px;
-  margin-left: 41px;
+  padding-left: 41px;
+  border-bottom: 1px solid ${(props) => props.theme.palette.common.black};
 `
 
 export const SearchTagsDiv = styled.div`
@@ -41,6 +42,6 @@ export const SearchListingsDiv = styled.div`
 
 export const NoListingsLabel = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
-  margin-left: 41px;
+  margin: 41px;
   color: ${(props) => props.theme.palette.danger};
 `

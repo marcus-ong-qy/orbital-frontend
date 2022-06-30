@@ -8,8 +8,11 @@ import { ItemListing } from '../../../store/marketplace/types'
 import SearchbarDropdown from './SearchbarDropdown'
 
 import { SearchBarStyled } from './styles/Searchbar.styled'
+import { httpsCallable } from 'firebase/functions'
+import { functions } from '../../../firebase'
 
 const Searchbar = () => {
+  const DEBOUNCE_DURATION = 500 // in miliseconds
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -28,30 +31,27 @@ const Searchbar = () => {
     }
   }, [searchbarDropdownOpen, searchRedirect])
 
-  const getSearchListings = (term: string) => {
-    console.log('getting search listings')
-    fetch(`https://asia-southeast1-orbital2-4105d.cloudfunctions.net/marketplace?search=${term}`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((resp) => resp.status === 200 && resp.json())
-      .then((res) => {
-        const searchListings: ItemListing[] = res.message
-        setSearchResults(searchListings)
-        console.log('i got', searchListings)
-        // setLoading(false)
-      })
-      .catch((err) => {
-        console.error(err)
-      })
+  const getSearchListings = async (searchText: string) => {
+    try {
+      const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
+      const result = (await filterAndSearch({ search: searchText })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log(result)
+        throw new Error("getSearchListing don't success")
+      }
+      const searchListings: ItemListing[] = result.data.message?.map((msg: any) => msg._doc)
+      console.log('i got', searchListings)
+      setSearchResults(searchListings)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    }
   }
 
   // after a delay, transfer debouncedTerm to dropdownTerm
   useEffect(() => {
-    const timer = setTimeout(() => setDropdownTerm(debouncedTerm), 500)
+    const timer = setTimeout(() => setDropdownTerm(debouncedTerm), DEBOUNCE_DURATION)
     return () => clearTimeout(timer)
   }, [debouncedTerm])
 

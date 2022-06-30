@@ -119,22 +119,22 @@ export const setUploadStatus =
 // TODO searchTags not yet implemented
 
 export const filterAndSearch =
-  (searchText: string, searchTags: string[]) => async (dispatch: Dispatch<ActionTypes>) => {
+  (searchText: string, searchTags: string[] | null) => async (dispatch: Dispatch<ActionTypes>) => {
+    console.log('i searchhie', searchText)
     dispatch(setIsLoading(true) as any)
     try {
       const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
-      const result = (await filterAndSearch({ search: searchText, tags: searchTags })) as any
+      const result = (await filterAndSearch({ search: searchText, tags: undefined })) as any
       const success = result.data.success as boolean
       if (!success) {
-        // Do some shit to handle failure on the backend
         console.log(result)
         throw new Error("search don't success")
       }
-      console.log('i present to you search', result)
-      const allSearchListings: ItemListing[] = result.data.message
+      console.log(result)
+      const allSearchListings: ItemListing[] = result.data.message?.map((msg: any) => msg._doc)
       dispatch({
         type: MARKETPLACE_ACTIONS.SEARCH,
-        searchTags: searchTags,
+        searchTags: searchTags ?? [],
         allSearchListings: allSearchListings,
       })
     } catch (e) {

@@ -34,21 +34,10 @@ const UserListingsPage = () => {
 
   const { searchTags, allSearchListings } = useAppSelector((state) => state.marketplace_reducer)
 
-  const manyListingsForTest = [
-    ...allSearchListings,
-    ...allSearchListings,
-    ...allSearchListings,
-    ...allSearchListings,
-    ...allSearchListings,
-    ...allSearchListings,
-    ...allSearchListings,
-  ]
-
   useEffect(() => {
-    dispatch(filterAndSearch(params.searchText ?? '', []))
+    dispatch(filterAndSearch(params.searchText ?? '', null))
   }, [])
 
-  // TODO show loading page
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && userFirebaseProfile === defaultUserFirebaseProfile)
@@ -73,7 +62,7 @@ const UserListingsPage = () => {
 
           {allSearchListings.length ? (
             <SearchListingsDiv>
-              {manyListingsForTest.map((listing, index) => {
+              {allSearchListings.map((listing, index) => {
                 return (
                   <HorizontalListingBar
                     id={listing._id}

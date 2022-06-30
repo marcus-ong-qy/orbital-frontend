@@ -22,7 +22,7 @@ type Props = {
   title: string
   type: 'Sell' | 'Rent'
   available: boolean
-  price: number
+  price: number | undefined
   pictureURL: string
 }
 
@@ -56,7 +56,7 @@ const HorizontalListingBar = (props: Props) => {
           <PriceTag>
             for&nbsp;
             <b>
-              <PriceStyled>${price.toFixed(2)}</PriceStyled>
+              <PriceStyled>${price?.toFixed(2)}</PriceStyled>
               {type === 'Rent' && '/day'}
             </b>
           </PriceTag>

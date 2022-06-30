@@ -25,7 +25,10 @@ export const DropdownOptionDiv = styled.div<{ fontType: FontType; disabled?: boo
   ${fontTypeCss}
   padding: 0.2rem 0.8rem;
   font-style: ${(props) => props.disabled && 'italic'};
-  color: ${(props) => props.disabled && props.theme.palette.common.gray.dark};
+  font-weight: 400;
+  color: ${(props) => props.disabled && props.theme.palette.common.gray.light};
+
+  border-bottom: 0.5px solid ${(props) => props.theme.palette.common.gray.dark};
 `
 
 // const SearchbarDropdownCss = css`
