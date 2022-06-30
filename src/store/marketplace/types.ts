@@ -27,6 +27,7 @@ export type ItemListing = {
   tags: string[]
   imageURL: string
   status: ItemStatus
+  offeredBy: string
   // durationOfRent: number
 }
 
@@ -41,7 +42,7 @@ export type ItemListingPost = {
 }
 
 export type UploadStatus = 'SUCCESS' | 'INITIAL'
-export type ItemStatus = 'AVAILABLE' | 'RESERVED' | 'ON_LOAN' | 'SOLD'
+export type ItemStatus = 'available' | 'offered' | 'accepted'
 
 /** Actions' types */
 

@@ -77,6 +77,7 @@ const ItemPage = () => {
 
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
+  const [offererInfo, setOffererInfo] = useState<UserData | null>(null)
 
   // const [userUID, setUserUID] = useState()
 
@@ -147,6 +148,47 @@ const ItemPage = () => {
     }
   }
 
+  const getOffererData = async (firebaseUID: string) => {
+    dispatch(setIsLoading(true))
+    try {
+      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
+      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        // Do some shit to handle failure on the backend
+        console.log('owner data', result)
+        throw new Error("get owner data don't success")
+      }
+      console.log('owner data', result)
+      const info: UserData = result.data.message._doc
+      setOffererInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+
+  const makeTransaction = async (itemId: string) => {
+    dispatch(setIsLoading(true))
+    try {
+      const makeTransaction = httpsCallable(functions, 'makeTransaction')
+      const result = (await makeTransaction({ item_id: itemId })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        console.log(result)
+        throw new Error("make transaction don't success")
+      }
+      console.log('transaction', result)
+      const info: UserData = result.data.message._doc
+      setOwnerInfo(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+
   useEffect(() => {
     getItemInfo(params.itemId!)
   }, [])
@@ -154,13 +196,14 @@ const ItemPage = () => {
   useEffect(() => {
     console.log(itemInfo)
     itemInfo?.currentOwner && getOwnerData(itemInfo.currentOwner)
+    itemInfo?.offeredBy && getOffererData(itemInfo.offeredBy)
   }, [itemInfo])
 
   useEffect(() => {
     console.log('the glorious\n\n', ownerInfo)
   }, [ownerInfo])
 
-  const chatOnClick = () => {
+  const chatOnClick = (targetUID: string) => {
     const userUID = userFirebaseProfile.uid!
     const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
     const newChatUID = crypto.randomUUID()
@@ -171,8 +214,8 @@ const ItemPage = () => {
     onValue(userChatsUIDRef, (snapshot) => {
       const data: Record<string, string> = snapshot.val()
 
-      if (data && itemInfo!.currentOwner in data) {
-        const chatUID = data[itemInfo!.currentOwner]
+      if (data && targetUID in data) {
+        const chatUID = data[targetUID]
         navigate(`${PATHS.CHAT}/${chatUID}`)
       } else {
         // // Create new chat
@@ -182,7 +225,7 @@ const ItemPage = () => {
           id: newChatUID,
           createdAt: Date.now(),
           createdBy: userFirebaseProfile.uid!,
-          receipient: itemInfo!.currentOwner,
+          receipient: targetUID,
           itemListing: itemInfo!._id,
           recentMessage: null,
         }
@@ -193,7 +236,7 @@ const ItemPage = () => {
     onValue(newChatRef, () => {
       // Set data in 'users/'
       console.log('i reffing u always')
-      const ownerUID = itemInfo!.currentOwner
+      const ownerUID = targetUID
       const userRef = ref(database, 'users/' + userUID + '/chats')
       const ownerRef = ref(database, 'users/' + ownerUID + '/chats')
 
@@ -213,10 +256,16 @@ const ItemPage = () => {
     navigate(`${PATHS.EDIT_ITEM}/${params.itemId}`)
   }
 
-  const dealOnClick = () => {
+  const dealOfferOnClick = () => {
     if (!isLoggedIn) return alert('Please Log In to use this Feature!')
 
     navigate(`${PATHS.DEAL}/${params.itemId}`)
+  }
+
+  const dealAcceptOnClick = () => {
+    makeTransaction(itemInfo!._id)
+
+    // navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
   return (
@@ -226,23 +275,25 @@ const ItemPage = () => {
       ) : itemInfo ? (
         <>
           <LeftDiv>
-            {itemInfo?.createdBy === userFirebaseProfile.uid && "itemInfo?.status === 'RESERVED'" && (
+            {itemInfo?.createdBy === userFirebaseProfile.uid && itemInfo?.status === 'offered' && (
               <TopDiv>
                 <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
                 <OwnerDiv>
                   <OwnerSubDiv>
                     <ProfilePic src={defaultAvatar} diameter="55px" round />
-                    <OwnerName fontType={h3}>{'itemInfo.buyer'}</OwnerName>
+                    <OwnerName fontType={h3}>
+                      {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+                    </OwnerName>
                   </OwnerSubDiv>
                   <Button
                     style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
                     text="🗨️ Chat"
-                    onClick={chatOnClick}
+                    onClick={() => chatOnClick(itemInfo!.offeredBy)}
                   />
                   <Button
                     style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
                     text="Accept"
-                    onClick={() => console.log('TODO')}
+                    onClick={dealAcceptOnClick}
                   />
                 </OwnerDiv>
               </TopDiv>
@@ -267,7 +318,7 @@ const ItemPage = () => {
                   <Button
                     style={{ width: '15vw', borderRadius: 0 }}
                     text="🗨️ Chat"
-                    onClick={chatOnClick}
+                    onClick={() => chatOnClick(itemInfo!.currentOwner)}
                   />
                 </OwnerDiv>
               </BottomDiv>
@@ -307,6 +358,15 @@ const ItemPage = () => {
                 text="Edit Listing✏️"
                 onClick={editOnClick}
               />
+            ) : itemInfo?.status === 'offered' ? (
+              <Button
+                style={{
+                  marginTop: '24px',
+                  borderRadius: 0,
+                }}
+                text="⚠️ Item Reserved"
+                onClick={() => {}}
+              />
             ) : (
               <Button
                 style={{
@@ -314,7 +374,7 @@ const ItemPage = () => {
                   borderRadius: 0,
                 }}
                 text="Make An Offer"
-                onClick={dealOnClick}
+                onClick={dealOfferOnClick}
               />
             )}
           </InfoDiv>

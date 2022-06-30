@@ -88,7 +88,7 @@ const DealPage = () => {
     try {
       const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
       const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.sucess as boolean
+      const success = result.data.success as boolean
       if (!success) {
         console.log(result)
         throw new Error("don't success")
@@ -108,7 +108,7 @@ const DealPage = () => {
     try {
       const createReservation = httpsCallable(functions, 'createReservation')
       const result = (await createReservation({ item_id: itemId })) as any
-      const success = result.data.sucess as boolean
+      const success = result.data.success as boolean
       if (!success) {
         console.log(result)
         throw new Error("create reservation don't success")
@@ -138,7 +138,7 @@ const DealPage = () => {
 
   const dealOnClick = () => {
     createReservation(params.itemId!)
-    navigate(`${PATHS.DEAL}/${params.itemId}`)
+    navigate(`${PATHS.ITEM}/${params.itemId}`)
   }
 
   return (
