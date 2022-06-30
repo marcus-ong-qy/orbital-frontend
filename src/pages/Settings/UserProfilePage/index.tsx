@@ -25,6 +25,7 @@ import {
 } from './styles/UserProfilePage.styled'
 
 import defaultPic from '../../../assets/picture.png'
+import { setIsLoading } from '../../../store/authentication/actions'
 
 const Entry = ({ name, value }: { name: string; value: string }) => {
   const theme = useTheme()
@@ -53,6 +54,7 @@ const UserProfilePage = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
+    dispatch(setIsLoading(true))
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
         setUserFirebaseProfile(getUserFirebaseProfile(user))
@@ -61,6 +63,7 @@ const UserProfilePage = () => {
         setUserFirebaseProfile(defaultUserFirebaseProfile)
         setIsLoggedIn(false)
       }
+      dispatch(setIsLoading(false))
     })
   }, [dispatch, isLoggedIn])
 
