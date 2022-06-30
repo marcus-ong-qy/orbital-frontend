@@ -110,7 +110,7 @@ const darkTheme: DefaultTheme = {
       light: '#e0d4e0',
       dark: '#7a5a7a',
     },
-    background: '#969489',
+    background: '#cbcac4',
   },
   typography: defaultTypography,
 }

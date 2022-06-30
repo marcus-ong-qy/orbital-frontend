@@ -112,6 +112,7 @@ export const OwnerSubDiv = styled.div`
 export const OwnerName = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
+  padding-left: 1rem;
 `
 
 export const InfoDiv = styled.div`

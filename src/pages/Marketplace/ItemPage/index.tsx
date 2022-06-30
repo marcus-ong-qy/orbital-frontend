@@ -314,7 +314,11 @@ const ItemPage = () => {
                 <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
                 <OwnerDiv>
                   <OwnerSubDiv>
-                    <ProfilePic src={defaultAvatar} diameter="55px" round />
+                    <ProfilePic
+                      src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
+                      diameter="55px"
+                      round
+                    />
                     <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
                   </OwnerSubDiv>
                   <Button
