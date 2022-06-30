@@ -127,19 +127,21 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
       type: AUTH_ACTIONS.SET_USER_DATA,
       userData: initUserData,
     })
+    dispatch(setSignupAttemptStatus('SUCCESS'))
   } catch (e) {
     console.error('The error is:\n', e as Error)
+    dispatch(setSignupAttemptStatus(readSignupError(e)))
   } finally {
     dispatch(setIsLoading(false))
   }
 }
 
-const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
-  dispatch({
-    type: AUTH_ACTIONS.SET_USER_DATA,
-    userData: userData,
-  })
-}
+// const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
+//   dispatch({
+//     type: AUTH_ACTIONS.SET_USER_DATA,
+//     userData: userData,
+//   })
+// }
 
 export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   dispatch(setIsLoading(true))
