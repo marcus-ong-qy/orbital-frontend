@@ -21,7 +21,7 @@ export const styledPageCss = css`
 
 export const borderedGreyDivCss = css`
   border: 1px solid ${(props) => props.theme.palette.common.black};
-  background: ${(props) => props.theme.palette.common.gray.normal};
+  background: ${(props) => props.theme.palette.common.gray.light};
 `
 
 export const gallopAnimation = keyframes`

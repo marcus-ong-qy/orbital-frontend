@@ -72,7 +72,7 @@ const MainPage = () => {
               {`${TEXTS.GREETINGS}, `}
               {isLoggedIn ? (
                 <GreetingsUsernameSpan>
-                  {!!userData.username ? userData.username : userFirebaseProfile.email}
+                  {userData.username?.length ? userData.username : userFirebaseProfile.email}
                 </GreetingsUsernameSpan>
               ) : (
                 'stranger'
