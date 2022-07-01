@@ -50,7 +50,11 @@ export enum AUTH_ACTIONS {
   LOGIN_ATTEMPT_STATUS = 'AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS',
   SIGNUP_ATTEMPT_STATUS = 'AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS',
   ALWAYS_LOGGED_IN_CHECKBOX = 'AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX',
+
+  SET_IS_LOGGED_IN = 'AUTH_ACTIONS.SET_IS_LOGGED_IN',
+  SET_USER_FIREBASE_PROFILE = 'AUTH_ACTIONS.SET_USER_FIREBASE_PROFILE',
   SET_USER_DATA = 'AUTH_ACTIONS.SET_USER_DATA',
+
   SET_SEARCH_DROPDOWN = 'AUTH_ACTIONS.SET_SEARCH_DROPDOWN',
   SET_SEARCH_REDIRECT = 'AUTH_ACTIONS.SET_SEARCH_REDIRECT',
 }
@@ -88,9 +92,19 @@ type AlwaysLoggedInCheckbox = {
   alwaysLoggedInChecked: boolean
 }
 
+type SetIsLoggedIn = {
+  type: typeof AUTH_ACTIONS.SET_IS_LOGGED_IN
+  isLoggedIn: boolean
+}
+
 type SetUserData = {
   type: typeof AUTH_ACTIONS.SET_USER_DATA
   userData: UserData
+}
+
+type SetUserFirebaseProfile = {
+  type: typeof AUTH_ACTIONS.SET_USER_FIREBASE_PROFILE
+  userFirebaseProfile: FirebaseProfile
 }
 
 type SetSearchDropdown = {
@@ -110,6 +124,8 @@ export type ActionTypes =
   | LoginAttemptStatus
   | SignupAttemptStatus
   | AlwaysLoggedInCheckbox
+  | SetIsLoggedIn
   | SetUserData
+  | SetUserFirebaseProfile
   | SetSearchDropdown
   | SetSearchRedirect

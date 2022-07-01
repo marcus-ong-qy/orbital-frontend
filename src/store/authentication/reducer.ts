@@ -43,6 +43,9 @@ const initialState: State = {
   loginAttemptStatus: 'INITIAL',
   signupAttemptStatus: 'INITIAL',
   alwaysLoggedInChecked: false,
+
+  isLoggedIn: false,
+  userFirebaseProfile: defaultUserFirebaseProfile,
   userData: defaultUserData,
 
   searchbarDropdownOpen: false,
@@ -57,6 +60,9 @@ type State = {
   loginAttemptStatus: LoginStatus
   signupAttemptStatus: SignupStatus
   alwaysLoggedInChecked: boolean
+
+  isLoggedIn: boolean
+  userFirebaseProfile: FirebaseProfile
   userData: UserData
 
   searchbarDropdownOpen: boolean
@@ -84,8 +90,14 @@ export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, 
       return { ...state, signupAttemptStatus: action.signupAttemptStatus }
     case AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
       return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
+
+    case AUTH_ACTIONS.SET_IS_LOGGED_IN:
+      return { ...state, isLoggedIn: action.isLoggedIn }
+    case AUTH_ACTIONS.SET_USER_FIREBASE_PROFILE:
+      return { ...state, userFirebaseProfile: action.userFirebaseProfile }
     case AUTH_ACTIONS.SET_USER_DATA:
       return { ...state, userData: action.userData }
+
     case AUTH_ACTIONS.SET_SEARCH_DROPDOWN:
       return { ...state, searchbarDropdownOpen: action.searchbarDropdownOpen }
     case AUTH_ACTIONS.SET_SEARCH_REDIRECT:

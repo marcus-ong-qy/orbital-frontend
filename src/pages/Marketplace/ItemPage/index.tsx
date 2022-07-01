@@ -1,18 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
 import { ref, onValue, set } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
-import { auth, database, functions, getUserFirebaseProfile } from '../../../firebase'
+import { database, functions } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
 
 import { setIsLoading } from '../../../store/authentication/actions'
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile, UserData } from '../../../store/authentication/types'
+import { UserData } from '../../../store/authentication/types'
 import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
@@ -75,38 +73,15 @@ const ItemPage = () => {
   const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()
   const { h1, h2, h3, p } = { ...theme.typography.fontSize }
-  const { isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, isLoggedIn, userFirebaseProfile } = useAppSelector(
+    (state) => state.auth_reducer,
+  )
 
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [offererInfo, setOffererInfo] = useState<UserData | null>(null)
 
   // const [userUID, setUserUID] = useState()
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  })
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user: any) => {
-  //     setUserUID(user.uid)
-  //     console.log('this is the uid of me:\n\n', user.uid)
-  //   })
-  // }, [])
 
   const getItemInfo = async (itemId: string) => {
     dispatch(setIsLoading(true))

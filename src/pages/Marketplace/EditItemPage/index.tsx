@@ -1,18 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { onAuthStateChanged } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { auth, functions, getUserFirebaseProfile } from '../../../firebase'
+import { functions } from '../../../firebase'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { setIsLoading } from '../../../store/authentication/actions'
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
 import { setUploadStatus, updateItem } from '../../../store/marketplace/actions'
 import { ItemListing, ItemListingPost } from '../../../store/marketplace/types'
 
@@ -41,32 +38,18 @@ const EditItemPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = useParams<{ itemId: string }>()
-  const { navTitleFont, h2, p } = { ...theme.typography.fontSize }
+  const { navTitleFont, p } = { ...theme.typography.fontSize }
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
-  const { isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
   const { uploadStatus } = useAppSelector((state) => state.marketplace_reducer)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
 
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const allowedToEdit = userFirebaseProfile.uid === itemInfo?.createdBy
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-      } else {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-      }
-    })
-  }, [])
 
   useEffect(() => {
     if (uploadStatus === 'SUCCESS') {

@@ -1,13 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
-import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
 import { getUserListings, filterAndSearch } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
@@ -29,22 +24,14 @@ const UserListingsPage = () => {
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
   const { isLoading } = useAppSelector((state) => state.auth_reducer)
 
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-
-  const { searchTags, allSearchListings } = useAppSelector((state) => state.marketplace_reducer)
+  const {
+    // searchTags,
+    allSearchListings,
+  } = useAppSelector((state) => state.marketplace_reducer)
 
   useEffect(() => {
     dispatch(filterAndSearch(params.searchText ?? '', null))
   }, [])
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && userFirebaseProfile === defaultUserFirebaseProfile)
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-    })
-  })
 
   useEffect(() => {
     dispatch(getUserListings())

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { PATHS } from '../../routes/PATHS'
 
 import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
-import { FirebaseProfile } from '../../store/authentication/types'
 import { setNewListing } from '../../store/marketplace/actions'
 
 import NavLink from './NavLinks/NavLink'
@@ -28,6 +27,7 @@ import {
 import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
+import { setUserFirebaseProfile, setIsLoggedIn } from '../../store/authentication/actions'
 // import shoppingCartLogo from '../../assets/shopping-cart.png'
 
 const Navbar = ({
@@ -42,21 +42,17 @@ const Navbar = ({
   const dispatch = useAppDispatch()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
 
+  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
   const { newListing } = useAppSelector((state) => state.marketplace_reducer)
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
+        dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
+        dispatch(setIsLoggedIn(true))
       } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
+        dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
+        dispatch(setIsLoggedIn(false))
       }
     })
   })
@@ -66,10 +62,10 @@ const Navbar = ({
     dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Sell' }))
   }
 
-  const rentOnClick = () => {
-    navigate(PATHS.UPLOAD_LISTING)
-    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
-  }
+  // const rentOnClick = () => {
+  //   navigate(PATHS.UPLOAD_LISTING)
+  //   dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
+  // }
 
   return (
     <StyledLandingPageNav>

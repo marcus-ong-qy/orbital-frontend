@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { auth, database, getUserFirebaseProfile } from '../../../firebase'
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
+import { useAppSelector } from '../../../app/hooks'
+import { database } from '../../../firebase'
 
 import ChatApplet from '../../../components/marketplace/ChatApplet/ChatApplet'
 import ChatTab from '../../../components/marketplace/ChatDrawer/ChatTab'
@@ -25,28 +22,12 @@ import {
 const ChatPage = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
   const { h1 } = { ...theme.typography.fontSize }
-  const { isLoading } = useAppSelector((state) => state.auth_reducer)
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
+  const { isLoading, isLoggedIn, userFirebaseProfile } = useAppSelector(
+    (state) => state.auth_reducer,
   )
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [userChatsUID, setUserChatsUID] = useState<string[]>()
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  })
 
   // useEffect(() => {
   //   params.userUID && dispatch(setChatUserUID(params.userUID))

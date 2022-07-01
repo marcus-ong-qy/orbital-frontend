@@ -1,15 +1,8 @@
-import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
-import { auth, getUserFirebaseProfile } from '../../../firebase'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-
-import { setIsLoading } from '../../../store/authentication/actions'
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
+import { useAppSelector } from '../../../app/hooks'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'
 
@@ -42,30 +35,9 @@ const Entry = ({ name, value }: { name: string; value: string }) => {
 const UserProfilePage = () => {
   const theme = useTheme()
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const { userData } = useAppSelector((state) => state.auth_reducer)
+  const { userData, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
 
   const { navTitleFont } = { ...theme.typography.fontSize }
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    dispatch(setIsLoading(true))
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-      dispatch(setIsLoading(false))
-    })
-  }, [dispatch, isLoggedIn])
 
   return (
     <SettingsPageWrapper data-testid="user-profile-page">

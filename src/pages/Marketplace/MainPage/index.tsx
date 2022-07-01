@@ -1,13 +1,9 @@
-import { useEffect, useState } from 'react'
-import { onAuthStateChanged } from 'firebase/auth'
+import { useEffect } from 'react'
 import { useTheme } from 'styled-components'
 
 import { TEXTS } from '../../../common/texts'
-import { auth, getUserFirebaseProfile } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
-import { defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile } from '../../../store/authentication/types'
 import { getHomepageListings } from '../../../store/marketplace/actions'
 
 import ItemDisplay from '../../../components/marketplace/ItemDisplay/ItemDisplay'
@@ -36,29 +32,14 @@ const MainPage = () => {
 
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
-  const { isLoading, userData } = useAppSelector((state) => state.auth_reducer)
-  const { allListings } = useAppSelector((state) => state.marketplace_reducer)
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
+  const { isLoading, userData, isLoggedIn, userFirebaseProfile } = useAppSelector(
+    (state) => state.auth_reducer,
   )
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { allListings } = useAppSelector((state) => state.marketplace_reducer)
 
   useEffect(() => {
     dispatch(getHomepageListings())
   }, [])
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  }, [dispatch, isLoggedIn])
 
   return (
     <StyledMainPage data-testid="MarketplaceMain">

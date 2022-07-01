@@ -1,12 +1,7 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
-import { auth, getUserFirebaseProfile } from '../../firebase'
 import { PATHS } from '../../routes/PATHS'
-import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
-import { FirebaseProfile } from '../../store/authentication/types'
 
 import NavLink from './NavLinks/NavLink'
 import UsernameHover from './NavLinks/UsernameHover'
@@ -23,28 +18,13 @@ import {
 import { NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import logo from '../../assets/Neigh-logos_transparent.png'
+import { useAppSelector } from '../../app/hooks'
 
 const LoadingPageNav = ({ title }: { title: string }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
-
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  })
+  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
 
   return (
     <StyledLandingPageNav>

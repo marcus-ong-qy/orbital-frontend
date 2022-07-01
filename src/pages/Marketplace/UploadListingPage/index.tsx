@@ -43,11 +43,6 @@ const UploadListingPage = () => {
 
   const [listingType, setListingType] = useState<'Rent' | 'Sell'>(typeOfTransaction)
 
-  // const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-  //   defaultUserFirebaseProfile,
-  // )
-  // const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
@@ -65,20 +60,6 @@ const UploadListingPage = () => {
       blobToBase64(selectedImageBlob, setSelectedImageB64)
     }
   }, [selectedImageBlob])
-
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user && !isLoggedIn) {
-  //       setUserFirebaseProfile(getUserFirebaseProfile(user))
-  //       setIsLoggedIn(true)
-  //     } else if (!user && isLoggedIn) {
-  //       setUserFirebaseProfile(defaultUserFirebaseProfile)
-  //       setIsLoggedIn(false)
-  //     }
-  //   })
-  // })
-
-  const uploadPicture = () => {}
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {

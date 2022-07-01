@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { auth, getUserFirebaseProfile } from '../../../firebase'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { setIsLoading, updateParticularsForm } from '../../../store/authentication/actions'
-import { defaultUserData, defaultUserFirebaseProfile } from '../../../store/authentication/reducer'
-import { FirebaseProfile, UserData } from '../../../store/authentication/types'
+import { updateParticularsForm } from '../../../store/authentication/actions'
+import { defaultUserData } from '../../../store/authentication/reducer'
+import { UserData } from '../../../store/authentication/types'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import InputField from '../../../components/common/InputFields/InputField'
@@ -34,26 +32,13 @@ const EditUserProfilePage = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    setError,
-    clearErrors,
-    formState: { errors },
-  } = useForm({ mode: 'onChange' })
+  const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
   const { userData } = useAppSelector((state) => state.auth_reducer)
 
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
-  const [userFirebaseProfile, setUserFirebaseProfile] = useState<FirebaseProfile>(
-    defaultUserFirebaseProfile,
-  )
-
   const [formValues, setFormValues] = useState<UserData>(defaultUserData)
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(
@@ -72,22 +57,6 @@ const EditUserProfilePage = () => {
     userData && setFormValues(userData)
     console.log('form values set:\n', userData)
   }, [userData])
-
-  useEffect(() => {
-    dispatch(setIsLoading(true))
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserFirebaseProfile(getUserFirebaseProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user && isLoggedIn) {
-        setUserFirebaseProfile(defaultUserFirebaseProfile)
-        setIsLoggedIn(false)
-      }
-      dispatch(setIsLoading(false))
-    })
-  }, [dispatch, isLoggedIn])
-
-  const uploadPicture = () => {}
 
   const onSubmit = () => {
     const newUserData: UserData = {

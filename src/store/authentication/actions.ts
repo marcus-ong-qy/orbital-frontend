@@ -6,8 +6,8 @@ import {
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
-  User,
 } from 'firebase/auth'
+import { httpsCallable } from 'firebase/functions'
 
 import { auth, functions, setRealtimeDatabase } from '../../firebase'
 import { demoAcc } from '../../demo-config'
@@ -22,15 +22,22 @@ import {
   ResetPasswordStatus,
   UserData,
   RealtimeUserData,
+  FirebaseProfile,
 } from './types'
 import { defaultUserData } from './reducer'
-import { httpsCallable } from 'firebase/functions'
 
 export const toggleTheme = () => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
   const { themeMode } = getState().auth_reducer
   dispatch({
     type: AUTH_ACTIONS.SET_THEME,
     themeMode: themeMode === 'light' ? 'dark' : 'light',
+  })
+}
+
+export const setIsLoggedIn = (isLoggedIn: boolean) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: AUTH_ACTIONS.SET_IS_LOGGED_IN,
+    isLoggedIn: isLoggedIn,
   })
 }
 
@@ -172,6 +179,14 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
     dispatch(setIsLoading(false))
   }
 }
+
+export const setUserFirebaseProfile =
+  (userFirebaseProfile: FirebaseProfile) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: AUTH_ACTIONS.SET_USER_FIREBASE_PROFILE,
+      userFirebaseProfile: userFirebaseProfile,
+    })
+  }
 
 export const updateParticularsForm =
   (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
