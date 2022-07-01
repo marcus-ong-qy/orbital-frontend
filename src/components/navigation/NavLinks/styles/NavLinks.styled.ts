@@ -66,7 +66,7 @@ export const DropdownDiv = styled.div`
 
   display: grid;
 
-  background: ${(props) => props.theme.palette.common.gray.normal};
+  background: ${(props) => props.theme.palette.common.gray.light};
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 

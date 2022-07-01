@@ -8,7 +8,7 @@ export const StyledDarkModeToggleSwitch = styled(Switch)`
   font-size: 22px;
   line-height: 22px;
   border-radius: 10px;
-  background: ${(props) => props.theme.palette.common.gray.normal};
+  background: ${(props) => props.theme.palette.common.gray.light};
 
   :hover {
     background: ${(props) => props.theme.palette.common.gray.dark};

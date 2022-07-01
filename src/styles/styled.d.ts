@@ -29,7 +29,6 @@ declare module 'styled-components' {
         white: HexCode
         gray: {
           dark: HexCode
-          normal: HexCode
           light: HexCode
         }
       }

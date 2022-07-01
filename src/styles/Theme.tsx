@@ -71,7 +71,6 @@ const lightTheme: DefaultTheme = {
       white: '#fdfdfb',
       gray: {
         dark: '#717a99',
-        normal: '#c4c4c4',
         light: '#e5e5e5',
       },
     },
@@ -101,7 +100,6 @@ const darkTheme: DefaultTheme = {
       white: '#e4e4e2',
       gray: {
         dark: '#717a99',
-        normal: '#a3a3a3',
         light: '#c4c4c4',
       },
     },

@@ -20,7 +20,7 @@ export const SearchBarStyled = styled(Input.Search)`
     height: 35px;
     border-radius: 35px;
     border-width: 2px;
-    background: ${(props) => props.theme.palette.common.gray.normal};
+    background: ${(props) => props.theme.palette.common.gray.light};
 
     cursor: pointer;
 
