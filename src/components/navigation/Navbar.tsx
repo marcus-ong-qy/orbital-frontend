@@ -1,13 +1,9 @@
-import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
-import { auth, getUserFirebaseProfile } from '../../firebase'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { PATHS } from '../../routes/PATHS'
 
-import { defaultUserFirebaseProfile } from '../../store/authentication/reducer'
 import { setNewListing } from '../../store/marketplace/actions'
 
 import NavLink from './NavLinks/NavLink'
@@ -27,8 +23,6 @@ import {
 import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
-import { setUserFirebaseProfile, setIsLoggedIn } from '../../store/authentication/actions'
-// import shoppingCartLogo from '../../assets/shopping-cart.png'
 
 const Navbar = ({
   title,
@@ -42,20 +36,21 @@ const Navbar = ({
   const dispatch = useAppDispatch()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
 
-  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
   const { newListing } = useAppSelector((state) => state.marketplace_reducer)
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
-        dispatch(setIsLoggedIn(true))
-      } else if (!user && isLoggedIn) {
-        dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
-        dispatch(setIsLoggedIn(false))
-      }
-    })
-  })
+  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user && !isLoggedIn) {
+  //       dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
+  //       dispatch(setIsLoggedIn(true))
+  //     } else if (!user && isLoggedIn) {
+  //       dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
+  //       dispatch(setIsLoggedIn(false))
+  //     }
+  //   })
+  // })
 
   const sellOnClick = () => {
     navigate(PATHS.UPLOAD_LISTING)

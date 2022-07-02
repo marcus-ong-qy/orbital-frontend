@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes as Switch } from 'react-router-dom'
+import { onAuthStateChanged } from 'firebase/auth'
+
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import { auth, getUserFirebaseProfile } from '../firebase'
+import { setUserFirebaseProfile, setIsLoggedIn } from '../store/authentication/actions'
+import { defaultUserFirebaseProfile } from '../store/authentication/reducer'
 
 import { PATHS } from './PATHS'
 import {
   // RouteWithoutNav,
-  RouteWithLandingPageNav,
+  // RouteWithLandingPageNav,
   RouteWithNavbar,
 } from './RouteTypes'
 
@@ -68,68 +74,85 @@ enum TITLE {
   SETTINGS = 'Settings',
 }
 
-export const Routes = () => (
-  <Switch>
-    {/* Authentication */}
-    <Route
-      path={PATHS.LOGIN}
-      element={<RouteWithNavbar component={LoginPage} title={TITLE.LOGIN} />}
-    />
-    <Route
-      path={PATHS.REGISTER}
-      element={<RouteWithNavbar component={RegisterPage} title={TITLE.SIGNUP} />}
-    />
-    <Route
-      path={PATHS.FORGET_PASSWORD}
-      element={<RouteWithNavbar component={ForgetPasswordPage} title={TITLE.LOGIN} />}
-    />
-    <Route
-      path="/neigh" // easter egg
-      element={<RouteWithNavbar component={LoadingPage} title="neigh??" />}
-    />
+export const Routes = () => {
+  const dispatch = useAppDispatch()
+  const { isLoggedIn } = useAppSelector((state) => state.auth_reducer)
 
-    {/* Settings */}
-    <Route
-      path={PATHS.USER_PROFILE}
-      element={<RouteWithNavbar component={UserProfilePage} title={TITLE.SETTINGS} />}
-    />
-    <Route
-      path={PATHS.EDIT_USER_PROFILE}
-      element={<RouteWithNavbar component={EditUserProfilePage} title={TITLE.SETTINGS} />}
-    />
-    <Route
-      path={PATHS.USER_LISTINGS}
-      element={<RouteWithNavbar component={UserListingsPage} title={TITLE.SETTINGS} />}
-    />
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user && !isLoggedIn) {
+        dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
+        dispatch(setIsLoggedIn(true))
+      } else if (!user && isLoggedIn) {
+        dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
+        dispatch(setIsLoggedIn(false))
+      }
+    })
+  })
 
-    {/* Marketplace */}
-    <Route
-      path={PATHS.MAIN}
-      element={<RouteWithNavbar component={MainPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.ITEM_ID}
-      element={<RouteWithNavbar component={ItemPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.EDIT_ITEM_ID}
-      element={<RouteWithNavbar component={EditItemPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.SEARCH_ID}
-      element={<RouteWithNavbar component={SearchPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.CHAT_ID}
-      element={<RouteWithNavbar component={ChatPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.DEAL_ID}
-      element={<RouteWithNavbar component={DealPage} title={TITLE.MARKETPLACE} />}
-    />
-    <Route
-      path={PATHS.UPLOAD_LISTING}
-      element={<RouteWithNavbar component={UploadListingPage} title={TITLE.MARKETPLACE} />}
-    />
-  </Switch>
-)
+  return (
+    <Switch>
+      {/* Authentication */}
+      <Route
+        path={PATHS.LOGIN}
+        element={<RouteWithNavbar component={LoginPage} title={TITLE.LOGIN} />}
+      />
+      <Route
+        path={PATHS.REGISTER}
+        element={<RouteWithNavbar component={RegisterPage} title={TITLE.SIGNUP} />}
+      />
+      <Route
+        path={PATHS.FORGET_PASSWORD}
+        element={<RouteWithNavbar component={ForgetPasswordPage} title={TITLE.LOGIN} />}
+      />
+      <Route
+        path="/neigh" // easter egg
+        element={<RouteWithNavbar component={LoadingPage} title="neigh??" />}
+      />
+
+      {/* Settings */}
+      <Route
+        path={PATHS.USER_PROFILE}
+        element={<RouteWithNavbar component={UserProfilePage} title={TITLE.SETTINGS} />}
+      />
+      <Route
+        path={PATHS.EDIT_USER_PROFILE}
+        element={<RouteWithNavbar component={EditUserProfilePage} title={TITLE.SETTINGS} />}
+      />
+      <Route
+        path={PATHS.USER_LISTINGS}
+        element={<RouteWithNavbar component={UserListingsPage} title={TITLE.SETTINGS} />}
+      />
+
+      {/* Marketplace */}
+      <Route
+        path={PATHS.MAIN}
+        element={<RouteWithNavbar component={MainPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.ITEM_ID}
+        element={<RouteWithNavbar component={ItemPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.EDIT_ITEM_ID}
+        element={<RouteWithNavbar component={EditItemPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.SEARCH_ID}
+        element={<RouteWithNavbar component={SearchPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.CHAT_ID}
+        element={<RouteWithNavbar component={ChatPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.DEAL_ID}
+        element={<RouteWithNavbar component={DealPage} title={TITLE.MARKETPLACE} />}
+      />
+      <Route
+        path={PATHS.UPLOAD_LISTING}
+        element={<RouteWithNavbar component={UploadListingPage} title={TITLE.MARKETPLACE} />}
+      />
+    </Switch>
+  )
+}
