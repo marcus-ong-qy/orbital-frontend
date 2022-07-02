@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import { httpsCallable } from 'firebase/functions'
+import {} from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { functions } from '../../../firebase'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { setIsLoading } from '../../../store/authentication/actions'
-import { setUploadStatus, updateItem } from '../../../store/marketplace/actions'
+import { getItemById, setUploadStatus, updateItem } from '../../../store/marketplace/actions'
 import { ItemListing, ItemListingPost } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
@@ -65,28 +63,8 @@ const EditItemPage = () => {
     }
   }, [selectedImageBlob])
 
-  const getItemInfo = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("get item info don't success")
-      }
-      console.log(result)
-      const info: ItemListing = result.data.message._doc
-      setItemInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
   useEffect(() => {
-    getItemInfo(params.itemId!)
+    dispatch(getItemById(params.itemId!, setItemInfo))
   }, [])
 
   const onSubmit = () => {

@@ -8,8 +8,10 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
 import formatPrice from '../../../common/formatPrice'
-import { setIsLoading } from '../../../store/authentication/actions'
+
+import { getAnotherUserInfo, setIsLoading } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
+import { getItemById } from '../../../store/marketplace/actions'
 import { ItemListing } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
@@ -64,46 +66,6 @@ const DealPage = () => {
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
-  const getItemInfo = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("don't success")
-      }
-      console.log(result)
-      const info: ItemListing = result.data.message._doc
-      setItemInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
-  const getOwnerData = async (firebaseUID: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("don't success")
-      }
-      console.log(result)
-      const info: UserData = result.data.message._doc
-      setOwnerInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
   const createReservation = async (itemId: string) => {
     dispatch(setIsLoading(true))
     try {
@@ -125,12 +87,12 @@ const DealPage = () => {
   }
 
   useEffect(() => {
-    getItemInfo(params.itemId!)
+    dispatch(getItemById(params.itemId!, setItemInfo))
   }, [])
 
   useEffect(() => {
     console.log(itemInfo)
-    itemInfo?.createdBy && getOwnerData(itemInfo.createdBy)
+    itemInfo?.createdBy && dispatch(getAnotherUserInfo(itemInfo.createdBy, setOwnerInfo))
   }, [itemInfo])
 
   const chatOnClick = () => {

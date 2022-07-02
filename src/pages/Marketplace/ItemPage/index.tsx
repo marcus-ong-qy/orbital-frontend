@@ -9,8 +9,9 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
 
-import { setIsLoading } from '../../../store/authentication/actions'
+import { getAnotherUserInfo, setIsLoading } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
+import { getItemById } from '../../../store/marketplace/actions'
 import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
@@ -81,67 +82,10 @@ const ItemPage = () => {
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [offererInfo, setOffererInfo] = useState<UserData | null>(null)
 
+  const userHasAnOffer =
+    itemInfo?.createdBy === userFirebaseProfile.uid && itemInfo?.status === 'offered'
+
   // const [userUID, setUserUID] = useState()
-
-  const getItemInfo = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("get item info don't success")
-      }
-      console.log(result)
-      const info: ItemListing = result.data.message._doc
-      setItemInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
-  const getOwnerData = async (firebaseUID: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log('owner data', result)
-        throw new Error("get owner data don't success")
-      }
-      console.log('owner data', result)
-      const info: UserData = result.data.message._doc
-      setOwnerInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
-  const getOffererData = async (firebaseUID: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log('owner data', result)
-        throw new Error("get owner data don't success")
-      }
-      console.log('owner data', result)
-      const info: UserData = result.data.message._doc
-      setOffererInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
 
   const makeTransaction = async (itemId: string) => {
     dispatch(setIsLoading(true))
@@ -164,13 +108,19 @@ const ItemPage = () => {
   }
 
   useEffect(() => {
-    getItemInfo(params.itemId!)
+    dispatch(getItemById(params.itemId!, setItemInfo))
   }, [])
+
+  // useEffect(() => {
+  //   dispatch(setIsLoading(false))
+  // }, [itemInfo])
 
   useEffect(() => {
     console.log(itemInfo)
-    itemInfo?.currentOwner && getOwnerData(itemInfo.currentOwner)
-    itemInfo?.offeredBy && getOffererData(itemInfo.offeredBy)
+    itemInfo?.currentOwner && dispatch(getAnotherUserInfo(itemInfo.currentOwner, setOwnerInfo))
+    userHasAnOffer &&
+      itemInfo?.offeredBy &&
+      dispatch(getAnotherUserInfo(itemInfo.offeredBy, setOffererInfo))
   }, [itemInfo])
 
   useEffect(() => {
@@ -249,29 +199,36 @@ const ItemPage = () => {
       ) : itemInfo ? (
         <>
           <LeftDiv>
-            {itemInfo?.createdBy === userFirebaseProfile.uid && itemInfo?.status === 'offered' && (
-              <TopDiv>
-                <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-                <OwnerDiv>
-                  <OwnerSubDiv>
-                    <ProfilePic src={defaultAvatar} diameter="55px" round />
-                    <OwnerName fontType={h3}>
-                      {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
-                    </OwnerName>
-                  </OwnerSubDiv>
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                    text="🗨️ Chat"
-                    onClick={() => chatOnClick(itemInfo!.offeredBy)}
-                  />
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                    text="Accept"
-                    onClick={dealAcceptOnClick}
-                  />
-                </OwnerDiv>
-              </TopDiv>
-            )}
+            {
+              //TODO abstract this
+              userHasAnOffer && (
+                <TopDiv>
+                  <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
+                  <OwnerDiv>
+                    <OwnerSubDiv>
+                      <ProfilePic
+                        src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
+                        diameter="55px"
+                        round
+                      />
+                      <OwnerName fontType={h3}>
+                        {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+                      </OwnerName>
+                    </OwnerSubDiv>
+                    <Button
+                      style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                      text="🗨️ Chat"
+                      onClick={() => chatOnClick(itemInfo!.offeredBy)}
+                    />
+                    <Button
+                      style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                      text="Accept"
+                      onClick={dealAcceptOnClick}
+                    />
+                  </OwnerDiv>
+                </TopDiv>
+              )
+            }
 
             <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />

@@ -180,6 +180,31 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   }
 }
 
+export const getAnotherUserInfo =
+  (
+    firebaseUID: string,
+    setCustomStateHook: React.Dispatch<React.SetStateAction<UserData | null>>,
+  ) =>
+  async (dispatch: Dispatch<ActionTypes>) => {
+    dispatch(setIsLoading(true))
+    try {
+      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
+      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
+      const success = result.data.success as boolean
+      if (!success) {
+        console.log('owner data', result)
+        throw new Error("get owner data don't success")
+      }
+      console.log('owner data', result)
+      const info: UserData = result.data.message._doc
+      setCustomStateHook(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false))
+    }
+  }
+
 export const setUserFirebaseProfile =
   (userFirebaseProfile: FirebaseProfile) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({

@@ -4,9 +4,13 @@ import { onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
 import { httpsCallable } from 'firebase/functions'
 
+import { useAppDispatch } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
-import { auth, database, functions } from '../../../firebase'
+import { auth, database } from '../../../firebase'
+
+import { getAnotherUserInfo } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
+import { getItemById } from '../../../store/marketplace/actions'
 import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
 
 import {
@@ -23,6 +27,7 @@ import defaultPic from '../../../assets/picture.png'
 import defaultAvatar from '../../../assets/default_avatar.png'
 
 const ChatTab = ({ chatUID }: { chatUID: string }) => {
+  const dispatch = useAppDispatch()
   const theme = useTheme()
   const navigate = useNavigate()
   const { h3, p } = { ...theme.typography.fontSize }
@@ -36,40 +41,6 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
   const isCreator = chatMetadata?.createdBy === user.uid
   const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
 
-  const getItemInfo = async (itemId: string) => {
-    try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("get item info don't success")
-      }
-      console.log(result)
-      const info: ItemListing = result.data.message._doc
-      setItemInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    }
-  }
-
-  const getOwnerData = async (firebaseUID: string) => {
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log('owner data', result)
-        throw new Error("get owner data don't success")
-      }
-      console.log('owner data', result)
-      const info: UserData = result.data.message._doc
-      setOwnerInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    }
-  }
-
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
 
@@ -80,11 +51,11 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
   }, [chatUID])
 
   useEffect(() => {
-    chatMetadata?.itemListing && getItemInfo(chatMetadata.itemListing)
+    chatMetadata?.itemListing && dispatch(getItemById(chatMetadata.itemListing, setItemInfo))
   }, [chatMetadata])
 
   useEffect(() => {
-    receipientUID && getOwnerData(receipientUID)
+    receipientUID && dispatch(getAnotherUserInfo(receipientUID, setOwnerInfo))
   }, [chatMetadata])
 
   const onClick = () => {

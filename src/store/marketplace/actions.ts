@@ -1,5 +1,4 @@
 import { Dispatch } from 'react'
-import { functions } from '../../../src/firebase'
 import { httpsCallable } from 'firebase/functions'
 import {
   ActionTypes,
@@ -9,6 +8,8 @@ import {
   MARKETPLACE_ACTIONS,
   UploadStatus,
 } from './types'
+
+import { functions } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
@@ -49,6 +50,29 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
     dispatch(setIsLoading(false) as any)
   }
 }
+
+export const getItemById =
+  (itemId: string, setCustomStateHook: React.Dispatch<React.SetStateAction<ItemListing | null>>) =>
+  async (dispatch: Dispatch<ActionTypes>) => {
+    // TODO set data to store, and check if itemId === selectedItemListing._id then no need fetch again
+    dispatch(setIsLoading(true) as any)
+    try {
+      const getItemById = httpsCallable(functions, 'getItemById')
+      const result = (await getItemById({ id: itemId })) as any
+      const success = result.data.sucess as boolean
+      if (!success) {
+        console.log(result)
+        throw new Error("get item info don't success")
+      }
+      console.log(result)
+      const info: ItemListing = result.data.message._doc
+      setCustomStateHook(info)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false) as any)
+    }
+  }
 
 export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({

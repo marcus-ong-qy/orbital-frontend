@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { httpsCallable } from 'firebase/functions'
 import { onValue, ref, set } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database, functions } from '../../../firebase'
 
-import { setChatUID, setSelectedChatData } from '../../../store/marketplace/actions'
-import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
+import { getAnotherUserInfo } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
+import { getItemById, setChatUID } from '../../../store/marketplace/actions'
+import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
 
 import ChatMessage from '../ChatMessage/ChatMessage'
 
@@ -69,41 +69,6 @@ const ChatApplet = () => {
   const isCreator = chatMetadata?.createdBy === user?.uid
   const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
 
-  const getItemInfo = async (itemId: string) => {
-    try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("get item info don't success")
-      }
-      console.log('iteminfo', result)
-      const info: ItemListing = result.data.message._doc
-      setItemInfo(info)
-      console.log('da infoooooooo', info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    }
-  }
-
-  const getOwnerData = async (firebaseUID: string) => {
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log('owner data', result)
-        throw new Error("get owner data don't success")
-      }
-      console.log('owner data', result)
-      const info: UserData = result.data.message._doc
-      setOwnerInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    }
-  }
-
   useEffect(() => {
     // TODO might be redundant
     params.chatUID && dispatch(setChatUID(params.chatUID))
@@ -121,11 +86,11 @@ const ChatApplet = () => {
   }, [chatUID])
 
   useEffect(() => {
-    chatMetadata?.itemListing && getItemInfo(chatMetadata.itemListing)
+    chatMetadata?.itemListing && dispatch(getItemById(chatMetadata.itemListing, setItemInfo))
   }, [chatMetadata])
 
   useEffect(() => {
-    receipientUID && getOwnerData(receipientUID)
+    receipientUID && dispatch(getAnotherUserInfo(receipientUID, setOwnerInfo))
   }, [chatMetadata])
 
   useEffect(() => {
