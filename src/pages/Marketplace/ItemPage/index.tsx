@@ -12,7 +12,7 @@ import formatPrice from '../../../common/formatPrice'
 import { getAnotherUserInfo, setIsLoading } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
 import { getItemById } from '../../../store/marketplace/actions'
-import { ChatMetadata, ItemListing } from '../../../store/marketplace/types'
+import { ChatMetadata } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
@@ -77,13 +77,14 @@ const ItemPage = () => {
   const { isLoading, isLoggedIn, userFirebaseProfile } = useAppSelector(
     (state) => state.auth_reducer,
   )
+  const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
-  const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [offererInfo, setOffererInfo] = useState<UserData | null>(null)
 
   const userHasAnOffer =
-    itemInfo?.createdBy === userFirebaseProfile.uid && itemInfo?.status === 'offered'
+    selectedItemData?.createdBy === userFirebaseProfile.uid &&
+    selectedItemData?.status === 'offered'
 
   // const [userUID, setUserUID] = useState()
 
@@ -108,71 +109,61 @@ const ItemPage = () => {
   }
 
   useEffect(() => {
-    dispatch(getItemById(params.itemId!, setItemInfo))
-  }, [])
+    params.itemId && dispatch(getItemById(params.itemId))
+  }, [params.itemId])
 
   // useEffect(() => {
   //   dispatch(setIsLoading(false))
   // }, [itemInfo])
 
   useEffect(() => {
-    console.log(itemInfo)
-    itemInfo?.currentOwner && dispatch(getAnotherUserInfo(itemInfo.currentOwner, setOwnerInfo))
+    console.log(selectedItemData)
+    selectedItemData?.createdBy &&
+      dispatch(getAnotherUserInfo(selectedItemData.createdBy, setOwnerInfo))
     userHasAnOffer &&
-      itemInfo?.offeredBy &&
-      dispatch(getAnotherUserInfo(itemInfo.offeredBy, setOffererInfo))
-  }, [itemInfo])
+      selectedItemData?.offeredBy &&
+      dispatch(getAnotherUserInfo(selectedItemData.offeredBy, setOffererInfo))
+  }, [selectedItemData])
 
   useEffect(() => {
-    console.log('the glorious\n\n', ownerInfo)
+    console.log('the glorious owner info UID\n\n', ownerInfo)
   }, [ownerInfo])
 
-  const chatOnClick = (targetUID: string) => {
+  const chatOnClick = (targetUserUID: string) => {
     const userUID = userFirebaseProfile.uid!
-    const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
-    const newChatUID = crypto.randomUUID()
-    const newChatRef = ref(database, 'chats/' + newChatUID)
+    const userRef = ref(database, 'users/' + userUID + '/chats')
 
     if (!isLoggedIn) return alert('Please Log In to use this Feature!')
 
-    onValue(userChatsUIDRef, (snapshot) => {
+    onValue(userRef, (snapshot) => {
       const data: Record<string, string> = snapshot.val()
 
-      if (data && targetUID in data) {
-        const chatUID = data[targetUID]
+      if (data && targetUserUID in data) {
+        const chatUID = data[targetUserUID]
         navigate(`${PATHS.CHAT}/${chatUID}`)
       } else {
         // // Create new chat
+        const newChatUID = crypto.randomUUID()
+        const newChatRef = ref(database, 'chats/' + newChatUID)
+        const userChatsRef = ref(database, 'users/' + userUID + '/chats/' + targetUserUID)
+        const targetChatsRef = ref(database, 'users/' + targetUserUID + '/chats/' + userUID)
 
         // Set data in 'chats/'
         const newChat: ChatMetadata = {
           id: newChatUID,
           createdAt: Date.now(),
           createdBy: userFirebaseProfile.uid!,
-          receipient: targetUID,
-          itemListing: itemInfo!._id,
+          receipient: targetUserUID,
+          itemListing: selectedItemData!._id,
           recentMessage: null,
         }
         set(newChatRef, newChat)
+
+        // set data in 'users/'
+        set(userChatsRef, newChatUID)
+        set(targetChatsRef, newChatUID)
+        navigate(`${PATHS.CHAT}/${newChatUID}`)
       }
-    })
-
-    onValue(newChatRef, () => {
-      // Set data in 'users/'
-      console.log('i reffing u always')
-      const ownerUID = targetUID
-      const userRef = ref(database, 'users/' + userUID + '/chats')
-      const ownerRef = ref(database, 'users/' + ownerUID + '/chats')
-
-      const userChatRecord: Record<string, string> = {}
-      userChatRecord[ownerUID] = newChatUID
-      const ownerChatRecord: Record<string, string> = {}
-      ownerChatRecord[userUID] = newChatUID
-
-      set(userRef, userChatRecord)
-      set(ownerRef, ownerChatRecord)
-
-      navigate(`${PATHS.CHAT}/${newChatUID}`)
     })
   }
 
@@ -187,7 +178,7 @@ const ItemPage = () => {
   }
 
   const dealAcceptOnClick = () => {
-    makeTransaction(itemInfo!._id)
+    makeTransaction(selectedItemData!._id)
 
     // navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
@@ -196,7 +187,7 @@ const ItemPage = () => {
     <StyledItemPage>
       {isLoading ? (
         <LoadingSpin />
-      ) : itemInfo ? (
+      ) : selectedItemData ? (
         <>
           <LeftDiv>
             {
@@ -218,7 +209,7 @@ const ItemPage = () => {
                     <Button
                       style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
                       text="🗨️ Chat"
-                      onClick={() => chatOnClick(itemInfo!.offeredBy)}
+                      onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
                     />
                     <Button
                       style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
@@ -232,13 +223,13 @@ const ItemPage = () => {
 
             <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
-              <TypeBannerText>{itemInfo.typeOfTransaction}</TypeBannerText>
+              <TypeBannerText>{selectedItemData.typeOfTransaction}</TypeBannerText>
             </TypeBannerDiv>
             <ItemShowcaseDiv>
-              <ItemPicture src={itemInfo.imageURL ?? defaultPic} />
+              <ItemPicture src={selectedItemData.imageURL ?? defaultPic} />
             </ItemShowcaseDiv>
 
-            {itemInfo?.createdBy !== userFirebaseProfile.uid && (
+            {selectedItemData?.createdBy !== userFirebaseProfile.uid && (
               <BottomDiv>
                 <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
                 <OwnerDiv>
@@ -253,7 +244,7 @@ const ItemPage = () => {
                   <Button
                     style={{ width: '15vw', borderRadius: 0 }}
                     text="🗨️ Chat"
-                    onClick={() => chatOnClick(itemInfo!.currentOwner)}
+                    onClick={() => chatOnClick(selectedItemData!.createdBy)}
                   />
                 </OwnerDiv>
               </BottomDiv>
@@ -261,15 +252,17 @@ const ItemPage = () => {
           </LeftDiv>
 
           <InfoDiv>
-            <ItemName fontType={h2}>{itemInfo.name}</ItemName>
+            <ItemName fontType={h2}>{selectedItemData.name}</ItemName>
             <PriceTag fontType={h1}>
-              ${formatPrice(itemInfo.price)}
-              <PerDayHighlight>{itemInfo.typeOfTransaction === 'Rent' && ' /day'}</PerDayHighlight>
+              ${formatPrice(selectedItemData.price)}
+              <PerDayHighlight>
+                {selectedItemData.typeOfTransaction === 'Rent' && ' /day'}
+              </PerDayHighlight>
             </PriceTag>
-            <DescriptionDiv fontType={p}>{itemInfo.description}</DescriptionDiv>
+            <DescriptionDiv fontType={p}>{selectedItemData.description}</DescriptionDiv>
             <DealInfoDiv fontType={p}>
               <Subheader fontType={h2}>Deal Information</Subheader>
-              <DescriptionDiv fontType={p}>{itemInfo.deliveryInformation}</DescriptionDiv>
+              <DescriptionDiv fontType={p}>{selectedItemData.deliveryInformation}</DescriptionDiv>
             </DealInfoDiv>
             <ItemConditionSpan>
               <Subheader fontType={h2}>Item Condition:&nbsp;</Subheader>
@@ -278,13 +271,13 @@ const ItemPage = () => {
             {/* <TagsDiv>
               <Subheader fontType={h2}>Tags</Subheader>
               <TagsContainer>
-                {itemInfo.tags?.map((tag, index) => (
+                {selectedItemData.tags?.map((tag, index) => (
                   <Tag key={index} label={tag} />
                 ))}
               </TagsContainer>
             </TagsDiv> */}
 
-            {itemInfo?.createdBy === userFirebaseProfile.uid ? (
+            {selectedItemData?.createdBy === userFirebaseProfile.uid ? (
               <Button
                 style={{
                   marginTop: '24px',
@@ -293,7 +286,7 @@ const ItemPage = () => {
                 text="Edit Listing✏️"
                 onClick={editOnClick}
               />
-            ) : itemInfo?.status === 'offered' ? (
+            ) : selectedItemData?.status === 'offered' ? (
               <Button
                 style={{
                   marginTop: '24px',

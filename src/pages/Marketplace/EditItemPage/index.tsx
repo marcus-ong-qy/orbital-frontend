@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
-import {} from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
 import { PATHS } from '../../../routes/PATHS'
@@ -36,18 +35,19 @@ const EditItemPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const params = useParams<{ itemId: string }>()
+
   const { navTitleFont, p } = { ...theme.typography.fontSize }
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
   const { isLoading, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
-  const { uploadStatus } = useAppSelector((state) => state.marketplace_reducer)
+  const { uploadStatus, selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
+  const [formInfo, setFormInfo] = useState<ItemListing>(selectedItemData)
 
-  const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
-  const allowedToEdit = userFirebaseProfile.uid === itemInfo?.createdBy
+  const allowedToEdit = userFirebaseProfile.uid === formInfo?.createdBy
 
   useEffect(() => {
     if (uploadStatus === 'SUCCESS') {
@@ -63,17 +63,37 @@ const EditItemPage = () => {
     }
   }, [selectedImageBlob])
 
+  // const getItemInfo = async (itemId: string) => {
+  //   dispatch(setIsLoading(true))
+  //   try {
+  //     const getItemById = httpsCallable(functions, 'getItemById')
+  //     const result = (await getItemById({ id: itemId })) as any
+  //     const success = result.data.sucess as boolean
+  //     if (!success) {
+  //       console.log(result)
+  //       throw new Error("get item info don't success")
+  //     }
+  //     console.log(result)
+  //     const info: ItemListing = result.data.message._doc
+  //     setItemInfo(info)
+  //   } catch (e) {
+  //     console.error('The error is:\n', e as Error)
+  //   } finally {
+  //     dispatch(setIsLoading(false))
+  //   }
+  // }
+
   useEffect(() => {
-    dispatch(getItemById(params.itemId!, setItemInfo))
-  }, [])
+    params.itemId && dispatch(getItemById(params.itemId))
+  }, [params.itemId])
 
   const onSubmit = () => {
     const newListing: ItemListingPost = {
-      name: itemInfo?.name?.trim() ?? '',
-      price: itemInfo?.price ?? 0,
-      description: itemInfo?.description?.trim() ?? '',
-      typeOfTransaction: itemInfo?.typeOfTransaction ?? 'Rent',
-      deliveryInformation: itemInfo?.deliveryInformation?.trim() ?? '',
+      name: formInfo?.name?.trim() ?? '',
+      price: formInfo?.price ?? 0,
+      description: formInfo?.description?.trim() ?? '',
+      typeOfTransaction: formInfo?.typeOfTransaction ?? 'Rent',
+      deliveryInformation: formInfo?.deliveryInformation?.trim() ?? '',
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
       imageURL: selectedImageB64,
@@ -93,7 +113,7 @@ const EditItemPage = () => {
               <TitleDiv fontType={navTitleFont}>Edit Item</TitleDiv>
               <UploadListingDiv>
                 <LeftDiv>
-                  <ItemPicture src={itemInfo?.imageURL ?? selectedImageURL} />
+                  <ItemPicture src={formInfo?.imageURL ?? selectedImageURL} />
                   <PictureUploader
                     text="Upload Picture"
                     setSelectedImageBlob={setSelectedImageBlob}
@@ -103,7 +123,7 @@ const EditItemPage = () => {
                   <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
                     <EntryDiv type="input">
                       <EntryName fontType={p}> Item Name&nbsp;</EntryName>
-                      <ItemName fontType={p}>{itemInfo.name}</ItemName>
+                      <ItemName fontType={p}>{formInfo.name}</ItemName>
                     </EntryDiv>
                     <EntryDiv type="input">
                       <EntryName fontType={p}> Listing Type&nbsp;</EntryName>
@@ -112,11 +132,11 @@ const EditItemPage = () => {
                         placeholder="Listing Type"
                         options={['Rent', 'Sell']}
                         register={register}
-                        value={itemInfo?.typeOfTransaction}
+                        value={formInfo?.typeOfTransaction}
                         onChange={(e) =>
-                          itemInfo &&
-                          setItemInfo({
-                            ...itemInfo,
+                          formInfo &&
+                          setFormInfo({
+                            ...formInfo,
                             typeOfTransaction: e.target.value as 'Rent' | 'Sell',
                           })
                         }
@@ -124,7 +144,7 @@ const EditItemPage = () => {
                     </EntryDiv>
                     <EntryDiv type="input">
                       <EntryName fontType={p}>
-                        Price <b>SG$</b> {itemInfo?.typeOfTransaction === 'Rent' && '/day'}
+                        Price <b>SG$</b> {formInfo?.typeOfTransaction === 'Rent' && '/day'}
                       </EntryName>
                       <InputField
                         title="Price"
@@ -132,9 +152,9 @@ const EditItemPage = () => {
                         placeholder="Enter Price (in SGD)"
                         pattern={/^\d*\.?\d{0,2}$/}
                         register={register}
-                        value={itemInfo?.price}
+                        value={formInfo?.price}
                         onChange={(e) =>
-                          itemInfo && setItemInfo({ ...itemInfo, price: Number(e.target.value) })
+                          formInfo && setFormInfo({ ...formInfo, price: Number(e.target.value) })
                         }
                       />
                     </EntryDiv>
@@ -144,9 +164,9 @@ const EditItemPage = () => {
                         title="ProductDescription"
                         placeholder="Description of your Product"
                         {...register('ProductDescription', { required: true })}
-                        value={itemInfo?.description}
+                        value={formInfo?.description}
                         onChange={(e) =>
-                          itemInfo && setItemInfo({ ...itemInfo, description: e.target.value })
+                          formInfo && setFormInfo({ ...formInfo, description: e.target.value })
                         }
                       />
                     </EntryDiv>
@@ -156,10 +176,10 @@ const EditItemPage = () => {
                         title="DealInformation"
                         placeholder="Include details such as Delivery and Payment methods"
                         {...register('DealInformation', { required: true })}
-                        value={itemInfo?.deliveryInformation}
+                        value={formInfo?.deliveryInformation}
                         onChange={(e) =>
-                          itemInfo &&
-                          setItemInfo({ ...itemInfo, deliveryInformation: e.target.value })
+                          formInfo &&
+                          setFormInfo({ ...formInfo, deliveryInformation: e.target.value })
                         }
                       />
                     </EntryDiv>

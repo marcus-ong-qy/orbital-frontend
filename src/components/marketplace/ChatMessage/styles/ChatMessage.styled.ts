@@ -22,7 +22,7 @@ export const ChatBubble = styled.div<{ messageType: 'sent' | 'received' }>`
   background: ${(props) =>
     props.messageType === 'sent'
       ? props.theme.palette.primary
-      : props.theme.palette.common.gray.light};
+      : props.theme.palette.common.gray.dark};
   border: 1px solid ${(props) => props.theme.palette.common.gray.light};
   border-radius: 20px;
 `

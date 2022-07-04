@@ -11,6 +11,7 @@ import {
 
 import { functions } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
+import { GetState } from '../types'
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -51,22 +52,40 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
   }
 }
 
+export const setSelectedItemData = (itemData: ItemListing) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: MARKETPLACE_ACTIONS.SET_SELECTED_ITEM_DATA,
+    selectedItemData: itemData,
+  })
+}
+
+/**
+ *
+ * @param itemId
+ * @param setCustomStateHook (optional) pass this to set value to useState hook instead of to store
+ */
 export const getItemById =
-  (itemId: string, setCustomStateHook: React.Dispatch<React.SetStateAction<ItemListing | null>>) =>
-  async (dispatch: Dispatch<ActionTypes>) => {
-    // TODO set data to store, and check if itemId === selectedItemListing._id then no need fetch again
+  (itemId: string, setCustomStateHook?: React.Dispatch<React.SetStateAction<ItemListing | null>>) =>
+  async (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    const { selectedItemData } = getState().marketplace_reducer
+    // TODO set data to store, and check if itemId === selectedItemData._id then no need fetch again
     dispatch(setIsLoading(true) as any)
     try {
-      const getItemById = httpsCallable(functions, 'getItemById')
-      const result = (await getItemById({ id: itemId })) as any
-      const success = result.data.sucess as boolean
-      if (!success) {
+      if (itemId !== selectedItemData._id) {
+        const getItemById = httpsCallable(functions, 'getItemById')
+        const result = (await getItemById({ id: itemId })) as any
+        const success = result.data.sucess as boolean
+        if (!success) {
+          console.log(result)
+          throw new Error("get item info don't success")
+        }
         console.log(result)
-        throw new Error("get item info don't success")
+        const info: ItemListing = result.data.message._doc
+        info._id = itemId // TODO temp patch for backend bug remove when not needed
+        setCustomStateHook ? setCustomStateHook(info) : dispatch(setSelectedItemData(info) as any)
+      } else {
+        console.count('no func call since item id matches')
       }
-      console.log(result)
-      const info: ItemListing = result.data.message._doc
-      setCustomStateHook(info)
     } catch (e) {
       console.error('The error is:\n', e as Error)
     } finally {

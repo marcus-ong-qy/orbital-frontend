@@ -62,8 +62,8 @@ const DealPage = () => {
   const params = useParams<{ itemId: string }>()
   const { h2, h3, p } = { ...theme.typography.fontSize }
   const { isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
-  const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
   const createReservation = async (itemId: string) => {
@@ -87,13 +87,14 @@ const DealPage = () => {
   }
 
   useEffect(() => {
-    dispatch(getItemById(params.itemId!, setItemInfo))
+    dispatch(getItemById(params.itemId!))
   }, [])
 
   useEffect(() => {
-    console.log(itemInfo)
-    itemInfo?.createdBy && dispatch(getAnotherUserInfo(itemInfo.createdBy, setOwnerInfo))
-  }, [itemInfo])
+    console.log(selectedItemData)
+    selectedItemData?.createdBy &&
+      dispatch(getAnotherUserInfo(selectedItemData.createdBy, setOwnerInfo))
+  }, [selectedItemData])
 
   const chatOnClick = () => {
     // navigate(`${PATHS.CHAT}/${ownerInfo?.firebaseUID}`)
@@ -109,7 +110,7 @@ const DealPage = () => {
       {isLoading ? (
         <LoadingSpin />
       ) : (
-        itemInfo && (
+        selectedItemData && (
           <>
             <LeftDiv>
               <ItemShowcaseDiv>
@@ -132,12 +133,14 @@ const DealPage = () => {
             </LeftDiv>
             <InfoDiv>
               <DealSummaryCard>
-                <InfoRow title="Item Name" content={itemInfo.name} />
-                <InfoRow title="Deal Type" content={itemInfo.typeOfTransaction} />
-                <InfoRow title="Cost" content={`$${formatPrice(itemInfo.price)}`} />
+                <InfoRow title="Item Name" content={selectedItemData.name} />
+                <InfoRow title="Deal Type" content={selectedItemData.typeOfTransaction} />
+                <InfoRow title="Cost" content={`$${formatPrice(selectedItemData.price)}`} />
                 <DealInfoDiv fontType={p}>
                   <Subheader fontType={h2}>Deal Information:</Subheader>
-                  <DescriptionDiv fontType={p}>{itemInfo.deliveryInformation}</DescriptionDiv>
+                  <DescriptionDiv fontType={p}>
+                    {selectedItemData.deliveryInformation}
+                  </DescriptionDiv>
                 </DealInfoDiv>
               </DealSummaryCard>
               <DealButton

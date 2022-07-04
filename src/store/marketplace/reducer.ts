@@ -9,6 +9,15 @@ import {
   UploadStatus,
 } from './types'
 
+const defaultChatMetadata: ChatMetadata = {
+  id: '',
+  createdAt: 0,
+  createdBy: '',
+  receipient: '',
+  itemListing: '',
+  recentMessage: null,
+}
+
 const defaultListingPost: ItemListingPost = {
   name: '',
   description: '',
@@ -19,15 +28,25 @@ const defaultListingPost: ItemListingPost = {
   imageURL: '',
 }
 
+const defaultItemListing: ItemListing = {
+  _id: '',
+  createdBy: '',
+  currentOwner: '',
+  status: 'available',
+  offeredBy: '',
+  name: '',
+  description: '',
+  typeOfTransaction: 'Sell',
+  price: 0,
+  deliveryInformation: '',
+  tags: [],
+  imageURL: '',
+}
+
 const initialState: State = {
-  selectedChatData: {
-    id: '',
-    createdAt: 0,
-    createdBy: '',
-    receipient: '',
-    itemListing: '',
-    recentMessage: null,
-  },
+  selectedChatData: defaultChatMetadata,
+  selectedItemData: defaultItemListing,
+
   allListings: [],
   allUserListings: [],
   chatUID: '',
@@ -40,6 +59,8 @@ const initialState: State = {
 
 type State = {
   selectedChatData: ChatMetadata
+  selectedItemData: ItemListing
+
   allListings: ItemListing[]
   allUserListings: ItemListing[]
   chatUID: string
@@ -54,6 +75,8 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
   switch (action.type) {
     case MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA:
       return { ...state, selectedChatData: action.selectedChatData }
+    case MARKETPLACE_ACTIONS.SET_SELECTED_ITEM_DATA:
+      return { ...state, selectedItemData: action.selectedItemData }
     case MARKETPLACE_ACTIONS.SET_ALL_LISTINGS:
       return { ...state, allListings: action.allListings }
     case MARKETPLACE_ACTIONS.SEARCH:

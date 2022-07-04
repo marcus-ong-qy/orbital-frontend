@@ -42,12 +42,13 @@ export type ItemListingPost = {
 }
 
 export type UploadStatus = 'SUCCESS' | 'INITIAL'
-export type ItemStatus = 'available' | 'offered' | 'accepted'
+export type ItemStatus = 'available' | 'offered' | 'sold'
 
 /** Actions' types */
 
 export enum MARKETPLACE_ACTIONS {
   SET_SELECTED_CHAT_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA',
+  SET_SELECTED_ITEM_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_ITEM_DATA',
   SET_ALL_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_LISTINGS',
   SET_ALL_USER_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS',
   SET_CHAT_UID = 'MARKETPLACE_ACTIONS.SET_CHAT_UID',
@@ -62,6 +63,12 @@ type SelectedChatData = {
   type: typeof MARKETPLACE_ACTIONS.SET_SELECTED_CHAT_DATA
   selectedChatData: ChatMetadata
 }
+
+type SelectedItemData = {
+  type: typeof MARKETPLACE_ACTIONS.SET_SELECTED_ITEM_DATA
+  selectedItemData: ItemListing
+}
+
 type SetAllListings = {
   type: typeof MARKETPLACE_ACTIONS.SET_ALL_LISTINGS
   allListings: ItemListing[]
@@ -96,6 +103,7 @@ type SetUploadStatus = {
 
 export type ActionTypes =
   | SelectedChatData
+  | SelectedItemData
   | SetAllListings
   | Search
   | SetAllUserListings
