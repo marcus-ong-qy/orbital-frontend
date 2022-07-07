@@ -42,6 +42,9 @@ const EditUserProfilePage = React.lazy(
 const UserListingsPage = React.lazy(
   () => import(/* webpackChunckName: "UserListingsPage" */ '../pages/Settings/UserListingsPage'),
 )
+const UserOrdersPage = React.lazy(
+  () => import(/* webpackChunckName: "UserOrdersPage" */ '../pages/Settings/UserOrdersPage'),
+)
 
 //Marketplace
 const MainPage = React.lazy(
@@ -122,6 +125,10 @@ export const Routes = () => {
       <Route
         path={PATHS.USER_LISTINGS}
         element={<RouteWithNavbar component={UserListingsPage} title={TITLE.SETTINGS} />}
+      />
+      <Route
+        path={PATHS.USER_ORDERS}
+        element={<RouteWithNavbar component={UserOrdersPage} title={TITLE.SETTINGS} />}
       />
 
       {/* Marketplace */}

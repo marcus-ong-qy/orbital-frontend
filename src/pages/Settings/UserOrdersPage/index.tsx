@@ -7,29 +7,25 @@ import { getUserListings } from '../../../store/marketplace/actions'
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
 
-import {
-  NoListingsLabel,
-  UserListingsDiv,
-  UserListingTitle,
-} from './styles/UserListingsPage.styled'
+import { NoOrdersLabel, UserOrdersDiv, UserOrderTitle } from './styles/UserOrdersPage.styled'
 
-const UserListingsPage = () => {
+const UserOrdersPage = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
-  const { allUserListings } = useAppSelector((state) => state.marketplace_reducer)
+  const { allUserReservations } = useAppSelector((state) => state.marketplace_reducer)
 
   useEffect(() => {
-    dispatch(getUserListings('any'))
+    dispatch(getUserListings('reservation'))
   }, [])
 
   return (
     <SettingsPageWrapper>
-      <UserListingTitle fontType={navTitleFont}>My Listings</UserListingTitle>
-      {allUserListings.length ? (
-        <UserListingsDiv>
-          {allUserListings.map((listing, index) => {
+      <UserOrderTitle fontType={navTitleFont}>My Orders</UserOrderTitle>
+      {allUserReservations.length ? (
+        <UserOrdersDiv>
+          {allUserReservations.map((listing, index) => {
             return (
               <HorizontalListingBar
                 key={index}
@@ -43,12 +39,12 @@ const UserListingsPage = () => {
               />
             )
           })}
-        </UserListingsDiv>
+        </UserOrdersDiv>
       ) : (
-        <NoListingsLabel fontType={h1}>No Listings Found</NoListingsLabel>
+        <NoOrdersLabel fontType={h1}>No Orders Found</NoOrdersLabel>
       )}
     </SettingsPageWrapper>
   )
 }
 
-export default UserListingsPage
+export default UserOrdersPage

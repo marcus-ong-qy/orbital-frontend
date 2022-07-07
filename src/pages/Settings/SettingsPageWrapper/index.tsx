@@ -40,7 +40,7 @@ const SettingsPageWrapper = ({ children }: { children: JSX.Element[] | JSX.Eleme
             </MenuSubDiv>
             <MenuSubDiv>
               <MenuSubtitle fontType={h1}>Marketplace</MenuSubtitle>
-              <MenuHyperlink fontType={h3} onClick={() => alert('TODO')}>
+              <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_ORDERS)}>
                 My Orders
               </MenuHyperlink>
               <MenuHyperlink fontType={h3} onClick={() => navigate(PATHS.USER_LISTINGS)}>
