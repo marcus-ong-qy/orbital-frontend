@@ -49,6 +49,8 @@ const initialState: State = {
 
   allListings: [],
   allUserListings: [],
+  allUserReservations: [],
+
   chatUID: '',
   // searchText: '',
   searchTags: [],
@@ -63,6 +65,8 @@ type State = {
 
   allListings: ItemListing[]
   allUserListings: ItemListing[]
+  allUserReservations: ItemListing[]
+
   chatUID: string
   // searchText: string
   searchTags: string[]
@@ -79,6 +83,11 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
       return { ...state, selectedItemData: action.selectedItemData }
     case MARKETPLACE_ACTIONS.SET_ALL_LISTINGS:
       return { ...state, allListings: action.allListings }
+    case MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS:
+      return { ...state, allUserListings: action.allUserListings }
+    case MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS:
+      return { ...state, allUserReservations: action.allUserReservations }
+
     case MARKETPLACE_ACTIONS.SEARCH:
       return {
         ...state,
@@ -86,8 +95,6 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
         searchTags: action.searchTags,
         allSearchListings: action.allSearchListings,
       }
-    case MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS:
-      return { ...state, allUserListings: action.allUserListings }
     case MARKETPLACE_ACTIONS.SET_CHAT_UID:
       return { ...state, chatUID: action.chatUID }
     case MARKETPLACE_ACTIONS.CREATE_NEW_LISTING:

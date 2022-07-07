@@ -21,7 +21,7 @@ const UserListingsPage = () => {
   const { allUserListings } = useAppSelector((state) => state.marketplace_reducer)
 
   useEffect(() => {
-    dispatch(getUserListings())
+    dispatch(getUserListings('any'))
   }, [])
 
   return (

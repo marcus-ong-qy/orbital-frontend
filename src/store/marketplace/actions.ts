@@ -9,9 +9,10 @@ import {
   UploadStatus,
 } from './types'
 
-import { functions } from '../../../src/firebase'
+import { auth, functions } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
 import { GetState } from '../types'
+import { onAuthStateChanged } from 'firebase/auth'
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -184,25 +185,60 @@ export const filterAndSearch =
     }
   }
 
-export const getUserListings = () => async (dispatch: Dispatch<ActionTypes>) => {
-  dispatch(setIsLoading(true) as any)
-  try {
-    const getUserListings = httpsCallable(functions, 'getUserListings')
-    const result = (await getUserListings()) as any
-    const success = result.data.success as boolean
-    if (!success) {
-      console.log(result)
-      throw new Error("get user listings don't success")
-    }
-    console.log('get user listings:\n', result)
-    const allUserListings: ItemListing[] = result.data.message
-    dispatch({
-      type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
-      allUserListings: allUserListings,
+/**
+ *
+ * @param status filter query by item status, 'any' to get all listings by the user (TODO now only accepts 'any')
+ */
+
+export const getUserListings =
+  (
+    status: // 'available' | 'offered' | 'sold' |
+    'reservation' | 'any',
+  ) =>
+  (dispatch: Dispatch<ActionTypes>) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setIsLoading(true) as any)
+        const userUID = user.uid
+
+        let url = ''
+        switch (status) {
+          case 'any':
+            url = `https://asia-southeast1-orbital2-4105d.cloudfunctions.net/getUserListings?uid=${userUID}`
+            break
+          default:
+            url = `https://asia-southeast1-orbital2-4105d.cloudfunctions.net/getUserListings?uid=${userUID}&status=${status}`
+            break
+        }
+
+        fetch(url, {
+          method: 'GET',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then((resp) => resp.json())
+          .then((res) => {
+            // TODO consider all cases
+            if (status === 'any') {
+              const allUserListings: ItemListing[] = res.message
+              dispatch({
+                type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
+                allUserListings: allUserListings,
+              })
+            } else if (status === 'reservation') {
+              const allUserReservations: ItemListing[] = res.message
+              dispatch({
+                type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
+                allUserReservations: allUserReservations,
+              })
+            }
+          })
+          .catch((err) => console.error(err))
+          .finally(() => dispatch(setIsLoading(false) as any))
+      } else {
+        alert('not logged in!')
+      }
     })
-  } catch (e) {
-    console.error('The error is:\n', e as Error)
-  } finally {
-    dispatch(setIsLoading(false) as any)
   }
-}

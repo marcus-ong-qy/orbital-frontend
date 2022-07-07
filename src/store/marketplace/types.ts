@@ -51,6 +51,7 @@ export enum MARKETPLACE_ACTIONS {
   SET_SELECTED_ITEM_DATA = 'MARKETPLACE_ACTIONS.SET_SELECTED_ITEM_DATA',
   SET_ALL_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_LISTINGS',
   SET_ALL_USER_LISTINGS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS',
+  SET_ALL_USER_RESERVATIONS = 'MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS',
   SET_CHAT_UID = 'MARKETPLACE_ACTIONS.SET_CHAT_UID',
   SEARCH = 'MARKETPLACE_ACTIONS.SEARCH',
   CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
@@ -74,16 +75,21 @@ type SetAllListings = {
   allListings: ItemListing[]
 }
 
+type SetAllUserListings = {
+  type: typeof MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS
+  allUserListings: ItemListing[]
+}
+
+type SetAllUserReservations = {
+  type: typeof MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS
+  allUserReservations: ItemListing[]
+}
+
 type Search = {
   type: typeof MARKETPLACE_ACTIONS.SEARCH
   // searchText: string
   searchTags: string[]
   allSearchListings: ItemListing[]
-}
-
-type SetAllUserListings = {
-  type: typeof MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS
-  allUserListings: ItemListing[]
 }
 
 type SetChatUID = {
@@ -105,8 +111,9 @@ export type ActionTypes =
   | SelectedChatData
   | SelectedItemData
   | SetAllListings
-  | Search
   | SetAllUserListings
+  | SetAllUserReservations
+  | Search
   | SetChatUID
   | UploadListing
   | SetUploadStatus

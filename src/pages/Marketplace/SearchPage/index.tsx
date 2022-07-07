@@ -17,7 +17,7 @@ import {
   StyledSearchPage,
 } from './styles/SearchPage.styled'
 
-const UserListingsPage = () => {
+const SearchPage = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useParams<{ searchText: string }>()
@@ -31,10 +31,6 @@ const UserListingsPage = () => {
 
   useEffect(() => {
     dispatch(filterAndSearch(params.searchText ?? '', null))
-  }, [])
-
-  useEffect(() => {
-    dispatch(getUserListings())
   }, [])
 
   return (
@@ -74,4 +70,4 @@ const UserListingsPage = () => {
   )
 }
 
-export default UserListingsPage
+export default SearchPage
