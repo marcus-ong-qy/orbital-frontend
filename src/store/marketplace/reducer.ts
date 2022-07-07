@@ -41,6 +41,7 @@ const defaultItemListing: ItemListing = {
   deliveryInformation: '',
   tags: [],
   imageURL: '',
+  timeCreated: 0,
 }
 
 const initialState: State = {

@@ -28,6 +28,7 @@ export type ItemListing = {
   imageURL: string
   status: ItemStatus
   offeredBy: string
+  timeCreated: number
   // durationOfRent: number
 }
 

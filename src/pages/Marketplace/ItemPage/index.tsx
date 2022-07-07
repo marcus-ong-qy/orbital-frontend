@@ -1,15 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { httpsCallable } from 'firebase/functions'
 import { ref, onValue, set } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
-import { database, functions } from '../../../firebase'
+import { database } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import formatPrice from '../../../common/formatPrice'
 
-import { getAnotherUserInfo, setIsLoading } from '../../../store/authentication/actions'
+import { getAnotherUserInfo } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
 import { getItemById } from '../../../store/marketplace/actions'
 import { ChatMetadata } from '../../../store/marketplace/types'
@@ -18,7 +17,7 @@ import Button from '../../../components/common/Button/Button'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 
 import {
-  BottomDiv,
+  ItemOwnerUserDiv,
   BottomDivTitle,
   DealInfoDiv,
   DescriptionDiv,
@@ -28,9 +27,9 @@ import {
   ItemPicture,
   ItemShowcaseDiv,
   LeftDiv,
-  OwnerDiv,
+  UserInfoDiv,
   OwnerName,
-  OwnerSubDiv,
+  UserInfoSubDiv,
   PriceTag,
   StyledItemPage,
   Subheader,
@@ -41,7 +40,7 @@ import {
   TypeBannerPic,
   TypeBannerText,
   PerDayHighlight,
-  TopDiv,
+  OfferAlertUserDiv,
 } from './styles/ItemPage.styled'
 import { ProfilePic } from '../../../styles/index.styled'
 
@@ -87,26 +86,6 @@ const ItemPage = () => {
     selectedItemData?.status === 'offered'
 
   // const [userUID, setUserUID] = useState()
-
-  const makeTransaction = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const makeTransaction = httpsCallable(functions, 'makeTransaction')
-      const result = (await makeTransaction({ item_id: itemId })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("make transaction don't success")
-      }
-      console.log('transaction', result)
-      const info: UserData = result.data.message._doc
-      setOwnerInfo(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
 
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
@@ -178,9 +157,9 @@ const ItemPage = () => {
   }
 
   const dealAcceptOnClick = () => {
-    makeTransaction(selectedItemData!._id)
+    // makeTransaction(selectedItemData!._id)
 
-    // navigate(`${PATHS.DEAL}/${params.itemId}`)
+    navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
   return (
@@ -193,10 +172,10 @@ const ItemPage = () => {
             {
               //TODO abstract this
               userHasAnOffer && (
-                <TopDiv>
+                <OfferAlertUserDiv>
                   <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-                  <OwnerDiv>
-                    <OwnerSubDiv>
+                  <UserInfoDiv>
+                    <UserInfoSubDiv>
                       <ProfilePic
                         src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
                         diameter="55px"
@@ -205,7 +184,7 @@ const ItemPage = () => {
                       <OwnerName fontType={h3}>
                         {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
                       </OwnerName>
-                    </OwnerSubDiv>
+                    </UserInfoSubDiv>
                     <Button
                       style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
                       text="🗨️ Chat"
@@ -216,8 +195,8 @@ const ItemPage = () => {
                       text="Accept"
                       onClick={dealAcceptOnClick}
                     />
-                  </OwnerDiv>
-                </TopDiv>
+                  </UserInfoDiv>
+                </OfferAlertUserDiv>
               )
             }
 
@@ -230,24 +209,24 @@ const ItemPage = () => {
             </ItemShowcaseDiv>
 
             {selectedItemData?.createdBy !== userFirebaseProfile.uid && (
-              <BottomDiv>
+              <ItemOwnerUserDiv>
                 <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-                <OwnerDiv>
-                  <OwnerSubDiv>
+                <UserInfoDiv>
+                  <UserInfoSubDiv>
                     <ProfilePic
                       src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
                       diameter="55px"
                       round
                     />
                     <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
-                  </OwnerSubDiv>
+                  </UserInfoSubDiv>
                   <Button
                     style={{ width: '15vw', borderRadius: 0 }}
                     text="🗨️ Chat"
                     onClick={() => chatOnClick(selectedItemData!.createdBy)}
                   />
-                </OwnerDiv>
-              </BottomDiv>
+                </UserInfoDiv>
+              </ItemOwnerUserDiv>
             )}
           </LeftDiv>
 

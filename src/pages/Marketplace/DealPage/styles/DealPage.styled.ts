@@ -32,7 +32,7 @@ export const ItemPicture = styled.img`
   object-fit: contain;
 `
 
-export const BottomDiv = styled.div`
+const UserDiv = styled.div`
   ${borderedGreyDivCss}
 
   position: relative;
@@ -42,7 +42,14 @@ export const BottomDiv = styled.div`
 
   width: 100%;
   height: 132px;
+`
+
+export const ItemOwnerUserDiv = styled(UserDiv)`
   margin-top: 21px;
+`
+
+export const OfferAlertUserDiv = styled(UserDiv)`
+  margin: 7px 0 21px;
 `
 
 export const BottomDivTitle = styled.div<{ fontType: FontType }>`
@@ -53,7 +60,7 @@ export const BottomDivTitle = styled.div<{ fontType: FontType }>`
   left: 2vw;
 `
 
-export const OwnerDiv = styled.div`
+export const OwnerInfoDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -62,7 +69,7 @@ export const OwnerDiv = styled.div`
   margin: 16px 2vw 0 3vw;
 `
 
-export const OwnerSubDiv = styled.div`
+export const OwnerInfoSubDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
