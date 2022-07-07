@@ -1,5 +1,6 @@
 import { Dispatch } from 'react'
 import { httpsCallable } from 'firebase/functions'
+import { onAuthStateChanged } from 'firebase/auth'
 import {
   ActionTypes,
   ChatMetadata,
@@ -12,7 +13,8 @@ import {
 import { auth, functions } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
 import { GetState } from '../types'
-import { onAuthStateChanged } from 'firebase/auth'
+
+const itemSorter = (item1: ItemListing, item2: ItemListing) => item2.timeCreated - item1.timeCreated
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -41,7 +43,7 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
       throw new Error("get listings don't success")
     }
     console.log('getListings:\n', result)
-    const allListings: ItemListing[] = result.data.message
+    const allListings: ItemListing[] = result.data.message.sort(itemSorter)
     dispatch({
       type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
       allListings: allListings,
@@ -171,8 +173,10 @@ export const filterAndSearch =
         console.log(result)
         throw new Error("search don't success")
       }
-      console.log(result)
-      const allSearchListings: ItemListing[] = result.data.message?.map((msg: any) => msg._doc)
+      console.log('rrrrrrrrrrrrrrr', result)
+      const allSearchListings: ItemListing[] = result.data.message
+        ?.map((msg: any) => msg._doc)
+        .sort(itemSorter)
       dispatch({
         type: MARKETPLACE_ACTIONS.SEARCH,
         searchTags: searchTags ?? [],
@@ -222,13 +226,13 @@ export const getUserListings =
           .then((res) => {
             // TODO consider all cases
             if (status === 'any') {
-              const allUserListings: ItemListing[] = res.message
+              const allUserListings: ItemListing[] = res.message.sort(itemSorter)
               dispatch({
                 type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
                 allUserListings: allUserListings,
               })
             } else if (status === 'reservation') {
-              const allUserReservations: ItemListing[] = res.message
+              const allUserReservations: ItemListing[] = res.message.sort(itemSorter)
               dispatch({
                 type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
                 allUserReservations: allUserReservations,
