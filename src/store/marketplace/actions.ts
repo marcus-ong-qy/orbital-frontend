@@ -238,7 +238,7 @@ export const getUserListings =
           .catch((err) => console.error(err))
           .finally(() => dispatch(setIsLoading(false) as any))
       } else {
-        alert('not logged in!')
+        // alert('not logged in!')
       }
     })
   }

@@ -15,6 +15,7 @@ import { ChatMetadata } from '../../../store/marketplace/types'
 import ChatApplet from '../../../components/marketplace/ChatApplet/ChatApplet'
 import ChatTab from '../../../components/marketplace/ChatDrawer/ChatTab'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
+import PleaseLoginNotice from '../../../components/common/PleaseLoginNotice/PleaseLoginNotice'
 
 import {
   ChatInterfaceDiv,
@@ -106,15 +107,7 @@ const ChatPage = () => {
           )}
         </>
       ) : (
-        <h1>
-          Forbidden: Please&nbsp;
-          <span
-            style={{ cursor: 'pointer', textDecoration: 'underline' }}
-            onClick={() => navigate(PATHS.LOGIN)}
-          >
-            Log In
-          </span>
-        </h1>
+        <PleaseLoginNotice />
       )}
     </StyledChatPage>
   )
