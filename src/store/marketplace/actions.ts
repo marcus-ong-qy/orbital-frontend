@@ -15,6 +15,8 @@ import { setIsLoading } from '../authentication/actions'
 import { GetState } from '../types'
 
 const itemSorter = (item1: ItemListing, item2: ItemListing) => item2.timeCreated - item1.timeCreated
+const availableItemsFilter = (item: ItemListing) =>
+  item.status !== 'sold' && item.status !== ('Sold' as any)
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -43,7 +45,9 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
       throw new Error("get listings don't success")
     }
     console.log('getListings:\n', result)
-    const allListings: ItemListing[] = result.data.message.sort(itemSorter)
+    const allListings: ItemListing[] = result.data.message
+      .sort(itemSorter)
+      .filter(availableItemsFilter)
     dispatch({
       type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
       allListings: allListings,

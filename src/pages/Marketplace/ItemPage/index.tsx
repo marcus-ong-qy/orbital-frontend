@@ -233,7 +233,10 @@ const ItemPage = () => {
             {/* <BannerBuffer /> */}
             <ItemName fontType={h2}>{selectedItemData.name}</ItemName>
             <PriceDiv fontType={h1}>
-              {selectedItemData.typeOfTransaction} for&nbsp;
+              {
+                selectedItemData.typeOfTransaction // TODO make it display 'Sold' 'Rented' as well
+              }
+              &nbsp; for&nbsp;
               <PriceTag>
                 ${formatPrice(selectedItemData.price)}
                 <PerDayHighlight>

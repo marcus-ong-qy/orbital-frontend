@@ -50,10 +50,10 @@ const UploadListingPage = () => {
 
   useEffect(() => {
     if (uploadStatus === 'SUCCESS') {
-      navigate(`${PATHS.USER_LISTINGS}`) // TODO make it redirect to the listing itself
+      navigate(`${PATHS.USER_LISTINGS}`) // TODO make it redirect to the listing itself, but need to wait be to fix _id:{} problem in data.message._doc
       dispatch(setUploadStatus('INITIAL'))
     }
-  })
+  }, [uploadStatus])
 
   useEffect(() => {
     params.listingType && setListingType(params.listingType as 'Rent' | 'Sell')
