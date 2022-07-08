@@ -157,7 +157,7 @@ export const Routes = () => {
         element={<RouteWithNavbar component={DealPage} title={TITLE.MARKETPLACE} />}
       />
       <Route
-        path={PATHS.UPLOAD_LISTING}
+        path={PATHS.UPLOAD_LISTING_ID}
         element={<RouteWithNavbar component={UploadListingPage} title={TITLE.MARKETPLACE} />}
       />
     </Switch>

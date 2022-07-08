@@ -24,4 +24,5 @@ export enum PATHS {
   CHAT = '/marketplace/chat',
   CHAT_ID = '/marketplace/chat/:chatUID',
   UPLOAD_LISTING = '/marketplace/upload',
+  UPLOAD_LISTING_ID = '/marketplace/upload/:listingType',
 }

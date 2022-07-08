@@ -24,13 +24,7 @@ import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import horseLogo from '../../assets/Neigh-logos_transparent.png'
 
-const Navbar = ({
-  title,
-}: // type, // TODO create a type for community
-{
-  title: string
-  // type: 'marketplace' | 'community'
-}) => {
+const Navbar = ({ title }: { title: string }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -53,14 +47,14 @@ const Navbar = ({
   // })
 
   const sellOnClick = () => {
-    navigate(PATHS.UPLOAD_LISTING)
+    navigate(`${PATHS.UPLOAD_LISTING}/Sell`)
     dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Sell' }))
   }
 
-  // const rentOnClick = () => {
-  //   navigate(PATHS.UPLOAD_LISTING)
-  //   dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
-  // }
+  const rentOnClick = () => {
+    navigate(`${PATHS.UPLOAD_LISTING}/Rent`)
+    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
+  }
 
   return (
     <StyledLandingPageNav>
@@ -72,15 +66,21 @@ const Navbar = ({
         <NavLinks fontType={navLinkFont} justify="space-between">
           <LinkGroupSpan>
             {/* <NavLink text="Community" onClick={() => navigate(PATHS.COMMUNITY)} /> */}
+
             <NavLink text="Marketplace" onClick={() => navigate(PATHS.MAIN)} />
-            {/* &nbsp;|&nbsp;
-            <NavLink text="Sell" onClick={sellOnClick} />
-            &nbsp;|&nbsp;
-            <NavLink text="Rent" onClick={rentOnClick} /> */}
-            {isLoggedIn && (
+            {isLoggedIn ? (
               <>
                 &nbsp;|&nbsp;
-                <NavLink text="Upload" onClick={sellOnClick} />
+                <NavLink text="Sell" onClick={sellOnClick} />
+                &nbsp;|&nbsp;
+                <NavLink text="Rent" onClick={rentOnClick} />
+              </>
+            ) : (
+              <>
+                &nbsp;|&nbsp;
+                <NavLink text="Login" onClick={() => navigate(PATHS.LOGIN)} />
+                &nbsp;|&nbsp;
+                <NavLink text="Sign Up" onClick={() => navigate(PATHS.REGISTER)} />
               </>
             )}
           </LinkGroupSpan>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useTheme } from 'styled-components'
 
@@ -35,6 +35,7 @@ const UploadListingPage = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
+  const params = useParams<{ listingType: string }>()
 
   const { isLoading } = useAppSelector((state) => state.auth_reducer)
   const { newListing, uploadStatus } = useAppSelector((state) => state.marketplace_reducer)
@@ -55,11 +56,19 @@ const UploadListingPage = () => {
   })
 
   useEffect(() => {
+    params.listingType && setListingType(params.listingType as 'Rent' | 'Sell')
+  }, [params.listingType])
+
+  useEffect(() => {
     if (selectedImageBlob) {
       setSelectedImageURL(URL.createObjectURL(selectedImageBlob))
       blobToBase64(selectedImageBlob, setSelectedImageB64)
     }
   }, [selectedImageBlob])
+
+  useEffect(() => {
+    navigate(`${PATHS.UPLOAD_LISTING}/${listingType}`)
+  }, [listingType])
 
   const onSubmit = (data: FieldValues) => {
     const newListing: ItemListingPost = {
