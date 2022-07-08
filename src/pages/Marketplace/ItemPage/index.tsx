@@ -28,7 +28,7 @@ import {
   ItemShowcaseDiv,
   LeftDiv,
   UserInfoDiv,
-  OwnerName,
+  UserInfoNameLink,
   UserInfoSubDiv,
   PriceTag,
   StyledItemPage,
@@ -41,6 +41,9 @@ import {
   TypeBannerText,
   PerDayHighlight,
   OfferAlertUserDiv,
+  OfferAlertBuffer,
+  BannerBuffer,
+  PriceDiv,
 } from './styles/ItemPage.styled'
 import { ProfilePic } from '../../../styles/index.styled'
 
@@ -85,15 +88,9 @@ const ItemPage = () => {
     selectedItemData?.createdBy === userFirebaseProfile.uid &&
     selectedItemData?.status === 'offered'
 
-  // const [userUID, setUserUID] = useState()
-
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
   }, [params.itemId])
-
-  // useEffect(() => {
-  //   dispatch(setIsLoading(false))
-  // }, [itemInfo])
 
   useEffect(() => {
     console.log(selectedItemData)
@@ -162,6 +159,57 @@ const ItemPage = () => {
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
+  const OfferAlert = () => (
+    <OfferAlertUserDiv>
+      <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
+      <UserInfoDiv>
+        <UserInfoSubDiv>
+          <ProfilePic
+            src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
+          <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
+            {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+          </UserInfoNameLink>
+        </UserInfoSubDiv>
+        <Button
+          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+        />
+        <Button
+          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+          text="Accept"
+          onClick={dealAcceptOnClick}
+        />
+      </UserInfoDiv>
+    </OfferAlertUserDiv>
+  )
+
+  const ItemOwnerInfo = () => (
+    <ItemOwnerUserDiv>
+      <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
+      <UserInfoDiv>
+        <UserInfoSubDiv>
+          <ProfilePic
+            src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
+          <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
+            {ownerInfo?.username}
+          </UserInfoNameLink>
+        </UserInfoSubDiv>
+        <Button
+          style={{ width: '15vw', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() => chatOnClick(selectedItemData!.createdBy)}
+        />
+      </UserInfoDiv>
+    </ItemOwnerUserDiv>
+  )
+
   return (
     <StyledItemPage>
       {isLoading ? (
@@ -169,75 +217,30 @@ const ItemPage = () => {
       ) : selectedItemData ? (
         <>
           <LeftDiv>
-            {
-              //TODO abstract this
-              userHasAnOffer && (
-                <OfferAlertUserDiv>
-                  <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-                  <UserInfoDiv>
-                    <UserInfoSubDiv>
-                      <ProfilePic
-                        src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
-                        diameter="55px"
-                        round
-                      />
-                      <OwnerName fontType={h3}>
-                        {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
-                      </OwnerName>
-                    </UserInfoSubDiv>
-                    <Button
-                      style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                      text="🗨️ Chat"
-                      onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
-                    />
-                    <Button
-                      style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                      text="Accept"
-                      onClick={dealAcceptOnClick}
-                    />
-                  </UserInfoDiv>
-                </OfferAlertUserDiv>
-              )
-            }
-
-            <TypeBannerDiv>
+            {userHasAnOffer && <OfferAlert />}
+            {/* <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
               <TypeBannerText>{selectedItemData.typeOfTransaction}</TypeBannerText>
-            </TypeBannerDiv>
+            </TypeBannerDiv> */}
             <ItemShowcaseDiv>
               <ItemPicture src={selectedItemData.imageURL ?? defaultPic} />
             </ItemShowcaseDiv>
-
-            {selectedItemData?.createdBy !== userFirebaseProfile.uid && (
-              <ItemOwnerUserDiv>
-                <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-                <UserInfoDiv>
-                  <UserInfoSubDiv>
-                    <ProfilePic
-                      src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
-                      diameter="55px"
-                      round
-                    />
-                    <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
-                  </UserInfoSubDiv>
-                  <Button
-                    style={{ width: '15vw', borderRadius: 0 }}
-                    text="🗨️ Chat"
-                    onClick={() => chatOnClick(selectedItemData!.createdBy)}
-                  />
-                </UserInfoDiv>
-              </ItemOwnerUserDiv>
-            )}
+            {selectedItemData?.createdBy !== userFirebaseProfile.uid && <ItemOwnerInfo />}
           </LeftDiv>
 
           <InfoDiv>
+            {userHasAnOffer && <OfferAlertBuffer />}
+            {/* <BannerBuffer /> */}
             <ItemName fontType={h2}>{selectedItemData.name}</ItemName>
-            <PriceTag fontType={h1}>
-              ${formatPrice(selectedItemData.price)}
-              <PerDayHighlight>
-                {selectedItemData.typeOfTransaction === 'Rent' && ' /day'}
-              </PerDayHighlight>
-            </PriceTag>
+            <PriceDiv fontType={h1}>
+              {selectedItemData.typeOfTransaction} for&nbsp;
+              <PriceTag>
+                ${formatPrice(selectedItemData.price)}
+                <PerDayHighlight>
+                  {selectedItemData.typeOfTransaction === 'Rent' && ' /day'}
+                </PerDayHighlight>
+              </PriceTag>
+            </PriceDiv>
             <DescriptionDiv fontType={p}>{selectedItemData.description}</DescriptionDiv>
             <DealInfoDiv fontType={p}>
               <Subheader fontType={h2}>Deal Information</Subheader>

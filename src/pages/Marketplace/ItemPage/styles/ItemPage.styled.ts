@@ -29,6 +29,10 @@ export const TypeBannerDiv = styled.div`
   box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
 `
 
+export const BannerBuffer = styled.div`
+  height: 96px;
+`
+
 export const TypeBannerPic = styled.img`
   width: 131px;
   height: 72px;
@@ -82,6 +86,10 @@ export const OfferAlertUserDiv = styled(UserDiv)`
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 `
 
+export const OfferAlertBuffer = styled.div`
+  height: 160px;
+`
+
 export const BottomDivTitle = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 
@@ -105,10 +113,12 @@ export const UserInfoSubDiv = styled.div`
   align-items: center;
 `
 
-export const OwnerName = styled.div<{ fontType: FontType }>`
+export const UserInfoNameLink = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   font-weight: 700;
   padding-left: 1rem;
+
+  cursor: pointer;
 `
 
 export const InfoDiv = styled.div`
@@ -121,11 +131,14 @@ export const ItemName = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
 `
 
-export const PriceTag = styled.div<{ fontType: FontType }>`
+export const PriceDiv = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
+  margin: 16px 0;
 
-  margin: 16px 0 12px;
+  font-weight: 500;
+`
 
+export const PriceTag = styled.span`
   font-weight: 800;
   color: ${(props) => props.theme.palette.highlight.regular};
 `

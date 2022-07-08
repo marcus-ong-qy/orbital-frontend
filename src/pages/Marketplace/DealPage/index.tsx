@@ -78,8 +78,6 @@ const DealPage = () => {
         throw new Error("create reservation don't success")
       }
       console.log('reservation', result)
-      // const info: UserData = result.data.message._doc
-      // setOwnerInfo(info)
     } catch (e) {
       console.error('The error is:\n', e as Error)
     } finally {
@@ -98,8 +96,6 @@ const DealPage = () => {
         throw new Error("make transaction don't success")
       }
       console.log('transaction', result)
-      // const info: UserData = result.data.message._doc
-      // setOwnerInfo(info)
     } catch (e) {
       console.error('The error is:\n', e as Error)
     } finally {

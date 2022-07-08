@@ -42,7 +42,11 @@ export const ListingStatusDiv = styled.div`
   align-items: center;
 `
 
-export const StatusLabel = styled.div<{ type: 'Sell' | 'Rent'; available: boolean }>`
+export const StatusLabel = styled.div<{
+  type: 'Sell' | 'Rent'
+  available: boolean
+  offerAlert: boolean
+}>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,6 +62,9 @@ export const StatusLabel = styled.div<{ type: 'Sell' | 'Rent'; available: boolea
     if (!props.available) return props.theme.palette.danger
     return props.type === 'Sell' ? props.theme.palette.primary : props.theme.palette.secondary
   }};
+
+  filter: ${(props) =>
+    props.offerAlert ? `drop-shadow(0px 1px 4px ${props.theme.palette.highlight.dark})` : ''};
 `
 
 export const PriceTag = styled.div`

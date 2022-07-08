@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import { getUserListings, filterAndSearch } from '../../../store/marketplace/actions'
+import { filterAndSearch } from '../../../store/marketplace/actions'
 
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
@@ -17,7 +17,7 @@ import {
   StyledSearchPage,
 } from './styles/SearchPage.styled'
 
-const SearchPage = () => {
+const Page = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useParams<{ searchText: string }>()
@@ -47,18 +47,7 @@ const SearchPage = () => {
           {allSearchListings.length ? (
             <SearchListingsDiv>
               {allSearchListings.map((listing, index) => {
-                return (
-                  <HorizontalListingBar
-                    id={listing._id}
-                    key={index}
-                    title={listing.name}
-                    type={listing.typeOfTransaction}
-                    // available={listing.available}
-                    available
-                    price={listing.price}
-                    pictureURL={listing.imageURL}
-                  />
-                )
+                return <HorizontalListingBar key={index} itemListing={listing} />
               })}
             </SearchListingsDiv>
           ) : (
@@ -70,4 +59,4 @@ const SearchPage = () => {
   )
 }
 
-export default SearchPage
+export default Page

@@ -26,18 +26,7 @@ const UserOrdersPage = () => {
       {allUserReservations.length ? (
         <UserOrdersDiv>
           {allUserReservations.map((listing, index) => {
-            return (
-              <HorizontalListingBar
-                key={index}
-                id={listing._id}
-                title={listing.name}
-                type={listing.typeOfTransaction}
-                // available={listing.available}
-                available
-                price={listing.price}
-                pictureURL={listing.imageURL}
-              />
-            )
+            return <HorizontalListingBar key={index} itemListing={listing} />
           })}
         </UserOrdersDiv>
       ) : (
