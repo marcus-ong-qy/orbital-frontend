@@ -1,4 +1,5 @@
 import styled, { FontType } from 'styled-components'
+import { ItemStatus, TransactionType } from '../../../../store/marketplace/types'
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
 export const StyledItemPage = styled.div`
@@ -13,36 +14,6 @@ export const StyledItemPage = styled.div`
 
 export const LeftDiv = styled.div`
   width: 600px;
-`
-
-export const TypeBannerDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
-  width: 100%;
-  height: 85px;
-  margin-bottom: 11px;
-
-  background: #719972;
-  border: 2px solid #000000;
-  box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
-`
-
-export const BannerBuffer = styled.div`
-  height: 96px;
-`
-
-export const TypeBannerPic = styled.img`
-  width: 131px;
-  height: 72px;
-  object-fit: cover;
-`
-
-export const TypeBannerText = styled.div`
-  font-weight: 700;
-  font-size: 48px;
-  line-height: 22px;
 `
 
 export const ItemShowcaseDiv = styled.div`
@@ -136,6 +107,16 @@ export const PriceDiv = styled.div<{ fontType: FontType }>`
   margin: 16px 0;
 
   font-weight: 500;
+`
+
+export const StatusTagStyled = styled.span<{ type: TransactionType; status: ItemStatus }>`
+  font-weight: 800;
+  color: ${(props) =>
+    props.status === 'available'
+      ? props.type === 'Sell'
+        ? props.theme.palette.primary
+        : props.theme.palette.secondary
+      : props.theme.palette.highlight.regular};
 `
 
 export const PriceTag = styled.span`

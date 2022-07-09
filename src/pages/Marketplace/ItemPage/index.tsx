@@ -36,14 +36,11 @@ import {
   TagDiv,
   TagsDiv,
   TagsContainer,
-  TypeBannerDiv,
-  TypeBannerPic,
-  TypeBannerText,
   PerDayHighlight,
   OfferAlertUserDiv,
   OfferAlertBuffer,
-  BannerBuffer,
   PriceDiv,
+  StatusTagStyled,
 } from './styles/ItemPage.styled'
 import { ProfilePic } from '../../../styles/index.styled'
 
@@ -154,8 +151,6 @@ const ItemPage = () => {
   }
 
   const dealAcceptOnClick = () => {
-    // makeTransaction(selectedItemData!._id)
-
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
@@ -210,6 +205,30 @@ const ItemPage = () => {
     </ItemOwnerUserDiv>
   )
 
+  const StatusTag = () => {
+    const { typeOfTransaction: type, status } = { ...selectedItemData }
+    let statusText = ''
+
+    switch (status) {
+      case 'available':
+        statusText = type === 'Sell' ? 'Sale' : 'Rent'
+        break
+      case 'offered':
+        statusText = 'Reserved'
+        break
+      case 'sold':
+      case 'Sold' as any: // TODO check with backend
+        statusText = type === 'Sell' ? 'Sold' : 'Rented'
+        break
+    }
+
+    return (
+      <StatusTagStyled type={type} status={status}>
+        {statusText}
+      </StatusTagStyled>
+    )
+  }
+
   return (
     <StyledItemPage>
       {isLoading ? (
@@ -230,13 +249,10 @@ const ItemPage = () => {
 
           <InfoDiv>
             {userHasAnOffer && <OfferAlertBuffer />}
-            {/* <BannerBuffer /> */}
             <ItemName fontType={h2}>{selectedItemData.name}</ItemName>
             <PriceDiv fontType={h1}>
-              {
-                selectedItemData.typeOfTransaction // TODO make it display 'Sold' 'Rented' as well
-              }
-              &nbsp; for&nbsp;
+              <StatusTag />
+              &nbsp;for&nbsp;
               <PriceTag>
                 ${formatPrice(selectedItemData.price)}
                 <PerDayHighlight>
