@@ -1,5 +1,6 @@
 import styled, { FontType } from 'styled-components'
 import Button from '../../../../components/common/Button/Button'
+import { TransactionType } from '../../../../store/marketplace/types'
 
 import { borderedGreyDivCss, fontTypeCss, styledPageCss } from '../../../../styles/index.styled'
 
@@ -19,7 +20,7 @@ export const TitleDiv = styled.div<{ fontType: FontType }>`
   margin: 25px 0;
 `
 
-export const TitleHighlight = styled.span<{ type: 'Rent' | 'Sell' }>`
+export const TitleHighlight = styled.span<{ type: TransactionType }>`
   color: ${(props) =>
     props.type === 'Rent' ? props.theme.palette.secondary : props.theme.palette.primary};
 `

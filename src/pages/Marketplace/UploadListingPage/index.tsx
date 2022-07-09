@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { uploadListing, setUploadStatus } from '../../../store/marketplace/actions'
-import { ItemListingPost } from '../../../store/marketplace/types'
+import { ItemListingPost, TransactionType } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
@@ -42,7 +42,7 @@ const UploadListingPage = () => {
   const { typeOfTransaction } = { ...newListing }
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
-  const [listingType, setListingType] = useState<'Rent' | 'Sell'>(typeOfTransaction)
+  const [listingType, setListingType] = useState<TransactionType>(typeOfTransaction)
 
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
@@ -56,7 +56,7 @@ const UploadListingPage = () => {
   }, [uploadStatus])
 
   useEffect(() => {
-    params.listingType && setListingType(params.listingType as 'Rent' | 'Sell')
+    params.listingType && setListingType(params.listingType as TransactionType)
   }, [params.listingType])
 
   useEffect(() => {
@@ -110,7 +110,7 @@ const UploadListingPage = () => {
                     options={['Rent', 'Sell']}
                     register={register}
                     value={listingType}
-                    onChange={(e) => setListingType(e.target.value as 'Rent' | 'Sell')}
+                    onChange={(e) => setListingType(e.target.value as TransactionType)}
                   />
                 </EntryDiv>
                 <EntryDiv type="input">

@@ -1,4 +1,5 @@
 import styled, { FontType } from 'styled-components'
+import { TransactionType } from '../../../../store/marketplace/types'
 
 import { borderedGreyDivCss, fontTypeCss } from '../../../../styles/index.styled'
 
@@ -43,7 +44,7 @@ export const ListingStatusDiv = styled.div`
 `
 
 export const StatusLabel = styled.div<{
-  type: 'Sell' | 'Rent'
+  type: TransactionType
   available: boolean
   offerAlert: boolean
 }>`

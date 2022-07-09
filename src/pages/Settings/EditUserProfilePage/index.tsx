@@ -111,7 +111,7 @@ const EditUserProfilePage = () => {
               options={['-', 'Male', 'Female', 'Others', 'Prefer Not to Say']}
               register={register}
               // onChange={(e) => {
-              //   setListingType(e.target.value as 'Rent' | 'Sell')
+              //   setListingType(e.target.value as TransactionType)
               // }}
             />
           </EntryDiv>

@@ -24,7 +24,7 @@ export const ItemDisplayDiv = styled.div`
 
 export const ItemPic = styled.img`
   width: 100%;
-  height: 279px;
+  height: 235px;
 
   object-fit: cover;
 `
@@ -32,17 +32,18 @@ export const ItemPic = styled.img`
 export const ItemName = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}
   width: 100%;
-  height: 41px;
-  margin: 6px;
+  height: 81px;
+  padding: 9px;
 
   font-weight: 800;
   font-size: 24px;
-  line-height: 30px;
+  line-height: 32px;
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  overflow-wrap: break-word;
   text-overflow: ellipsis;
 `
 

@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import blobToBase64 from '../../../common/blobToBase64'
 
 import { getItemById, setUploadStatus, updateItem } from '../../../store/marketplace/actions'
-import { ItemListing, ItemListingPost } from '../../../store/marketplace/types'
+import { ItemListing, ItemListingPost, TransactionType } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
@@ -137,7 +137,7 @@ const EditItemPage = () => {
                           formInfo &&
                           setFormInfo({
                             ...formInfo,
-                            typeOfTransaction: e.target.value as 'Rent' | 'Sell',
+                            typeOfTransaction: e.target.value as TransactionType,
                           })
                         }
                       />
