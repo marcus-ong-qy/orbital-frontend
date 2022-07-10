@@ -155,6 +155,37 @@ export const updateItem =
     }
   }
 
+export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      dispatch(setIsLoading(true) as any)
+      const userUID = user.uid
+      const url = 'https://asia-southeast1-orbital2-4105d.cloudfunctions.net/deleteItem'
+      fetch(url, {
+        method: 'DELETE',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          uid: userUID,
+        },
+        body: JSON.stringify({ item_id: itemId }),
+      })
+        .then((resp) => {
+          alert(resp.status) // TODO should return 200, but returns 201 instead
+          Math.floor(resp.status / 2) === 100 &&
+            dispatch({
+              type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+              uploadStatus: 'DELETED',
+            })
+        })
+        .catch((err) => console.error(err))
+        .finally(() => dispatch(setIsLoading(false) as any))
+    } else {
+      // alert('not logged in!')
+    }
+  })
+}
+
 export const setUploadStatus =
   (uploadStatus: UploadStatus) => (dispatch: Dispatch<ActionTypes>) => {
     dispatch({

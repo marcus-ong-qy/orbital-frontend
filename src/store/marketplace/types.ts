@@ -43,7 +43,7 @@ export type ItemListingPost = {
 }
 
 export type TransactionType = 'Sell' | 'Rent'
-export type UploadStatus = 'SUCCESS' | 'INITIAL'
+export type UploadStatus = 'SUCCESS' | 'INITIAL' | 'DELETED'
 export type ItemStatus = 'available' | 'offered' | 'sold'
 
 /** Actions' types */

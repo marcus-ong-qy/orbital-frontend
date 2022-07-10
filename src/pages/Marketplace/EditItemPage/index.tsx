@@ -7,13 +7,19 @@ import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { getItemById, setUploadStatus, updateItem } from '../../../store/marketplace/actions'
+import {
+  deleteItem,
+  getItemById,
+  setUploadStatus,
+  updateItem,
+} from '../../../store/marketplace/actions'
 import { ItemListing, ItemListingPost, TransactionType } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
 import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
+import Button from '../../../components/common/Button/Button'
 
 import {
   PostForm,
@@ -50,11 +56,10 @@ const EditItemPage = () => {
   const allowedToEdit = userFirebaseProfile.uid === formInfo?.createdBy
 
   useEffect(() => {
-    if (uploadStatus === 'SUCCESS') {
-      navigate(`${PATHS.ITEM}/${params.itemId}`)
-      dispatch(setUploadStatus('INITIAL'))
-    }
-  })
+    if (uploadStatus === 'SUCCESS') navigate(`${PATHS.ITEM}/${params.itemId}`)
+    else if (uploadStatus === 'DELETED') navigate(PATHS.USER_LISTINGS)
+    dispatch(setUploadStatus('INITIAL'))
+  }, [uploadStatus])
 
   useEffect(() => {
     if (selectedImageBlob) {
@@ -62,26 +67,6 @@ const EditItemPage = () => {
       blobToBase64(selectedImageBlob, setSelectedImageB64)
     }
   }, [selectedImageBlob])
-
-  // const getItemInfo = async (itemId: string) => {
-  //   dispatch(setIsLoading(true))
-  //   try {
-  //     const getItemById = httpsCallable(functions, 'getItemById')
-  //     const result = (await getItemById({ id: itemId })) as any
-  //     const success = result.data.sucess as boolean
-  //     if (!success) {
-  //       console.log(result)
-  //       throw new Error("get item info don't success")
-  //     }
-  //     console.log(result)
-  //     const info: ItemListing = result.data.message._doc
-  //     setItemInfo(info)
-  //   } catch (e) {
-  //     console.error('The error is:\n', e as Error)
-  //   } finally {
-  //     dispatch(setIsLoading(false))
-  //   }
-  // }
 
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
@@ -100,6 +85,10 @@ const EditItemPage = () => {
     }
     dispatch(updateItem(newListing, params.itemId!))
     console.table(newListing)
+  }
+
+  const onDelete = () => {
+    dispatch(deleteItem(params.itemId!))
   }
 
   return (
@@ -156,6 +145,7 @@ const EditItemPage = () => {
                         onChange={(e) =>
                           formInfo && setFormInfo({ ...formInfo, price: Number(e.target.value) })
                         }
+                        required
                       />
                     </EntryDiv>
                     <EntryDiv type="textarea">
@@ -184,14 +174,15 @@ const EditItemPage = () => {
                       />
                     </EntryDiv>
                     {/* <EntryDiv type="input">
-              <EntryName fontType={p}>Tags </EntryName>
-              <InputField
-                title="Tags"
-                placeholder="Seperate keywords with commas (,)"
-                register={register}
-              />
-            </EntryDiv> */}
+                          <EntryName fontType={p}>Tags </EntryName>
+                          <InputField
+                            title="Tags"
+                            placeholder="Seperate keywords with commas (,)"
+                            register={register}
+                          />
+                        </EntryDiv> */}
                     <PostButton type="submit" text="Edit" />
+                    <Button text="DELETE Item" onClick={onDelete} style={{ marginTop: '20px' }} />
                   </PostForm>
                 </RightDiv>
               </UploadListingDiv>
