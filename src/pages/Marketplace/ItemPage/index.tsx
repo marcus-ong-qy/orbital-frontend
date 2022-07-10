@@ -172,11 +172,13 @@ const ItemPage = () => {
           style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
           text="🗨️ Chat"
           onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+          color="primary"
         />
         <Button
           style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
           text="Accept"
           onClick={dealAcceptOnClick}
+          color="primary"
         />
       </UserInfoDiv>
     </OfferAlertUserDiv>
@@ -200,6 +202,7 @@ const ItemPage = () => {
           style={{ width: '15vw', borderRadius: 0 }}
           text="🗨️ Chat"
           onClick={() => chatOnClick(selectedItemData!.createdBy)}
+          color="primary"
         />
       </UserInfoDiv>
     </ItemOwnerUserDiv>
@@ -286,6 +289,7 @@ const ItemPage = () => {
                 }}
                 text="Edit Listing✏️"
                 onClick={editOnClick}
+                color="secondary"
               />
             ) : selectedItemData?.status === 'offered' ? (
               <Button
@@ -295,6 +299,8 @@ const ItemPage = () => {
                 }}
                 text="⚠️ Item Reserved"
                 onClick={() => {}}
+                color="danger"
+                disabled
               />
             ) : (
               <Button
@@ -304,6 +310,7 @@ const ItemPage = () => {
                 }}
                 text="Make An Offer"
                 onClick={dealOfferOnClick}
+                color="primary"
               />
             )}
           </InfoDiv>

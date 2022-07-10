@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { Button } from 'antd'
 
-export const StyledButton = styled(Button)`
+export const StyledButton = styled(Button)<{ color?: 'secondary' | 'primary' | 'danger' }>`
   height: 35px;
   width: 100%;
   border-radius: 35px;
@@ -9,7 +9,11 @@ export const StyledButton = styled(Button)`
   cursor: pointer;
   white-space: nowrap;
 
-  background: ${(props) => props.theme.palette.secondary};
+  background: ${(props) => {
+    if (props.color === 'primary') return props.theme.palette.primary
+    if (props.color === 'danger') return props.theme.palette.danger
+    return props.theme.palette.secondary
+  }};
   font-weight: bold;
   font-size: min(18px, 2vw);
 
@@ -18,6 +22,6 @@ export const StyledButton = styled(Button)`
   }
 
   :hover {
-    background: ${(props) => props.theme.palette.highlight.dark};
+    background: ${(props) => !props.disabled && props.theme.palette.highlight.dark};
   }
 `

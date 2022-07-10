@@ -182,7 +182,12 @@ const EditItemPage = () => {
                           />
                         </EntryDiv> */}
                     <PostButton type="submit" text="Edit" />
-                    <Button text="DELETE Item" onClick={onDelete} style={{ marginTop: '20px' }} />
+                    <Button
+                      text="DELETE Item"
+                      onClick={onDelete}
+                      style={{ marginTop: '20px' }}
+                      color="danger"
+                    />
                   </PostForm>
                 </RightDiv>
               </UploadListingDiv>

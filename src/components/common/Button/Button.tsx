@@ -5,14 +5,24 @@ const Button = ({
   onClick,
   style,
   type,
+  color,
+  disabled,
 }: {
   text: string
   onClick?: React.MouseEventHandler<HTMLElement>
   style?: React.CSSProperties
   type?: 'button' | 'submit' | 'reset'
+  color?: 'secondary' | 'primary' | 'danger'
+  disabled?: boolean
 }) => {
   return (
-    <StyledButton onClick={onClick} style={style} htmlType={type ?? 'button'}>
+    <StyledButton
+      onClick={onClick}
+      style={style}
+      htmlType={type ?? 'button'}
+      color={color}
+      disabled={disabled}
+    >
       {text}
     </StyledButton>
   )

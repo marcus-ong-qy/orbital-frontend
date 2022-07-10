@@ -153,7 +153,11 @@ const UploadListingPage = () => {
                 register={register}
               />
             </EntryDiv> */}
-                <PostButton type="submit" text="Post" />
+                <PostButton
+                  type="submit"
+                  text={listingType}
+                  color={listingType === 'Sell' ? 'primary' : 'secondary'}
+                />
               </PostForm>
             </RightDiv>
           </UploadListingDiv>
