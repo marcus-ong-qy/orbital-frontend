@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { httpsCallable } from 'firebase/functions'
 
+import { functions } from '../../../firebase'
 import { PATHS } from '../../../routes/PATHS'
+import { sortListingsByAvailableFirst } from '../../../common/sortAndFilterListings'
+
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { setSearchbarDropdownOpen, setSearchRedirect } from '../../../store/authentication/actions'
 import { ItemListing } from '../../../store/marketplace/types'
+
 import SearchbarDropdown from './SearchbarDropdown'
 
 import { SearchBarStyled } from './styles/Searchbar.styled'
-import { httpsCallable } from 'firebase/functions'
-import { functions } from '../../../firebase'
 
 const Searchbar = () => {
   const DEBOUNCE_DURATION = 500 // in miliseconds
@@ -40,7 +43,9 @@ const Searchbar = () => {
         console.log(result)
         throw new Error("getSearchListing don't success")
       }
-      const searchListings: ItemListing[] = result.data.message?.map((msg: any) => msg._doc)
+      const searchListings: ItemListing[] = result.data.message
+        ?.map((msg: any) => msg._doc)
+        .sort(sortListingsByAvailableFirst)
       console.log('i got', searchListings)
       setSearchResults(searchListings)
     } catch (e) {

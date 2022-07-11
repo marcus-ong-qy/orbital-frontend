@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { sortListingsByOfferedFirst } from '../../../common/sortAndFilterListings'
 import { getUserListings } from '../../../store/marketplace/actions'
-import { ItemListing } from '../../../store/marketplace/types'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
@@ -17,9 +17,6 @@ import {
 /**
  * A sorting function that sorts ItemListing first by status === 'offered', then by timeCreated
  */
-const sortListingsByReservedStatus = (item1: ItemListing, item2: ItemListing) =>
-  Number(item2.status === 'offered') - Number(item1.status === 'offered') ||
-  item2.timeCreated - item1.timeCreated
 
 const UserListingsPage = () => {
   const theme = useTheme()
@@ -34,7 +31,7 @@ const UserListingsPage = () => {
   }, [])
 
   useEffect(() => {
-    const allUserListingsSorted = allUserListings.sort(sortListingsByReservedStatus)
+    const allUserListingsSorted = [...allUserListings].sort(sortListingsByOfferedFirst)
     setSortedUserListings(allUserListingsSorted)
   }, [allUserListings])
 

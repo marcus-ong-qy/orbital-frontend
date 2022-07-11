@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
@@ -16,6 +16,7 @@ import {
   SearchTitle,
   StyledSearchPage,
 } from './styles/SearchPage.styled'
+import { sortListingsByAvailableFirst } from '../../../common/sortAndFilterListings'
 
 const Page = () => {
   const theme = useTheme()
@@ -28,10 +29,16 @@ const Page = () => {
     // searchTags,
     allSearchListings,
   } = useAppSelector((state) => state.marketplace_reducer)
+  const [sortedSearchListings, setSortedSearchListings] = useState(allSearchListings)
 
   useEffect(() => {
     dispatch(filterAndSearch(params.searchText ?? '', null))
   }, [])
+
+  useEffect(() => {
+    const allSearchListingsSorted = [...allSearchListings].sort(sortListingsByAvailableFirst)
+    setSortedSearchListings(allSearchListingsSorted)
+  }, [allSearchListings])
 
   return (
     <StyledSearchPage>

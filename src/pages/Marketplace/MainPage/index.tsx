@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTheme } from 'styled-components'
 
 import { TEXTS } from '../../../common/texts'
@@ -25,6 +25,7 @@ import {
 } from './styles/MainPage.styled'
 
 import horseHead from '../../../assets/Horse-head-transparent.png'
+import { filterAvailableListings, sortListingsByTime } from '../../../common/sortAndFilterListings'
 
 const MainPage = () => {
   const theme = useTheme()
@@ -36,10 +37,18 @@ const MainPage = () => {
     (state) => state.auth_reducer,
   )
   const { allListings } = useAppSelector((state) => state.marketplace_reducer)
+  const [sortedHompageListings, setSortedHompageListings] = useState(allListings)
 
   useEffect(() => {
     dispatch(getHomepageListings())
   }, [])
+
+  useEffect(() => {
+    const allHompageListingsSorted = [...allListings]
+      .filter(filterAvailableListings)
+      .sort(sortListingsByTime)
+    setSortedHompageListings(allHompageListingsSorted)
+  }, [allListings])
 
   return (
     <StyledMainPage data-testid="MarketplaceMain">
@@ -82,7 +91,7 @@ const MainPage = () => {
           <ListingsDiv>
             <Title fontType={h1}>Listings</Title>
             <ItemsContainer>
-              {allListings?.map((item, index) => (
+              {sortedHompageListings?.map((item, index) => (
                 <ItemDisplay key={index} item={item} />
               ))}
             </ItemsContainer>

@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { getUserListings } from '../../../store/marketplace/actions'
+import { sortListingsByOfferedFirst } from '../../../common/sortAndFilterListings'
 
 import SettingsPageWrapper from '../SettingsPageWrapper'
 import HorizontalListingBar from '../../../components/common/HorizontalListingBar/HorizontalListingBar'
@@ -14,11 +15,19 @@ const UserOrdersPage = () => {
   const dispatch = useAppDispatch()
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
-  const { allUserReservations } = useAppSelector((state) => state.marketplace_reducer)
+  const { allUserListings, allUserReservations } = useAppSelector(
+    (state) => state.marketplace_reducer,
+  )
+  const [sortedUserListings, setSortedUserListings] = useState(allUserListings)
 
   useEffect(() => {
     dispatch(getUserListings('reservation'))
   }, [])
+
+  useEffect(() => {
+    const allUserListingsSorted = [...allUserListings].sort(sortListingsByOfferedFirst)
+    setSortedUserListings(allUserListingsSorted)
+  }, [allUserListings])
 
   return (
     <SettingsPageWrapper>
@@ -37,3 +46,6 @@ const UserOrdersPage = () => {
 }
 
 export default UserOrdersPage
+function sortListingsByReservedStatus(sortListingsByReservedStatus: any) {
+  throw new Error('Function not implemented.')
+}
