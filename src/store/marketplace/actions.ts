@@ -14,6 +14,10 @@ import { auth, functions } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
 import { GetState } from '../types'
 
+// TODO consolidate sorters from UserListingPage, and all sort variances here;
+// homepage and search sort by non reserved status first, then time
+// user sort by reserved status first, then time
+
 const itemSorter = (item1: ItemListing, item2: ItemListing) => item2.timeCreated - item1.timeCreated
 const availableItemsFilter = (item: ItemListing) =>
   item.status !== 'sold' && item.status !== ('Sold' as any)
@@ -160,7 +164,7 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
     if (user) {
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
-      const url = 'https://asia-southeast1-orbital2-4105d.cloudfunctions.net/deleteItem'
+      const url = 'https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item'
       fetch(url, {
         method: 'DELETE',
         mode: 'cors',
@@ -171,8 +175,7 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
         body: JSON.stringify({ item_id: itemId }),
       })
         .then((resp) => {
-          alert(resp.status) // TODO should return 200, but returns 201 instead
-          Math.floor(resp.status / 2) === 100 &&
+          resp.status === 200 &&
             dispatch({
               type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
               uploadStatus: 'DELETED',
