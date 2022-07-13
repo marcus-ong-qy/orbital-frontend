@@ -44,11 +44,11 @@ const UserDiv = styled.div`
   height: 132px;
 `
 
-export const ItemOwnerUserDiv = styled(UserDiv)`
+export const ItemOwnerUserDivStyled = styled(UserDiv)`
   margin-top: 21px;
 `
 
-export const OfferAlertUserDiv = styled(UserDiv)`
+export const OfferAlertUserDivStyled = styled(UserDiv)`
   margin: 7px 0 21px;
 `
 
@@ -92,17 +92,10 @@ export const DealSummaryCard = styled.div`
   height: 306px;
   padding: 24px 32px;
 `
-
-// export const ItemName = styled.div<{ fontType: FontType }>`
-//   ${fontTypeCss}
-// `
-
-// export const PriceTag = styled.div<{ fontType: FontType }>`
-//   ${fontTypeCss}
-//   color: ${(props) => props.theme.palette.highlight.regular};
-// `
-
-// export const DescriptionDiv = styled.div``
+export const DealSummaryTitle = styled.div<{ fontType: FontType }>`
+  ${fontTypeCss}
+  margin-bottom: 24px;
+`
 
 export const DescriptionDiv = styled.div<{ fontType: FontType }>`
   ${fontTypeCss}

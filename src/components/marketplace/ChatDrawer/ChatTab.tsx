@@ -44,8 +44,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
 
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
-
-    get(userChatRef).then((snapshot) => {
+    onValue(userChatRef, (snapshot) => {
       const chatData: ChatMetadata = snapshot.val()
       setChatMetadata(chatData)
     })
@@ -56,7 +55,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
   }, [chatMetadata])
 
   useEffect(() => {
-    receipientUID && dispatch(getAnotherUserInfo(receipientUID, setOwnerInfo))
+    receipientUID && dispatch(getAnotherUserInfo(receipientUID, setOwnerInfo, true))
   }, [chatMetadata])
 
   const onClick = () => {
@@ -73,7 +72,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
         <ChatPreview fontType={p}>{chatMetadata?.recentMessage?.messageText}</ChatPreview>
         <ItemInfo fontType={h3}>{itemInfo?.name}</ItemInfo>
       </ChatInfoDiv>
-      <ProductPic src={itemInfo?.imageURL ? itemInfo?.imageURL : defaultPic} />
+      <ProductPic src={itemInfo?.imageURL[0] ? itemInfo?.imageURL[0] : defaultPic} />
     </ChatTabDiv>
   )
 }

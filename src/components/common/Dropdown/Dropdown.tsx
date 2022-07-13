@@ -2,10 +2,15 @@ import { UseFormRegister, FieldValues } from 'react-hook-form'
 
 import { StyledDropdown } from './styles/Dropdown.styled'
 
+type Option = {
+  name: string
+  value: string
+}
+
 type Props = {
   title: string
   placeholder: string
-  options: string[]
+  options: (Option | string)[]
   register: UseFormRegister<FieldValues>
   value?: string
   onChange?: React.ChangeEventHandler<HTMLSelectElement>
@@ -27,9 +32,15 @@ const Dropdown = (props: Props) => {
       onChange={onChange}
     >
       {options.map((option, index) => {
+        if (typeof option === 'string')
+          return (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          )
         return (
-          <option key={index} value={option}>
-            {option}
+          <option key={index} value={option.value}>
+            {option.name}
           </option>
         )
       })}

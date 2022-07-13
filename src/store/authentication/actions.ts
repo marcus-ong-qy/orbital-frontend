@@ -2,16 +2,18 @@ import {
   browserLocalPersistence,
   browserSessionPersistence,
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   sendPasswordResetEmail,
   setPersistence,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
 import { httpsCallable } from 'firebase/functions'
+import axios from 'axios'
 
 import { auth, functions, setRealtimeDatabase } from '../../firebase'
 import { demoAcc } from '../../demo-config'
-
+import { BASE_URL, ENDPOINTS, TIMEOUT } from '../api'
 import { Dispatch, GetState } from '../types'
 import {
   ActionTypes,
@@ -158,29 +160,34 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
 // }
 
 export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
-  dispatch(setIsLoading(true))
-  try {
-    const getUserInfo = httpsCallable(functions, 'getUserInfo')
-    const result = (await getUserInfo()) as any
-    const success = result.data.success as boolean
-    if (!success) {
-      console.log(result)
-      throw new Error("get user data don't success")
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      dispatch(setIsLoading(true))
+      const userUID = user.uid
+      try {
+        const getUserData = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+        })
+        const response = await getUserData.get(`${ENDPOINTS.USER}?uid=${userUID}`)
+        const userData: UserData = response.data.message
+        response.status === 200 &&
+          dispatch({
+            type: AUTH_ACTIONS.SET_USER_DATA,
+            userData: userData,
+          })
+      } catch (e) {
+        console.error('The error is:\n', e as Error)
+      } finally {
+        dispatch(setIsLoading(false))
+      }
+    } else {
+      // alert('not logged in!')
     }
-    console.log(result)
-    const userData: UserData = result.data.message._doc
-    dispatch({
-      type: AUTH_ACTIONS.SET_USER_DATA,
-      userData: userData,
-    })
-  } catch (e) {
-    console.error('The error is:\n', e as Error)
-  } finally {
-    dispatch(setIsLoading(false))
-  }
+  })
 }
 
-export const getAnotherUserInfo =
+export const getAnotherUserInfo_old =
   (
     firebaseUID: string,
     setCustomStateHook: React.Dispatch<React.SetStateAction<UserData | null>>,
@@ -202,6 +209,29 @@ export const getAnotherUserInfo =
       console.error('The error is:\n', e as Error)
     } finally {
       dispatch(setIsLoading(false))
+    }
+  }
+
+export const getAnotherUserInfo =
+  (
+    firebaseUID: string,
+    setCustomStateHook: React.Dispatch<React.SetStateAction<UserData | null>>,
+    noLoading?: boolean,
+  ) =>
+  async (dispatch: Dispatch<ActionTypes>) => {
+    !noLoading && dispatch(setIsLoading(true))
+    try {
+      const getUserData = axios.create({
+        baseURL: BASE_URL,
+        timeout: TIMEOUT,
+      })
+      const response = await getUserData.get(`${ENDPOINTS.USER}?uid=${firebaseUID}`)
+      const userData: UserData = response.data.message
+      response.status === 200 && setCustomStateHook(userData)
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      !noLoading && dispatch(setIsLoading(false))
     }
   }
 

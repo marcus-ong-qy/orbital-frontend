@@ -21,26 +21,26 @@ const defaultChatMetadata: ChatMetadata = {
 const defaultListingPost: ItemListingPost = {
   name: '',
   description: '',
-  typeOfTransaction: 'Sell',
+  typeOfTransaction: 'SELL',
   price: 0,
   deliveryInformation: '',
   tags: [],
-  imageURL: '',
+  imageURL: [],
 }
 
 const defaultItemListing: ItemListing = {
   _id: '',
   createdBy: '',
-  currentOwner: '',
-  status: 'available',
+  // currentOwner: '',
+  status: 'AVAILABLE',
   offeredBy: '',
   name: '',
   description: '',
-  typeOfTransaction: 'Sell',
+  typeOfTransaction: 'SELL',
   price: 0,
   deliveryInformation: '',
   tags: [],
-  imageURL: '',
+  imageURL: [],
   timeCreated: 0,
 }
 

@@ -1,6 +1,11 @@
 import { Dispatch } from 'react'
-import { httpsCallable } from 'firebase/functions'
+import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
+
+import { auth } from '../../../src/firebase'
+import { setIsLoading } from '../authentication/actions'
+import { GetState } from '../types'
+import { BASE_URL, TIMEOUT, TYPE, ENDPOINTS } from '../api'
 import {
   ActionTypes,
   ChatMetadata,
@@ -9,18 +14,6 @@ import {
   MARKETPLACE_ACTIONS,
   UploadStatus,
 } from './types'
-
-import { auth, functions } from '../../../src/firebase'
-import { setIsLoading } from '../authentication/actions'
-import { GetState } from '../types'
-
-// TODO consolidate sorters from UserListingPage, and all sort variances here;
-// homepage and search sort by non reserved status first, then time
-// user sort by reserved status first, then time
-
-// const itemSorter = (item1: ItemListing, item2: ItemListing) => item2.timeCreated - item1.timeCreated
-// const availableItemsFilter = (item: ItemListing) =>
-//   item.status !== 'sold' && item.status !== ('Sold' as any)
 
 export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
   dispatch({
@@ -38,27 +31,27 @@ export const setSelectedChatData =
   }
 
 export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>) => {
-  console.log('getting listings')
-  dispatch(setIsLoading(true) as any)
-  try {
-    const getHomepageListings = httpsCallable(functions, 'getHomepageListings')
-    const result = (await getHomepageListings()) as any
-    const success = result.data.success as boolean
-    if (!success) {
-      console.log(result)
-      throw new Error("get listings don't success")
+  onAuthStateChanged(auth, async (user) => {
+    dispatch(setIsLoading(true) as any)
+    try {
+      const getItemById = axios.create({
+        baseURL: BASE_URL,
+        timeout: TIMEOUT,
+      })
+      const response = await getItemById.get(
+        user ? `${ENDPOINTS.HOME}?uid=${user.uid}` : ENDPOINTS.HOME,
+      )
+      const allListings: ItemListing[] = response.data.message
+      dispatch({
+        type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
+        allListings: allListings,
+      })
+    } catch (e) {
+      console.error('The error is:\n', e as Error)
+    } finally {
+      dispatch(setIsLoading(false) as any)
     }
-    console.log('getListings:\n', result)
-    const allListings: ItemListing[] = result.data.message
-    dispatch({
-      type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
-      allListings: allListings,
-    })
-  } catch (e) {
-    console.error('The error is:\n', e as Error)
-  } finally {
-    dispatch(setIsLoading(false) as any)
-  }
+  })
 }
 
 export const setSelectedItemData = (itemData: ItemListing) => (dispatch: Dispatch<ActionTypes>) => {
@@ -73,6 +66,7 @@ export const setSelectedItemData = (itemData: ItemListing) => (dispatch: Dispatc
  * @param itemId
  * @param setCustomStateHook (optional) pass this to set value to useState hook instead of to store
  */
+
 export const getItemById =
   (itemId: string, setCustomStateHook?: React.Dispatch<React.SetStateAction<ItemListing | null>>) =>
   async (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
@@ -81,16 +75,14 @@ export const getItemById =
     dispatch(setIsLoading(true) as any)
     try {
       if (itemId !== selectedItemData._id) {
-        const getItemById = httpsCallable(functions, 'getItemById')
-        const result = (await getItemById({ id: itemId })) as any
-        const success = result.data.sucess as boolean
-        if (!success) {
-          console.log(result)
-          throw new Error("get item info don't success")
-        }
-        console.log(result)
-        const info: ItemListing = result.data.message._doc
-        info._id = itemId // TODO temp patch for backend bug remove when not needed
+        const getItemById = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+        })
+        const response = await getItemById.get(
+          `${ENDPOINTS.ITEM}?type=${TYPE.GET_ITEM_BY_ID}&id=${itemId}`,
+        )
+        const info: ItemListing = response.data.message
         setCustomStateHook ? setCustomStateHook(info) : dispatch(setSelectedItemData(info) as any)
       } else {
         console.count('no func call since item id matches')
@@ -109,78 +101,91 @@ export const setNewListing = (newListing: ItemListingPost) => (dispatch: Dispatc
   })
 }
 
-export const uploadListing =
-  (newListing: ItemListingPost) => async (dispatch: Dispatch<ActionTypes>) => {
-    console.log('posty post')
-    dispatch(setIsLoading(true) as any)
-    try {
-      const uploadListing = httpsCallable(functions, 'uploadListing')
-      const result = (await uploadListing(newListing)) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("post new listing don't success")
-      }
-      console.log(result)
-      dispatch({
-        type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-        uploadStatus: 'SUCCESS',
-      })
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false) as any)
-    }
-  }
-
-export const updateItem =
-  (updatedListing: ItemListingPost, itemId: string) => async (dispatch: Dispatch<ActionTypes>) => {
-    console.log('posty post')
-    dispatch(setIsLoading(true) as any)
-    try {
-      const updateItem = httpsCallable(functions, 'updateItem')
-      const result = (await updateItem({ ...updatedListing, item_id: itemId })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("update listing don't success")
-      }
-      console.log(result)
-      dispatch({
-        type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-        uploadStatus: 'SUCCESS',
-      })
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false) as any)
-    }
-  }
-
-export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) => {
-  onAuthStateChanged(auth, (user) => {
+export const uploadListing = (newListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
-      const url = 'https://asia-southeast1-orbital2-4105d.cloudfunctions.net/item'
-      fetch(url, {
-        method: 'DELETE',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-          uid: userUID,
-        },
-        body: JSON.stringify({ item_id: itemId }),
-      })
-        .then((resp) => {
-          resp.status === 200 &&
+      try {
+        const getItemById = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+          headers: { uid: userUID },
+          // data: newListing,
+        })
+        const response = await getItemById.post(ENDPOINTS.ITEM, newListing)
+        response.status === 201 &&
+          dispatch({
+            type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+            uploadStatus: 'SUCCESS',
+          })
+      } catch (e) {
+        console.error('The error is:\n', e as Error)
+      } finally {
+        dispatch(setIsLoading(false) as any)
+      }
+    } else {
+      // alert('not logged in!')
+    }
+  })
+}
+
+// TODO merge with uploadListing
+export const updateItem =
+  (updatedListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        dispatch(setIsLoading(true) as any)
+        const userUID = user.uid
+        try {
+          const getItemById = axios.create({
+            baseURL: BASE_URL,
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+            data: updatedListing,
+          })
+          const response = await getItemById.post(ENDPOINTS.ITEM)
+          response.status === 200 &&
             dispatch({
               type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-              uploadStatus: 'DELETED',
+              uploadStatus: 'SUCCESS',
             })
+        } catch (e) {
+          console.error('The error is:\n', e as Error)
+        } finally {
+          dispatch(setIsLoading(false) as any)
+        }
+      } else {
+        // alert('not logged in!')
+      }
+    })
+  }
+
+export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      dispatch(setIsLoading(true) as any)
+      const userUID = user.uid
+      try {
+        const getItemById = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+          headers: {
+            uid: userUID,
+          },
+          data: { item_id: itemId },
         })
-        .catch((err) => console.error(err))
-        .finally(() => dispatch(setIsLoading(false) as any))
+        const response = await getItemById.delete(ENDPOINTS.ITEM)
+        response.status === 200 &&
+          dispatch({
+            type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+            uploadStatus: 'DELETED',
+          })
+      } catch (e) {
+        console.error('The error is:\n', e as Error)
+      } finally {
+        dispatch(setIsLoading(false) as any)
+      }
     } else {
       // alert('not logged in!')
     }
@@ -195,31 +200,42 @@ export const setUploadStatus =
     })
   }
 
-// TODO searchTags not yet implemented
+const setAllSearchListings =
+  (allSearchListings: ItemListing[], searchTags: string[] | null) =>
+  async (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: MARKETPLACE_ACTIONS.SEARCH,
+      searchTags: searchTags ?? [],
+      allSearchListings: allSearchListings,
+    })
+  }
 
+// TODO searchTags not yet implemented
 export const filterAndSearch =
-  (searchText: string, searchTags: string[] | null) => async (dispatch: Dispatch<ActionTypes>) => {
-    console.log('i searchhie', searchText)
-    dispatch(setIsLoading(true) as any)
+  (
+    searchText: string,
+    searchTags: string[] | null, // TODO not yet implemented
+    setCustomStateHook?: React.Dispatch<React.SetStateAction<ItemListing[] | null>>,
+    noLoadingSpin?: boolean,
+  ) =>
+  async (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    !noLoadingSpin && dispatch(setIsLoading(true) as any)
     try {
-      const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
-      const result = (await filterAndSearch({ search: searchText, tags: undefined })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("search don't success")
-      }
-      console.log('rrrrrrrrrrrrrrr', result)
-      const allSearchListings: ItemListing[] = result.data.message?.map((msg: any) => msg._doc)
-      dispatch({
-        type: MARKETPLACE_ACTIONS.SEARCH,
-        searchTags: searchTags ?? [],
-        allSearchListings: allSearchListings,
+      const getItemById = axios.create({
+        baseURL: BASE_URL,
+        timeout: TIMEOUT,
       })
+      const response = await getItemById.get(
+        `/item?type=${TYPE.FILTER_AND_SEARCH}&search=${searchText}`,
+      )
+      const allSearchListings: ItemListing[] = response.data.message
+      setCustomStateHook
+        ? setCustomStateHook(allSearchListings)
+        : dispatch(setAllSearchListings(allSearchListings, []) as any)
     } catch (e) {
       console.error('The error is:\n', e as Error)
     } finally {
-      dispatch(setIsLoading(false) as any)
+      !noLoadingSpin && dispatch(setIsLoading(false) as any)
     }
   }
 
@@ -230,7 +246,7 @@ export const filterAndSearch =
 
 export const getUserListings =
   (
-    status: // 'available' | 'offered' | 'sold' |
+    status: // 'AVAILABLE' | 'OFFERED' | 'SOLD' |
     'reservation' | 'any',
   ) =>
   (dispatch: Dispatch<ActionTypes>) => {

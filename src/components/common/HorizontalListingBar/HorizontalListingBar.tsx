@@ -36,15 +36,14 @@ const HorizontalListingBar = ({ itemListing }: { itemListing: ItemListing }) => 
 
   useEffect(() => {
     switch (status) {
-      case 'available':
-        setStatusText(typeOfTransaction === 'Sell' ? 'For Sale' : 'For Rent')
+      case 'AVAILABLE':
+        setStatusText(typeOfTransaction === 'SELL' ? 'For Sale' : 'For Rent')
         break
-      case 'offered':
+      case 'OFFERED':
         setStatusText(isOwner ? 'Offer!' : 'Reserved')
         break
-      case 'sold':
-      case 'Sold' as any: // TODO check with backend
-        setStatusText(typeOfTransaction === 'Sell' ? 'Sold' : 'Rented')
+      case 'SOLD':
+        setStatusText(typeOfTransaction === 'SELL' ? 'Sold' : 'Rented')
         break
     }
   }, [itemListing, isOwner])
@@ -60,8 +59,8 @@ const HorizontalListingBar = ({ itemListing }: { itemListing: ItemListing }) => 
         <ListingStatusDiv>
           <StatusLabel
             type={typeOfTransaction}
-            available={status === 'available'}
-            offerAlert={isOwner && status === 'offered'}
+            available={status === 'AVAILABLE'}
+            offerAlert={isOwner && status === 'OFFERED'}
           >
             {statusText}
           </StatusLabel>
@@ -69,12 +68,12 @@ const HorizontalListingBar = ({ itemListing }: { itemListing: ItemListing }) => 
             for&nbsp;
             <b>
               <PriceStyled>${formatPrice(price)}</PriceStyled>
-              {typeOfTransaction === 'Rent' && '/day'}
+              {typeOfTransaction === 'RENT' && '/day'}
             </b>
           </PriceTag>
         </ListingStatusDiv>
       </ListingInfoDiv>
-      <ItemPic src={imageURL ? imageURL : defaultPic} />
+      <ItemPic src={imageURL[0] ? imageURL[0] : defaultPic} />
     </ListingBarDiv>
   )
 }

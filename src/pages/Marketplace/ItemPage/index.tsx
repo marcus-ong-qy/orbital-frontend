@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { ref, onValue, set } from 'firebase/database'
+import { ref, set, get, child } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
 import { database } from '../../../firebase'
@@ -83,14 +83,14 @@ const ItemPage = () => {
 
   const userHasAnOffer =
     selectedItemData?.createdBy === userFirebaseProfile.uid &&
-    selectedItemData?.status === 'offered'
+    selectedItemData?.status === 'OFFERED'
 
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
   }, [params.itemId])
 
   useEffect(() => {
-    console.log(selectedItemData)
+    console.log('the data of selected item', selectedItemData)
     selectedItemData?.createdBy &&
       dispatch(getAnotherUserInfo(selectedItemData.createdBy, setOwnerInfo))
     userHasAnOffer &&
@@ -103,15 +103,16 @@ const ItemPage = () => {
   }, [ownerInfo])
 
   const chatOnClick = (targetUserUID: string) => {
-    const userUID = userFirebaseProfile.uid!
-    const userRef = ref(database, 'users/' + userUID + '/chats')
-
     if (!isLoggedIn) return alert('Please Log In to use this Feature!')
 
-    onValue(userRef, (snapshot) => {
-      const data: Record<string, string> = snapshot.val()
+    const userUID = userFirebaseProfile.uid!
+    const userRef = ref(database, 'users/' + userUID)
+
+    get(child(userRef, '/chats')).then((snapshot) => {
+      const data: Record<string, string> | undefined = snapshot.val()
 
       if (data && targetUserUID in data) {
+        // redirect to existing chat
         const chatUID = data[targetUserUID]
         navigate(`${PATHS.CHAT}/${chatUID}`)
       } else {
@@ -154,74 +155,20 @@ const ItemPage = () => {
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
-  const OfferAlert = () => (
-    <OfferAlertUserDiv>
-      <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-      <UserInfoDiv>
-        <UserInfoSubDiv>
-          <ProfilePic
-            src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
-            diameter="55px"
-            round
-          />
-          <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
-            {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
-          </UserInfoNameLink>
-        </UserInfoSubDiv>
-        <Button
-          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-          text="🗨️ Chat"
-          onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
-          color="primary"
-        />
-        <Button
-          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-          text="Accept"
-          onClick={dealAcceptOnClick}
-          color="primary"
-        />
-      </UserInfoDiv>
-    </OfferAlertUserDiv>
-  )
-
-  const ItemOwnerInfo = () => (
-    <ItemOwnerUserDiv>
-      <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-      <UserInfoDiv>
-        <UserInfoSubDiv>
-          <ProfilePic
-            src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
-            diameter="55px"
-            round
-          />
-          <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
-            {ownerInfo?.username}
-          </UserInfoNameLink>
-        </UserInfoSubDiv>
-        <Button
-          style={{ width: '15vw', borderRadius: 0 }}
-          text="🗨️ Chat"
-          onClick={() => chatOnClick(selectedItemData!.createdBy)}
-          color="primary"
-        />
-      </UserInfoDiv>
-    </ItemOwnerUserDiv>
-  )
-
   const StatusTag = () => {
     const { typeOfTransaction: type, status } = { ...selectedItemData }
     let statusText = ''
 
     switch (status) {
-      case 'available':
-        statusText = type === 'Sell' ? 'Sale' : 'Rent'
+      case 'AVAILABLE':
+        statusText = type === 'SELL' ? 'Sale' : 'RENT'
         break
-      case 'offered':
+      case 'OFFERED':
         statusText = 'Reserved'
         break
-      case 'sold':
+      case 'SOLD':
       case 'Sold' as any: // TODO check with backend
-        statusText = type === 'Sell' ? 'Sold' : 'Rented'
+        statusText = type === 'SELL' ? 'Sold' : 'Rented'
         break
     }
 
@@ -239,15 +186,65 @@ const ItemPage = () => {
       ) : selectedItemData ? (
         <>
           <LeftDiv>
-            {userHasAnOffer && <OfferAlert />}
+            {userHasAnOffer && (
+              <OfferAlertUserDiv>
+                <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
+                <UserInfoDiv>
+                  <UserInfoSubDiv>
+                    <ProfilePic
+                      src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
+                      diameter="55px"
+                      round
+                    />
+                    <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
+                      {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+                    </UserInfoNameLink>
+                  </UserInfoSubDiv>
+                  <Button
+                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                    text="🗨️ Chat"
+                    onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+                    color="primary"
+                  />
+                  <Button
+                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+                    text="Accept"
+                    onClick={dealAcceptOnClick}
+                    color="primary"
+                  />
+                </UserInfoDiv>
+              </OfferAlertUserDiv>
+            )}
             {/* <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
               <TypeBannerText>{selectedItemData.typeOfTransaction}</TypeBannerText>
             </TypeBannerDiv> */}
             <ItemShowcaseDiv>
-              <ItemPicture src={selectedItemData.imageURL ?? defaultPic} />
+              <ItemPicture src={selectedItemData.imageURL[0] ?? defaultPic} />
             </ItemShowcaseDiv>
-            {selectedItemData?.createdBy !== userFirebaseProfile.uid && <ItemOwnerInfo />}
+            {selectedItemData?.createdBy !== userFirebaseProfile.uid && (
+              <ItemOwnerUserDiv>
+                <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
+                <UserInfoDiv>
+                  <UserInfoSubDiv>
+                    <ProfilePic
+                      src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
+                      diameter="55px"
+                      round
+                    />
+                    <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
+                      {ownerInfo?.username}
+                    </UserInfoNameLink>
+                  </UserInfoSubDiv>
+                  <Button
+                    style={{ width: '15vw', borderRadius: 0 }}
+                    text="🗨️ Chat"
+                    onClick={() => chatOnClick(selectedItemData.createdBy)}
+                    color="primary"
+                  />
+                </UserInfoDiv>
+              </ItemOwnerUserDiv>
+            )}
           </LeftDiv>
 
           <InfoDiv>
@@ -259,7 +256,7 @@ const ItemPage = () => {
               <PriceTag>
                 ${formatPrice(selectedItemData.price)}
                 <PerDayHighlight>
-                  {selectedItemData.typeOfTransaction === 'Rent' && ' /day'}
+                  {selectedItemData.typeOfTransaction === 'RENT' && ' /day'}
                 </PerDayHighlight>
               </PriceTag>
             </PriceDiv>
@@ -291,7 +288,7 @@ const ItemPage = () => {
                 onClick={editOnClick}
                 color="secondary"
               />
-            ) : selectedItemData?.status === 'offered' ? (
+            ) : selectedItemData?.status === 'OFFERED' ? (
               <Button
                 style={{
                   marginTop: '24px',

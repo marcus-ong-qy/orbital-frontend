@@ -6,6 +6,7 @@ import { useTheme } from 'styled-components'
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import blobToBase64 from '../../../common/blobToBase64'
+import toCapitalCase from '../../../common/toCapitalCase'
 
 import { uploadListing, setUploadStatus } from '../../../store/marketplace/actions'
 import { ItemListingPost, TransactionType } from '../../../store/marketplace/types'
@@ -56,7 +57,7 @@ const UploadListingPage = () => {
   }, [uploadStatus])
 
   useEffect(() => {
-    params.listingType && setListingType(params.listingType as TransactionType)
+    params.listingType && setListingType(params.listingType.toUpperCase() as TransactionType)
   }, [params.listingType])
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const UploadListingPage = () => {
   }, [selectedImageBlob])
 
   useEffect(() => {
-    navigate(`${PATHS.UPLOAD_LISTING}/${listingType}`)
+    navigate(`${PATHS.UPLOAD_LISTING}/${toCapitalCase(listingType)}`)
   }, [listingType])
 
   const onSubmit = (data: FieldValues) => {
@@ -79,7 +80,7 @@ const UploadListingPage = () => {
       deliveryInformation: data.DealInformation.trim(),
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
-      imageURL: selectedImageB64,
+      imageURL: selectedImageB64 ? [selectedImageB64] : [],
     }
     dispatch(uploadListing(newListing))
     console.table(newListing)
@@ -92,13 +93,20 @@ const UploadListingPage = () => {
       ) : (
         <>
           <TitleDiv fontType={navTitleFont}>
-            What are you <TitleHighlight type={listingType}>{`${listingType}ing `}</TitleHighlight>
+            What are you&nbsp;
+            <TitleHighlight type={listingType}>
+              {`${toCapitalCase(listingType)}ing `}
+            </TitleHighlight>
             today?
           </TitleDiv>
           <UploadListingDiv>
             <LeftDiv>
               <ItemPicture src={selectedImageURL} />
-              <PictureUploader text="Upload Picture" setSelectedImageBlob={setSelectedImageBlob} />
+              <PictureUploader
+                text="Upload Picture"
+                setSelectedImageBlob={setSelectedImageBlob}
+                color={listingType === 'SELL' ? 'primary' : 'secondary'}
+              />
             </LeftDiv>
             <RightDiv>
               <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -107,10 +115,15 @@ const UploadListingPage = () => {
                   <Dropdown
                     title="ListingType"
                     placeholder="Listing Type"
-                    options={['Rent', 'Sell']}
+                    options={[
+                      { name: 'Rent', value: 'RENT' },
+                      { name: 'Sell', value: 'SELL' },
+                    ]}
                     register={register}
                     value={listingType}
-                    onChange={(e) => setListingType(e.target.value as TransactionType)}
+                    onChange={(e) =>
+                      setListingType(e.target.value.toUpperCase() as TransactionType)
+                    }
                   />
                 </EntryDiv>
                 <EntryDiv type="input">
@@ -119,7 +132,7 @@ const UploadListingPage = () => {
                 </EntryDiv>
                 <EntryDiv type="input">
                   <EntryName fontType={p}>
-                    Price <b>SG$</b> {listingType === 'Rent' && '/day'}
+                    Price <b>SG$</b> {listingType === 'RENT' && '/day'}
                   </EntryName>
                   <InputField
                     title="Price"
@@ -155,8 +168,8 @@ const UploadListingPage = () => {
             </EntryDiv> */}
                 <PostButton
                   type="submit"
-                  text={listingType}
-                  color={listingType === 'Sell' ? 'primary' : 'secondary'}
+                  text={toCapitalCase(listingType)}
+                  color={listingType === 'SELL' ? 'primary' : 'secondary'}
                 />
               </PostForm>
             </RightDiv>

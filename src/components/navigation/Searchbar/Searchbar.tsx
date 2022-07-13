@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { httpsCallable } from 'firebase/functions'
 
-import { functions } from '../../../firebase'
 import { PATHS } from '../../../routes/PATHS'
 import { sortListingsByAvailableFirst } from '../../../common/sortAndFilterListings'
 
@@ -13,6 +11,7 @@ import { ItemListing } from '../../../store/marketplace/types'
 import SearchbarDropdown from './SearchbarDropdown'
 
 import { SearchBarStyled } from './styles/Searchbar.styled'
+import { filterAndSearch } from '../../../store/marketplace/actions'
 
 const Searchbar = () => {
   const DEBOUNCE_DURATION = 500 // in miliseconds
@@ -26,6 +25,7 @@ const Searchbar = () => {
 
   // const [loading, setLoading] = useState(false) // TODO in store
   const [searchResults, setSearchResults] = useState<ItemListing[] | null>(null)
+  const [sortedSearchResults, setSortedSearchResults] = useState<ItemListing[] | null>(null)
 
   useEffect(() => {
     if (searchbarDropdownOpen && searchRedirect === 'redirect') {
@@ -34,43 +34,26 @@ const Searchbar = () => {
     }
   }, [searchbarDropdownOpen, searchRedirect])
 
-  const getSearchListings = async (searchText: string) => {
-    try {
-      const filterAndSearch = httpsCallable(functions, 'filterAndSearch')
-      const result = (await filterAndSearch({ search: searchText })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("getSearchListing don't success")
-      }
-      const searchListings: ItemListing[] = result.data.message
-        ?.map((msg: any) => msg._doc)
-        .sort(sortListingsByAvailableFirst)
-      console.log('i got', searchListings)
-      setSearchResults(searchListings)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    }
-  }
-
   // after a delay, transfer debouncedTerm to dropdownTerm
   useEffect(() => {
     const timer = setTimeout(() => setDropdownTerm(debouncedTerm), DEBOUNCE_DURATION)
     return () => clearTimeout(timer)
   }, [debouncedTerm])
 
-  const presentSearchResults = (term: string) => {
-    // setLoading(true)
-    getSearchListings(term)
-  }
-
+  // send dropdownTerm to api
   useEffect(() => {
-    dropdownTerm ? presentSearchResults(dropdownTerm) : setSearchResults(null)
+    dropdownTerm
+      ? dispatch(filterAndSearch(dropdownTerm, [], setSearchResults, true))
+      : setSearchResults(null)
   }, [dropdownTerm])
 
-  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDebouncedTerm(e.target.value)
-  }
+  // sort results in order of availability
+  useEffect(() => {
+    if (searchResults) {
+      const searchResultsSorted = [...searchResults].sort(sortListingsByAvailableFirst)
+      setSortedSearchResults(searchResultsSorted)
+    }
+  }, [searchResults])
 
   const onSearchClick = () => {
     dispatch(setSearchbarDropdownOpen(false))
@@ -81,11 +64,11 @@ const Searchbar = () => {
   }
 
   return (
-    <SearchbarDropdown searchResults={searchResults ?? []}>
+    <SearchbarDropdown searchResults={sortedSearchResults ?? []}>
       <SearchBarStyled
         placeholder="Search"
         value={debouncedTerm}
-        onChange={onInputChange}
+        onChange={(e: any) => setDebouncedTerm(e.target.value)}
         onSearch={onSearchClick}
         // loading={loading}
       />

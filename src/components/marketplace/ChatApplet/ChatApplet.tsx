@@ -140,12 +140,14 @@ const ChatApplet = ({
             <ProductInfo fontType={h3}>
               {selectedItemData?.typeOfTransaction} for{' '}
               <PriceHighlight>${selectedItemData.price}</PriceHighlight>
-              {selectedItemData?.typeOfTransaction === 'Rent' && (
+              {selectedItemData?.typeOfTransaction === 'RENT' && (
                 <PerDayHighlight>/day</PerDayHighlight>
               )}
             </ProductInfo>
           </div>
-          <ProductPic src={selectedItemData?.imageURL ? selectedItemData?.imageURL : defaultPic} />
+          <ProductPic
+            src={selectedItemData?.imageURL[0] ? selectedItemData?.imageURL[0] : defaultPic}
+          />
         </ChatProductBannerDiv>
       )}
 

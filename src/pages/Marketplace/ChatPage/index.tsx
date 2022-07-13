@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { get, onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
-import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database } from '../../../firebase'
 
@@ -27,7 +26,6 @@ import {
 // Chat Page and Chat Components created with reference to https://www.youtube.com/watch?v=zQyrwxMPm88
 const ChatPage = () => {
   const theme = useTheme()
-  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const { h1 } = { ...theme.typography.fontSize }
   const { isLoading, isLoggedIn, userFirebaseProfile } = useAppSelector(
@@ -55,13 +53,11 @@ const ChatPage = () => {
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
 
-    get(userChatRef) //TODO put this on chat page
-      .then((snapshot) => {
-        // alert('triggered')
-        const chatData: ChatMetadata = snapshot.val()
-        setChatMetadata(chatData)
-        console.log('chat metadata', chatData)
-      })
+    get(userChatRef).then((snapshot) => {
+      const chatData: ChatMetadata = snapshot.val()
+      setChatMetadata(chatData)
+      console.log('chat metadata', chatData)
+    })
   }, [chatUID])
 
   useEffect(() => {
@@ -77,7 +73,6 @@ const ChatPage = () => {
       const data: Record<string, string> = snapshot.val()
       const newUserChatsUID = Object.values(data)
       setUserChatsUID(newUserChatsUID)
-      console.log('list of chicks', newUserChatsUID)
     })
   }, [userFirebaseProfile])
 
@@ -91,10 +86,9 @@ const ChatPage = () => {
             <>
               <ChatsDrawerDiv>
                 <ChatsDrawerHeader fontType={h1}>Chats</ChatsDrawerHeader>
-                <h2>Under Construction</h2>
-                {/* {userChatsUID?.map((chatUID, index) => {
+                {userChatsUID?.map((chatUID, index) => {
                   return <ChatTab key={index} chatUID={chatUID} />
-                })} */}
+                })}
               </ChatsDrawerDiv>
               <ChatInterfaceDiv>
                 <ChatApplet

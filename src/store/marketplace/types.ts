@@ -20,12 +20,12 @@ export type ItemListing = {
   name: string
   description: string
   createdBy: string
-  currentOwner: string
+  // currentOwner: string
   typeOfTransaction: TransactionType
   price: number
   deliveryInformation: string
   tags: string[]
-  imageURL: string
+  imageURL: string[]
   status: ItemStatus
   offeredBy: string
   timeCreated: number
@@ -39,12 +39,12 @@ export type ItemListingPost = {
   price: number | undefined
   deliveryInformation: string
   tags: string[] | undefined
-  imageURL: string | undefined
+  imageURL: string[] | undefined
 }
 
-export type TransactionType = 'Sell' | 'Rent'
+export type TransactionType = 'SELL' | 'RENT'
 export type UploadStatus = 'SUCCESS' | 'INITIAL' | 'DELETED'
-export type ItemStatus = 'available' | 'offered' | 'sold'
+export type ItemStatus = 'AVAILABLE' | 'OFFERED' | 'SOLD'
 
 /** Actions' types */
 

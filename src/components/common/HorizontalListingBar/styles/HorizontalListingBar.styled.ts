@@ -61,7 +61,7 @@ export const StatusLabel = styled.div<{
 
   background: ${(props) => {
     if (!props.available) return props.theme.palette.danger
-    return props.type === 'Sell' ? props.theme.palette.primary : props.theme.palette.secondary
+    return props.type === 'SELL' ? props.theme.palette.primary : props.theme.palette.secondary
   }};
 
   filter: ${(props) =>

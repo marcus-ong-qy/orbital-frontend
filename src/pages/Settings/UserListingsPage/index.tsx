@@ -15,7 +15,7 @@ import {
 } from './styles/UserListingsPage.styled'
 
 /**
- * A sorting function that sorts ItemListing first by status === 'offered', then by timeCreated
+ * A sorting function that sorts ItemListing first by status === 'OFFERED', then by timeCreated
  */
 
 const UserListingsPage = () => {

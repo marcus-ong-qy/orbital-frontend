@@ -47,13 +47,13 @@ const Navbar = ({ title }: { title: string }) => {
   // })
 
   const sellOnClick = () => {
-    navigate(`${PATHS.UPLOAD_LISTING}/Sell`)
-    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Sell' }))
+    navigate(`${PATHS.UPLOAD_LISTING}/sell`)
+    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'SELL' }))
   }
 
   const rentOnClick = () => {
-    navigate(`${PATHS.UPLOAD_LISTING}/Rent`)
-    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'Rent' }))
+    navigate(`${PATHS.UPLOAD_LISTING}/rent`)
+    dispatch(setNewListing({ ...newListing, typeOfTransaction: 'RENT' }))
   }
 
   return (

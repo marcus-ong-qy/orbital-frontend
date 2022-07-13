@@ -28,11 +28,11 @@ const ItemDisplay = ({ item }: { item: ItemListing }) => {
 
   return (
     <ItemDisplayDiv id={item._id} onClick={onClick}>
-      <ItemPic src={item.imageURL ? item.imageURL : defaultPic} />
+      <ItemPic src={item.imageURL[0] ? item.imageURL[0] : defaultPic} />
       <ItemName fontType={h2}>{item.name}</ItemName>
       <ItemBottomDiv>
         <PriceTag>${formatPrice(item.price)}</PriceTag>
-        {item.typeOfTransaction === 'Rent' && <PriceTagSuffix>/day</PriceTagSuffix>}
+        {item.typeOfTransaction === 'RENT' && <PriceTagSuffix>/day</PriceTagSuffix>}
       </ItemBottomDiv>
     </ItemDisplayDiv>
   )

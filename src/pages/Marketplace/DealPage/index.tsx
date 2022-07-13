@@ -22,17 +22,18 @@ import {
   DealButton,
   DealInfoDiv,
   DealSummaryCard,
+  DealSummaryTitle,
   DescriptionDiv,
   DisclaimerDiv,
   InfoDiv,
   InfoRowDiv,
   InfoRowTitle,
   InfoRowValue,
-  ItemOwnerUserDiv,
+  ItemOwnerUserDivStyled,
   ItemPicture,
   ItemShowcaseDiv,
   LeftDiv,
-  OfferAlertUserDiv,
+  OfferAlertUserDivStyled,
   OwnerInfoDiv,
   OwnerInfoSubDiv,
   OwnerName,
@@ -60,7 +61,7 @@ const DealPage = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()
-  const { h2, h3, p } = { ...theme.typography.fontSize }
+  const { h1, h2, h3, p } = { ...theme.typography.fontSize }
   const { userFirebaseProfile, isLoading } = useAppSelector((state) => state.auth_reducer)
   const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
@@ -104,7 +105,7 @@ const DealPage = () => {
   }
 
   const status =
-    selectedItemData.createdBy === userFirebaseProfile.uid && selectedItemData.status === 'offered'
+    selectedItemData.createdBy === userFirebaseProfile.uid && selectedItemData.status === 'OFFERED'
       ? 'confirm'
       : 'offer'
 
@@ -126,6 +127,7 @@ const DealPage = () => {
     if (params.itemId) {
       createReservation(params.itemId)
       navigate(`${PATHS.ITEM}/${params.itemId}`)
+      window.location.reload()
     }
   }
 
@@ -133,8 +135,49 @@ const DealPage = () => {
     if (params.itemId) {
       makeTransaction(params.itemId)
       navigate(`${PATHS.ITEM}/${params.itemId}`)
+      window.location.reload()
     }
   }
+
+  const OfferAlertUserDiv = () => (
+    <OfferAlertUserDivStyled>
+      <BottomDivTitle fontType={h3}>buyer details:</BottomDivTitle>
+      <OwnerInfoDiv>
+        <OwnerInfoSubDiv>
+          <ProfilePic src={defaultAvatar} diameter="55px" round />
+          <OwnerName fontType={h3}>{buyerInfo?.username}</OwnerName>
+        </OwnerInfoSubDiv>
+        <Button
+          style={{ width: '15vw', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() =>
+            selectedItemData && navigate(`${PATHS.CHAT}/${selectedItemData.offeredBy}`)
+          }
+          color="primary"
+        />
+      </OwnerInfoDiv>
+    </OfferAlertUserDivStyled>
+  )
+
+  const ItemOwnerUserDiv = () => (
+    <ItemOwnerUserDivStyled>
+      <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
+      <OwnerInfoDiv>
+        <OwnerInfoSubDiv>
+          <ProfilePic src={defaultAvatar} diameter="55px" round />
+          <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
+        </OwnerInfoSubDiv>
+        <Button
+          style={{ width: '15vw', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() =>
+            selectedItemData && navigate(`${PATHS.CHAT}/${selectedItemData.createdBy}`)
+          }
+          color="primary"
+        />
+      </OwnerInfoDiv>
+    </ItemOwnerUserDivStyled>
+  )
 
   return (
     <StyledDealPage>
@@ -144,49 +187,20 @@ const DealPage = () => {
         selectedItemData && (
           <>
             <LeftDiv>
-              {status === 'confirm' && (
-                <OfferAlertUserDiv>
-                  <BottomDivTitle fontType={h3}>buyer details:</BottomDivTitle>
-                  <OwnerInfoDiv>
-                    <OwnerInfoSubDiv>
-                      <ProfilePic src={defaultAvatar} diameter="55px" round />
-                      <OwnerName fontType={h3}>{buyerInfo?.username}</OwnerName>
-                    </OwnerInfoSubDiv>
-                    <Button
-                      style={{ width: '15vw', borderRadius: 0 }}
-                      text="🗨️ Chat"
-                      onClick={() =>
-                        selectedItemData && navigate(`${PATHS.CHAT}/${selectedItemData.offeredBy}`)
-                      }
-                    />
-                  </OwnerInfoDiv>
-                </OfferAlertUserDiv>
-              )}
+              {status === 'confirm' && <OfferAlertUserDiv />}
               <ItemShowcaseDiv>
                 <ItemPicture src={defaultPic} />
               </ItemShowcaseDiv>
-
-              {status === 'offer' && (
-                <ItemOwnerUserDiv>
-                  <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-                  <OwnerInfoDiv>
-                    <OwnerInfoSubDiv>
-                      <ProfilePic src={defaultAvatar} diameter="55px" round />
-                      <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
-                    </OwnerInfoSubDiv>
-                    <Button
-                      style={{ width: '15vw', borderRadius: 0 }}
-                      text="🗨️ Chat"
-                      onClick={() =>
-                        selectedItemData && navigate(`${PATHS.CHAT}/${selectedItemData.createdBy}`)
-                      }
-                    />
-                  </OwnerInfoDiv>
-                </ItemOwnerUserDiv>
-              )}
+              {status === 'offer' && <ItemOwnerUserDiv />}
             </LeftDiv>
             <InfoDiv>
+              <Button
+                text="< Back"
+                onClick={() => navigate(`${PATHS.ITEM}/${params.itemId}`)}
+                style={{ width: '200px', margin: '2vw 0' }}
+              />
               <DealSummaryCard>
+                <DealSummaryTitle fontType={h1}>Deal Summary</DealSummaryTitle>
                 <InfoRow title="Item Name" content={selectedItemData.name} />
                 <InfoRow title="Deal Type" content={selectedItemData.typeOfTransaction} />
                 <InfoRow title="Cost" content={`$${formatPrice(selectedItemData.price)}`} />
@@ -202,12 +216,14 @@ const DealPage = () => {
                   style={{ width: '43vw', borderRadius: 0, marginTop: '20px' }}
                   text="Make Offer to Seller"
                   onClick={makeDealOnClick}
+                  color="danger"
                 />
               ) : (
                 <DealButton
                   style={{ width: '43vw', borderRadius: 0, marginTop: '20px' }}
                   text="Confirm Offer from Buyer"
                   onClick={confirmDealOnClick}
+                  color="danger"
                 />
               )}
               <DisclaimerDiv fontType={p}>

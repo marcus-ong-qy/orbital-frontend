@@ -22,7 +22,7 @@ export const TitleDiv = styled.div<{ fontType: FontType }>`
 
 export const TitleHighlight = styled.span<{ type: TransactionType }>`
   color: ${(props) =>
-    props.type === 'Rent' ? props.theme.palette.secondary : props.theme.palette.primary};
+    props.type === 'RENT' ? props.theme.palette.secondary : props.theme.palette.primary};
 `
 
 export const LeftDiv = styled.div`

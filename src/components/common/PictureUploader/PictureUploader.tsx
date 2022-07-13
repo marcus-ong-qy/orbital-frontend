@@ -11,14 +11,17 @@ const PictureUploader = ({
   onClick,
   style,
   setSelectedImageBlob,
+
+  color,
 }: {
   text: string
   onClick?: React.MouseEventHandler<HTMLElement>
   style?: React.CSSProperties
   setSelectedImageBlob?: any
+  color?: 'primary' | 'secondary'
 }) => {
   return (
-    <PictureUploaderLabel>
+    <PictureUploaderLabel background={color ?? 'secondary'}>
       <input
         type="file"
         onClick={onClick}

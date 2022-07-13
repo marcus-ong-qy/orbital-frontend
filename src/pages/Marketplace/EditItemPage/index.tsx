@@ -73,18 +73,18 @@ const EditItemPage = () => {
   }, [params.itemId])
 
   const onSubmit = () => {
-    const newListing: ItemListingPost = {
+    const editedListing: ItemListingPost = {
       name: formInfo?.name?.trim() ?? '',
       price: formInfo?.price ?? 0,
       description: formInfo?.description?.trim() ?? '',
-      typeOfTransaction: formInfo?.typeOfTransaction ?? 'Rent',
+      typeOfTransaction: formInfo?.typeOfTransaction ?? 'RENT',
       deliveryInformation: formInfo?.deliveryInformation?.trim() ?? '',
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
-      imageURL: selectedImageB64,
+      imageURL: selectedImageB64 ? [selectedImageB64] : [],
     }
-    dispatch(updateItem(newListing, params.itemId!))
-    console.table(newListing)
+    dispatch(updateItem(editedListing))
+    console.table(editedListing)
   }
 
   const onDelete = () => {
@@ -102,7 +102,9 @@ const EditItemPage = () => {
               <TitleDiv fontType={navTitleFont}>Edit Item</TitleDiv>
               <UploadListingDiv>
                 <LeftDiv>
-                  <ItemPicture src={formInfo?.imageURL ?? selectedImageURL} />
+                  <ItemPicture
+                    src={formInfo?.imageURL[0] ? formInfo.imageURL[0] : selectedImageURL}
+                  />
                   <PictureUploader
                     text="Upload Picture"
                     setSelectedImageBlob={setSelectedImageBlob}
@@ -119,7 +121,10 @@ const EditItemPage = () => {
                       <Dropdown
                         title="ListingType"
                         placeholder="Listing Type"
-                        options={['Rent', 'Sell']}
+                        options={[
+                          { name: 'Rent', value: 'RENT' },
+                          { name: 'Sell', value: 'SELL' },
+                        ]}
                         register={register}
                         value={formInfo?.typeOfTransaction}
                         onChange={(e) =>
@@ -133,7 +138,7 @@ const EditItemPage = () => {
                     </EntryDiv>
                     <EntryDiv type="input">
                       <EntryName fontType={p}>
-                        Price <b>SG$</b> {formInfo?.typeOfTransaction === 'Rent' && '/day'}
+                        Price <b>SG$</b> {formInfo?.typeOfTransaction === 'RENT' && '/day'}
                       </EntryName>
                       <InputField
                         title="Price"

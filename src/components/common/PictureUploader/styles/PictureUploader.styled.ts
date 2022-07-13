@@ -1,7 +1,6 @@
 import styled from 'styled-components'
-import { Button } from 'antd'
 
-export const PictureUploaderLabel = styled.label`
+export const PictureUploaderLabel = styled.label<{ background: 'primary' | 'secondary' }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,7 +15,7 @@ export const PictureUploaderLabel = styled.label`
   cursor: pointer;
   white-space: nowrap;
 
-  background: ${(props) => props.theme.palette.secondary};
+  background: ${(props) => props.theme.palette[props.background]};
   color: ${(props) => props.theme.palette.text.white};
 
   border: 2px solid ${(props) => props.theme.palette.common.black};

@@ -74,7 +74,7 @@ export const PriceTagSuffix = styled.div`
   color: ${(props) => props.theme.palette.primary};
 `
 
-// export const TypeIndicatorDiv = styled.div<{ type: 'sale' | 'rent' }>`
+// export const TypeIndicatorDiv = styled.div<{ type: 'sale' | 'RENT' }>`
 //   display: flex;
 //   flex-direction: row;
 //   align-items: center;

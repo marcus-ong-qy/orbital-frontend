@@ -112,8 +112,8 @@ export const PriceDiv = styled.div<{ fontType: FontType }>`
 export const StatusTagStyled = styled.span<{ type: TransactionType; status: ItemStatus }>`
   font-weight: 800;
   color: ${(props) =>
-    props.status === 'available'
-      ? props.type === 'Sell'
+    props.status === 'AVAILABLE'
+      ? props.type === 'SELL'
         ? props.theme.palette.primary
         : props.theme.palette.secondary
       : props.theme.palette.highlight.regular};
