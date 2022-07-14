@@ -9,6 +9,7 @@ import {
   UserData,
   FirebaseProfile,
   ThemeMode,
+  UpdateParticularsStatus,
 } from './types'
 
 // TODO remove IS_USING_BACKEND, and relook some state values are not needed
@@ -39,12 +40,15 @@ const loginCredentialsDefault: Credentials = {
 
 const initialState: State = {
   themeMode: 'light',
+
   isLoading: false,
-  loginAttemptStatus: 'INITIAL',
-  signupAttemptStatus: 'INITIAL',
+  isLoggedIn: false,
   alwaysLoggedInChecked: false,
 
-  isLoggedIn: false,
+  loginAttemptStatus: 'INITIAL',
+  signupAttemptStatus: 'INITIAL',
+  updateParticularsStatus: 'INITIAL',
+
   userFirebaseProfile: defaultUserFirebaseProfile,
   userData: defaultUserData,
 
@@ -56,12 +60,15 @@ const initialState: State = {
 
 type State = {
   themeMode: ThemeMode
+
   isLoading: boolean
-  loginAttemptStatus: LoginStatus
-  signupAttemptStatus: SignupStatus
+  isLoggedIn: boolean
   alwaysLoggedInChecked: boolean
 
-  isLoggedIn: boolean
+  loginAttemptStatus: LoginStatus
+  signupAttemptStatus: SignupStatus
+  updateParticularsStatus: UpdateParticularsStatus
+
   userFirebaseProfile: FirebaseProfile
   userData: UserData
 
@@ -78,21 +85,25 @@ export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, 
       return { ...state, themeMode: action.themeMode }
     case AUTH_ACTIONS.SET_LOADING:
       return { ...state, isLoading: action.isLoading }
-    case AUTH_ACTIONS.LOGIN_OFFLINE:
-      return {
-        ...state,
-        loginCredentialsOffline: action.loginCredentialsOffline,
-        loginAttemptStatus: action.loginAttemptStatus,
-      }
+    case AUTH_ACTIONS.SET_IS_LOGGED_IN:
+      return { ...state, isLoggedIn: action.isLoggedIn }
+
     case AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS:
       return { ...state, loginAttemptStatus: action.loginAttemptStatus }
     case AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS:
       return { ...state, signupAttemptStatus: action.signupAttemptStatus }
+    case AUTH_ACTIONS.UPDATE_PARTICULARS_STATUS:
+      return { ...state, updateParticularsStatus: action.updateParticularsStatus }
+
+    case AUTH_ACTIONS.EDIT_PROFILE:
+      return {
+        ...state,
+        userData: action.userData,
+        updateParticularsStatus: action.updateParticularsStatus,
+      }
     case AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX:
       return { ...state, alwaysLoggedInChecked: action.alwaysLoggedInChecked }
 
-    case AUTH_ACTIONS.SET_IS_LOGGED_IN:
-      return { ...state, isLoggedIn: action.isLoggedIn }
     case AUTH_ACTIONS.SET_USER_FIREBASE_PROFILE:
       return { ...state, userFirebaseProfile: action.userFirebaseProfile }
     case AUTH_ACTIONS.SET_USER_DATA:
@@ -102,6 +113,13 @@ export const auth_reducer: Reducer<State, ActionTypes> = (state = initialState, 
       return { ...state, searchbarDropdownOpen: action.searchbarDropdownOpen }
     case AUTH_ACTIONS.SET_SEARCH_REDIRECT:
       return { ...state, searchRedirect: action.searchRedirect }
+
+    case AUTH_ACTIONS.LOGIN_OFFLINE:
+      return {
+        ...state,
+        loginCredentialsOffline: action.loginCredentialsOffline,
+        loginAttemptStatus: action.loginAttemptStatus,
+      }
     default:
       return state
   }

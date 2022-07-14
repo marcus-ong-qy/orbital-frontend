@@ -32,6 +32,7 @@ export type Credentials = {
 
 export type LoginStatus = 'INITIAL' | 'INVALID' | 'SUCCESS'
 export type SignupStatus = 'INITIAL' | 'ACCOUNT_EXISTS' | 'EMAIL_INVALID' | 'ERROR' | 'SUCCESS'
+export type UpdateParticularsStatus = 'INITIAL' | 'INVALID' | 'SUCCESS'
 
 // not stored in store
 export type ResetPasswordStatus =
@@ -47,8 +48,12 @@ export enum AUTH_ACTIONS {
   SET_THEME = 'AUTH_ACTIONS.SET_THEME',
   SET_LOADING = 'AUTH_ACTIONS.SET_LOADING',
   LOGIN_OFFLINE = 'AUTH_ACTIONS.LOGIN_OFFLINE',
+
   LOGIN_ATTEMPT_STATUS = 'AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS',
   SIGNUP_ATTEMPT_STATUS = 'AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS',
+  UPDATE_PARTICULARS_STATUS = 'AUTH_ACTIONS.UPDATE_PARTICULARS_STATUS',
+
+  EDIT_PROFILE = 'AUTH_ACTIONS.EDIT_PROFILE',
   ALWAYS_LOGGED_IN_CHECKBOX = 'AUTH_ACTIONS.ALWAYS_LOGGED_IN_CHECKBOX',
 
   SET_IS_LOGGED_IN = 'AUTH_ACTIONS.SET_IS_LOGGED_IN',
@@ -77,14 +82,25 @@ type LogInOffline = {
   loginAttemptStatus: LoginStatus
 }
 
-type LoginAttemptStatus = {
+type SetLoginAttemptStatus = {
   type: typeof AUTH_ACTIONS.LOGIN_ATTEMPT_STATUS
   loginAttemptStatus: LoginStatus
 }
 
-type SignupAttemptStatus = {
+type SetSignupAttemptStatus = {
   type: typeof AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS
   signupAttemptStatus: SignupStatus
+}
+
+type SetUpdateParticularsStatus = {
+  type: typeof AUTH_ACTIONS.UPDATE_PARTICULARS_STATUS
+  updateParticularsStatus: UpdateParticularsStatus
+}
+
+type EditProfile = {
+  type: typeof AUTH_ACTIONS.EDIT_PROFILE
+  userData: UserData
+  updateParticularsStatus: UpdateParticularsStatus
 }
 
 type AlwaysLoggedInCheckbox = {
@@ -121,8 +137,10 @@ export type ActionTypes =
   | SetTheme
   | SetLoading
   | LogInOffline
-  | LoginAttemptStatus
-  | SignupAttemptStatus
+  | SetLoginAttemptStatus
+  | SetSignupAttemptStatus
+  | SetUpdateParticularsStatus
+  | EditProfile
   | AlwaysLoggedInCheckbox
   | SetIsLoggedIn
   | SetUserData

@@ -8,10 +8,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth'
-import { httpsCallable } from 'firebase/functions'
 import axios from 'axios'
 
-import { auth, functions, setRealtimeDatabase } from '../../firebase'
+import { auth, setRealtimeDatabase } from '../../firebase'
 import { demoAcc } from '../../demo-config'
 import { BASE_URL, ENDPOINTS, TIMEOUT } from '../api'
 import { Dispatch, GetState } from '../types'
@@ -25,6 +24,7 @@ import {
   UserData,
   RealtimeUserData,
   FirebaseProfile,
+  UpdateParticularsStatus,
 } from './types'
 import { defaultUserData } from './reducer'
 
@@ -129,21 +129,19 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     }
 
     await setRealtimeDatabase(initRealtimeData)
-    // TODO abstract use editUserData
-    const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
-    const result = (await updateParticularsForm(initUserData)) as any
-    const success = result.data.success as boolean
-    if (!success) {
-      console.log(result)
-      throw new Error("edit user data don't success")
-    }
-    console.log(result)
-    // const userData: UserData = result.data.message
-    dispatch({
-      type: AUTH_ACTIONS.SET_USER_DATA,
-      userData: initUserData,
+
+    const setUserData = axios.create({
+      baseURL: BASE_URL,
+      timeout: TIMEOUT,
+      headers: { uid: user.uid },
     })
-    dispatch(setSignupAttemptStatus('SUCCESS'))
+    const response = await setUserData.put(ENDPOINTS.USER, defaultUserData)
+    const userData: UserData = response.data.message
+    response.status === 200 &&
+      dispatch({
+        type: AUTH_ACTIONS.SET_USER_DATA,
+        userData: userData,
+      })
   } catch (e) {
     console.error('The error is:\n', e as Error)
     dispatch(setSignupAttemptStatus(readSignupError(e)))
@@ -187,31 +185,6 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   })
 }
 
-export const getAnotherUserInfo_old =
-  (
-    firebaseUID: string,
-    setCustomStateHook: React.Dispatch<React.SetStateAction<UserData | null>>,
-  ) =>
-  async (dispatch: Dispatch<ActionTypes>) => {
-    dispatch(setIsLoading(true))
-    try {
-      const getAnotherUserInfo = httpsCallable(functions, 'getAnotherUserInfo')
-      const result = (await getAnotherUserInfo({ uid: firebaseUID })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log('owner data', result)
-        throw new Error("get owner data don't success")
-      }
-      console.log('owner data', result)
-      const info: UserData = result.data.message._doc
-      setCustomStateHook(info)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
 export const getAnotherUserInfo =
   (
     firebaseUID: string,
@@ -245,26 +218,33 @@ export const setUserFirebaseProfile =
 
 export const updateParticularsForm =
   (newUserData: UserData) => async (dispatch: Dispatch<ActionTypes>) => {
-    dispatch(setIsLoading(true))
-    try {
-      const updateParticularsForm = httpsCallable(functions, 'updateParticularsForm')
-      const result = (await updateParticularsForm(newUserData)) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("edit user data don't success")
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        dispatch(setIsLoading(true))
+        const userUID = user.uid
+        try {
+          const updateUserData = axios.create({
+            baseURL: BASE_URL,
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+          })
+          const response = await updateUserData.put(ENDPOINTS.USER, newUserData)
+          const userData: UserData = response.data.message
+          response.status === 201 &&
+            dispatch({
+              type: AUTH_ACTIONS.EDIT_PROFILE,
+              userData: userData,
+              updateParticularsStatus: 'SUCCESS',
+            })
+        } catch (e) {
+          console.error('The error is:\n', e as Error)
+        } finally {
+          dispatch(setIsLoading(false))
+        }
+      } else {
+        // alert('not logged in!')
       }
-      console.log('lovely user data:\n', result)
-      // const userData: UserData = result.data.message
-      dispatch({
-        type: AUTH_ACTIONS.SET_USER_DATA,
-        userData: newUserData,
-      })
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
+    })
   }
 
 const readResetPasswordError = (err: any) => {
@@ -313,6 +293,14 @@ export const setSignupAttemptStatus =
     dispatch({
       type: AUTH_ACTIONS.SIGNUP_ATTEMPT_STATUS,
       signupAttemptStatus: status,
+    })
+  }
+
+export const setUpdateParticularsStatus =
+  (status: UpdateParticularsStatus) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: AUTH_ACTIONS.UPDATE_PARTICULARS_STATUS,
+      updateParticularsStatus: status,
     })
   }
 

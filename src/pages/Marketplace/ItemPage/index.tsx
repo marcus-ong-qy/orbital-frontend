@@ -161,7 +161,7 @@ const ItemPage = () => {
 
     switch (status) {
       case 'AVAILABLE':
-        statusText = type === 'SELL' ? 'Sale' : 'RENT'
+        statusText = type === 'SELL' ? 'Sale' : 'Rent'
         break
       case 'OFFERED':
         statusText = 'Reserved'

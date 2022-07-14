@@ -7,7 +7,10 @@ import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import blobToBase64 from '../../../common/blobToBase64'
 
-import { updateParticularsForm } from '../../../store/authentication/actions'
+import {
+  setUpdateParticularsStatus,
+  updateParticularsForm,
+} from '../../../store/authentication/actions'
 import { defaultUserData } from '../../../store/authentication/reducer'
 import { UserData } from '../../../store/authentication/types'
 
@@ -34,7 +37,7 @@ const EditUserProfilePage = () => {
   const dispatch = useAppDispatch()
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
 
-  const { userData } = useAppSelector((state) => state.auth_reducer)
+  const { userData, updateParticularsStatus } = useAppSelector((state) => state.auth_reducer)
 
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
@@ -45,6 +48,13 @@ const EditUserProfilePage = () => {
     userData.imageURL ? userData.imageURL : defaultPic,
   )
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
+
+  useEffect(() => {
+    if (updateParticularsStatus === 'SUCCESS') {
+      navigate(PATHS.USER_PROFILE)
+      dispatch(setUpdateParticularsStatus('INITIAL'))
+    }
+  }, [updateParticularsStatus])
 
   useEffect(() => {
     if (selectedImageBlob) {
@@ -71,8 +81,6 @@ const EditUserProfilePage = () => {
       // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(updateParticularsForm(newUserData))
-    console.table(newUserData)
-    navigate(PATHS.USER_PROFILE)
   }
 
   return (

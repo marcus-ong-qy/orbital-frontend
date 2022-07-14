@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { httpsCallable } from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
-import { functions } from '../../../firebase'
+import { auth, functions } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
@@ -44,6 +44,9 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
+import axios from 'axios'
+import { BASE_URL, ENDPOINTS, TIMEOUT, TYPE } from '../../../store/api'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
   const theme = useTheme()
@@ -68,7 +71,7 @@ const DealPage = () => {
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [buyerInfo, setBuyerInfo] = useState<UserData | null>(null)
 
-  const createReservation = async (itemId: string) => {
+  const createReservation_old = async (itemId: string) => {
     dispatch(setIsLoading(true))
     try {
       const createReservation = httpsCallable(functions, 'createReservation')
@@ -84,6 +87,29 @@ const DealPage = () => {
     } finally {
       dispatch(setIsLoading(false))
     }
+  }
+
+  const createReservation = (itemId: string) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        dispatch(setIsLoading(true) as any)
+        const userUID = user.uid
+        try {
+          const getItemById = axios.create({
+            baseURL: BASE_URL,
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+          })
+          const response = await getItemById.get(`${ENDPOINTS.RESERVATION}?item_id=${itemId}`)
+        } catch (e) {
+          console.error('The error is:\n', e as Error)
+        } finally {
+          dispatch(setIsLoading(false) as any)
+        }
+      } else {
+        // alert('not logged in!')
+      }
+    })
   }
 
   const makeTransaction = async (itemId: string) => {
