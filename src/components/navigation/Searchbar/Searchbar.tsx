@@ -23,7 +23,6 @@ const Searchbar = () => {
   const [dropdownTerm, setDropdownTerm] = useState('')
   const [debouncedTerm, setDebouncedTerm] = useState(dropdownTerm) // adds delay to dropdown results
 
-  // const [loading, setLoading] = useState(false) // TODO in store
   const [searchResults, setSearchResults] = useState<ItemListing[] | null>(null)
   const [sortedSearchResults, setSortedSearchResults] = useState<ItemListing[] | null>(null)
 

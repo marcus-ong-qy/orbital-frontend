@@ -34,18 +34,6 @@ const Navbar = ({ title }: { title: string }) => {
 
   const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
 
-  // useEffect(() => {
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user && !isLoggedIn) {
-  //       dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
-  //       dispatch(setIsLoggedIn(true))
-  //     } else if (!user && isLoggedIn) {
-  //       dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
-  //       dispatch(setIsLoggedIn(false))
-  //     }
-  //   })
-  // })
-
   const sellOnClick = () => {
     navigate(`${PATHS.UPLOAD_LISTING}/sell`)
     dispatch(setNewListing({ ...newListing, typeOfTransaction: 'SELL' }))
@@ -86,10 +74,10 @@ const Navbar = ({ title }: { title: string }) => {
           </LinkGroupSpan>
           {isLoggedIn ? (
             <>
-              <LinkGroupSpan width="25vw" margin="0 0vw 0 0">
-                {/* <NavLink text="Notifications" onClick={() => alert('TODO')} />
+              <LinkGroupSpan width="30vw" margin="0 0vw 0 0">
+                <NavLink text="Notifications" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp;
-                <NavLink text="Settings" onClick={() => alert('TODO')} />
+                {/* <NavLink text="Settings" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp; */}
                 <UsernameHover maxWidth="20vw" userFirebaseProfile={userFirebaseProfile} />
               </LinkGroupSpan>

@@ -21,10 +21,6 @@ type Props = {
   required?: boolean
 }
 
-// const defaultProps = {
-//   required: false,
-// }
-
 const SearchbarDropdown = (props: Props) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
