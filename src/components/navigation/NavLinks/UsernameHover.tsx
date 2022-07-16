@@ -17,6 +17,9 @@ import {
   UsernameDiv,
   UsernameSpan,
 } from './styles/NavLinks.styled'
+import { ProfilePic } from '../../../styles/index.styled'
+
+import defaultAvatar from '../../../assets/default_avatar.png'
 
 const UsernameHover = ({
   userFirebaseProfile,
@@ -55,6 +58,10 @@ const UsernameHover = ({
   return (
     <UsernameDiv>
       <UsernameSpan>
+        <ProfilePic
+          diameter="21px"
+          src={userData.imageURL?.length ? userData.imageURL : defaultAvatar}
+        />
         <StyledUsernameHover
           data-testid="navbar-username"
           maxWidth={maxWidth}
