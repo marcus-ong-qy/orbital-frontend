@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ref, set, get, child } from 'firebase/database'
 import { useTheme } from 'styled-components'
+import { toast } from 'react-toastify'
 
 import { database } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -15,6 +16,7 @@ import { ChatMetadata } from '../../../store/marketplace/types'
 
 import Button from '../../../components/common/Button/Button'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
+import PleaseLoginToasterText from '../../../components/common/PleaseLoginToasterText/PleaseLoginToasterText'
 
 import {
   ItemOwnerUserDiv,
@@ -48,7 +50,6 @@ import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
 import saleBannerPic from '../../../assets/trade.png'
 
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 // TODO create collapsible for tags
@@ -95,17 +96,12 @@ const ItemPage = () => {
   }, [params.itemId])
 
   useEffect(() => {
-    console.log('the data of selected item', selectedItemData)
     selectedItemData?.createdBy &&
       dispatch(getAnotherUserInfo(selectedItemData.createdBy, setOwnerInfo))
     userHasAnOffer &&
       selectedItemData?.offeredBy &&
       dispatch(getAnotherUserInfo(selectedItemData.offeredBy, setOffererInfo))
   }, [selectedItemData])
-
-  useEffect(() => {
-    console.log('the glorious owner info UID\n\n', ownerInfo)
-  }, [ownerInfo])
 
   const userHasAnOfferToast = () => {
     toast(
@@ -119,7 +115,7 @@ const ItemPage = () => {
   userHasAnOffer && !toastShown && userHasAnOfferToast()
 
   const chatOnClick = (targetUserUID: string) => {
-    if (!isLoggedIn) return alert('Please Log In to use this Feature!')
+    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />)
 
     const userUID = userFirebaseProfile.uid!
     const userRef = ref(database, 'users/' + userUID)
@@ -162,8 +158,7 @@ const ItemPage = () => {
   }
 
   const dealOfferOnClick = () => {
-    if (!isLoggedIn) return alert('Please Log In to use this Feature!')
-
+    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />)
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 

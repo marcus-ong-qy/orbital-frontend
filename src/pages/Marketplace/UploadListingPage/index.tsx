@@ -15,6 +15,7 @@ import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
 import PictureUploader from '../../../components/common/PictureUploader/PictureUploader'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
+import PleaseLoginNotice from '../../../components/common/PleaseLoginNotice/PleaseLoginNotice'
 
 import {
   PostForm,
@@ -38,7 +39,7 @@ const UploadListingPage = () => {
   const { register, handleSubmit } = useForm({ mode: 'onChange' })
   const params = useParams<{ listingType: string }>()
 
-  const { isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { isLoading, isLoggedIn } = useAppSelector((state) => state.auth_reducer)
   const { newListing, uploadStatus } = useAppSelector((state) => state.marketplace_reducer)
   const { typeOfTransaction } = { ...newListing }
   const { navTitleFont, p } = { ...theme.typography.fontSize }
@@ -90,7 +91,7 @@ const UploadListingPage = () => {
     <StyledUploadListingPage>
       {isLoading ? (
         <LoadingSpin />
-      ) : (
+      ) : isLoggedIn ? (
         <>
           <TitleDiv fontType={navTitleFont}>
             What are you&nbsp;
@@ -175,6 +176,8 @@ const UploadListingPage = () => {
             </RightDiv>
           </UploadListingDiv>
         </>
+      ) : (
+        <PleaseLoginNotice />
       )}
     </StyledUploadListingPage>
   )

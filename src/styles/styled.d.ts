@@ -33,6 +33,7 @@ declare module 'styled-components' {
         }
       }
       text: {
+        default: HexCode
         black: HexCode
         white: HexCode
       }

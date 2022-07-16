@@ -75,6 +75,7 @@ const lightTheme: DefaultTheme = {
       },
     },
     text: {
+      default: '#271801',
       black: '#271801',
       white: '#fdfdfb',
     },
@@ -104,6 +105,7 @@ const darkTheme: DefaultTheme = {
       },
     },
     text: {
+      default: '#fdfdfb',
       black: '#271801',
       white: '#fdfdfb',
     },
