@@ -48,6 +48,9 @@ import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
 import saleBannerPic from '../../../assets/trade.png'
 
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 // TODO create collapsible for tags
 // TODO allow Button to have custom fonts and stylings
 
@@ -81,6 +84,8 @@ const ItemPage = () => {
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [offererInfo, setOffererInfo] = useState<UserData | null>(null)
 
+  const [toastShown, setToastShown] = useState(false)
+
   const userHasAnOffer =
     selectedItemData?.createdBy === userFirebaseProfile.uid &&
     selectedItemData?.status === 'OFFERED'
@@ -101,6 +106,17 @@ const ItemPage = () => {
   useEffect(() => {
     console.log('the glorious owner info UID\n\n', ownerInfo)
   }, [ownerInfo])
+
+  const userHasAnOfferToast = () => {
+    toast(
+      `You have an offer from ${
+        offererInfo?.username.length ? offererInfo.username : offererInfo?.name
+      }!`,
+      { toastId: 'user-has-an-offer-toast' },
+    )
+    setToastShown(true)
+  }
+  userHasAnOffer && !toastShown && userHasAnOfferToast()
 
   const chatOnClick = (targetUserUID: string) => {
     if (!isLoggedIn) return alert('Please Log In to use this Feature!')

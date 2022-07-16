@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
 import { useTheme } from 'styled-components'
 
 import { auth } from '../../../firebase'
@@ -36,9 +35,7 @@ const UsernameHover = ({
   const { userData } = useAppSelector((state) => state.auth_reducer)
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user: any) => {
-      user && dispatch(getUserData())
-    })
+    dispatch(getUserData())
   }, [])
 
   const myAccOnClick = () => {

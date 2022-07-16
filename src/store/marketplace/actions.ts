@@ -37,10 +37,9 @@ export const getHomepageListings = () => async (dispatch: Dispatch<ActionTypes>)
       const getItemById = axios.create({
         baseURL: BASE_URL,
         timeout: TIMEOUT,
+        headers: { uid: user?.uid ?? '' },
       })
-      const response = await getItemById.get(
-        user ? `${ENDPOINTS.HOME}?uid=${user.uid}` : ENDPOINTS.HOME,
-      )
+      const response = await getItemById.get(ENDPOINTS.HOME)
       const allListings: ItemListing[] = response.data.message
       dispatch({
         type: MARKETPLACE_ACTIONS.SET_ALL_LISTINGS,
@@ -170,9 +169,7 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
         const getItemById = axios.create({
           baseURL: BASE_URL,
           timeout: TIMEOUT,
-          headers: {
-            uid: userUID,
-          },
+          headers: { uid: userUID },
           data: { item_id: itemId },
         })
         const response = await getItemById.delete(ENDPOINTS.ITEM)
@@ -250,47 +247,87 @@ export const getUserListings =
     'reservation' | 'any',
   ) =>
   (dispatch: Dispatch<ActionTypes>) => {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         dispatch(setIsLoading(true) as any)
         const userUID = user.uid
 
-        let url = ''
-        switch (status) {
-          case 'any':
-            url = `https://asia-southeast1-orbital2-4105d.cloudfunctions.net/getUserListings?uid=${userUID}`
-            break
-          default:
-            url = `https://asia-southeast1-orbital2-4105d.cloudfunctions.net/getUserListings?uid=${userUID}&status=${status}`
-            break
+        try {
+          const getUserListings = axios.create({
+            baseURL: BASE_URL,
+            timeout: TIMEOUT,
+            // headers: { uid: userUID },
+          })
+
+          let url = ''
+          switch (status) {
+            case 'any':
+              url = `${ENDPOINTS.USER}?uid=${userUID}`
+              break
+            default:
+              // url = `${ENDPOINTS.USER}uid=${userUID}&status=${status}`
+              url = `${ENDPOINTS.USER}?uid=${userUID}`
+              break
+          }
+          const response = await getUserListings.get(url)
+          const info: ItemListing[] = response.data.message
+
+          // TODO consider all cases
+          if (status === 'any') {
+            const allUserListings: ItemListing[] = info
+            dispatch({
+              type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
+              allUserListings: allUserListings,
+            })
+          } else if (status === 'reservation') {
+            const allUserReservations: ItemListing[] = info
+            dispatch({
+              type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
+              allUserReservations: allUserReservations,
+            })
+          }
+        } catch (e) {
+          console.error('The error is:\n', e as Error)
+        } finally {
+          dispatch(setIsLoading(false) as any)
         }
 
-        fetch(url, {
-          method: 'GET',
-          mode: 'cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-          .then((resp) => resp.json())
-          .then((res) => {
-            // TODO consider all cases
-            if (status === 'any') {
-              const allUserListings: ItemListing[] = res.message
-              dispatch({
-                type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
-                allUserListings: allUserListings,
-              })
-            } else if (status === 'reservation') {
-              const allUserReservations: ItemListing[] = res.message
-              dispatch({
-                type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
-                allUserReservations: allUserReservations,
-              })
-            }
-          })
-          .catch((err) => console.error(err))
-          .finally(() => dispatch(setIsLoading(false) as any))
+        let url = ''
+        // switch (status) {
+        //   case 'any':
+        //     url = `${BASE_URL}/getUserListings?uid=${userUID}`
+        //     break
+        //   default:
+        url = `${BASE_URL}/getUserListings?uid=${userUID}&status=${status}`
+        //     break
+        // }
+
+        // fetch(url, {
+        //   method: 'GET',
+        //   mode: 'cors',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        // })
+        //   .then((resp) => resp.json())
+        //   .then((res) => {
+        //     // TODO consider all cases
+        //     if (status === 'any') {
+        //       const allUserListings: ItemListing[] = res.message
+        //       dispatch({
+        //         type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
+        //         allUserListings: allUserListings,
+        //       })
+        //     } else if (status === 'reservation') {
+        //       const allUserReservations: ItemListing[] = res.message
+        //       dispatch({
+        //         type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
+        //         allUserReservations: allUserReservations,
+        //       })
+        //     }
+        //   })
+        //   .catch((err) => console.error(err))
+        //   .finally(() => dispatch(setIsLoading(false) as any))
       } else {
         // alert('not logged in!')
       }

@@ -23,7 +23,6 @@ export const DropdownOptionDiv = styled.div<{ fontType: FontType; disabled?: boo
   font-weight: 400;
 
   border-bottom: 0.5px solid ${(props) => props.theme.palette.common.gray.dark};
-  z-index: 1000;
 
   cursor: ${(props) => props.disabled && 'default'};
 `

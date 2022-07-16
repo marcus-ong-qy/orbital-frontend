@@ -65,7 +65,9 @@ const DealPage = () => {
   const dispatch = useAppDispatch()
   const params = useParams<{ itemId: string }>()
   const { h1, h2, h3, p } = { ...theme.typography.fontSize }
-  const { userFirebaseProfile, isLoading } = useAppSelector((state) => state.auth_reducer)
+  const { isLoggedIn, userFirebaseProfile, isLoading } = useAppSelector(
+    (state) => state.auth_reducer,
+  )
   const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)

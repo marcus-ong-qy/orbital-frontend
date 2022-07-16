@@ -1,11 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Route, Routes as Switch } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
-
-import { useAppDispatch, useAppSelector } from '../app/hooks'
-import { auth, getUserFirebaseProfile } from '../firebase'
-import { setUserFirebaseProfile, setIsLoggedIn } from '../store/authentication/actions'
-import { defaultUserFirebaseProfile } from '../store/authentication/reducer'
 
 import { PATHS } from './PATHS'
 import {
@@ -78,21 +72,6 @@ enum TITLE {
 }
 
 export const Routes = () => {
-  const dispatch = useAppDispatch()
-  const { isLoggedIn } = useAppSelector((state) => state.auth_reducer)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        dispatch(setUserFirebaseProfile(getUserFirebaseProfile(user)))
-        dispatch(setIsLoggedIn(true))
-      } else if (!user && isLoggedIn) {
-        dispatch(setUserFirebaseProfile(defaultUserFirebaseProfile))
-        dispatch(setIsLoggedIn(false))
-      }
-    })
-  })
-
   return (
     <Switch>
       {/* Authentication */}
