@@ -30,7 +30,6 @@ import { filterAvailableListings, sortListingsByTime } from '../../../common/sor
 const MainPage = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
-
   const { navTitleFont, h1 } = { ...theme.typography.fontSize }
 
   const { isLoading, userData, isLoggedIn, userFirebaseProfile } = useAppSelector(

@@ -93,7 +93,6 @@ const lightTheme: DefaultTheme = {
   typography: defaultTypography,
 }
 
-// TODO
 const darkTheme: DefaultTheme = {
   palette: {
     common: {

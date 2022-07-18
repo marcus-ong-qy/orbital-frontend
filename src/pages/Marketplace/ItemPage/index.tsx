@@ -19,7 +19,7 @@ import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 import PleaseLoginToasterText from '../../../components/common/PleaseLoginToasterText/PleaseLoginToasterText'
 
 import {
-  ItemOwnerUserDiv,
+  ItemOwnerUserDivStyled,
   BottomDivTitle,
   DealInfoDiv,
   DescriptionDiv,
@@ -39,7 +39,7 @@ import {
   TagsDiv,
   TagsContainer,
   PerDayHighlight,
-  OfferAlertUserDiv,
+  OfferAlertUserDivStyled,
   OfferAlertBuffer,
   PriceDiv,
   StatusTagStyled,
@@ -166,7 +166,61 @@ const ItemPage = () => {
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
-  const StatusTag = () => {
+  const renderOfferAlertUserDiv = () => (
+    <OfferAlertUserDivStyled>
+      <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
+      <UserInfoDiv>
+        <UserInfoSubDiv>
+          <ProfilePic
+            src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
+          <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
+            {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+          </UserInfoNameLink>
+        </UserInfoSubDiv>
+        <Button
+          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+          color="primary"
+        />
+        <Button
+          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+          text="Accept"
+          onClick={dealAcceptOnClick}
+          color="primary"
+        />
+      </UserInfoDiv>
+    </OfferAlertUserDivStyled>
+  )
+
+  const renderItemOwnerUserDiv = () => (
+    <ItemOwnerUserDivStyled>
+      <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
+      <UserInfoDiv>
+        <UserInfoSubDiv>
+          <ProfilePic
+            src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
+          <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
+            {ownerInfo?.username}
+          </UserInfoNameLink>
+        </UserInfoSubDiv>
+        <Button
+          style={{ width: '15vw', borderRadius: 0 }}
+          text="🗨️ Chat"
+          onClick={() => chatOnClick(selectedItemData.createdBy)}
+          color="primary"
+        />
+      </UserInfoDiv>
+    </ItemOwnerUserDivStyled>
+  )
+
+  const renderStatusTag = () => {
     const { typeOfTransaction: type, status } = { ...selectedItemData }
     let statusText = ''
 
@@ -197,35 +251,7 @@ const ItemPage = () => {
       ) : selectedItemData ? (
         <>
           <LeftDiv>
-            {userHasAnOffer && (
-              <OfferAlertUserDiv>
-                <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-                <UserInfoDiv>
-                  <UserInfoSubDiv>
-                    <ProfilePic
-                      src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
-                      diameter="55px"
-                      round
-                    />
-                    <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
-                      {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
-                    </UserInfoNameLink>
-                  </UserInfoSubDiv>
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                    text="🗨️ Chat"
-                    onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
-                    color="primary"
-                  />
-                  <Button
-                    style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-                    text="Accept"
-                    onClick={dealAcceptOnClick}
-                    color="primary"
-                  />
-                </UserInfoDiv>
-              </OfferAlertUserDiv>
-            )}
+            {userHasAnOffer && renderOfferAlertUserDiv()}
             {/* <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
               <TypeBannerText>{selectedItemData.typeOfTransaction}</TypeBannerText>
@@ -233,36 +259,14 @@ const ItemPage = () => {
             <ItemShowcaseDiv>
               <ItemPicture src={selectedItemData.imageURL[0] ?? defaultPic} />
             </ItemShowcaseDiv>
-            {selectedItemData?.createdBy !== userFirebaseProfile.uid && (
-              <ItemOwnerUserDiv>
-                <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
-                <UserInfoDiv>
-                  <UserInfoSubDiv>
-                    <ProfilePic
-                      src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
-                      diameter="55px"
-                      round
-                    />
-                    <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
-                      {ownerInfo?.username}
-                    </UserInfoNameLink>
-                  </UserInfoSubDiv>
-                  <Button
-                    style={{ width: '15vw', borderRadius: 0 }}
-                    text="🗨️ Chat"
-                    onClick={() => chatOnClick(selectedItemData.createdBy)}
-                    color="primary"
-                  />
-                </UserInfoDiv>
-              </ItemOwnerUserDiv>
-            )}
+            {selectedItemData?.createdBy !== userFirebaseProfile.uid && renderItemOwnerUserDiv()}
           </LeftDiv>
 
           <InfoDiv>
             {userHasAnOffer && <OfferAlertBuffer />}
             <ItemName fontType={h2}>{selectedItemData.name}</ItemName>
             <PriceDiv fontType={h1}>
-              <StatusTag />
+              {renderStatusTag()}
               &nbsp;for&nbsp;
               <PriceTag>
                 ${formatPrice(selectedItemData.price)}

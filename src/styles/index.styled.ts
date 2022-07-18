@@ -29,7 +29,7 @@ export const gallopAnimation = keyframes`
     transform: rotate(0) translateX(0) translateY(0);
   }
   25% {
-    transform: rotate(-10deg) translateX(-20px) translateY(10px) ;
+    transform: rotate(-10deg) translateX(-20px) translateY(10px);
   }
   50% {
     transform: rotate(0) translateX(0) translateY(0);

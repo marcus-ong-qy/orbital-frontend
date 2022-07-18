@@ -167,7 +167,7 @@ const DealPage = () => {
     }
   }
 
-  const OfferAlertUserDiv = () => (
+  const renderOfferAlertUserDiv = () => (
     <OfferAlertUserDivStyled>
       <BottomDivTitle fontType={h3}>buyer details:</BottomDivTitle>
       <OwnerInfoDiv>
@@ -187,7 +187,7 @@ const DealPage = () => {
     </OfferAlertUserDivStyled>
   )
 
-  const ItemOwnerUserDiv = () => (
+  const renderItemOwnerUserDiv = () => (
     <ItemOwnerUserDivStyled>
       <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
       <OwnerInfoDiv>
@@ -215,11 +215,11 @@ const DealPage = () => {
         selectedItemData && (
           <>
             <LeftDiv>
-              {status === 'confirm' && <OfferAlertUserDiv />}
+              {status === 'confirm' && renderOfferAlertUserDiv()}
               <ItemShowcaseDiv>
                 <ItemPicture src={defaultPic} />
               </ItemShowcaseDiv>
-              {status === 'offer' && <ItemOwnerUserDiv />}
+              {status === 'offer' && renderItemOwnerUserDiv()}
             </LeftDiv>
             <InfoDiv>
               <Button

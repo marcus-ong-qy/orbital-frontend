@@ -46,11 +46,11 @@ const UserDiv = styled.div`
   height: 132px;
 `
 
-export const ItemOwnerUserDiv = styled(UserDiv)`
+export const ItemOwnerUserDivStyled = styled(UserDiv)`
   margin-top: 21px;
 `
 
-export const OfferAlertUserDiv = styled(UserDiv)`
+export const OfferAlertUserDivStyled = styled(UserDiv)`
   margin: 7px 0 21px;
 
   border: 3px solid ${(props) => props.theme.palette.highlight.regular};
