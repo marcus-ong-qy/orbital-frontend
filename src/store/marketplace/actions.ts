@@ -1,16 +1,17 @@
-import { Dispatch } from 'react'
 import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { auth } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
-import { GetState } from '../types'
+import { Dispatch, GetState } from '../types'
 import { BASE_URL, TIMEOUT, TYPE, ENDPOINTS } from '../api'
 import {
   ActionTypes,
   ChatMetadata,
+  CreateReservationStatus,
   ItemListing,
   ItemListingPost,
+  MakeTransactionStatus,
   MARKETPLACE_ACTIONS,
   UploadStatus,
 } from './types'
@@ -333,3 +334,69 @@ export const getUserListings =
       }
     })
   }
+
+export const setCreateReservationStatus =
+  (createReservationStatus: CreateReservationStatus) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: MARKETPLACE_ACTIONS.SET_RESERVATION_STATUS,
+      createReservationStatus: createReservationStatus,
+    })
+  }
+
+export const setMakeTransactionStatus =
+  (makeTransactionStatus: MakeTransactionStatus) => (dispatch: Dispatch<ActionTypes>) => {
+    dispatch({
+      type: MARKETPLACE_ACTIONS.SET_TRANSACTION_STATUS,
+      makeTransactionStatus: makeTransactionStatus,
+    })
+  }
+
+export const createReservation = (itemId: string) => (dispatch: Dispatch<ActionTypes>) => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      dispatch(setIsLoading(true) as any)
+      const userUID = user.uid
+      try {
+        const getItemById = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+          headers: { uid: userUID },
+        })
+        const response = await getItemById.get(`${ENDPOINTS.RESERVATION}?item_id=${itemId}`)
+        response.status === 201 && dispatch(setCreateReservationStatus('INITIAL'))
+        console.log(response) // TODO set to reservation status store value
+      } catch (e) {
+        console.error('The error is:\n', e as Error)
+      } finally {
+        dispatch(setIsLoading(false) as any)
+      }
+    } else {
+      // alert('not logged in!')
+    }
+  })
+}
+
+export const makeTransaction = (itemId: string) => (dispatch: Dispatch<ActionTypes>) => {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      dispatch(setIsLoading(true) as any)
+      const userUID = user.uid
+      try {
+        const getItemById = axios.create({
+          baseURL: BASE_URL,
+          timeout: TIMEOUT,
+          headers: { uid: userUID },
+        })
+        const response = await getItemById.get(`${ENDPOINTS.TRANSACTION}?item_id=${itemId}`)
+        response.status === 201 && dispatch(setMakeTransactionStatus('INITIAL'))
+        console.log(response) // TODO set to transaction status store value
+      } catch (e) {
+        console.error('The error is:\n', e as Error)
+      } finally {
+        dispatch(setIsLoading(false) as any)
+      }
+    } else {
+      // alert('not logged in!')
+    }
+  })
+}

@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { httpsCallable } from 'firebase/functions'
 import { useTheme } from 'styled-components'
 
-import { auth, functions } from '../../../firebase'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { TEXTS } from '../../../common/texts'
 import formatPrice from '../../../common/formatPrice'
 
-import { getAnotherUserInfo, setIsLoading } from '../../../store/authentication/actions'
+import { getAnotherUserInfo } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
-import { getItemById } from '../../../store/marketplace/actions'
+import {
+  createReservation,
+  getItemById,
+  makeTransaction,
+  setCreateReservationStatus,
+  setMakeTransactionStatus,
+} from '../../../store/marketplace/actions'
 
 import Button from '../../../components/common/Button/Button'
 import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
@@ -44,9 +48,6 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
 import defaultPic from '../../../assets/picture.png'
-import axios from 'axios'
-import { BASE_URL, ENDPOINTS, TIMEOUT, TYPE } from '../../../store/api'
-import { onAuthStateChanged } from 'firebase/auth'
 
 const InfoRow = ({ title, content }: { title: string; content: string }) => {
   const theme = useTheme()
@@ -68,69 +69,12 @@ const DealPage = () => {
   const { isLoggedIn, userFirebaseProfile, isLoading } = useAppSelector(
     (state) => state.auth_reducer,
   )
-  const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
+  const { selectedItemData, createReservationStatus, makeTransactionStatus } = useAppSelector(
+    (state) => state.marketplace_reducer,
+  )
 
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
   const [buyerInfo, setBuyerInfo] = useState<UserData | null>(null)
-
-  const createReservation_old = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const createReservation = httpsCallable(functions, 'createReservation')
-      const result = (await createReservation({ item_id: itemId })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("create reservation don't success")
-      }
-      console.log('reservation', result)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
-
-  const createReservation = (itemId: string) => {
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        dispatch(setIsLoading(true) as any)
-        const userUID = user.uid
-        try {
-          const getItemById = axios.create({
-            baseURL: BASE_URL,
-            timeout: TIMEOUT,
-            headers: { uid: userUID },
-          })
-          const response = await getItemById.get(`${ENDPOINTS.RESERVATION}?item_id=${itemId}`)
-        } catch (e) {
-          console.error('The error is:\n', e as Error)
-        } finally {
-          dispatch(setIsLoading(false) as any)
-        }
-      } else {
-        // alert('not logged in!')
-      }
-    })
-  }
-
-  const makeTransaction = async (itemId: string) => {
-    dispatch(setIsLoading(true))
-    try {
-      const makeTransaction = httpsCallable(functions, 'makeTransaction')
-      const result = (await makeTransaction({ item_id: itemId })) as any
-      const success = result.data.success as boolean
-      if (!success) {
-        console.log(result)
-        throw new Error("make transaction don't success")
-      }
-      console.log('transaction', result)
-    } catch (e) {
-      console.error('The error is:\n', e as Error)
-    } finally {
-      dispatch(setIsLoading(false))
-    }
-  }
 
   const status =
     selectedItemData.createdBy === userFirebaseProfile.uid && selectedItemData.status === 'OFFERED'
@@ -142,7 +86,20 @@ const DealPage = () => {
   }, [])
 
   useEffect(() => {
-    console.log(selectedItemData)
+    if (createReservationStatus === 'SUCCESS') {
+      navigate(`${PATHS.ITEM}/${params.itemId}`)
+      dispatch(setCreateReservationStatus('INITIAL'))
+    }
+  }, [createReservationStatus])
+
+  useEffect(() => {
+    if (makeTransactionStatus === 'SUCCESS') {
+      navigate(`${PATHS.ITEM}/${params.itemId}`)
+      dispatch(setMakeTransactionStatus('INITIAL'))
+    }
+  }, [makeTransactionStatus])
+
+  useEffect(() => {
     if (status === 'offer')
       selectedItemData?.createdBy &&
         dispatch(getAnotherUserInfo(selectedItemData.createdBy, setOwnerInfo))
@@ -152,19 +109,11 @@ const DealPage = () => {
   }, [selectedItemData])
 
   const makeDealOnClick = () => {
-    if (params.itemId) {
-      createReservation(params.itemId)
-      navigate(`${PATHS.ITEM}/${params.itemId}`)
-      window.location.reload()
-    }
+    params.itemId && dispatch(createReservation(params.itemId))
   }
 
   const confirmDealOnClick = () => {
-    if (params.itemId) {
-      makeTransaction(params.itemId)
-      navigate(`${PATHS.ITEM}/${params.itemId}`)
-      window.location.reload()
-    }
+    params.itemId && dispatch(makeTransaction(params.itemId))
   }
 
   const renderOfferAlertUserDiv = () => (

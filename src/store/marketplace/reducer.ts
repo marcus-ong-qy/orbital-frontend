@@ -3,8 +3,10 @@ import { Reducer } from 'redux'
 import {
   ActionTypes,
   ChatMetadata,
+  CreateReservationStatus,
   ItemListing,
   ItemListingPost,
+  MakeTransactionStatus,
   MARKETPLACE_ACTIONS,
   UploadStatus,
 } from './types'
@@ -58,6 +60,8 @@ const initialState: State = {
   allSearchListings: [],
   newListing: defaultListingPost,
   uploadStatus: 'INITIAL',
+  createReservationStatus: 'INITIAL',
+  makeTransactionStatus: 'INITIAL',
 }
 
 type State = {
@@ -74,6 +78,8 @@ type State = {
   allSearchListings: ItemListing[]
   newListing: ItemListingPost
   uploadStatus: UploadStatus
+  createReservationStatus: CreateReservationStatus
+  makeTransactionStatus: MakeTransactionStatus
 }
 
 export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initialState, action) => {
@@ -102,6 +108,10 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
       return { ...state, newListing: action.newListing }
     case MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS:
       return { ...state, uploadStatus: action.uploadStatus }
+    case MARKETPLACE_ACTIONS.SET_RESERVATION_STATUS:
+      return { ...state, createReservationStatus: action.createReservationStatus }
+    case MARKETPLACE_ACTIONS.SET_TRANSACTION_STATUS:
+      return { ...state, makeTransactionStatus: action.makeTransactionStatus }
     default:
       return state
   }

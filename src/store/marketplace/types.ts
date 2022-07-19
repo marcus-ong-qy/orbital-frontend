@@ -45,6 +45,8 @@ export type ItemListingPost = {
 export type TransactionType = 'SELL' | 'RENT'
 export type UploadStatus = 'SUCCESS' | 'INITIAL' | 'DELETED'
 export type ItemStatus = 'AVAILABLE' | 'OFFERED' | 'SOLD'
+export type CreateReservationStatus = 'SUCCESS' | 'INITIAL'
+export type MakeTransactionStatus = 'SUCCESS' | 'INITIAL'
 
 /** Actions' types */
 
@@ -58,6 +60,8 @@ export enum MARKETPLACE_ACTIONS {
   SEARCH = 'MARKETPLACE_ACTIONS.SEARCH',
   CREATE_NEW_LISTING = 'MARKETPLACE_ACTIONS.CREATE_NEW_LISTING',
   SET_UPLOAD_STATUS = 'MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS',
+  SET_RESERVATION_STATUS = 'MARKETPLACE_ACTIONS.SET_RESERVATION_STATUS',
+  SET_TRANSACTION_STATUS = 'MARKETPLACE_ACTIONS.SET_TRANSACTION_STATUS',
 }
 
 /** Actions */
@@ -109,6 +113,16 @@ type SetUploadStatus = {
   uploadStatus: UploadStatus
 }
 
+type SetCreateReservationStatus = {
+  type: typeof MARKETPLACE_ACTIONS.SET_RESERVATION_STATUS
+  createReservationStatus: CreateReservationStatus
+}
+
+type SetMakeTransactionStatus = {
+  type: typeof MARKETPLACE_ACTIONS.SET_TRANSACTION_STATUS
+  makeTransactionStatus: MakeTransactionStatus
+}
+
 export type ActionTypes =
   | SelectedChatData
   | SelectedItemData
@@ -119,3 +133,5 @@ export type ActionTypes =
   | SetChatUID
   | UploadListing
   | SetUploadStatus
+  | SetCreateReservationStatus
+  | SetMakeTransactionStatus

@@ -103,6 +103,10 @@ const ItemPage = () => {
       dispatch(getAnotherUserInfo(selectedItemData.offeredBy, setOffererInfo))
   }, [selectedItemData])
 
+  useEffect(() => {
+    console.log(selectedItemData)
+  }, [selectedItemData])
+
   const userHasAnOfferToast = () => {
     toast(
       `You have an offer from ${
