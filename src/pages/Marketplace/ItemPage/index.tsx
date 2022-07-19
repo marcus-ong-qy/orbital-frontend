@@ -187,7 +187,7 @@ const ItemPage = () => {
         <Button
           style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
           text="🗨️ Chat"
-          onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+          onClick={() => selectedItemData && chatOnClick(selectedItemData.createdBy)}
           color="primary"
         />
         <Button

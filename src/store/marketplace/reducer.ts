@@ -54,7 +54,7 @@ const initialState: State = {
   allUserListings: [],
   allUserReservations: [],
 
-  chatUID: '',
+  // chatUID: '',
   // searchText: '',
   searchTags: [],
   allSearchListings: [],
@@ -72,7 +72,7 @@ type State = {
   allUserListings: ItemListing[]
   allUserReservations: ItemListing[]
 
-  chatUID: string
+  // chatUID: string
   // searchText: string
   searchTags: string[]
   allSearchListings: ItemListing[]
@@ -102,8 +102,8 @@ export const marketplace_reducer: Reducer<State, ActionTypes> = (state = initial
         searchTags: action.searchTags,
         allSearchListings: action.allSearchListings,
       }
-    case MARKETPLACE_ACTIONS.SET_CHAT_UID:
-      return { ...state, chatUID: action.chatUID }
+    // case MARKETPLACE_ACTIONS.SET_CHAT_UID:
+    //   return { ...state, chatUID: action.chatUID }
     case MARKETPLACE_ACTIONS.CREATE_NEW_LISTING:
       return { ...state, newListing: action.newListing }
     case MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS:

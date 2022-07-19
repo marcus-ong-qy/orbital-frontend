@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { get, onValue, ref } from 'firebase/database'
+import { onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
-import { httpsCallable } from 'firebase/functions'
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+import { useAppDispatch } from '../../../app/hooks'
 import { PATHS } from '../../../routes/PATHS'
 import { auth, database } from '../../../firebase'
 
@@ -32,10 +31,8 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
   const navigate = useNavigate()
   const { h3, p } = { ...theme.typography.fontSize }
 
-  // const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
   const [itemInfo, setItemInfo] = useState<ItemListing | null>(null)
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
-
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
   const user = auth.currentUser!

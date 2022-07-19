@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { get, onValue, ref, set } from 'firebase/database'
+import { onValue, ref, set } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import { auth, database } from '../../../firebase'
 
-import { getAnotherUserInfo } from '../../../store/authentication/actions'
 import { UserData } from '../../../store/authentication/types'
-import { getItemById, setChatUID } from '../../../store/marketplace/actions'
-import { ChatMetadata, ItemListing, Message } from '../../../store/marketplace/types'
+import { ItemListing, Message } from '../../../store/marketplace/types'
 
 import ChatMessage from '../ChatMessage/ChatMessage'
 
@@ -38,43 +34,19 @@ import picIcon from '../../../assets/picture.png'
 import sendIcon from '../../../assets/send.svg'
 
 const ChatApplet = ({
-  chatMetadata,
   ownerInfo,
   selectedItemData,
+  chatUID,
 }: {
-  chatMetadata: ChatMetadata | null
   ownerInfo: UserData | null
   selectedItemData: ItemListing
+  chatUID: string
 }) => {
   const theme = useTheme()
-  const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-  const params = useParams<{ chatUID: string }>()
   const { h1, h2, h3 } = { ...theme.typography.fontSize }
-  const {
-    // selectedChatData,
-    chatUID,
-    // selectedItemData,
-  } = useAppSelector((state) => state.marketplace_reducer)
-
-  // const isCreator = selectedChatData.createdBy === user.uid
-  // const receipientUID = isCreator ? selectedChatData.receipient : selectedChatData.createdBy
 
   const [messages, setMessages] = useState<Message[] | null>(null)
   const [formValue, setFormValue] = useState('')
-
-  // const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
-
-  // const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
-
-  const user = auth.currentUser
-  const isCreator = chatMetadata?.createdBy === user?.uid
-  const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
-
-  useEffect(() => {
-    // TODO might be redundant
-    params.chatUID && dispatch(setChatUID(params.chatUID))
-  }, [params.chatUID])
 
   useEffect(() => {
     if (chatUID) {
@@ -110,13 +82,32 @@ const ChatApplet = ({
 
     set(messagesRef, newMessage)
     set(recentMessageRef, newMessage)
-
     setFormValue('')
   }
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormValue(e.target.value)
   }
+
+  const renderChatProductBannerDiv = () => (
+    <ChatProductBannerDiv
+    // onClick={() => navigate(`${PATHS.CHAT}/${selectedItemData._id}`)} // TODO back end returns _id: {}
+    >
+      <div>
+        <ProductTitle fontType={h2}>{selectedItemData.name}</ProductTitle>
+        <ProductInfo fontType={h3}>
+          {selectedItemData?.typeOfTransaction} for{' '}
+          <PriceHighlight>${selectedItemData.price}</PriceHighlight>
+          {selectedItemData?.typeOfTransaction === 'RENT' && (
+            <PerDayHighlight>/day</PerDayHighlight>
+          )}
+        </ProductInfo>
+      </div>
+      <ProductPic
+        src={selectedItemData?.imageURL[0] ? selectedItemData?.imageURL[0] : defaultPic}
+      />
+    </ChatProductBannerDiv>
+  )
 
   return (
     <ChatAppletDiv>
@@ -131,25 +122,7 @@ const ChatApplet = ({
         </ReceipientUsername>
       </ChatAppletHeaderDiv>
 
-      {selectedItemData && (
-        <ChatProductBannerDiv
-        // onClick={() => navigate(`${PATHS.CHAT}/${selectedItemData._id}`)} // TODO back end returns _id: {}
-        >
-          <div>
-            <ProductTitle fontType={h2}>{selectedItemData.name}</ProductTitle>
-            <ProductInfo fontType={h3}>
-              {selectedItemData?.typeOfTransaction} for{' '}
-              <PriceHighlight>${selectedItemData.price}</PriceHighlight>
-              {selectedItemData?.typeOfTransaction === 'RENT' && (
-                <PerDayHighlight>/day</PerDayHighlight>
-              )}
-            </ProductInfo>
-          </div>
-          <ProductPic
-            src={selectedItemData?.imageURL[0] ? selectedItemData?.imageURL[0] : defaultPic}
-          />
-        </ChatProductBannerDiv>
-      )}
+      {selectedItemData && renderChatProductBannerDiv()}
 
       <ChatMessagesDiv id="chat-message-div">
         {messages?.map((msg, index) => (

@@ -27,6 +27,7 @@ import {
 const ChatPage = () => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
+  const { chatUID } = useParams<{ chatUID: string }>()
   const { h1 } = { ...theme.typography.fontSize }
   const { isLoading, isLoggedIn, userFirebaseProfile } = useAppSelector(
     (state) => state.auth_reducer,
@@ -34,21 +35,12 @@ const ChatPage = () => {
   const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
   const [userChatsUID, setUserChatsUID] = useState<string[]>()
-
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
-
-  // useEffect(() => {
-  //   params.userUID && dispatch(setChatUserUID(params.userUID))
-  //   console.log('dispatcho', params.userUID)
-  // }, [params.userUID])
 
   const user = auth.currentUser
   const isCreator = chatMetadata?.createdBy === user?.uid
   const receipientUID = isCreator ? chatMetadata?.receipient : chatMetadata?.createdBy
-
-  const params = useParams<{ chatUID: string }>()
-  const chatUID = params.chatUID
 
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
@@ -92,9 +84,9 @@ const ChatPage = () => {
               </ChatsDrawerDiv>
               <ChatInterfaceDiv>
                 <ChatApplet
-                  chatMetadata={chatMetadata}
                   ownerInfo={ownerInfo}
                   selectedItemData={selectedItemData}
+                  chatUID={chatUID ?? ''}
                 />
               </ChatInterfaceDiv>
             </>

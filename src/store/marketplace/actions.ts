@@ -16,12 +16,12 @@ import {
   UploadStatus,
 } from './types'
 
-export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
-  dispatch({
-    type: MARKETPLACE_ACTIONS.SET_CHAT_UID,
-    chatUID: chatUID,
-  })
-}
+// export const setChatUID = (chatUID: string) => (dispatch: Dispatch<ActionTypes>) => {
+//   dispatch({
+//     type: MARKETPLACE_ACTIONS.SET_CHAT_UID,
+//     chatUID: chatUID,
+//   })
+// }
 
 export const setSelectedChatData =
   (selectedChatData: ChatMetadata) => (dispatch: Dispatch<ActionTypes>) => {
