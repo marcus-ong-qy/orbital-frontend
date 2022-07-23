@@ -88,7 +88,7 @@ const EditItemPage = () => {
   }
 
   const onDelete = () => {
-    dispatch(deleteItem(params.itemId!))
+    params.itemId && dispatch(deleteItem(params.itemId))
   }
 
   return (

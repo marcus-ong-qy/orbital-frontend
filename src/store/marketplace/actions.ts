@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { onAuthStateChanged } from 'firebase/auth'
+import { toast } from 'react-toastify'
 
 import { auth } from '../../../src/firebase'
 import { setIsLoading } from '../authentication/actions'
@@ -111,21 +112,22 @@ export const uploadListing = (newListing: ItemListingPost) => (dispatch: Dispatc
           baseURL: BASE_URL,
           timeout: TIMEOUT,
           headers: { uid: userUID },
-          // data: newListing,
         })
         const response = await getItemById.post(ENDPOINTS.ITEM, newListing)
-        response.status === 201 &&
+        if (response.status === 201) {
           dispatch({
             type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
             uploadStatus: 'SUCCESS',
           })
+          toast.success('Listing Uploaded')
+        }
       } catch (e) {
         console.error('The error is:\n', e as Error)
       } finally {
         dispatch(setIsLoading(false) as any)
       }
     } else {
-      // alert('not logged in!')
+      toast.error('Error: not logged in!')
     }
   })
 }
@@ -145,18 +147,20 @@ export const updateItem =
             data: updatedListing,
           })
           const response = await getItemById.post(ENDPOINTS.ITEM)
-          response.status === 200 &&
+          if (response.status === 200) {
             dispatch({
               type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
               uploadStatus: 'SUCCESS',
             })
+            toast.success('Item Updated')
+          }
         } catch (e) {
           console.error('The error is:\n', e as Error)
         } finally {
           dispatch(setIsLoading(false) as any)
         }
       } else {
-        // alert('not logged in!')
+        toast.error('Error: not logged in!')
       }
     })
   }
@@ -167,17 +171,20 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
       try {
-        const getItemById = axios.create({
-          baseURL: BASE_URL,
-          timeout: TIMEOUT,
-          headers: { uid: userUID },
-          data: { item_id: itemId },
-        })
-        const response = await getItemById.delete(ENDPOINTS.ITEM)
-        response.status === 200 &&
-          dispatch({
-            type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-            uploadStatus: 'DELETED',
+        axios
+          .delete(`${BASE_URL}${ENDPOINTS.ITEM}`, {
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+            data: { item_id: itemId },
+          })
+          .then((response) => {
+            if (response.status === 200) {
+              dispatch({
+                type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+                uploadStatus: 'DELETED',
+              })
+              toast.success('Item Deleted')
+            }
           })
       } catch (e) {
         console.error('The error is:\n', e as Error)
@@ -185,7 +192,7 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
         dispatch(setIsLoading(false) as any)
       }
     } else {
-      // alert('not logged in!')
+      toast.error('Error: not logged in!')
     }
   })
 }
@@ -260,16 +267,7 @@ export const getUserListings =
             // headers: { uid: userUID },
           })
 
-          let url = ''
-          switch (status) {
-            case 'any':
-              url = `${ENDPOINTS.USER}?uid=${userUID}`
-              break
-            default:
-              // url = `${ENDPOINTS.USER}uid=${userUID}&status=${status}`
-              url = `${ENDPOINTS.USER}?uid=${userUID}`
-              break
-          }
+          const url = `${ENDPOINTS.ITEM}?type=getListingsBasedOnStatus&uid=${userUID}`
           const response = await getUserListings.get(url)
           const info: ItemListing[] = response.data.message
 
@@ -292,45 +290,8 @@ export const getUserListings =
         } finally {
           dispatch(setIsLoading(false) as any)
         }
-
-        let url = ''
-        // switch (status) {
-        //   case 'any':
-        //     url = `${BASE_URL}/getUserListings?uid=${userUID}`
-        //     break
-        //   default:
-        url = `${BASE_URL}/getUserListings?uid=${userUID}&status=${status}`
-        //     break
-        // }
-
-        // fetch(url, {
-        //   method: 'GET',
-        //   mode: 'cors',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   },
-        // })
-        //   .then((resp) => resp.json())
-        //   .then((res) => {
-        //     // TODO consider all cases
-        //     if (status === 'any') {
-        //       const allUserListings: ItemListing[] = res.message
-        //       dispatch({
-        //         type: MARKETPLACE_ACTIONS.SET_ALL_USER_LISTINGS,
-        //         allUserListings: allUserListings,
-        //       })
-        //     } else if (status === 'reservation') {
-        //       const allUserReservations: ItemListing[] = res.message
-        //       dispatch({
-        //         type: MARKETPLACE_ACTIONS.SET_ALL_USER_RESERVATIONS,
-        //         allUserReservations: allUserReservations,
-        //       })
-        //     }
-        //   })
-        //   .catch((err) => console.error(err))
-        //   .finally(() => dispatch(setIsLoading(false) as any))
       } else {
-        // alert('not logged in!')
+        toast.error('Error: not logged in!')
       }
     })
   }
@@ -363,7 +324,10 @@ export const createReservation = (itemId: string) => (dispatch: Dispatch<ActionT
           headers: { uid: userUID },
         })
         const response = await getItemById.get(`${ENDPOINTS.RESERVATION}?item_id=${itemId}`)
-        response.status === 201 && dispatch(setCreateReservationStatus('INITIAL'))
+        if (response.status === 201) {
+          dispatch(setCreateReservationStatus('INITIAL'))
+          toast.success('Reservation Created!')
+        }
         console.log(response) // TODO set to reservation status store value
       } catch (e) {
         console.error('The error is:\n', e as Error)
@@ -371,7 +335,7 @@ export const createReservation = (itemId: string) => (dispatch: Dispatch<ActionT
         dispatch(setIsLoading(false) as any)
       }
     } else {
-      // alert('not logged in!')
+      toast.error('Error: not logged in!')
     }
   })
 }
@@ -388,7 +352,10 @@ export const makeTransaction = (itemId: string) => (dispatch: Dispatch<ActionTyp
           headers: { uid: userUID },
         })
         const response = await getItemById.get(`${ENDPOINTS.TRANSACTION}?item_id=${itemId}`)
-        response.status === 201 && dispatch(setMakeTransactionStatus('INITIAL'))
+        if (response.status === 201) {
+          dispatch(setMakeTransactionStatus('INITIAL'))
+          toast.success('Transaction Successful!')
+        }
         console.log(response) // TODO set to transaction status store value
       } catch (e) {
         console.error('The error is:\n', e as Error)
@@ -396,7 +363,7 @@ export const makeTransaction = (itemId: string) => (dispatch: Dispatch<ActionTyp
         dispatch(setIsLoading(false) as any)
       }
     } else {
-      // alert('not logged in!')
+      toast.error('Error: not logged in!')
     }
   })
 }
