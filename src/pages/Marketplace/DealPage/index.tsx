@@ -167,7 +167,11 @@ const DealPage = () => {
       <BottomDivTitle fontType={h3}>buyer details:</BottomDivTitle>
       <OwnerInfoDiv>
         <OwnerInfoSubDiv>
-          <ProfilePic src={defaultAvatar} diameter="55px" round />
+          <ProfilePic
+            src={buyerInfo?.imageURL?.length ? buyerInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
           <OwnerName fontType={h3}>{buyerInfo?.username}</OwnerName>
         </OwnerInfoSubDiv>
         <Button
@@ -185,7 +189,11 @@ const DealPage = () => {
       <BottomDivTitle fontType={h3}>listed by:</BottomDivTitle>
       <OwnerInfoDiv>
         <OwnerInfoSubDiv>
-          <ProfilePic src={defaultAvatar} diameter="55px" round />
+          <ProfilePic
+            src={ownerInfo?.imageURL?.length ? ownerInfo.imageURL : defaultAvatar}
+            diameter="55px"
+            round
+          />
           <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
         </OwnerInfoSubDiv>
         <Button
@@ -208,7 +216,7 @@ const DealPage = () => {
             <LeftDiv>
               {status === 'confirm' && renderOfferAlertUserDiv()}
               <ItemShowcaseDiv>
-                <ItemPicture src={defaultPic} />
+                <ItemPicture src={selectedItemData.imageURL[0] ?? defaultPic} />
               </ItemShowcaseDiv>
               {status === 'offer' && renderItemOwnerUserDiv()}
             </LeftDiv>
