@@ -13,7 +13,7 @@ import {
   setUploadStatus,
   updateItem,
 } from '../../../store/marketplace/actions'
-import { ItemListing, ItemListingPost, TransactionType } from '../../../store/marketplace/types'
+import { ItemListing, ItemListingPut, TransactionType } from '../../../store/marketplace/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
 import Dropdown from '../../../components/common/Dropdown/Dropdown'
@@ -69,11 +69,16 @@ const EditItemPage = () => {
   }, [selectedImageBlob])
 
   useEffect(() => {
+    selectedImageB64 && setFormInfo({ ...formInfo, imageURL: [selectedImageB64] })
+  }, [selectedImageB64])
+
+  useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
   }, [params.itemId])
 
   const onSubmit = () => {
-    const editedListing: ItemListingPost = {
+    const editedListing: ItemListingPut = {
+      item_id: params.itemId ?? '',
       name: formInfo?.name?.trim() ?? '',
       price: formInfo?.price ?? 0,
       description: formInfo?.description?.trim() ?? '',
@@ -81,7 +86,7 @@ const EditItemPage = () => {
       deliveryInformation: formInfo?.deliveryInformation?.trim() ?? '',
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
-      imageURL: selectedImageB64 ? [selectedImageB64] : [],
+      imageURL: formInfo?.imageURL ? formInfo?.imageURL : [],
     }
     dispatch(updateItem(editedListing))
     console.table(editedListing)
