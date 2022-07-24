@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onValue, ref } from 'firebase/database'
+import { get, onValue, ref } from 'firebase/database'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch } from '../../../app/hooks'
@@ -41,7 +41,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
 
   useEffect(() => {
     const userChatRef = ref(database, 'chats/' + chatUID)
-    onValue(userChatRef, (snapshot) => {
+    get(userChatRef).then((snapshot) => {
       const chatData: ChatMetadata = snapshot.val()
       setChatMetadata(chatData)
     })

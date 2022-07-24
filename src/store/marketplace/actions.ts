@@ -12,6 +12,7 @@ import {
   CreateReservationStatus,
   ItemListing,
   ItemListingPost,
+  ItemListingPut,
   MakeTransactionStatus,
   MARKETPLACE_ACTIONS,
   UploadStatus,
@@ -119,7 +120,7 @@ export const uploadListing = (newListing: ItemListingPost) => (dispatch: Dispatc
             type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
             uploadStatus: 'SUCCESS',
           })
-          toast.success('Listing Uploaded')
+          toast.success('Listing Uploaded', { toastId: 'listing-uploaded' })
         }
       } catch (e) {
         console.error('The error is:\n', e as Error)
@@ -127,40 +128,36 @@ export const uploadListing = (newListing: ItemListingPost) => (dispatch: Dispatc
         dispatch(setIsLoading(false) as any)
       }
     } else {
-      toast.error('Error: not logged in!')
+      toast.error('Error: not logged in!', { toastId: 'please-login' })
     }
   })
 }
 
-// TODO merge with uploadListing
 export const updateItem =
-  (updatedListing: ItemListingPost) => (dispatch: Dispatch<ActionTypes>) => {
+  (updatedListing: ItemListingPut) => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+    const { selectedItemData } = getState().marketplace_reducer
     onAuthStateChanged(auth, async (user) => {
       if (user) {
         dispatch(setIsLoading(true) as any)
         const userUID = user.uid
-        try {
-          const getItemById = axios.create({
+        axios
+          .put(`${BASE_URL}${ENDPOINTS.ITEM}`, updatedListing, {
             baseURL: BASE_URL,
             timeout: TIMEOUT,
             headers: { uid: userUID },
-            data: updatedListing,
           })
-          const response = await getItemById.post(ENDPOINTS.ITEM)
-          if (response.status === 200) {
-            dispatch({
-              type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-              uploadStatus: 'SUCCESS',
-            })
-            toast.success('Item Updated')
-          }
-        } catch (e) {
-          console.error('The error is:\n', e as Error)
-        } finally {
-          dispatch(setIsLoading(false) as any)
-        }
+          .then((response) => {
+            if (response.status === 201) {
+              const newItemData = { ...selectedItemData, ...updatedListing }
+              dispatch(setSelectedItemData(newItemData as ItemListing))
+              dispatch(setUploadStatus('SUCCESS'))
+              toast.success('Item Updated', { toastId: 'item-updated' })
+            }
+          })
+          .catch((e) => console.error('The error is:\n', e as Error))
+          .finally(() => dispatch(setIsLoading(false) as any))
       } else {
-        toast.error('Error: not logged in!')
+        toast.error('Error: not logged in!', { toastId: 'please-login' })
       }
     })
   }
@@ -170,29 +167,25 @@ export const deleteItem = (itemId: string) => (dispatch: Dispatch<ActionTypes>) 
     if (user) {
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
-      try {
-        axios
-          .delete(`${BASE_URL}${ENDPOINTS.ITEM}`, {
-            timeout: TIMEOUT,
-            headers: { uid: userUID },
-            data: { item_id: itemId },
-          })
-          .then((response) => {
-            if (response.status === 200) {
-              dispatch({
-                type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
-                uploadStatus: 'DELETED',
-              })
-              toast.success('Item Deleted')
-            }
-          })
-      } catch (e) {
-        console.error('The error is:\n', e as Error)
-      } finally {
-        dispatch(setIsLoading(false) as any)
-      }
+      axios
+        .delete(`${BASE_URL}${ENDPOINTS.ITEM}`, {
+          timeout: TIMEOUT,
+          headers: { uid: userUID },
+          data: { item_id: itemId },
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch({
+              type: MARKETPLACE_ACTIONS.SET_UPLOAD_STATUS,
+              uploadStatus: 'DELETED',
+            })
+            toast.success('Item Deleted', { toastId: 'item-deleted' })
+          }
+        })
+        .catch((e) => console.error('The error is:\n', e as Error))
+        .finally(() => dispatch(setIsLoading(false) as any))
     } else {
-      toast.error('Error: not logged in!')
+      toast.error('Error: not logged in!', { toastId: 'please-login' })
     }
   })
 }
@@ -223,7 +216,7 @@ export const filterAndSearch =
     setCustomStateHook?: React.Dispatch<React.SetStateAction<ItemListing[] | null>>,
     noLoadingSpin?: boolean,
   ) =>
-  async (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
+  async (dispatch: Dispatch<ActionTypes>) => {
     !noLoadingSpin && dispatch(setIsLoading(true) as any)
     try {
       const getItemById = axios.create({
@@ -267,7 +260,15 @@ export const getUserListings =
             // headers: { uid: userUID },
           })
 
-          const url = `${ENDPOINTS.ITEM}?type=getListingsBasedOnStatus&uid=${userUID}`
+          let url = ''
+          switch (status) {
+            case 'any':
+              url = `${ENDPOINTS.ITEM}?type=getListingsBasedOnStatus&uid=${userUID}`
+              break
+            default:
+              url = `${ENDPOINTS.ITEM}?type=getListingsBasedOnStatus&uid=${userUID}&status=${status}`
+              break
+          }
           const response = await getUserListings.get(url)
           const info: ItemListing[] = response.data.message
 
@@ -291,7 +292,7 @@ export const getUserListings =
           dispatch(setIsLoading(false) as any)
         }
       } else {
-        toast.error('Error: not logged in!')
+        toast.error('Error: not logged in!', { toastId: 'please-login' })
       }
     })
   }
@@ -317,25 +318,31 @@ export const createReservation = (itemId: string) => (dispatch: Dispatch<ActionT
     if (user) {
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
-      try {
-        const getItemById = axios.create({
-          baseURL: BASE_URL,
-          timeout: TIMEOUT,
-          headers: { uid: userUID },
+      axios
+        .post(
+          `${BASE_URL}${ENDPOINTS.RESERVATION}`,
+          { item_id: itemId },
+          {
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+          },
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch(setCreateReservationStatus('SUCCESS'))
+            dispatch(setSelectedItemData(response.data.message))
+            toast.success('Reservation Created!', { toastId: 'reserved' })
+          }
+          console.log(response)
         })
-        const response = await getItemById.get(`${ENDPOINTS.RESERVATION}?item_id=${itemId}`)
-        if (response.status === 201) {
-          dispatch(setCreateReservationStatus('INITIAL'))
-          toast.success('Reservation Created!')
-        }
-        console.log(response) // TODO set to reservation status store value
-      } catch (e) {
-        console.error('The error is:\n', e as Error)
-      } finally {
-        dispatch(setIsLoading(false) as any)
-      }
+        .catch((e) => {
+          console.log({ uid: userUID })
+          console.error('The error is:\n', e as Error)
+          toast.error('Create Reservation failed', { toastId: 'reserve-fail' })
+        })
+        .finally(() => dispatch(setIsLoading(false) as any))
     } else {
-      toast.error('Error: not logged in!')
+      toast.error('Error: not logged in!', { toastId: 'please-login' })
     }
   })
 }
@@ -345,25 +352,32 @@ export const makeTransaction = (itemId: string) => (dispatch: Dispatch<ActionTyp
     if (user) {
       dispatch(setIsLoading(true) as any)
       const userUID = user.uid
-      try {
-        const getItemById = axios.create({
-          baseURL: BASE_URL,
-          timeout: TIMEOUT,
-          headers: { uid: userUID },
+
+      axios
+        .post(
+          `${BASE_URL}${ENDPOINTS.TRANSACTION}`,
+          { item_id: itemId },
+          {
+            timeout: TIMEOUT,
+            headers: { uid: userUID },
+          },
+        )
+        .then((response) => {
+          if (response.status === 201) {
+            dispatch(setMakeTransactionStatus('SUCCESS'))
+            dispatch(setSelectedItemData(response.data.message))
+            toast.success('Transaction Successful!', { toastId: 'transacted' })
+          }
+          console.log(response)
         })
-        const response = await getItemById.get(`${ENDPOINTS.TRANSACTION}?item_id=${itemId}`)
-        if (response.status === 201) {
-          dispatch(setMakeTransactionStatus('INITIAL'))
-          toast.success('Transaction Successful!')
-        }
-        console.log(response) // TODO set to transaction status store value
-      } catch (e) {
-        console.error('The error is:\n', e as Error)
-      } finally {
-        dispatch(setIsLoading(false) as any)
-      }
+        .catch((e) => {
+          console.log({ uid: userUID })
+          console.error('The error is:\n', e as Error)
+          toast.error('Make Transaction failed', { toastId: 'transact-fail' })
+        })
+        .finally(() => dispatch(setIsLoading(false) as any))
     } else {
-      toast.error('Error: not logged in!')
+      toast.error('Error: not logged in!', { toastId: 'please-login' })
     }
   })
 }

@@ -131,7 +131,12 @@ const ChatApplet = ({
       </ChatMessagesDiv>
 
       <MessageForm onSubmit={sendMessage}>
-        <MessageInput value={formValue} onChange={onChange} placeholder={'Write a message to'} />
+        <MessageInput
+          id="message-input"
+          value={formValue}
+          onChange={onChange}
+          placeholder="Write a message to"
+        />
         <PictureIcon src={picIcon} />
         <SendButton type="submit" disabled={!formValue}>
           <SendIcon src={sendIcon} />

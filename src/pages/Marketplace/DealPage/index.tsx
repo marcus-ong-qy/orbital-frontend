@@ -122,7 +122,7 @@ const DealPage = () => {
   }
 
   const chatOnClick = (targetUserUID: string) => {
-    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />)
+    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />, { toastId: 'please-login' })
 
     const userUID = userFirebaseProfile.uid!
     const userRef = ref(database, 'users/' + userUID)
@@ -172,7 +172,9 @@ const DealPage = () => {
             diameter="55px"
             round
           />
-          <OwnerName fontType={h3}>{buyerInfo?.username}</OwnerName>
+          <OwnerName fontType={h3}>
+            {buyerInfo?.username.length ? buyerInfo.username : buyerInfo?.name}
+          </OwnerName>
         </OwnerInfoSubDiv>
         <Button
           style={{ width: '15vw', borderRadius: 0 }}
@@ -194,7 +196,9 @@ const DealPage = () => {
             diameter="55px"
             round
           />
-          <OwnerName fontType={h3}>{ownerInfo?.username}</OwnerName>
+          <OwnerName fontType={h3}>
+            {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+          </OwnerName>
         </OwnerInfoSubDiv>
         <Button
           style={{ width: '15vw', borderRadius: 0 }}

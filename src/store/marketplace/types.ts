@@ -42,6 +42,10 @@ export type ItemListingPost = {
   imageURL: string[] | undefined
 }
 
+export type ItemListingPut = ItemListingPost & {
+  item_id: string
+}
+
 export type TransactionType = 'SELL' | 'RENT'
 export type UploadStatus = 'SUCCESS' | 'INITIAL' | 'DELETED'
 export type ItemStatus = 'AVAILABLE' | 'OFFERED' | 'SOLD'

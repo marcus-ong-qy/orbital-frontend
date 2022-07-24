@@ -29,7 +29,7 @@ import {
 } from './styles/EditUserProfilePage.styled'
 import { EntryArea, EntryDiv, EntryName } from '../../../styles/index.styled'
 
-import defaultPic from '../../../assets/picture.png'
+import defaultAvatar from '../../../assets/default_avatar.png'
 
 const EditUserProfilePage = () => {
   const theme = useTheme()
@@ -41,13 +41,12 @@ const EditUserProfilePage = () => {
 
   const { navTitleFont, p } = { ...theme.typography.fontSize }
 
-  const [formValues, setFormValues] = useState<UserData>(defaultUserData)
-
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(
-    userData.imageURL ? userData.imageURL : defaultPic,
+    userData.imageURL ? userData.imageURL : defaultAvatar,
   )
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
+  const [formValues, setFormValues] = useState<UserData>(defaultUserData)
 
   useEffect(() => {
     if (updateParticularsStatus === 'SUCCESS') {
@@ -64,9 +63,17 @@ const EditUserProfilePage = () => {
   }, [selectedImageBlob])
 
   useEffect(() => {
+    selectedImageB64 && setFormValues({ ...formValues, imageURL: selectedImageB64 })
+  }, [selectedImageB64])
+
+  useEffect(() => {
     userData && setFormValues(userData)
     console.log('form values set:\n', userData)
   }, [userData])
+
+  useEffect(() => {
+    console.log('form values:\n', formValues)
+  }, [formValues])
 
   const onSubmit = () => {
     const newUserData: UserData = {
@@ -77,7 +84,7 @@ const EditUserProfilePage = () => {
       address: formValues.address?.trim(),
       gender: formValues.gender,
       birthday: formValues.birthday,
-      imageURL: selectedImageB64,
+      imageURL: formValues.imageURL,
       // firebaseUID: userFirebaseProfile.uid!,
     }
     dispatch(updateParticularsForm(newUserData))
@@ -106,11 +113,12 @@ const EditUserProfilePage = () => {
               value={formValues.name}
               onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
               register={register}
+              required
             />
           </EntryDiv>
 
           <EntryDiv type="input">
-            <EntryName fontType={p}> Gender&nbsp;</EntryName>
+            <EntryName fontType={p}>Gender&nbsp;</EntryName>
             <Dropdown
               title="Gender"
               placeholder="Gender"

@@ -35,6 +35,7 @@ const SearchbarDropdown = (props: Props) => {
     const onClick = () => {
       navigate(`${PATHS.SEARCH}/${result.name}`)
       dispatch(setSearchRedirect('redirect'))
+      window.location.reload()
     }
     return (
       <DropdownOptionDiv fontType={h3} onClick={onClick}>

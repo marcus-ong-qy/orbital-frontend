@@ -59,6 +59,7 @@ const Searchbar = () => {
     if (debouncedTerm) {
       navigate(`${PATHS.SEARCH}/${debouncedTerm}`)
       dispatch(setSearchRedirect('redirect'))
+      window.location.reload()
     }
   }
 

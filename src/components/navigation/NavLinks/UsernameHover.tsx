@@ -2,12 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTheme } from 'styled-components'
 
-import { auth } from '../../../firebase'
 import { PATHS } from '../../../routes/PATHS'
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 
 import { getUserData, logout } from '../../../store/authentication/actions'
-import { FirebaseProfile } from '../../../store/authentication/types'
 
 import {
   DropdownButtons,
@@ -20,13 +18,7 @@ import { ProfilePic } from '../../../styles/index.styled'
 
 import defaultAvatar from '../../../assets/default_avatar.png'
 
-const UsernameHover = ({
-  userFirebaseProfile,
-  maxWidth,
-}: {
-  userFirebaseProfile: FirebaseProfile
-  maxWidth: string
-}) => {
+const UsernameHover = ({ maxWidth }: { maxWidth: string }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
@@ -65,7 +57,7 @@ const UsernameHover = ({
           onMouseEnter={() => setUsernameEnter(true)}
           onMouseLeave={() => setUsernameEnter(false)}
         >
-          {!!userData.username ? userData.username : userFirebaseProfile.email}
+          {!!userData.username ? userData.username : userData.name}
         </StyledUsernameHover>
       </UsernameSpan>
       {showDropdown && (

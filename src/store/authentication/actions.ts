@@ -115,12 +115,6 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     const res = await createUserWithEmailAndPassword(auth, credentials.email, credentials.password)
     const user = res.user
 
-    const initUserData: UserData = {
-      ...defaultUserData,
-      username: user.email ?? '',
-      // firebaseUID: user.uid,
-    }
-
     const initRealtimeData: RealtimeUserData = {
       chats: {},
       displayName: '',
@@ -135,13 +129,15 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
       timeout: TIMEOUT,
       headers: { uid: user.uid },
     })
-    const response = await setUserData.put(ENDPOINTS.USER, defaultUserData)
+    const response = await setUserData.put(ENDPOINTS.USER, { name: credentials.email })
     const userData: UserData = response.data.message
-    response.status === 200 &&
+    if (response.status === 201) {
       dispatch({
         type: AUTH_ACTIONS.SET_USER_DATA,
         userData: userData,
       })
+      setSignupAttemptStatus('SUCCESS')
+    }
   } catch (e) {
     console.error('The error is:\n', e as Error)
     dispatch(setSignupAttemptStatus(readSignupError(e)))
@@ -150,12 +146,12 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
   }
 }
 
-// const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
-//   dispatch({
-//     type: AUTH_ACTIONS.SET_USER_DATA,
-//     userData: userData,
-//   })
-// }
+const setUserData = (userData: UserData) => (dispatch: Dispatch<ActionTypes>) => {
+  dispatch({
+    type: AUTH_ACTIONS.SET_USER_DATA,
+    userData: userData,
+  })
+}
 
 export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
   onAuthStateChanged(auth, async (user) => {
@@ -169,11 +165,7 @@ export const getUserData = () => async (dispatch: Dispatch<ActionTypes>) => {
         })
         const response = await getUserData.get(`${ENDPOINTS.USER}?uid=${userUID}`)
         const userData: UserData = response.data.message
-        response.status === 200 &&
-          dispatch({
-            type: AUTH_ACTIONS.SET_USER_DATA,
-            userData: userData,
-          })
+        response.status === 200 && dispatch(setUserData(userData))
       } catch (e) {
         console.error('The error is:\n', e as Error)
       } finally {

@@ -91,6 +91,8 @@ const ItemPage = () => {
     selectedItemData?.createdBy === userFirebaseProfile.uid &&
     selectedItemData?.status === 'OFFERED'
 
+  const offererName = offererInfo?.username.length ? offererInfo.username : offererInfo?.name
+
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
   }, [params.itemId])
@@ -108,15 +110,14 @@ const ItemPage = () => {
   }, [selectedItemData])
 
   const userHasAnOfferToast = () => {
+    setToastShown(true)
     toast(
-      `You have an offer from ${
-        offererInfo?.username.length ? offererInfo.username : offererInfo?.name
-      }!`,
+      <>
+        You have an offer from <b>{offererName}</b>!
+      </>,
       { toastId: 'user-has-an-offer-toast' },
     )
-    setToastShown(true)
   }
-  userHasAnOffer && !toastShown && userHasAnOfferToast()
 
   const chatOnClick = (targetUserUID: string) => {
     if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />)
@@ -162,7 +163,7 @@ const ItemPage = () => {
   }
 
   const dealOfferOnClick = () => {
-    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />)
+    if (!isLoggedIn) return toast.error(<PleaseLoginToasterText />, { toastId: 'please-login' })
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
@@ -170,35 +171,38 @@ const ItemPage = () => {
     navigate(`${PATHS.DEAL}/${params.itemId}`)
   }
 
-  const renderOfferAlertUserDiv = () => (
-    <OfferAlertUserDivStyled>
-      <BottomDivTitle fontType={h3}>You have an offer! (TODO)</BottomDivTitle>
-      <UserInfoDiv>
-        <UserInfoSubDiv>
-          <ProfilePic
-            src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
-            diameter="55px"
-            round
+  const renderOfferAlertUserDiv = () => {
+    !toastShown && userHasAnOfferToast()
+    return (
+      <OfferAlertUserDivStyled>
+        <BottomDivTitle fontType={h3}>You have an offer!</BottomDivTitle>
+        <UserInfoDiv>
+          <UserInfoSubDiv>
+            <ProfilePic
+              src={offererInfo?.imageURL?.length ? offererInfo.imageURL : defaultAvatar}
+              diameter="55px"
+              round
+            />
+            <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
+              {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+            </UserInfoNameLink>
+          </UserInfoSubDiv>
+          <Button
+            style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+            text="🗨️ Chat"
+            onClick={() => selectedItemData && chatOnClick(selectedItemData.offeredBy)}
+            color="primary"
           />
-          <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
-            {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
-          </UserInfoNameLink>
-        </UserInfoSubDiv>
-        <Button
-          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-          text="🗨️ Chat"
-          onClick={() => selectedItemData && chatOnClick(selectedItemData.createdBy)}
-          color="primary"
-        />
-        <Button
-          style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
-          text="Accept"
-          onClick={dealAcceptOnClick}
-          color="primary"
-        />
-      </UserInfoDiv>
-    </OfferAlertUserDivStyled>
-  )
+          <Button
+            style={{ width: 'min(12vw, 160px)', borderRadius: 0 }}
+            text="Accept"
+            onClick={dealAcceptOnClick}
+            color="primary"
+          />
+        </UserInfoDiv>
+      </OfferAlertUserDivStyled>
+    )
+  }
 
   const renderItemOwnerUserDiv = () => (
     <ItemOwnerUserDivStyled>
@@ -211,7 +215,7 @@ const ItemPage = () => {
             round
           />
           <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
-            {ownerInfo?.username}
+            {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
           </UserInfoNameLink>
         </UserInfoSubDiv>
         <Button
@@ -255,7 +259,7 @@ const ItemPage = () => {
       ) : selectedItemData ? (
         <>
           <LeftDiv>
-            {userHasAnOffer && renderOfferAlertUserDiv()}
+            {userHasAnOffer && offererName && renderOfferAlertUserDiv()}
             {/* <TypeBannerDiv>
               <TypeBannerPic src={saleBannerPic} />
               <TypeBannerText>{selectedItemData.typeOfTransaction}</TypeBannerText>

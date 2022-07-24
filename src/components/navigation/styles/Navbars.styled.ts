@@ -3,7 +3,7 @@ import { fontTypeCss } from '../../../styles/index.styled'
 
 export const navBarBuffer = 'clamp(100px, 18vh, 138px)'
 
-export const StyledLandingPageNav = styled.div`
+export const StyledNavbar = styled.div`
   position: fixed;
   top: 0;
   left: 0;

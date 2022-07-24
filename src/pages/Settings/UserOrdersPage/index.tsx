@@ -46,6 +46,3 @@ const UserOrdersPage = () => {
 }
 
 export default UserOrdersPage
-function sortListingsByReservedStatus(sortListingsByReservedStatus: any) {
-  throw new Error('Function not implemented.')
-}

@@ -51,9 +51,9 @@ const EditItemPage = () => {
   const [selectedImageBlob, setSelectedImageBlob] = useState<Blob>()
   const [selectedImageURL, setSelectedImageURL] = useState<string>(defaultPic)
   const [selectedImageB64, setSelectedImageB64] = useState<string>()
-  const [formInfo, setFormInfo] = useState<ItemListing>(selectedItemData)
+  const [formValues, setFormValues] = useState<ItemListing>(selectedItemData)
 
-  const allowedToEdit = userFirebaseProfile.uid === formInfo?.createdBy
+  const allowedToEdit = userFirebaseProfile.uid === formValues?.createdBy
 
   useEffect(() => {
     if (uploadStatus === 'SUCCESS') navigate(`${PATHS.ITEM}/${params.itemId}`)
@@ -69,7 +69,7 @@ const EditItemPage = () => {
   }, [selectedImageBlob])
 
   useEffect(() => {
-    selectedImageB64 && setFormInfo({ ...formInfo, imageURL: [selectedImageB64] })
+    selectedImageB64 && setFormValues({ ...formValues, imageURL: [selectedImageB64] })
   }, [selectedImageB64])
 
   useEffect(() => {
@@ -79,14 +79,14 @@ const EditItemPage = () => {
   const onSubmit = () => {
     const editedListing: ItemListingPut = {
       item_id: params.itemId ?? '',
-      name: formInfo?.name?.trim() ?? '',
-      price: formInfo?.price ?? 0,
-      description: formInfo?.description?.trim() ?? '',
-      typeOfTransaction: formInfo?.typeOfTransaction ?? 'RENT',
-      deliveryInformation: formInfo?.deliveryInformation?.trim() ?? '',
+      name: formValues?.name?.trim() ?? '',
+      price: formValues?.price ?? 0,
+      description: formValues?.description?.trim() ?? '',
+      typeOfTransaction: formValues?.typeOfTransaction ?? 'RENT',
+      deliveryInformation: formValues?.deliveryInformation?.trim() ?? '',
       // tags: data.Tags.split(',').map((tag: string) => tag.trim()),
       tags: undefined, // TODO
-      imageURL: formInfo?.imageURL ? formInfo?.imageURL : [],
+      imageURL: formValues?.imageURL ? formValues?.imageURL : [],
     }
     dispatch(updateItem(editedListing))
     console.table(editedListing)
@@ -108,7 +108,7 @@ const EditItemPage = () => {
               <UploadListingDiv>
                 <LeftDiv>
                   <ItemPicture
-                    src={formInfo?.imageURL[0] ? formInfo.imageURL[0] : selectedImageURL}
+                    src={formValues?.imageURL[0] ? formValues.imageURL[0] : selectedImageURL}
                   />
                   <PictureUploader
                     text="Upload Picture"
@@ -119,7 +119,7 @@ const EditItemPage = () => {
                   <PostForm onSubmit={handleSubmit(onSubmit)} noValidate>
                     <EntryDiv type="input">
                       <EntryName fontType={p}> Item Name&nbsp;</EntryName>
-                      <ItemName fontType={p}>{formInfo.name}</ItemName>
+                      <ItemName fontType={p}>{formValues.name}</ItemName>
                     </EntryDiv>
                     <EntryDiv type="input">
                       <EntryName fontType={p}> Listing Type&nbsp;</EntryName>
@@ -131,11 +131,11 @@ const EditItemPage = () => {
                           { name: 'Sell', value: 'SELL' },
                         ]}
                         register={register}
-                        value={formInfo?.typeOfTransaction}
+                        value={formValues?.typeOfTransaction}
                         onChange={(e) =>
-                          formInfo &&
-                          setFormInfo({
-                            ...formInfo,
+                          formValues &&
+                          setFormValues({
+                            ...formValues,
                             typeOfTransaction: e.target.value as TransactionType,
                           })
                         }
@@ -143,7 +143,7 @@ const EditItemPage = () => {
                     </EntryDiv>
                     <EntryDiv type="input">
                       <EntryName fontType={p}>
-                        Price <b>SG$</b> {formInfo?.typeOfTransaction === 'RENT' && '/day'}
+                        Price <b>SG$</b> {formValues?.typeOfTransaction === 'RENT' && '/day'}
                       </EntryName>
                       <InputField
                         title="Price"
@@ -151,9 +151,10 @@ const EditItemPage = () => {
                         placeholder="Enter Price (in SGD)"
                         pattern={/^\d*\.?\d{0,2}$/}
                         register={register}
-                        value={formInfo?.price}
+                        value={formValues?.price}
                         onChange={(e) =>
-                          formInfo && setFormInfo({ ...formInfo, price: Number(e.target.value) })
+                          formValues &&
+                          setFormValues({ ...formValues, price: Number(e.target.value) })
                         }
                         required
                       />
@@ -164,9 +165,10 @@ const EditItemPage = () => {
                         title="ProductDescription"
                         placeholder="Description of your Product"
                         {...register('ProductDescription', { required: true })}
-                        value={formInfo?.description}
+                        value={formValues?.description}
                         onChange={(e) =>
-                          formInfo && setFormInfo({ ...formInfo, description: e.target.value })
+                          formValues &&
+                          setFormValues({ ...formValues, description: e.target.value })
                         }
                       />
                     </EntryDiv>
@@ -176,10 +178,10 @@ const EditItemPage = () => {
                         title="DealInformation"
                         placeholder="Include details such as Delivery and Payment methods"
                         {...register('DealInformation', { required: true })}
-                        value={formInfo?.deliveryInformation}
+                        value={formValues?.deliveryInformation}
                         onChange={(e) =>
-                          formInfo &&
-                          setFormInfo({ ...formInfo, deliveryInformation: e.target.value })
+                          formValues &&
+                          setFormValues({ ...formValues, deliveryInformation: e.target.value })
                         }
                       />
                     </EntryDiv>

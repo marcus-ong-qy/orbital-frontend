@@ -34,7 +34,7 @@ const ChatPage = () => {
   )
   const { selectedItemData } = useAppSelector((state) => state.marketplace_reducer)
 
-  const [userChatsUID, setUserChatsUID] = useState<string[]>()
+  // const [userChatsUID, setUserChatsUID] = useState<string[]>()
   const [chatMetadata, setChatMetadata] = useState<ChatMetadata | null>(null)
   const [ownerInfo, setOwnerInfo] = useState<UserData | null>(null)
 
@@ -57,16 +57,16 @@ const ChatPage = () => {
     receipientUID && dispatch(getAnotherUserInfo(receipientUID, setOwnerInfo))
   }, [chatMetadata])
 
-  useEffect(() => {
-    const userUID = userFirebaseProfile.uid
-    const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
+  // useEffect(() => {
+  //   const userUID = userFirebaseProfile.uid
+  //   const userChatsUIDRef = ref(database, 'users/' + userUID + '/chats')
 
-    onValue(userChatsUIDRef, (snapshot) => {
-      const data: Record<string, string> = snapshot.val()
-      const newUserChatsUID = Object.values(data)
-      setUserChatsUID(newUserChatsUID)
-    })
-  }, [userFirebaseProfile])
+  //   onValue(userChatsUIDRef, (snapshot) => {
+  //     const data: Record<string, string> = snapshot.val()
+  //     const newUserChatsUID = Object.values(data)
+  //     setUserChatsUID(newUserChatsUID)
+  //   })
+  // }, [userFirebaseProfile])
 
   return (
     <StyledChatPage>
@@ -76,12 +76,12 @@ const ChatPage = () => {
             <LoadingSpin />
           ) : (
             <>
-              <ChatsDrawerDiv>
+              {/* <ChatsDrawerDiv>
                 <ChatsDrawerHeader fontType={h1}>Chats</ChatsDrawerHeader>
                 {userChatsUID?.map((chatUID, index) => {
                   return <ChatTab key={index} chatUID={chatUID} />
                 })}
-              </ChatsDrawerDiv>
+              </ChatsDrawerDiv> */}
               <ChatInterfaceDiv>
                 <ChatApplet
                   ownerInfo={ownerInfo}

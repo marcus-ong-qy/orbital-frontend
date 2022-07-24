@@ -17,7 +17,7 @@ import {
   SearchDiv,
   // ShoppingCart,
   ThemeSwitchDiv,
-  StyledLandingPageNav,
+  StyledNavbar,
   StyledLogo,
 } from './styles/Navbars.styled'
 import { LinkGroupSpan, NavLinks } from './NavLinks/styles/NavLinks.styled'
@@ -32,7 +32,7 @@ const Navbar = ({ title }: { title: string }) => {
 
   const { newListing } = useAppSelector((state) => state.marketplace_reducer)
 
-  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
+  const { isLoggedIn } = useAppSelector((state) => state.auth_reducer)
 
   const sellOnClick = () => {
     navigate(`${PATHS.UPLOAD_LISTING}/sell`)
@@ -45,7 +45,8 @@ const Navbar = ({ title }: { title: string }) => {
   }
 
   return (
-    <StyledLandingPageNav>
+    <StyledNavbar id="styled-navbar">
+      {/** for selenium test */}
       <StyledLogo src={horseLogo} onClick={() => navigate('/neigh') /* easter egg */} />
       <NavbarTitle fontType={navTitleFont} onClick={() => navigate(PATHS.MAIN)}>
         {title}
@@ -79,7 +80,7 @@ const Navbar = ({ title }: { title: string }) => {
                 &nbsp;|&nbsp;
                 {/* <NavLink text="Settings" onClick={() => alert('TODO')} />
                 &nbsp;|&nbsp; */}
-                <UsernameHover maxWidth="20vw" userFirebaseProfile={userFirebaseProfile} />
+                <UsernameHover maxWidth="20vw" />
               </LinkGroupSpan>
             </>
           ) : (
@@ -98,7 +99,7 @@ const Navbar = ({ title }: { title: string }) => {
           </ThemeSwitchDiv>
         </SearchDiv>
       </BodyDiv>
-    </StyledLandingPageNav>
+    </StyledNavbar>
   )
 }
 

@@ -29,5 +29,4 @@ export const sortListingsByAvailableFirst = (item1: ItemListing, item2: ItemList
  * Syntax: `ItemListing[].filter(<this function name here>)`
  * @returns ItemListing array with all `status === 'SOLD'` listings removed
  */
-export const filterAvailableListings = (item: ItemListing) =>
-  item.status !== 'SOLD' && item.status !== ('Sold' as any)
+export const filterAvailableListings = (item: ItemListing) => item.status === 'AVAILABLE'

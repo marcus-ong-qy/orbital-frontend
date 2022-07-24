@@ -12,7 +12,7 @@ import {
   NavbarTitle,
   RightDiv,
   SearchDiv,
-  StyledLandingPageNav,
+  StyledNavbar,
   StyledLogo,
 } from './styles/Navbars.styled'
 import { NavLinks } from './NavLinks/styles/NavLinks.styled'
@@ -24,10 +24,10 @@ const LoadingPageNav = ({ title }: { title: string }) => {
   const theme = useTheme()
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
-  const { isLoggedIn, userFirebaseProfile } = useAppSelector((state) => state.auth_reducer)
+  const { isLoggedIn } = useAppSelector((state) => state.auth_reducer)
 
   return (
-    <StyledLandingPageNav>
+    <StyledNavbar>
       <StyledLogo src={logo} onClick={() => navigate('/neigh') /* easter egg */} />
       <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
       <BodyDiv>
@@ -43,7 +43,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
       <RightDiv>
         {isLoggedIn ? (
           <NavLinks fontType={navLinkFont} justify="center">
-            <UsernameHover maxWidth="16vw" userFirebaseProfile={userFirebaseProfile} />
+            <UsernameHover maxWidth="16vw" />
           </NavLinks>
         ) : (
           <NavLinks fontType={navLinkFont} justify="center">
@@ -53,7 +53,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
           </NavLinks>
         )}
       </RightDiv>
-    </StyledLandingPageNav>
+    </StyledNavbar>
   )
 }
 

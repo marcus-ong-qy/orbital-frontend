@@ -31,7 +31,8 @@ export const ChatsDrawerHeader = styled.div<{ fontType: FontType }>`
 export const ChatInterfaceDiv = styled.div`
   ${borderedGreyDivCss}
 
-  width: 54vw;
+  width: 100vw;
+  /* width: 54vw; */
   height: 530px;
   margin-left: 4.5vw;
 `

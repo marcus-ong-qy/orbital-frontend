@@ -18,7 +18,7 @@ import {
   UserProfileDiv,
 } from './styles/UserProfilePage.styled'
 
-import defaultPic from '../../../assets/picture.png'
+import defaultAvatar from '../../../assets/default_avatar.png'
 
 const Entry = ({ name, value }: { name: string; value: string }) => {
   const theme = useTheme()
@@ -27,7 +27,7 @@ const Entry = ({ name, value }: { name: string; value: string }) => {
   return (
     <EntryDiv>
       <EntryName fontType={p}>{name}</EntryName>
-      <EntryValue fontType={p}>&nbsp;{value}</EntryValue>
+      <EntryValue fontType={p}>&nbsp;{value.length ? value : '-'}</EntryValue>
     </EntryDiv>
   )
 }
@@ -55,7 +55,7 @@ const UserProfilePage = () => {
           <EditButton text="📝 Edit Info" onClick={() => navigate(PATHS.EDIT_USER_PROFILE)} />
         </ProfileDiv>
         <PictureDiv>
-          <ItemPicture src={userData.imageURL ? userData.imageURL : defaultPic} />
+          <ItemPicture src={userData.imageURL ? userData.imageURL : defaultAvatar} />
         </PictureDiv>
       </UserProfileDiv>
     </SettingsPageWrapper>
