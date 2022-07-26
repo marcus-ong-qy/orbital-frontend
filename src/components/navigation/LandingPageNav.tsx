@@ -1,70 +1,49 @@
-import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { onAuthStateChanged } from 'firebase/auth'
+import { useTheme } from 'styled-components'
 
-import { auth, getUserProfile } from '../../firebase'
-import { theme } from '../../styles/Theme'
 import { PATHS } from '../../routes/PATHS'
-import { defaultUserProfile } from '../../store/reducer'
-import { ProfileInfo } from '../../store/types'
 
-import NavLink from '../NavLinks/NavLink'
-import UsernameHover from '../NavLinks/UsernameHover'
+import NavLink from './NavLinks/NavLink'
+import UsernameHover from './NavLinks/UsernameHover'
+import SearchBar from './Searchbar/Searchbar'
 
 import {
   BodyDiv,
   NavbarTitle,
   RightDiv,
-  SearchBar,
   SearchDiv,
-  StyledLandingPageNav,
+  StyledNavbar,
   StyledLogo,
 } from './styles/Navbars.styled'
-import { NavLinks } from '../NavLinks/styles/NavLinks.styled'
+import { NavLinks } from './NavLinks/styles/NavLinks.styled'
 
 import logo from '../../assets/Neigh-logos_transparent.png'
+import { useAppSelector } from '../../app/hooks'
 
 const LoadingPageNav = ({ title }: { title: string }) => {
+  const theme = useTheme()
   const navigate = useNavigate()
   const { navTitleFont, navLinkFont } = { ...theme.typography.fontSize }
-
-  const [userProfile, setUserProfile] = useState<ProfileInfo>(defaultUserProfile)
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user && !isLoggedIn) {
-        setUserProfile(getUserProfile(user))
-        setIsLoggedIn(true)
-      } else if (!user) {
-        setUserProfile(defaultUserProfile)
-        setIsLoggedIn(false)
-      }
-    })
-  })
-
-  const onSearch = () => {
-    // TODO
-  }
+  const { isLoggedIn } = useAppSelector((state) => state.auth_reducer)
 
   return (
-    <StyledLandingPageNav>
+    <StyledNavbar>
       <StyledLogo src={logo} onClick={() => navigate('/neigh') /* easter egg */} />
       <NavbarTitle fontType={navTitleFont}>{title}</NavbarTitle>
       <BodyDiv>
         <NavLinks fontType={navLinkFont}>
           <NavLink text={'Marketplace'} onClick={() => navigate(PATHS.MAIN)} />
-          &nbsp;|&nbsp;
-          <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} />
+          {/* &nbsp;|&nbsp;
+          <NavLink text={'Community'} onClick={() => navigate(PATHS.COMMUNITY)} /> */}
         </NavLinks>
         <SearchDiv>
-          <SearchBar placeholder="Search" onSearch={onSearch} />
+          <SearchBar />
         </SearchDiv>
       </BodyDiv>
       <RightDiv>
         {isLoggedIn ? (
           <NavLinks fontType={navLinkFont} justify="center">
-            <UsernameHover userProfile={userProfile} />
+            <UsernameHover maxWidth="16vw" />
           </NavLinks>
         ) : (
           <NavLinks fontType={navLinkFont} justify="center">
@@ -74,7 +53,7 @@ const LoadingPageNav = ({ title }: { title: string }) => {
           </NavLinks>
         )}
       </RightDiv>
-    </StyledLandingPageNav>
+    </StyledNavbar>
   )
 }
 

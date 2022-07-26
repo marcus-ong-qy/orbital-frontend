@@ -1,46 +1,26 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-} from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import App from '../App'
 import { demoAcc } from '../demo-config'
-import { store } from '../store/store'
-import { theme } from '../styles/Theme'
-
-import { LOGIN, SIGNUP, signupErrorLabels } from '../common/warnings'
-
-const AppWithStore = () => {
-  return (
-    <Provider store={store}>
-      <App />
-    </Provider>
-  )
-}
+import {
+  LOGIN_WARNINGS,
+  SIGNUP_WARNINGS,
+  SIGNUP_ERROR_LABELS,
+  RESET_PASSWORD_ERROR_LABELS,
+} from '../common/warnings'
+import { AppWithStore, login } from './GlobalTestFunctions'
 
 // Login Page
 describe('Authentication Pages', () => {
-  test('login - page loads', async () => {
-    render(<App />)
-    await waitForElementToBeRemoved(() => screen.getByText('Loading...'))
+  test('login - go to login page', async () => {
+    render(<AppWithStore />)
 
-    const loginButton = screen.getByRole('button', { name: 'Login' })
-    expect(loginButton).toBeInTheDocument()
-  })
+    await waitFor(() => {
+      const loginLink = screen.getByText('Log In')
+      fireEvent.click(loginLink)
 
-  test('login - login button has correct text and colour', () => {
-    render(<App />)
-
-    const loginButton = screen.getByRole('button', { name: 'Login' })
-
-    expect(loginButton).toHaveStyle(`
-      color: ${theme.palette.common.gray};
-      background-color: ${theme.palette.secondary};
-    `)
+      const loginButton = screen.getByRole('button', { name: 'Login' })
+      expect(loginButton).toBeInTheDocument()
+    })
   })
 
   test('login - invalid user', async () => {
@@ -55,7 +35,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText(LOGIN.INVALID)
+      const warningLabel = screen.getByText(LOGIN_WARNINGS.INVALID)
       expect(warningLabel).toBeInTheDocument()
     })
   })
@@ -72,35 +52,27 @@ describe('Authentication Pages', () => {
     fireEvent.click(loginButton)
 
     await waitFor(() => {
-      const warningLabel = screen.getByText(LOGIN.INVALID)
+      const warningLabel = screen.getByText(LOGIN_WARNINGS.INVALID)
       expect(warningLabel).toBeInTheDocument()
     })
   })
 
-  test('login - valid', async () => {
+  test('login and sign out valid', async () => {
     render(<AppWithStore />)
 
-    const loginButton = screen.getByRole('button', { name: 'Login' })
-    const emailInput = screen.getByPlaceholderText('Email')
-    const passwordInput = screen.getByPlaceholderText('Password')
-
-    fireEvent.change(emailInput, { target: { value: demoAcc.email } })
-    fireEvent.change(passwordInput, {
-      target: { value: demoAcc.password },
+    await waitFor(() => {
+      login()
     })
-    fireEvent.click(loginButton)
 
     await waitFor(() => {
       const marketplaceMainPage = screen.getByTestId('MarketplaceMain') // TODO replace with component
       expect(marketplaceMainPage).toBeInTheDocument()
     })
-  })
 
-  test('sign out - valid', async () => {
-    render(<AppWithStore />)
-
-    const signoutButton = screen.getByRole('button', { name: 'Sign Out' })
-    fireEvent.click(signoutButton)
+    await waitFor(() => {
+      const signoutButton = screen.getByRole('button', { name: 'Sign Out' })
+      fireEvent.click(signoutButton)
+    })
 
     await waitFor(() => {
       const loginButton = screen.getByRole('button', { name: 'Login' })
@@ -114,20 +86,19 @@ describe('Authentication Pages', () => {
     const signupLink = screen.getAllByText('Sign Up')
     fireEvent.click(signupLink[0])
 
-    await waitForElementToBeRemoved(() => screen.getByText('Loading...'))
-
-    const signupButton = screen.getByRole('button', { name: 'Sign Up' })
-    const emailInput = screen.getByPlaceholderText('Email')
-    const passwordInput = screen.getByPlaceholderText('Password')
-
-    fireEvent.change(emailInput, { target: { value: 'm@m.m' } })
-    fireEvent.change(passwordInput, {
-      target: { value: 'abcdefgh1!' },
-    })
-    fireEvent.click(signupButton)
-
     await waitFor(() => {
-      const emailErrorLabel = screen.getByText(signupErrorLabels['email-invalid'])
+      const signupButton = screen.getByRole('button', { name: 'Sign Up' })
+      const emailInput = screen.getByPlaceholderText('Email')
+      const passwordInput = screen.getByPlaceholderText('Password')
+
+      fireEvent.change(emailInput, { target: { value: 'm@m.m' } })
+      fireEvent.change(passwordInput, {
+        target: { value: 'abcdefgh1!' },
+      })
+      fireEvent.click(signupButton)
+    })
+    await waitFor(() => {
+      const emailErrorLabel = screen.getByText(SIGNUP_ERROR_LABELS['EMAIL_INVALID'])
       expect(emailErrorLabel).toBeInTheDocument()
     })
   })
@@ -146,7 +117,7 @@ describe('Authentication Pages', () => {
     fireEvent.click(signupButton)
 
     await waitFor(() => {
-      const accountExistsLabel = screen.getByText(signupErrorLabels['account-exists'])
+      const accountExistsLabel = screen.getByText(SIGNUP_ERROR_LABELS.ACCOUNT_EXISTS)
       expect(accountExistsLabel).toBeInTheDocument()
     })
   })
@@ -161,7 +132,7 @@ describe('Authentication Pages', () => {
     })
 
     await waitFor(() => {
-      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      const passwordInvalidWarning = screen.getByText(SIGNUP_WARNINGS.PASSWORD_INVALID)
       expect(passwordInvalidWarning).toBeInTheDocument()
     })
   })
@@ -176,8 +147,31 @@ describe('Authentication Pages', () => {
     })
 
     await waitFor(() => {
-      const passwordInvalidWarning = screen.getByText(SIGNUP.PASSWORD_INVALID)
+      const passwordInvalidWarning = screen.getByText(SIGNUP_WARNINGS.PASSWORD_INVALID)
       expect(passwordInvalidWarning).toBeInTheDocument()
+    })
+  })
+
+  test('forget password - email does not exist', async () => {
+    render(<AppWithStore />)
+
+    const loginLink = screen.getAllByText('Log In')[0]
+    fireEvent.click(loginLink)
+
+    await waitFor(() => {
+      const forgetPwdLink = screen.getByText('Forget Password?')
+      fireEvent.click(forgetPwdLink)
+    })
+    await waitFor(() => {
+      const forgetPwdButton = screen.getByRole('button', { name: 'Reset Password' })
+      const emailInput = screen.getByPlaceholderText('Email')
+
+      fireEvent.change(emailInput, { target: { value: 'bla' } })
+      fireEvent.click(forgetPwdButton)
+    })
+    await waitFor(() => {
+      const emailInvalidWarning = screen.getByText(RESET_PASSWORD_ERROR_LABELS.EMAIL_INVALID)
+      expect(emailInvalidWarning).toBeInTheDocument()
     })
   })
 })
