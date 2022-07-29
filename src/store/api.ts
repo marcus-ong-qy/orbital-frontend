@@ -1,4 +1,4 @@
-export const TIMEOUT = 5000
+export const TIMEOUT = 50000
 export const BASE_URL = 'https://asia-southeast1-orbital2-4105d.cloudfunctions.net'
 
 export enum TYPE {
