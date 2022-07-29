@@ -30,6 +30,7 @@ declare module 'styled-components' {
         gray: {
           dark: HexCode
           light: HexCode
+          lighter: HexCode
         }
       }
       text: {

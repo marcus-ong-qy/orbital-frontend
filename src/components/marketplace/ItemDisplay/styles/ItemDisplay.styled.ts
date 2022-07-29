@@ -11,7 +11,7 @@ export const ItemDisplayDiv = styled.div`
   border-radius: 6px;
   overflow: hidden;
 
-  background: ${(props) => props.theme.palette.common.white};
+  background: ${(props) => props.theme.palette.common.gray.lighter};
   box-shadow: 0 5px 20px ${(props) => props.theme.palette.common.gray.light};
 
   cursor: pointer;

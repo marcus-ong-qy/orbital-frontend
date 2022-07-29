@@ -72,6 +72,7 @@ const lightTheme: DefaultTheme = {
       gray: {
         dark: '#717a99',
         light: '#e5e5e5',
+        lighter: '#f8f8f8',
       },
     },
     text: {
@@ -101,6 +102,7 @@ const darkTheme: DefaultTheme = {
       gray: {
         dark: '#717a99',
         light: '#c4c4c4',
+        lighter: '#e5e5e5',
       },
     },
     text: {
