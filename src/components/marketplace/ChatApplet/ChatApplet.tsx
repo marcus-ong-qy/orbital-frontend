@@ -118,7 +118,7 @@ const ChatApplet = ({
           round
         />
         <ReceipientUsername fontType={h1}>
-          {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+          {ownerInfo?.username?.length ? ownerInfo.username : ownerInfo?.name}
         </ReceipientUsername>
       </ChatAppletHeaderDiv>
 

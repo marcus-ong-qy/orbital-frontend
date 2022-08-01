@@ -64,7 +64,7 @@ const ChatTab = ({ chatUID }: { chatUID: string }) => {
       <ProfilePic src={defaultAvatar} diameter="clamp(30px, 6vw, 78px)" round />
       <ChatInfoDiv>
         <ChatUsername fontType={h3}>
-          {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+          {ownerInfo?.username?.length ? ownerInfo.username : ownerInfo?.name}
         </ChatUsername>
         <ChatPreview fontType={p}>{chatMetadata?.recentMessage?.messageText}</ChatPreview>
         <ItemInfo fontType={h3}>{itemInfo?.name}</ItemInfo>

@@ -91,7 +91,7 @@ const ItemPage = () => {
     selectedItemData?.createdBy === userFirebaseProfile.uid &&
     selectedItemData?.status === 'OFFERED'
 
-  const offererName = offererInfo?.username.length ? offererInfo.username : offererInfo?.name
+  const offererName = offererInfo?.username?.length ? offererInfo.username : offererInfo?.name
 
   useEffect(() => {
     params.itemId && dispatch(getItemById(params.itemId))
@@ -184,7 +184,7 @@ const ItemPage = () => {
               round
             />
             <UserInfoNameLink onClick={() => alert('TODO')} fontType={h3}>
-              {offererInfo?.username.length ? offererInfo.username : offererInfo?.name}
+              {offererInfo?.username?.length ? offererInfo.username : offererInfo?.name}
             </UserInfoNameLink>
           </UserInfoSubDiv>
           <Button
@@ -215,7 +215,7 @@ const ItemPage = () => {
             round
           />
           <UserInfoNameLink fontType={h3} onClick={() => alert('TODO')}>
-            {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+            {ownerInfo?.username?.length ? ownerInfo.username : ownerInfo?.name}
           </UserInfoNameLink>
         </UserInfoSubDiv>
         <Button

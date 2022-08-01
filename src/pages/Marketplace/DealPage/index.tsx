@@ -173,7 +173,7 @@ const DealPage = () => {
             round
           />
           <OwnerName fontType={h3}>
-            {buyerInfo?.username.length ? buyerInfo.username : buyerInfo?.name}
+            {buyerInfo?.username?.length ? buyerInfo.username : buyerInfo?.name}
           </OwnerName>
         </OwnerInfoSubDiv>
         <Button
@@ -197,7 +197,7 @@ const DealPage = () => {
             round
           />
           <OwnerName fontType={h3}>
-            {ownerInfo?.username.length ? ownerInfo.username : ownerInfo?.name}
+            {ownerInfo?.username?.length ? ownerInfo.username : ownerInfo?.name}
           </OwnerName>
         </OwnerInfoSubDiv>
         <Button
