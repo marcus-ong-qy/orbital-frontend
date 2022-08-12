@@ -131,12 +131,14 @@ export const signUp = (credentials: Credentials) => async (dispatch: Dispatch<Ac
     })
     const response = await setUserData.put(ENDPOINTS.USER, { name: credentials.email })
     const userData: UserData = response.data.message
+    console.log(response.status)
     if (response.status === 201) {
+      console.log('yes')
       dispatch({
         type: AUTH_ACTIONS.SET_USER_DATA,
         userData: userData,
       })
-      setSignupAttemptStatus('SUCCESS')
+      dispatch(setSignupAttemptStatus('SUCCESS'))
     }
   } catch (e) {
     console.error('The error is:\n', e as Error)
