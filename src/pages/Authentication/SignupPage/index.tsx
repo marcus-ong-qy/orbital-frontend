@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
-import GoogleButton from 'react-google-button'
+// import GoogleButton from 'react-google-button'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -10,11 +10,10 @@ import { emailRegex, passwordRegex } from '../../../common/regex'
 import { SIGNUP_WARNINGS, SIGNUP_ERROR_LABELS } from '../../../common/warnings'
 
 import {
-  logInWithGoogle,
+  // logInWithGoogle,
   setSignupAttemptStatus,
   signUp,
 } from '../../../store/authentication/actions'
-import { IS_USING_BACKEND } from '../../../store/authentication/reducer'
 import { Credentials } from '../../../store/authentication/types'
 
 import InputField from '../../../components/common/InputFields/InputField'
@@ -25,7 +24,7 @@ import LoadingSpin from '../../../components/common/LoadingSpin/LoadingSpin'
 import {
   ExistingUserSpan,
   LoginLink,
-  OrSpan,
+  // OrSpan,
   SignupButton,
   SignupDiv,
   SignupDivTitle,
@@ -64,12 +63,12 @@ const RegisterPage = () => {
       email: data.Email.trim(),
       password: data.Password,
     }
-    IS_USING_BACKEND && dispatch(signUp(signupCredentials))
+    dispatch(signUp(signupCredentials))
   }
 
-  const onGoogleSignIn = () => {
-    IS_USING_BACKEND && dispatch(logInWithGoogle())
-  }
+  // const onGoogleSignIn = () => {
+  //   dispatch(logInWithGoogle())
+  // }
 
   return (
     <StyledSignupPage>
