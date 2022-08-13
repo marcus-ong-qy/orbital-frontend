@@ -5,8 +5,8 @@ by Team _Bored James_\
 \
 This is the repository for the web app of our project
 
-- Project [README](https://docs.google.com/document/d/1ZPS_ncdbafHlgxHuESkLN7G-DpLdM6OomL7CSNYQ2Zk/edit?usp=sharing)
-- Project [Poster](https://drive.google.com/file/d/1x_NsZfkRkkxvDfkiCv0iTW4h0VANCx4g/view?usp=sharing)
+- Project [README](https://docs.google.com/document/d/1ZPS_ncdbafHlgxHuESkLN7G-DpLdM6OomL7CSNYQ2Zk)
+- Project [Poster](https://drive.google.com/file/d/11v83LhEL5WXPn6QA7xGdb2DckcKgGYsc)
 - Project [Video](https://www.youtube.com/watch?v=VT4W-A_GGB8)
 
 ## Milestone 1
