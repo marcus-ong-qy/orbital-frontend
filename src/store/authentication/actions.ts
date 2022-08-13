@@ -11,7 +11,6 @@ import {
 import axios from 'axios'
 
 import { auth, setRealtimeDatabase } from '../../firebase'
-import { demoAcc } from '../../demo-config'
 import { BASE_URL, ENDPOINTS, TIMEOUT } from '../api'
 import { Dispatch, GetState } from '../types'
 import {
@@ -26,7 +25,6 @@ import {
   FirebaseProfile,
   UpdateParticularsStatus,
 } from './types'
-import { defaultUserData } from './reducer'
 
 export const toggleTheme = () => (dispatch: Dispatch<ActionTypes>, getState: GetState) => {
   const { themeMode } = getState().auth_reducer
@@ -321,21 +319,3 @@ export const setSearchRedirect =
       searchRedirect: type,
     })
   }
-
-// offline functions for offline testing
-const setLoginCredentials = (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
-  dispatch({
-    type: AUTH_ACTIONS.LOGIN_OFFLINE,
-    loginCredentialsOffline: { ...credentials },
-    loginAttemptStatus: 'SUCCESS',
-  })
-}
-
-export const logInOffline = (credentials: Credentials) => (dispatch: Dispatch<ActionTypes>) => {
-  const loginMatch = () => {
-    return credentials.email === demoAcc.email && credentials.password === demoAcc.password
-  }
-  loginMatch()
-    ? dispatch(setLoginCredentials(credentials))
-    : dispatch(setLoginAttemptStatus('INVALID'))
-}

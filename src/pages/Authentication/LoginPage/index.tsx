@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FieldValues, useForm } from 'react-hook-form'
-import GoogleButton from 'react-google-button'
+// import GoogleButton from 'react-google-button'
 import { useTheme } from 'styled-components'
 
 import { useAppDispatch, useAppSelector } from '../../../app/hooks'
@@ -10,11 +10,9 @@ import { PATHS } from '../../../routes/PATHS'
 
 import {
   logIn,
-  logInOffline,
-  logInWithGoogle,
+  // logInWithGoogle,
   setLoginAttemptStatus,
 } from '../../../store/authentication/actions'
-import { IS_USING_BACKEND } from '../../../store/authentication/reducer'
 import { Credentials } from '../../../store/authentication/types'
 
 import Button from '../../../components/common/Button/Button'
@@ -28,7 +26,7 @@ import {
   LoginDivTitle,
   LoginForm,
   NewUserSpan,
-  OrSpan,
+  // OrSpan,
   SignUpLink,
   StyledLoginPage,
 } from './styles/LoginPage.styled'
@@ -38,7 +36,7 @@ const LoginPage = () => {
   const theme = useTheme()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const { register, handleSubmit, setValue, setError, formState } = useForm({
+  const { register, handleSubmit, setValue, setError } = useForm({
     mode: 'onSubmit',
   })
   const { isLoading, loginAttemptStatus } = useAppSelector((state) => state.auth_reducer)
@@ -57,12 +55,12 @@ const LoginPage = () => {
       email: data.Email.trim(),
       password: data.Password,
     }
-    dispatch(IS_USING_BACKEND ? logIn(loginCredentials) : logInOffline(loginCredentials))
+    dispatch(logIn(loginCredentials))
   }
 
-  const onGoogleSignIn = () => {
-    IS_USING_BACKEND && dispatch(logInWithGoogle())
-  }
+  // const onGoogleSignIn = () => {
+  //   dispatch(logInWithGoogle())
+  // }
 
   // useEffect(() => {
   //   console.log('errors', formState.errors)

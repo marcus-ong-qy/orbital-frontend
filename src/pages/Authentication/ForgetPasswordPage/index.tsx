@@ -3,7 +3,6 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useTheme } from 'styled-components'
 
 import { sendPasswordReset } from '../../../store/authentication/actions'
-import { IS_USING_BACKEND } from '../../../store/authentication/reducer'
 import { ResetPasswordStatus } from '../../../store/authentication/types'
 import { RESET_PASSWORD_ERROR_LABELS } from '../../../common/warnings'
 import { TEXTS } from '../../../common/texts'
@@ -35,7 +34,7 @@ const ForgetPasswordPage = () => {
 
   const onSubmit = (data: FieldValues) => {
     const email = data.Email.trim()
-    IS_USING_BACKEND && sendPasswordReset(email, setResetPasswordAttemptStatus)
+    sendPasswordReset(email, setResetPasswordAttemptStatus)
   }
 
   return (
