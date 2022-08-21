@@ -3,15 +3,20 @@
 National University of Singapore CP2106 (Orbital) Project - _Summer 2022_\
 by Team _Bored James_\
 \
-This is the repository for the web app of our project
+This is the Frontend repository of our project's website
 
 - Project [README](https://docs.google.com/document/d/1ZPS_ncdbafHlgxHuESkLN7G-DpLdM6OomL7CSNYQ2Zk)
 - Project [Poster](https://drive.google.com/file/d/11v83LhEL5WXPn6QA7xGdb2DckcKgGYsc)
-- Project [Video](https://www.youtube.com/watch?v=VT4W-A_GGB8)
+- Project [Video](https://www.youtube.com/watch?v=BdfnoybBTgc)
+
+Preview our deployed website [here](https://orbital-frontend.vercel.app/)
 
 ## Milestone 1
 - [Video](https://user-images.githubusercontent.com/75428027/170867279-d4a6b8a7-b2f1-46f7-bafe-568d1986cc96.mp4)
 
+
+## Milestone 3
+- [Video](https://www.youtube.com/watch?v=VT4W-A_GGB8)
 
 # Getting Started with Create React App
 
